@@ -7,7 +7,7 @@ COMPILER_FLAGS = -w -std=c++11 -g
 
 LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2main -lyaml-cpp -lSDL2_ttf
 
-OBJ_NAME = ageofempiresconsole 
+OBJ_NAME = metalslug.out 
 
 all : $(OBJS)
 	$(CC) $(OBJS) $(COMPILER_FLAGS) -o $(OBJ_NAME)
