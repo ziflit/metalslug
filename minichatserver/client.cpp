@@ -57,6 +57,15 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
     cout << "Conectado al servidor" << endl;
+
+    /* Lógica de envío y recepción de mensajes */
+    /* Recibir el estado inicial desde el servidor */
+    string msg;
+    int msg_size = recv(client_socket_fd, &buffer, bufsize, 0);
+    msg.append(buffer, buffer + msg_size);
+    cout << msg << endl;
+
+
     close(client_socket_fd);
 
     return 0;

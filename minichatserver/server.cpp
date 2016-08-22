@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
     int bufsize = 1024;
     char* ip = "127.0.0.1";
     char buffer[bufsize];
+    string message;
     struct sockaddr_in server_addr;
     struct sockaddr_in client_addr;
     socklen_t addr_size;
@@ -81,6 +82,8 @@ int main(int argc, char* argv[]) {
     }
 
     /* Aca va la logica de envio y recepcion de mensajes */
+    message = "Estás conectado! Bienvenido!";
+    send(cserver_socket_fd, message.data(), message.size(), 0);
 
     /* cserver_socket_fd debe cerrarse cuando se pierde la conexion con el cliente */
     close(cserver_socket_fd);
