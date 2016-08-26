@@ -1,13 +1,17 @@
-#OBJS = src/*.cpp src/Controlador/*.cpp src/Modelo/*.cpp src/Modelo/entidades/*.cpp src/Vista/*.cpp src/Red/*.cpp
-OBJS = src/*.cpp
+SRC_FILES = $(filter-out src/main.cpp, $(wildcard src/*.cpp))
+TEST_SRC_FILES = test/*.cpp
 
 CC = g++
 
-COMPILER_FLAGS = -w -std=c++11 -g
+COMPILER_FLAGS = -w -std=c++11 -g -Wall
 
 LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2main -lyaml-cpp -lSDL2_ttf
 
-OBJ_NAME = ageofempiresconsole 
+OBJ_NAME = metalslug.out 
+OBJ_NAME_TEST = metalslug_tests.out
 
-all : $(OBJS)
-	$(CC) $(OBJS) $(COMPILER_FLAGS) -o $(OBJ_NAME)
+all : $(SRC_FILES)
+	$(CC) $(SRC_FILES) src/main.cpp $(COMPILER_FLAGS) -o $(OBJ_NAME)
+
+test : $(SRC_FILES) $(TEST_SRC_FILES)
+	$(CC) $(SRC_FILES) $(TEST_SRC_FILES) $(COMPILER_FLAGS) -lgtest -o $(OBJ_NAME_TEST)
