@@ -1,0 +1,111 @@
+Table of Contents
+─────────────────
+
+1 Reunión del viernes 26, en el starbucks
+2 Preguntas
+3 Ideas
+4 Multithreading:
+5 Filtrando el enunciado
+.. 5.1 Server
+.. 5.2 Cliente
+
+
+1 Reunión del viernes 26, en el starbucks
+═════════════════════════════════════════
+
+  Santi, Santi, Fran, Flor
+
+
+2 Preguntas
+═══════════
+
+  1. Niveles de log y qué cae en cada categoría.
+  2. Como se corta un mensaje? Podemos usar un caracter o varios
+     "especiales" Podríamos tener un id de mensaje Podríamos tener el
+     tamaño total del mensaje (si es que está partido en varios)
+     POdríamos tener un EOM (End of Message) que indique el final y lea
+     hasta eso (i.e. \0)
+
+     Si el mensaje nunca s eparte (nunca es más grande que el buffer) no
+     hace falta nada de esto, corta donde corta y se termina.
+
+  3. Timestamp? Cómo asegurar que los mensajes se envían al cliente en
+     el orden en el que se recibieron? La alternativa sería confiar en
+     que nuestro FIFO está bien ordenado en el servidor.
+  4. Podrían aparecer nuevos usuarios en el medio de la ejecución? Hay
+     que releer el archivo?
+
+     La pregunta viene de la mano de la lista de usuarios que se envía
+     al cliente. Si no peude haber nuevos usuarios la lista se envía una
+     vez y se considera invariable (no se la pide) De la otra forma se
+     la envía cada vez que el usuario va a enviar un mensaje
+
+     La primer variante está considearndo "hay x jugadores en la partida
+     y no se agregan nuevos" La segunda admite jugadores ingresando a
+     mitad de la partida
+
+
+3 Ideas
+═══════
+
+  Podemos partir del server/cliente que ya tenemos y empezar a
+  construir:
+  1. Mandar más de 1 mensaje
+  2. Mandar mensajes de longitud aleatoria
+  3. Construir un tipo de dato Mensaje. Nos va a servir con cosas como
+     mensajes largos, podemos tener ids de mensaje, o la longitud total
+     incluidas dentro del struct, cosa de saber cuando un mensaje, que
+     es más grande que el buffer de comunicación con el socket, se
+     termina de enviar.
+  4. Multithreading aunque sólo sea con 1 cliente local.
+  5. 
+
+  6. Hay que pensar en la cola de usuarios que quieren acceder a la cola
+     de mensajes del servidor. (Priorizar por llegada, por ejemplo)
+  7. 
+
+
+4 Multithreading:
+═════════════════
+
+  Los threads que son prácticamente obligados se me ocurren 1 thread
+  para el listen() del servidor. 1 thread x cada cliente para el queue
+  de mensajes del servidor 1
+
+
+5 Filtrando el enunciado
+════════════════════════
+
+5.1 Server
+──────────
+
+  1. El archivo de usuarios tiene todos los usuarios del servidor, SON
+     FIJOS (durante 1 ejecución)
+  2. La cola de mensajes debe ser única (luega se la filtra por
+     destinatario). Obligatorio.
+  3. Validar usuarios cuando hay un accept() inmediatamente.
+  4. Enviar lista de usuarios
+
+  El servidor tiene mensajes "especiales" que el cliente podría saber (o
+  no?) reconocer:
+  • La lista de los usuarios
+  • El pedido de autenticación
+  • "Estás conectado"
+
+
+5.2 Cliente
+───────────
+
+  1. Primer mensaje que se manda es la autenticación
+  2. La autenticación se hace manualmente (se ingresa usuario y
+     contraseña cada vez que el servidor lo pida)
+  3. Desconectar NO CIERRA EL CLIENTE. Todavía se vuelve al menú y se
+     puede reconectar al servidor.
+  4. El envio de mensaje se hace mediante un menú interactivo donde se
+     lista cada usuario (el server nos manda la lista).
+  5. Se envía UN MENSAJE a UN USUARIO por vez, luego se vuelve al menú
+     principal.
+  6. Recibir: sólo se recibne los mensajes *CUANDO EL CLIENTE SE LOS
+     PIDE AL SERVIDOR*
+  7. Lorem Ipsum: hablaro nde 3k de mensajes cada 100ms. Para poner una
+     idea.
