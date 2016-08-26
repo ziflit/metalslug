@@ -40,6 +40,9 @@ int main(int argc, char* argv[]) {
      * AF_INET indica IPv4
      * SOCK_STREAM indica tipo de socket de stream binario
      * IPPROTO_TCP indica TCP
+     * socket() devuelve un file descriptor (int) que se refiere a
+     * el socket asignado por el sistema operativo. El servidor todavia
+     * no esta conectado al socket
     */
     lserver_socket_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (lserver_socket_fd < 0) {
@@ -52,6 +55,7 @@ int main(int argc, char* argv[]) {
     server_addr.sin_family = AF_INET;
     /* inet_addr() transforma el string en el unsigned long que espera s_addr */
     server_addr.sin_addr.s_addr = inet_addr(ip);
+    /* htons() devuelve el tipo de dato necesario para sin_port (unsigned int)*/
     server_addr.sin_port = htons(port);
     addr_size = sizeof(server_addr);
 
@@ -61,12 +65,17 @@ int main(int argc, char* argv[]) {
     if (bind(lserver_socket_fd, (struct sockaddr*)&server_addr, addr_size) < 0) {
         cout << "Hubo un error al hacer el binding del socket: " << strerror(errno) << endl;
         cout << "Cerrando..." << endl;
+        exit(1);
     }
 
     /* Escucho esperando al cliente */
     cout << "Esperando conexion de cliente" << endl;
     /* La ejecucion se bloquea en este punto hasta que haya una conexion */
+    /* El segundo parametro indica la cantidad de clientes maximos posibles */
     listen(lserver_socket_fd, 1);
+
+    /* ACA CREAR THREADS */
+    /* -------------------- */
 
     /* Cuando ya tenemos una conexion entrante tenemos que aceptarla
      * en cserver_socket_fd se guarda un nuevo socketfd desde donde voy a
