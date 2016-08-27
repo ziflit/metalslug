@@ -10,32 +10,14 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
-    /* Variables iniciales
-     * int port: puerto en el cual el server escucha
-     * int lserver_socket_fd: file desc. para el socket de listen
-     * int cserver_socket_fd: file desc. para el socket conectado con el cliente
-     * int bufsize: tamano maximo de mensaje
-     * char buffer[bufsize]: buffer para transferencia de mensajes
-     * struct sockaddr_in server_addr: datos para la conexion del socket
-    */
-    int port = 0;
+/* Dada una ip y un puerto para escuchar, pide un socket al sistema
+ * y bindea el proceso a esa dirección.
+ * Devuelve el file descriptor del socket ya bindeado para su uso.
+*/
+int bind_to_socket(string ip, int port) {
     int lserver_socket_fd;
-    int cserver_socket_fd;
-    int bufsize = 1024;
-    string ip = "127.0.0.1";
-    string message;
     struct sockaddr_in server_addr;
-    struct sockaddr_in client_addr;
     socklen_t addr_size;
-    socklen_t caddr_size;
-
-    extern int errno;
-    /* Si se pasa un puerto por parametro se lo usa */
-    if (argc > 1) port = atoi(argv[1]);
-    /* Si no se pasa un puerto o es invalido uso 1500 */
-    if (port == 0) port = 1500;
-
     /* Creo el primer socket
      * AF_INET indica IPv4
      * SOCK_STREAM indica tipo de socket de stream binario
@@ -67,6 +49,33 @@ int main(int argc, char* argv[]) {
         cout << "Cerrando..." << endl;
         exit(1);
     }
+    return lserver_socket_fd;
+}
+
+int main(int argc, char* argv[]) {
+    /* Variables iniciales
+     * int port: puerto en el cual el server escucha
+     * int lserver_socket_fd: file desc. para el socket de listen
+     * int cserver_socket_fd: file desc. para el socket conectado con el cliente
+     * int bufsize: tamano maximo de mensaje
+     * char buffer[bufsize]: buffer para transferencia de mensajes
+     * struct sockaddr_in client_addr: se guardan aca los datos del cliente conectado
+    */
+    int port = 0;
+    int cserver_socket_fd;
+    int bufsize = 1024;
+    string ip = "127.0.0.1";
+    string message;
+    struct sockaddr_in client_addr;
+    socklen_t caddr_size;
+
+    extern int errno;
+    /* Si se pasa un puerto por parametro se lo usa */
+    if (argc > 1) port = atoi(argv[1]);
+    /* Si no se pasa un puerto o es invalido uso 1500 */
+    if (port == 0) port = 1500;
+
+    int lserver_socket_fd = bind_to_socket(ip, port);
 
     /* Escucho esperando al cliente */
     cout << "Esperando conexion de cliente" << endl;
@@ -75,7 +84,7 @@ int main(int argc, char* argv[]) {
     listen(lserver_socket_fd, 1);
 
     /* ACA CREAR THREADS */
-    /* -------------------- */
+    /* ----------------- */
 
     /* Cuando ya tenemos una conexion entrante tenemos que aceptarla
      * en cserver_socket_fd se guarda un nuevo socketfd desde donde voy a
