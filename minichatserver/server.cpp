@@ -91,9 +91,25 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    /* Aca va la logica de envio y recepcion de mensajes */
+    /* Mensaje de bienvenida. Se manda una vez fijo */
     message = "Estás conectado! Bienvenido!";
-    send(cserver_socket_fd, message.data(), message.size(), 0);
+    send(cserver_socket_fd, message.data(), bufsize, 0);
+
+    /* endofcomm indica si se da por terminada la comunicación con el cliente
+     * se da por terminado el intercambio si el server envía un mensaje con sólo
+     * "#". Ese último mensaje no se envía, simplemente se corta toda comunicación
+    */
+    bool endofcomm = false;
+    while (!endofcomm) {
+        getline(cin, message);
+        if (message == "#") {
+            endofcomm = true;
+            break;
+        }
+        send(cserver_socket_fd, message.data(), bufsize, 0);
+    }
+
+    cout << "Fin de los mensajes" << endl;
 
     /* cserver_socket_fd debe cerrarse cuando se pierde la conexion con el cliente */
     close(cserver_socket_fd);

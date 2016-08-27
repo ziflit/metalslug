@@ -59,14 +59,21 @@ int main(int argc, char* argv[]) {
     }
     cout << "Conectado al servidor" << endl;
 
-    /* Lógica de envío y recepción de mensajes */
-    /* Recibir el estado inicial desde el servidor */
-    string msg;
-    int msg_size = recv(client_socket_fd, &buffer, bufsize, 0);
-    msg.append(buffer, buffer + msg_size);
-    cout << msg << endl;
-
-
+    /* Se considera el fin de las comunicaciones si no hay
+     * ningún nuevo mensaje para recibir, es decir que el servidor
+     * no manda más nada y probablemente cerró la conexión
+    */
+    int msg_size; /* Va a guardar la cantidad de bytes leidos por recv */
+    bool endofcomm = false;
+    while (!endofcomm) {
+        msg_size = recv(client_socket_fd, &buffer, bufsize, 0);
+        if (msg_size == 0) { /* si recv devuelve 0 bytes no hay mensaje */
+            endofcomm = true;
+            break;
+        }
+        cout << buffer << endl;
+    }
+    cout << "Fin de los mensajes" << endl;
     close(client_socket_fd);
 
     return 0;
