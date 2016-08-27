@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
      * struct sockaddr_in client_addr: datos del socket de conexion
     */
     int port = 0;
-    char* ip = "127.0.0.1";
+    string ip = "127.0.0.1";
     int bufsize = 1024;
     char buffer[bufsize];
     int client_socket_fd;
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     /* Configuro las direcciones del cliente */
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(port);
-    server_addr.sin_addr.s_addr = inet_addr(ip);
+    server_addr.sin_addr.s_addr = inet_addr(ip.data());
 
     server_sock_size = sizeof(server_addr);
 

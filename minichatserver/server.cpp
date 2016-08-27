@@ -23,8 +23,7 @@ int main(int argc, char* argv[]) {
     int lserver_socket_fd;
     int cserver_socket_fd;
     int bufsize = 1024;
-    char* ip = "127.0.0.1";
-    char buffer[bufsize];
+    string ip = "127.0.0.1";
     string message;
     struct sockaddr_in server_addr;
     struct sockaddr_in client_addr;
@@ -55,7 +54,7 @@ int main(int argc, char* argv[]) {
     */
     server_addr.sin_family = AF_INET;
     /* inet_addr() transforma el string en el unsigned long que espera s_addr */
-    server_addr.sin_addr.s_addr = inet_addr(ip);
+    server_addr.sin_addr.s_addr = inet_addr(ip.data());
     /* htons() devuelve el tipo de dato necesario para sin_port (unsigned int)*/
     server_addr.sin_port = htons(port);
     addr_size = sizeof(server_addr);
