@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
 
     Client* cliente1 = new Client();
     Message* mensaje = new Message();
+    
     /* Para el manejo de errores */
     extern int errno;
 

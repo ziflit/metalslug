@@ -12,11 +12,6 @@
 
 using namespace std;
 
-/* Dada una IP y un puerto arma una conexión con el servidor
- * generando un nuevo file descriptor de socket que se devuelve
- * al finalizar la conexión.
-*/
-
 
 int Client::connect_to_server(string ip, int port) {
     int client_socket_fd;
@@ -55,32 +50,27 @@ void Client::disconnect(){
 }
 
 int Client::send_message(Message* msg){
+    send(socket_number, (msg->serialize()).data(), BUFSIZE, 0);
     return 0;
 }
 
-/* Pre: 
- * Post: 
- */
+
 int Client::receive_messages() {
     /* Se considera el fin de las comunicaciones si no hay
      * ningún nuevo mensaje para recibir, es decir que el servidor
      * no manda más nada y probablemente cerró la conexión
     */
-    int bufsize = 1024;
-    char buffer[bufsize];
+
+    char buffer[BUFSIZE];
     int msg_size; /* Va a guardar la cantidad de bytes leidos por recv */
     bool endofcomm = false;
-    recv(get_socket(), &buffer, bufsize, 0);
+    recv(get_socket(), &buffer, BUFSIZE, 0);
     cout << buffer << endl;
     cout << "Fin de los mensajes" << endl;
     return 0;
 }
 
-/* Pre: 
- * Post: envia una cantidad: "max_envios" de mensajes al
- *       servidor, al cual esta conectado, levantando el 
- *       contenido de los mensajes desde un archivo de texto. 
- */
+
 void Client::lorem_ipsum(int frec, int max_envios) {
 }
 
