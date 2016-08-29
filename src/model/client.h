@@ -1,6 +1,8 @@
 #ifndef METALSLUG_CLIENT_H
 #define METALSLUG_CLIENT_H
 
+#include <iostream>
+#include "message.h"
 
 class Client {
 	private:
@@ -15,7 +17,7 @@ class Client {
 		/* Pre: cliente conectado a un servidor
 		 * Post: cliente desconectado del servidor
 		 */
-		int disconnect();
+    void disconnect();
 
 		/* Pre: 
 		 * Post: 
@@ -32,7 +34,9 @@ class Client {
 		 *       servidor, al cual esta conectado, levantando el 
 		 *       contenido de los mensajes desde un archivo de texto. 
 		 */
-		void lorem_ipsum(int frec, int max_envios);
+    void lorem_ipsum(int frec, int max_envios);
+
+    int get_socket();
 };
 
 

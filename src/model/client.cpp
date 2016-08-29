@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include "client.h"
 
 using namespace std;
 
@@ -14,7 +15,9 @@ using namespace std;
  * generando un nuevo file descriptor de socket que se devuelve
  * al finalizar la conexión.
 */
-int connect_to_server(string ip, int port) {
+
+
+int Client::connect_to_server(string ip, int port) {
     int client_socket_fd;
     struct sockaddr_in server_addr;
     socklen_t server_sock_size;
@@ -46,21 +49,29 @@ int connect_to_server(string ip, int port) {
     return 1;
 }
 
-int disconnect(){
+void Client::disconnect(){
     close(socket_number);
 }
 
-int send_message();
+int Client::send_message(){
+    return 0;
+}
 
 /* Pre: 
  * Post: 
  */
-int receive_messages();
+int Client::receive_messages() {
+    return 0;
+}
 
 /* Pre: 
  * Post: envia una cantidad: "max_envios" de mensajes al
  *       servidor, al cual esta conectado, levantando el 
  *       contenido de los mensajes desde un archivo de texto. 
  */
-void lorem_ipsum(int frec, int max_envios);
+void Client::lorem_ipsum(int frec, int max_envios) {
+}
 
+int Client::get_socket() {
+    return socket_number;
+}

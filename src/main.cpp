@@ -1,5 +1,13 @@
 #include <iostream>
 #include "model/client.h"
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
 
 using namespace std;
 
@@ -18,7 +26,7 @@ int main(int argc, char *argv[]) {
     int bufsize = 1024;
     char buffer[bufsize];
 
-    Client cliente1;
+    Client* cliente1 = new Client();
 
     /* Para el manejo de errores */
     extern int errno;
@@ -29,11 +37,8 @@ int main(int argc, char *argv[]) {
     if (argc > 1)  port = atoi(argv[1]);
     if (port == 0) port = 1500;
 
-    
-
-    cliente1.connect_to_server(ip, port);
-    cliente1.send_message();
-    
+    cliente1->connect_to_server(ip, port);
+    cliente1->send_message();
 
     /* Se considera el fin de las comunicaciones si no hay
      * ningún nuevo mensaje para recibir, es decir que el servidor
@@ -42,7 +47,7 @@ int main(int argc, char *argv[]) {
     int msg_size; /* Va a guardar la cantidad de bytes leidos por recv */
     bool endofcomm = false;
     while (!endofcomm) {
-        msg_size = recv(client_socket_fd, &buffer, bufsize, 0);
+        msg_size = recv(cliente1->get_socket(), &buffer, bufsize, 0);
         if (msg_size == 0) { /* si recv devuelve 0 bytes no hay mensaje */
             endofcomm = true;
             break;
@@ -50,11 +55,7 @@ int main(int argc, char *argv[]) {
         cout << buffer << endl;
     }
     cout << "Fin de los mensajes" << endl;
-    cliente1.disconnect();
+    cliente1->disconnect();
 
     return 0;
-}
-
-
-
 }

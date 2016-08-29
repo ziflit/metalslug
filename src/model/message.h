@@ -1,30 +1,32 @@
 #ifndef METALSLUG_MESSAGE_H
 #define METALSLUG_MESSAGE_H
 
-#include <string>
+#include <iostream>
+#include "User.h"
 
 class Message {
 	private:
-		int id;
+    int id;
+    unsigned long timestamp;
 		string from;
 		string to;
-		string message_content;
+    string content;
 
 	public:
-		/* Pre: 
-		 * Post: 
+    /* Pre:
+     * Post:
 		 */
-		string retrieve_sender();
+    string getFrom();
 
-		/* Pre: 
-		 * Post: 
+    /* Pre:
+     * Post:
 		 */
-		string retrieve_recipient();
+    string getTo();
 
-		/* Pre: 
-		 * Post: 
+    /* Pre:
+     * Post:
 		 */
-		string retrieve_message();
+    string getContent();
 
 };
 
@@ -32,10 +34,10 @@ class Message {
 class MessageList{
 	private:
          /* como guardamos los mensajes? */
-	public:
-		/* Pre: 
+  public:
+    /* Pre:
 		 * Post: devuelve una lista de mensajes, correspondientes
-		 *       a un usuario especifico 
+     *       a un usuario especifico
 		 */
 		MessageList retrieve_messages_to_user(User user);
 
