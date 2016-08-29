@@ -1,13 +1,15 @@
 #ifndef METALSLUG_CLIENT_H
 #define METALSLUG_CLIENT_H
-
+#define BUFSIZE 1024
 #include <iostream>
 #include "message.h"
 
+
+
 class Client {
 	private:
-	    MessageList my_messages;
 	    int socket_number;
+	    int timestamp_last_msg;
 	public:
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
@@ -17,7 +19,7 @@ class Client {
 		/* Pre: cliente conectado a un servidor
 		 * Post: cliente desconectado del servidor
 		 */
-    void disconnect();
+   		void disconnect();
 
 		/* Pre: 
 		 * Post: 
