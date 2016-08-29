@@ -2,12 +2,13 @@
 #define METALSLUG_MESSAGE_H
 
 #include <iostream>
+#include <string.h>
 #include "User.h"
 
 class Message {
 	private:
     int id;
-    unsigned long timestamp;
+    int timestamp;
 		string from;
 		string to;
 		string content;
@@ -16,7 +17,7 @@ class Message {
 	/* Pre:
      * Post:
 		 */
-	string getTimestamp();
+	int getTimestamp();
 
     /* Pre:
      * Post:

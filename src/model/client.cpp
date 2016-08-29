@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include "client.h"
+#include "message.h"
 
 using namespace std;
 
@@ -53,7 +54,7 @@ void Client::disconnect(){
     close(socket_number);
 }
 
-int Client::send_message(){
+int Client::send_message(Message* msg){
     return 0;
 }
 
@@ -61,6 +62,17 @@ int Client::send_message(){
  * Post: 
  */
 int Client::receive_messages() {
+    /* Se considera el fin de las comunicaciones si no hay
+     * ningún nuevo mensaje para recibir, es decir que el servidor
+     * no manda más nada y probablemente cerró la conexión
+    */
+    int bufsize = 1024;
+    char buffer[bufsize];
+    int msg_size; /* Va a guardar la cantidad de bytes leidos por recv */
+    bool endofcomm = false;
+    recv(get_socket(), &buffer, bufsize, 0);
+    cout << buffer << endl;
+    cout << "Fin de los mensajes" << endl;
     return 0;
 }
 

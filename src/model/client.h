@@ -22,7 +22,7 @@ class Client {
 		/* Pre: 
 		 * Post: 
 		 */
-		int send_message();
+		int send_message(Message* msg);
 
 		/* Pre: 
 		 * Post: 
