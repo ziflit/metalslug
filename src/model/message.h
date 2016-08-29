@@ -10,9 +10,14 @@ class Message {
     unsigned long timestamp;
 		string from;
 		string to;
-    string content;
+		string content;
 
 	public:
+	/* Pre:
+     * Post:
+		 */
+	string getTimestamp();
+
     /* Pre:
      * Post:
 		 */
@@ -27,6 +32,11 @@ class Message {
      * Post:
 		 */
     string getContent();
+
+	/* Pre:
+     * Post:
+         */
+	string serialize();
 
 };
 
