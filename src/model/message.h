@@ -14,10 +14,16 @@ class Message {
 		string content;
 
 	public:
-	/* Pre:
+    //Constructor de Mensaje a un unico cliente.
+    Message(unsigned long timestamp, string from, string to, string content);
+
+    //Constructor de Mensaje to everyone.
+    Message(unsigned long timestamp,string from,string content);
+
+    /* Pre:
      * Post:
 		 */
-	int getTimestamp();
+	string getTimestamp();
 
     /* Pre:
      * Post:
@@ -39,19 +45,21 @@ class Message {
          */
 	string serialize();
 
+	bool isToUser(string username);
+
 };
 
 
-class MessageList{
-	private:
-         /* como guardamos los mensajes? */
-  public:
+class MessagesList{
+    private:
+        std::vector<Message> lista_mensajes;
+    public:
+        MessageList();
     /* Pre:
 		 * Post: devuelve una lista de mensajes, correspondientes
-     *       a un usuario especifico
+     *       al usuario especificado
 		 */
-		MessageList retrieve_messages_to_user(User user);
-
+    std::vector<Message> filter_messages_per_user(User user);
 };
 
 
