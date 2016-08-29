@@ -36,5 +36,6 @@ Message::Message(int timestamp, string from, string to, string content) {
 std::vector<Message> MessagesList::filter_messages_per_user(User user){
     std::vector<Message> messages;
 
+
     return messages;
 }
