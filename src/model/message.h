@@ -17,15 +17,15 @@ class Message {
 
 	public:
     //Constructor de Mensaje a un unico cliente.
-    Message(unsigned long timestamp, string from, string to, string content);
+    Message(int timestamp, string from, string to, string content);
 
     //Constructor de Mensaje to everyone.
-    Message(unsigned long timestamp,string from,string content);
+    Message(int timestamp,string from,string content);
 
     /* Pre:
      * Post:
 		 */
-	string getTimestamp();
+	int getTimestamp();
 
     /* Pre:
      * Post:
@@ -54,9 +54,9 @@ class Message {
 
 class MessagesList{
     private:
-        std::vector<Message> lista_mensajes;
+        std::vector<Message> messagesList;
     public:
-        MessageList();
+        MessagesList();
     /* Pre:
 		 * Post: devuelve una lista de mensajes, correspondientes
      *       al usuario especificado

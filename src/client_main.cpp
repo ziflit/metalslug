@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
 
 
     Client* cliente1 = new Client();
-    Message* mensaje = new Message();
+    Message* mensaje = new Message(1,"from","to","content of test message");
     
     /* Para el manejo de errores */
     extern int errno;
