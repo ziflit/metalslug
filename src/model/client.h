@@ -4,7 +4,7 @@
 
 class Client {
 	private:
-	    ListaDeMensajes my_messages;
+	    MessageList my_messages;
 	    int socket_number;
 	public:
 		/* Pre: ip y puerto validos

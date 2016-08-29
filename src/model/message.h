@@ -29,7 +29,7 @@ class Message {
 };
 
 
-class ListaDeMensajes{
+class MessageList{
 	private:
          /* como guardamos los mensajes? */
 	public:
@@ -37,7 +37,7 @@ class ListaDeMensajes{
 		 * Post: devuelve una lista de mensajes, correspondientes
 		 *       a un usuario especifico 
 		 */
-		ListaDeMensajes retrieve_messages_to_user(User user);
+		MessageList retrieve_messages_to_user(User user);
 
 };
 
