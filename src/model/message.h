@@ -49,19 +49,20 @@ class Message {
 
 	bool isToUser(string username);
 
+    bool isToEveryone();
 };
 
 
 class MessagesList{
     private:
+
         std::vector<Message> messagesList;
-    public:
-        MessagesList();
-    /* Pre:
-		 * Post: devuelve una lista de mensajes, correspondientes
-     *       al usuario especificado
-		 */
-    std::vector<Message> filter_messages_per_user(User user);
+
+	public:
+
+        void addMessage(Message msg);
+
+        std::vector<Message> filterMessagesPerUser(User user);
 };
 
 
