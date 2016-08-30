@@ -1,39 +1,69 @@
 #ifndef METALSLUG_SERVER_H
 #define METALSLUG_SERVER_H
 
+#include "message.h"
+
+#define MAX_CONN 10
+#define BUFSIZE 1024
+
+struct arg_struct {
+    int id;
+    int* connections;
+};
 
 class Server {
 	private:
-	    int log_type; /* Para saber que tipo de log se va usar */
-		ListaDeMensajes lista_de_mensajes /* Lista de mensajes almacenados */
+    int log_type; /* Para saber que tipo de log se va usar */
+    int listen_port;
+    MessagesList messages; /* Lista de mensajes almacenados */
+    int listen_socket_fd;
+    int clients[MAX_CONN];
+    pthread_t th_clientes[MAX_CONN];
 
-	public:
+  public:
+    /* Dada una ip y un puerto para escuchar, pide un socket al sistema
+     * y bindea el proceso a esa dirección.
+     * Devuelve el file descriptor del socket ya bindeado para su uso.
+     */
+    int initialize_server(string ip, int port);
+
+    /* Devuelve el fd del socke en el cual escucha el server */
+    int get_listen_socket();
 
 		/* Pre: servidor creado
 		 * Post: servidor on-line esperando conexiones
 		 */
-		int initialize_server();
+    void start_listening();
 
-		/* Pre: servidor creado
-		 * Post: servidor on-line esperando conexiones
-		 */
-		int start_listening();
-
-		/* Pre: 
+    /* Pre:
 		 * Post: envia los mensajes, que tiene almacenados,
 		 *       para el usuario solicitado.
 		 */
 		int retrieve_messages(User user);
 
-		/* Pre: 
-		 * Post: cierra la conexion de un cliente especifico
+    /* Pre:
+     * Post: cierra la conexion de un cliente especifico y
+     * actualiza la lista de conexiones disponibles liberando un lugar
 		 */
-		int close_connection();
+    int close_connection(int client_id);
 
-		/* Pre: 
-		 * Post: cierra todas las conexiones
+    /* Pre:
+     * Post: cierra todas las conexiones
+     * Cierra todas las conexiones activas del servidor.
 		 */
-		int close_all_connections();
+    void close_all_connections();
+
+    /* Cierra el socket de listening y todos los de clientes */
+    /* y sus threads */
+    void shutdown();
+
+    int* get_connections();
+
+    /* Completa la lista de conexiones de clientes con sus respectivos
+     * fd para identificarlos. También genera los threads de intercambio
+     * de mensajes para cada cliente conectado.
+     */
+    void accept_incoming_connections();
 
 };
 
