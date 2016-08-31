@@ -5,8 +5,8 @@ OBJ_NAME = client
 CLIENT_DEP =
 
 # Para el server
-SRV_SRC_FILES = src/model/server.cpp
-SRV_INC = src/model/server.h
+SRV_SRC_FILES = $(filter-out src/model/client.cpp, $(wildcard src/model/*.cpp))
+SRV_INC = src/model/server.h 
 SRV_DEP = -pthread
 SRV_OBJ_NAME = server
 
@@ -21,8 +21,6 @@ LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2main -lyaml-cpp -lSDL2_ttf
 
 
 all : client server
-#	$(CC) -I$(INC_FILES) $(SRC_FILES) $(COMPILER_FLAGS) -o $(OBJ_NAME)
-#	$(CC) -I$(SRV_INC) $(SRV_SRC_FILES) $(SRV_DEP) $(COMPILER_FLAGS) -o $(SRV_OBJ_NAME)
 
 client : $(SRC_FILES)
 	$(CC) -I$(INC_FILES) $(SRC_FILES) $(COMPILER_FLAGS) -o $(OBJ_NAME)
