@@ -62,10 +62,11 @@ int Client::receive_messages() {
     */
 
     char buffer[BUFSIZE];
-    int msg_size; /* Va a guardar la cantidad de bytes leidos por recv */
-    bool endofcomm = false;
-    recv(get_socket(), &buffer, BUFSIZE, 0);
-    cout << buffer << endl;
+    int msg_size = 1; /* Va a guardar la cantidad de bytes leidos por recv */
+    while (msg_size != 0) {
+        msg_size = recv(get_socket(), &buffer, BUFSIZE, 0);
+        cout << buffer << endl;
+    }
     cout << "Fin de los mensajes" << endl;
     return 0;
 }

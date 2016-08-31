@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include "server.h"
+#include "message.h"
 
 using namespace std;
 
@@ -24,19 +25,14 @@ void* client_comm(void* args) {
     message = "Estás conectado! Bienvenido!";
     send(clients[client_id], message.data(), BUFSIZE, 0);
 
-    /* endofcomm indica si se da por terminada la comunicación con el cliente
-     * se da por terminado el intercambio si el server envía un mensaje con sólo
-     * "#". Ese último mensaje no se envía, simplemente se corta toda comunicación
-    */
-    bool endofcomm = false;
-    while (!endofcomm) {
-        getline(cin, message);
-        if (message == "#") {
-            endofcomm = true;
-            break;
-        }
-        send(clients[client_id], message.data(), BUFSIZE, 0);
+    int i = 0;
+    while (i < 10) {
+        string content = "Probando mensaje num ";
+        Message msg = Message(i, "me", content.append(to_string(i)));
+        send(clients[client_id], msg.serialize().data(), BUFSIZE, 0);
+        i++;
     }
+    delete clients;
     return NULL;
 }
 
@@ -117,9 +113,18 @@ void Server::accept_incoming_connections() {
     }
 }
 
+int Server::close_connection(int client_id) {
+    if (close(clients[client_id]) != 0) {
+        //Log
+        return -1;
+    }
+    clients[client_id] = 0; /* Libero el slot de cliente */
+    return 0;
+}
+
 void Server::close_all_connections() {
     for (int i=0; i<MAX_CONN; ++i) {
-        close(clients[i]);
+        close_connection(i);
     }
 }
 
@@ -158,5 +163,6 @@ int main(int argc, char* argv[]) {
     /* LIBERA MEMORIA BOLUDO QUE SI ENTRA EN UN EXIT(1) SE CAGA TODO */
 
     server->shutdown();
+    delete server;
     return 0;
 }

@@ -38,7 +38,6 @@ int main(int argc, char *argv[]) {
     if (port == 0) port = 1500;
 
     cliente1->connect_to_server(ip, port);
-    cliente1->send_message(mensaje);
     cliente1->receive_messages();
     cliente1->disconnect();
 
