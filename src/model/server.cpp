@@ -73,6 +73,10 @@ int Server::initialize_server(string ip, int port) {
         cout << "Cerrando..." << endl;
         exit(1);
     }
+
+    for (int i=0; i < MAX_CONN; ++i) {
+        clients[i] = 0;
+    }
     return listen_socket_fd;
 }
 
@@ -81,35 +85,47 @@ void Server::start_listening() {
 }
 
 void Server::shutdown() {
-    for (int i=0; i < MAX_CONN; ++i) {
-        pthread_join(th_clientes[i], NULL);
-    }
     close_all_connections();
     close(listen_socket_fd);
 }
 
 void Server::accept_incoming_connections() {
-    int client_id = 0;
+    int client_id = -1;
+    for (int i=0; i < MAX_CONN; ++i) {
+        if (clients[i] == 0) {
+            client_id = i;
+            break;
+        }
+    }
+    // No hay conexiones disponibles
+    // Debería esperar hasta que haya una
+    if (client_id == -1) {
+        cout << "No hay más conexiones disponibles" << endl;
+        for (int i=0; i < MAX_CONN; ++i) {
+            cout << clients[i] << endl;
+        }
+        return;
+    }
+
     struct sockaddr_in client_addr;
     socklen_t caddr_size;
 
-    while (client_id < MAX_CONN) {
-        /* accept() devuelve un file descriptor asociado a la conexión con el cliente
-         * y sólo a el */
-        clients[client_id] = accept(listen_socket_fd, (struct sockaddr*)&client_addr,
-                                    &caddr_size);
-        if (clients[client_id] < 0) {
-            cout << "Hubo un error al conectar con el cliente: " << strerror(errno) << endl;
-            cout << "Cerrando..." << endl;
-            exit(1);
-        }
-
-        struct arg_struct args;
-        args.connections = get_connections();
-        args.id = client_id;
-        pthread_create(&th_clientes[client_id], NULL, client_comm, &args);
-        client_id++;
+    /* accept() devuelve un file descriptor asociado a la conexión con el cliente
+        * y sólo a el */
+    clients[client_id] = accept(listen_socket_fd, (struct sockaddr*)&client_addr,
+                                &caddr_size);
+    if (clients[client_id] < 0) {
+        cout << "Hubo un error al conectar con el cliente: " << strerror(errno) << endl;
+        cout << "Cerrando..." << endl;
+        exit(1);
     }
+
+    cout << "Ingresando cliente numero" << client_id << endl;
+    struct arg_struct args;
+    args.connections = get_connections();
+    args.id = client_id;
+    pthread_create(&th_clientes[client_id], NULL, client_comm, &args);
+    client_id++;
 }
 
 int Server::close_connection(int client_id) {
@@ -117,6 +133,7 @@ int Server::close_connection(int client_id) {
         //Log
         return -1;
     }
+    pthread_join(th_clientes[client_id], NULL);
     clients[client_id] = 0; /* Libero el slot de cliente */
     return 0;
 }
@@ -156,7 +173,9 @@ int main(int argc, char* argv[]) {
     /* Escucho esperando al cliente */
     server->start_listening();
 
-    server->accept_incoming_connections();
+    while (true) {
+        server->accept_incoming_connections();
+    }
 
     cout << "Fin de los mensajes" << endl;
     /* LIBERA MEMORIA BOLUDO QUE SI ENTRA EN UN EXIT(1) SE CAGA TODO */
