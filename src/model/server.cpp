@@ -32,7 +32,6 @@ void* client_comm(void* args) {
         send(clients[client_id], msg.serialize().data(), BUFSIZE, 0);
         i++;
     }
-    delete clients;
     return NULL;
 }
 
