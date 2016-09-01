@@ -1,5 +1,10 @@
-
 #include "User.h"
+
+User::User(string username, string password, int id) {
+    User::username = username;
+    User::password = password;
+    User::id = id;
+}
 
 const string &User::getUsername() const {
     return username;
