@@ -1,44 +1,68 @@
 #ifndef METALSLUG_MESSAGE_H
 #define METALSLUG_MESSAGE_H
 
-#include <string>
+#include <iostream>
+#include <string.h>
+#include "User.h"
+
+#include <vector>
 
 class Message {
 	private:
-		int id;
+    int id;
+    int timestamp;
 		string from;
 		string to;
-		string message_content;
+		string content;
 
 	public:
-		/* Pre: 
-		 * Post: 
-		 */
-		string retrieve_sender();
+    //Constructor de Mensaje a un unico cliente.
+    Message(int timestamp, string from, string to, string content);
 
-		/* Pre: 
-		 * Post: 
-		 */
-		string retrieve_recipient();
+    //Constructor de Mensaje to everyone.
+    Message(int timestamp,string from,string content);
 
-		/* Pre: 
-		 * Post: 
+    /* Pre:
+     * Post:
 		 */
-		string retrieve_message();
+	int getTimestamp();
 
+    /* Pre:
+     * Post:
+		 */
+    string getFrom();
+
+    /* Pre:
+     * Post:
+		 */
+    string getTo();
+
+    /* Pre:
+     * Post:
+		 */
+    string getContent();
+
+	/* Pre:
+     * Post:
+         */
+	string serialize();
+
+	bool isToUser(string username);
+
+    bool isToEveryone();
 };
 
 
-class ListaDeMensajes{
-	private:
-         /* como guardamos los mensajes? */
-	public:
-		/* Pre: 
-		 * Post: devuelve una lista de mensajes, correspondientes
-		 *       a un usuario especifico 
-		 */
-		ListaDeMensajes retrieve_messages_to_user(User user);
+class MessagesList{
+    private:
 
+        std::vector<Message> messagesList;
+
+	public:
+
+        void addMessage(Message msg);
+
+        std::vector<Message> filterMessagesPerUser(User user);
 };
 
 
