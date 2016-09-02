@@ -12,10 +12,24 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
+    /* Seteo puerto e ip del server*/
+    int port = 0;
+    string ip = "127.0.0.1";
+
+    /* Creo al cliente */
+    Client* cliente1 = new Client();
+
+    /* Para el manejo de errores */
+    extern int errno;
+
+    /* Configuracion del puerto
+     * atoi() devuelve 0 si el parametro es invalido*/
+    if (argc > 1)  port = atoi(argv[1]);
+    if (port == 0) port = 1500;
 
     /* Menu de cliente */
 
-    bool endloop=false, online=false;
+    bool endloop=false, conectado=false;
     char keypressed;
  
     do{
@@ -38,17 +52,9 @@ int main(int argc, char *argv[]) {
             case '1':
                 cin.clear();
                 cout << "Estableciendo la conexion con el servidor...\n";
-                    int port = 0;
-                    string ip = "127.0.0.1";
-                    Client* cliente1 = new Client();
-                    /* Para el manejo de errores */
-                    extern int errno;
-                    /* Configuracion del puerto
-                     * atoi() devuelve 0 si el parametro es invalido*/
-                    if (argc > 1)  port = atoi(argv[1]);
-                    if (port == 0) port = 1500;
                     cliente1->connect_to_server(ip, port);
-                    online = true;
+                    cliente1->receive_messages();
+                    conectado = true;
                 break;
  
             case '2':
@@ -84,7 +90,7 @@ int main(int argc, char *argv[]) {
                 if (conectado) {
                     cliente1->disconnect();
                     cout << "Ud. Se ha desconectado del servidor\n";
-                    online = false;
+                    conectado = false;
                     break;
                 }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
@@ -96,6 +102,7 @@ int main(int argc, char *argv[]) {
                     cout << "*-----------------------*" << endl;
                     cout << "!      Lorem Ipsum      !" << endl;
                     cout << "*-----------------------*" << endl << endl;
+
                     break;
                 }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
