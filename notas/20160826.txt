@@ -8,6 +8,7 @@ Table of Contents
 5 Filtrando el enunciado
 .. 5.1 Server
 .. 5.2 Cliente
+6 Comentarios de clase, miercoles 31
 
 
 1 Reunión del viernes 26, en el starbucks
@@ -20,20 +21,21 @@ Table of Contents
 ═══════════
 
   1. Niveles de log y qué cae en cada categoría.
+
   2. Como se corta un mensaje? Podemos usar un caracter o varios
      "especiales" Podríamos tener un id de mensaje Podríamos tener el
      tamaño total del mensaje (si es que está partido en varios)
-     POdríamos tener un EOM (End of Message) que indique el final y lea
-     hasta eso (i.e. \0)
+     Podríamos tener un EOM (End of Message) que indique el final y lea
+     hasta eso (i.e. \0). -RTA: Lo definimos nosotros, mas o menos ya esta.
 
-     Si el mensaje nunca s eparte (nunca es más grande que el buffer) no
+     Si el mensaje nunca se parte (nunca es más grande que el buffer) no
      hace falta nada de esto, corta donde corta y se termina.
 
   3. Timestamp? Cómo asegurar que los mensajes se envían al cliente en
      el orden en el que se recibieron? La alternativa sería confiar en
      que nuestro FIFO está bien ordenado en el servidor.
   4. Podrían aparecer nuevos usuarios en el medio de la ejecución? Hay
-     que releer el archivo?
+     que releer el archivo? -RTA: NO.
 
      La pregunta viene de la mano de la lista de usuarios que se envía
      al cliente. Si no peude haber nuevos usuarios la lista se envía una
@@ -43,6 +45,8 @@ Table of Contents
      La primer variante está considearndo "hay x jugadores en la partida
      y no se agregan nuevos" La segunda admite jugadores ingresando a
      mitad de la partida
+
+  5. En el menu de clientes que opciones tiene que ser un thread?
 
 
 3 Ideas
@@ -109,3 +113,16 @@ Table of Contents
      PIDE AL SERVIDOR*
   7. Lorem Ipsum: hablaro nde 3k de mensajes cada 100ms. Para poner una
      idea.
+
+6 Comentarios de clase, miercoles 31
+════════════════════════════════════
+    - No hay maximo de cliemtes conectados, el juego debe soportar maximo 6 jugadores conectados.
+    (Lo van a probar con 4 usuarios)
+    - Log:  Cliente debe tener Log.
+            Registrar envio de mensajes entre usuarios.
+            Fijar el largo de guardado del contenido de los mensajes que se enviaron. (En caso de ser muy largo el msj, sigue...)
+            Poder detectar problemas ej: ingreso de usuario con contrasena erronea, o usuario inexistente, fallo de conexiones.
+    - Unica lista, post lectura de  mensajes se borran, salvando los que son to everyone.
+
+
+
