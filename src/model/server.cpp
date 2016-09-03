@@ -16,7 +16,7 @@ using namespace std;
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-void* client_comm(void* client) {
+void* Server::client_comm(void* client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
     string message;
     int client_id = *(int*)client;
@@ -24,12 +24,13 @@ void* client_comm(void* client) {
     message = "Estás conectado! Bienvenido!";
     send(client_id, message.data(), BUFSIZE, 0);
 
-    int i = 0;
-    while (i < 10) {
-        string content = "Probando mensaje num ";
-        Message msg = Message(i, "me", content.append(to_string(i)));
-        send(client_id, msg.serialize().data(), BUFSIZE, 0);
-        i++;
+    char buffer[BUFSIZE];
+    int msg_size =  recv(client_id, &buffer, BUFSIZE, 0);
+    message.assign(buffer);
+
+    /* Checkeo estupido para probar algo que Fran me mandaba */
+    if (message.find("vieja") != string::npos) {
+        cout << "Me llegó tu vieja en tanga, piola" << endl;
     }
     return NULL;
 }
