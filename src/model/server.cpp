@@ -16,20 +16,19 @@ using namespace std;
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-void* client_comm(void* args) {
+void* client_comm(void* client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
     string message;
-    int client_id = ((arg_struct*)args)->id;
-    int* clients = ((arg_struct*)args)->connections;
+    int client_id = *(int*)client;
 
     message = "Estás conectado! Bienvenido!";
-    send(clients[client_id], message.data(), BUFSIZE, 0);
+    send(client_id, message.data(), BUFSIZE, 0);
 
     int i = 0;
     while (i < 10) {
         string content = "Probando mensaje num ";
         Message msg = Message(i, "me", content.append(to_string(i)));
-        send(clients[client_id], msg.serialize().data(), BUFSIZE, 0);
+        send(client_id, msg.serialize().data(), BUFSIZE, 0);
         i++;
     }
     return NULL;
@@ -121,10 +120,7 @@ void Server::accept_incoming_connections() {
     }
 
     cout << "Ingresando cliente numero" << client_id << endl;
-    struct arg_struct args;
-    args.connections = get_connections();
-    args.id = client_id;
-    pthread_create(&th_clientes[client_id], NULL, client_comm, &args);
+    pthread_create(&th_clientes[client_id], NULL, client_comm, (void*) &clients[client_id]);
     client_id++;
 }
 
