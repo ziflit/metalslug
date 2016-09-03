@@ -56,18 +56,12 @@ int Client::send_message(Message* msg){
 
 
 int Client::receive_messages() {
-    /* Se considera el fin de las comunicaciones si no hay
-     * ningún nuevo mensaje para recibir, es decir que el servidor
-     * no manda más nada y probablemente cerró la conexión
-    */
 
     char buffer[BUFSIZE];
-    int msg_size = 1; /* Va a guardar la cantidad de bytes leidos por recv */
-    while (msg_size != 0) {
-        msg_size = recv(get_socket(), &buffer, BUFSIZE, 0);
-        cout << buffer << endl;
-    }
-    cout << "Fin de los mensajes" << endl;
+
+    recv(get_socket(), &buffer, BUFSIZE, 0);
+    cout << buffer << endl;
+    if (buffer=="ENDOFMESSAGES,,,"){return 1;}
     return 0;
 }
 
