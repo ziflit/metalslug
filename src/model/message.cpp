@@ -41,7 +41,6 @@ Message::Message(string messageToDeserialize) {
     pos = msg.find(delimiter);
     this->content = msg.substr(0,pos);
     msg.erase(0,pos+delimiter.length());
-
 }
 
 int Message::getTimestamp() { return timestamp;}
