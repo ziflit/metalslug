@@ -22,6 +22,9 @@ class Message {
     //Constructor de Mensaje to everyone.
     Message(int timestamp,string from,string content);
 
+	//Constructor de Mensaje desde el string completo separado por comas.
+	Message(string messageToDeserialize);
+
     /* Pre:
      * Post:
 		 */
