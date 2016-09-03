@@ -1,6 +1,13 @@
 #ifndef METALSLUG_MESSAGE_H
 #define METALSLUG_MESSAGE_H
 
+#define ASKUSER 1 
+#define ASKPASS 2
+#define GETUSERMESSAGES 3
+#define ENDOFMESSAGES 4
+
+
+
 #include <iostream>
 #include <string.h>
 #include "User.h"

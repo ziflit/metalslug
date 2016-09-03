@@ -14,7 +14,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
     /* Seteo puerto e ip del server*/
     int port = 0;
-    string ip = "127.0.0.1";
+    string ip = "192.168.0.7";
 
     /* Creo al cliente */
     Client* cliente1 = new Client();
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     char keypressed;
  
     do{
-        cin.clear();
+        // cout << "\033[2J\033[1;1H";
         cout << "*-----------------------*" << endl;
         cout << "! Bienvenido al cliente !" << endl;
         cout << "*-----------------------*" << endl << endl;
@@ -49,75 +49,106 @@ int main(int argc, char *argv[]) {
  
         switch(keypressed)
         {
+
             case '1':
-                cin.clear();
-                cout << "Estableciendo la conexion con el servidor...\n";
+                if (!conectado) {
+                cout << "Estableciendo la conexion con el servidor..." << endl << endl;
                     cliente1->connect_to_server(ip, port);
-                    cliente1->receive_messages();
+
+                    /* Implementar logueo de usuario */
+
+                    /* Recibir lista de usuarios en el servidor */
+
                     conectado = true;
+                } 
+                cout << " Ud. ya se encuentra conectado al servidor " << endl << endl;
                 break;
  
+
+
             case '2':
-                cin.clear();
-                    if (conectado) {
+                if (conectado) {
                     cout << "*-----------------------*" << endl;
                     cout << "!    Envio de mensajes   !" << endl;
                     cout << "*-----------------------*" << endl << endl;
                     cout << "Elija el destinatario" << endl << endl;
-                    /*aca va la logica de como elegir el destinatario
-                     * para poder armar el mensaje a enviar*/
-                    Message* mensaje = new Message(1,"from","to","content of test message");
+                    /* aca va la logica de como elegir el destinatario
+                     * para poder armar el mensaje a enviar, se arma en base a
+                     * la lista que nos trajimos del servidor al conectar el 
+                     * programa*/
+
+                     /* La ultima opcion manda mensaje que es para todos los users */
+
+                    Message* mensaje = new Message(20,"tu","vieja","entanga");
+                    cliente1->send_message(mensaje);
                     delete mensaje;
-                    break;    
+                    break;
                     }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
                 break;
  
+
+
             case '3':
-                cin.clear();
                 if (conectado) {    
-                    cout << "Solicitando mensajes al servidor...\n";
+                    cout << "Solicitando mensajes al servidor..." << endl << endl;
+                    /* Enviar mensaje especial al server para que 
+                    * sepa que le estoy pidiendo los mensajes, el mensaje
+                    * especial, debe tener al usuario en cuestion */ 
+                    Message* mensaje = new Message(GETUSERMESSAGES,"","","");
+                    cliente1->send_message(mensaje) ;   
+
                     cliente1->receive_messages();
-                    /*hay que ver si receive messages los muestra directamente por
-                     *pantalla o lo hacemos aca*/
+
+                    delete mensaje;
                     break;
                 }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
                 break;
 
+
+
             case '4':
-                cin.clear();
                 if (conectado) {
                     cliente1->disconnect();
-                    cout << "Ud. Se ha desconectado del servidor\n";
+                    cout << "Ud. Se ha desconectado del servidor" << endl << endl;
                     conectado = false;
                     break;
                 }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
                 break;
 
+
+
              case '5':
-                cin.clear();
                 if (conectado) {
                     cout << "*-----------------------*" << endl;
                     cout << "!      Lorem Ipsum      !" << endl;
                     cout << "*-----------------------*" << endl << endl;
 
+                    /* Falta implementar el lorem */
+                    
                     break;
                 }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
                 break;
 
 
+
+
             case '6':
                 endloop=true;
+                cliente1->disconnect();;
+                conectado = false;
                 delete cliente1;
                 break;
 
 
+
+
             default:
                 cin.clear();
-                cout << "Opcion no valida.\a\n";
+                cout << "Opcion no valida." << endl << endl;
                 break;
         }
     }while(endloop!=true);
