@@ -16,7 +16,7 @@ using namespace std;
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-void* Server::client_comm(void* client) {
+void* client_comm(void* client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
     string message;
     int client_id = *(int*)client;
@@ -29,6 +29,8 @@ void* Server::client_comm(void* client) {
     message.assign(buffer);
 
     /* Checkeo estupido para probar algo que Fran me mandaba */
+
+    cout << message;
     if (message.find("vieja") != string::npos) {
         cout << "Me llegó tu vieja en tanga, piola" << endl;
     }
