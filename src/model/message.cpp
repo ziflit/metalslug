@@ -18,6 +18,31 @@ Message::Message(int timestamp, string from, string content) {
     this->content = content;
 }
 
+Message::Message(string messageToDeserialize) {
+
+    std::string msg = messageToDeserialize;
+    std::string delimiter = ",";
+
+    size_t pos = 0;
+    std::string token;
+
+    pos = msg.find(delimiter);
+    this->timestamp = msg.substr(0,pos);
+    msg.erase(0,pos+delimiter.length());
+
+    pos = msg.find(delimiter);
+    this->from = msg.substr(0,pos);
+    msg.erase(0,pos+delimiter.length());
+
+    pos = msg.find(delimiter);
+    this->to = msg.substr(0,pos);
+    msg.erase(0,pos+delimiter.length());
+
+    pos = msg.find(delimiter);
+    this->content = msg.substr(0,pos);
+    msg.erase(0,pos+delimiter.length());
+}
+
 int Message::getTimestamp() { return timestamp;}
 
 string Message::getFrom(){ return from;}
