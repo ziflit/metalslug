@@ -14,7 +14,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
     /* Seteo puerto e ip del server*/
     int port = 0;
-    string ip = "192.168.0.7";
+    string ip = "127.0.0.1";
 
     /* Creo al cliente */
     Client* cliente1 = new Client();
