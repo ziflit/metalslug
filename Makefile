@@ -1,11 +1,11 @@
 # Para el cliente
-SRC_FILES = src/*.cpp $(filter-out src/model/server.cpp, $(wildcard src/model/*.cpp)) src/Utils/*.cpp
+SRC_FILES = src/client_main.cpp $(filter-out src/model/server.cpp, $(wildcard src/model/*.cpp)) src/Utils/*.cpp
 INC_FILES = src/*.h -I$(filter-out src/model/server.h, $(wildcard src/model/*.h))
 OBJ_NAME = client
 CLIENT_DEP =
 
 # Para el server
-SRV_SRC_FILES = $(filter-out src/model/client.cpp, $(wildcard src/model/*.cpp))
+SRV_SRC_FILES = $(filter-out src/model/client.cpp, $(wildcard src/model/*.cpp)) src/server_main.cpp
 SRV_INC = src/model/server.h 
 SRV_DEP = -pthread
 SRV_OBJ_NAME = server

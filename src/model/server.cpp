@@ -16,21 +16,23 @@ using namespace std;
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-void* client_comm(void* args) {
+void* client_comm(void* client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
     string message;
-    int client_id = ((arg_struct*)args)->id;
-    int* clients = ((arg_struct*)args)->connections;
+    int client_id = *(int*)client;
 
     message = "Estás conectado! Bienvenido!";
-    send(clients[client_id], message.data(), BUFSIZE, 0);
+    send(client_id, message.data(), BUFSIZE, 0);
 
-    int i = 0;
-    while (i < 10) {
-        string content = "Probando mensaje num ";
-        Message msg = Message(i, "me", content.append(to_string(i)));
-        send(clients[client_id], msg.serialize().data(), BUFSIZE, 0);
-        i++;
+    char buffer[BUFSIZE];
+    int msg_size =  recv(client_id, &buffer, BUFSIZE, 0);
+    message.assign(buffer);
+
+    /* Checkeo estupido para probar algo que Fran me mandaba */
+
+    cout << message;
+    if (message.find("vieja") != string::npos) {
+        cout << "Me llegó tu vieja en tanga, piola" << endl;
     }
     return NULL;
 }
@@ -121,10 +123,7 @@ void Server::accept_incoming_connections() {
     }
 
     cout << "Ingresando cliente numero" << client_id << endl;
-    struct arg_struct args;
-    args.connections = get_connections();
-    args.id = client_id;
-    pthread_create(&th_clientes[client_id], NULL, client_comm, &args);
+    pthread_create(&th_clientes[client_id], NULL, client_comm, (void*) &clients[client_id]);
     client_id++;
 }
 
@@ -146,41 +145,4 @@ void Server::close_all_connections() {
 
 int* Server::get_connections() {
     return clients;
-}
-
-int main(int argc, char* argv[]) {
-    /* Variables iniciales
-     * int port: puerto en el cual el server escucha
-     * int lserver_socket_fd: file desc. para el socket de listen
-     * char buffer[BUFSIZE]: buffer para transferencia de mensajes
-     * struct sockaddr_in client_addr: se guardan aca los datos del cliente conectado
-    */
-    int port = 0;
-    string ip = "127.0.0.1";
-
-    extern int errno;
-    /* Si se pasa un puerto por parametro se lo usa */
-    if (argc > 1) port = atoi(argv[1]);
-    /* Si no se pasa un puerto o es invalido uso 1500 */
-    if (port == 0) port = 1500;
-
-    Server* server = new Server();
-    server->initialize_server(ip, port);
-
-    cout << "Esperando conexion de cliente" << endl;
-    /* La ejecucion se bloquea en este punto hasta que haya una conexion */
-    /* El segundo parametro indica la cantidad de clientes maximos posibles */
-    /* Escucho esperando al cliente */
-    server->start_listening();
-
-    while (true) {
-        server->accept_incoming_connections();
-    }
-
-    cout << "Fin de los mensajes" << endl;
-    /* LIBERA MEMORIA BOLUDO QUE SI ENTRA EN UN EXIT(1) SE CAGA TODO */
-
-    server->shutdown();
-    delete server;
-    return 0;
 }
