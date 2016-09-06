@@ -23,10 +23,10 @@ void Logger::stop() {
     }
 }
 
-void Logger::write(Priority priority, const string &message) {
+void Logger::write(Priority priority, const string &message, const string &className) {
     if (instance.active && priority >= instance.minPriority) {
         ostream &stream = instance.fileStream.is_open() ? instance.fileStream : std::cout;
-        stream << PRIORITY_NAMES[priority] << ": " << message << endl;
+        stream << PRIORITY_NAMES[priority] << " (" << className << "): " << message << endl;
     }
 }
 

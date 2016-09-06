@@ -27,7 +27,9 @@ Message::Message(string messageToDeserialize) {
     std::string token;
 
     pos = msg.find(delimiter);
-    this->timestamp = msg.substr(0,pos);
+    //OJO aca abajo.. Se esta asignando una cadena a un int
+    //Lo comento pero hay que ver como corregirlo
+    //this->timestamp = msg.substr(0,pos);
     msg.erase(0,pos+delimiter.length());
 
     pos = msg.find(delimiter);
