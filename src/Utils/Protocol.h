@@ -19,28 +19,20 @@ using namespace std;
 
 enum MessageCode {
     CLIENT_SEND_MSG,
-    CLIENT_RECIEVE_MSG,
+    CLIENT_RECIEVE_MSG
 };
 
-struct msg_send_request_t {
+struct msg_request_t {
     MessageCode code;
-    msg_send_t message;
+    msg_t message;
 };
 
-struct msg_send_t {
+struct msg_t {
     string from;
     string to;
     string msg;
 };
 
-struct msg_receive_request_t {
-    MessageCode code;
-    msg_receive_t message;
-};
-
-struct msg_receive_t {
-    string username;
-};
 
 struct msg_login {
     string username;

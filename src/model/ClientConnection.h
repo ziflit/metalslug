@@ -6,6 +6,7 @@
 #include <thread>
 #include "server.h"
 #include <unistd.h>
+#include "../Utils/Protocol.h"
 
 using namespace std;
 
@@ -17,6 +18,10 @@ private:
     thread reader;
     thread writer;
     Server *server;
+
+    int readSocket(int socket, char* buffer, int length);
+
+
 public:
 
     ClientConnection(int clientSocket, Server *server, unsigned int id, string username);
