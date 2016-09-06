@@ -29,3 +29,7 @@ int User::getId() const {
 void User::setId(int id) {
     User::id = id;
 }
+
+bool User::isUsername(string name) {
+    return (username == name);
+}

@@ -20,6 +20,8 @@ public:
 
     const string &getPassword() const;
 
+    bool isUsername(string name);
+
     void setPassword(const string &password);
 
     int getId() const;
