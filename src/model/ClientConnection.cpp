@@ -6,9 +6,10 @@
 #include "../Utils/Logger.h"
 
 #define CLASSNAME "ClientConnection.class"
+#define BUFSIZE 1024
 
 
-int readSocket(int socket, char *buffer, int length);
+bool readSocket(int socket, char *buffer);
 
 ClientConnection::~ClientConnection() {
     close(this->clientSocket);
@@ -44,15 +45,14 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, unsigned in
 }
 
 int connectionReader(void *data) {
-    int result = 1;
+    bool isComplete;
     ClientConnection *client = (ClientConnection *) data;
     struct msg_request_t message;
-    int length = sizeof(struct msg_request_t);
-    char buffer[length];
+    char buffer[BUFSIZE];
     do {
-        result = readSocket(client->getClientSocket(), buffer, length);
+        isComplete = readSocket(client->getClientSocket(), buffer);
 
-        if (result <= 0) {
+        if (!isComplete) {
             //LOGGER_WRITE(Logger::ERROR, "Error de recepcion de mensaje. \n " + strerror(errno), CLASSNAME);
             client->stop();
             //LOGGER_WRITE(Logger::ERROR, "Conexion cerrada.", CLASSNAME);
@@ -62,8 +62,9 @@ int connectionReader(void *data) {
             //MI IDEA ES QUE TENGAMOS UNA COLA DE EVENTOS EN EL SERVER Y QUE EL PROCESE LOS PEDIDOS
             //EN FUNCION DE LO QUE SE LE PASA
         }
-    } while (result > 0);
-    return 1;
+    } while (isComplete);
+    /* Si no está completo devuelvo 0 */
+    return isComplete ? 1 : 0;
 }
 
 int connectionWriter(void *data) {
@@ -83,10 +84,19 @@ void ClientConnection::stop() {
     //this->server->removeClient(this); --> pedir a santi
 }
 
-int readSocket(int socket, char *buffer, int length) {
+bool readSocket(int socket, char *buffer) {
     int bytesRecv = 0;
-    while (bytesRecv < length && bytesRecv != -1) {
-        bytesRecv += recv(socket, buffer + bytesRecv, length - bytesRecv, 0);
+
+    /* Leo primero el tamanio de el struct a leer. El tamanio REAL */
+    unsigned int realsize;
+    recv(socket, &realsize, sizeof(unsigned int), 0);
+
+    while (bytesRecv < int(realsize) && bytesRecv != -1) {
+        if ((int(realsize) - bytesRecv) < BUFSIZE) {
+            bytesRecv += recv(socket, buffer, (int(realsize) - bytesRecv), 0);
+        } else {
+            bytesRecv += recv(socket, buffer, BUFSIZE, 0);
+        }
         /** std::stringstream toLog;
         toLog << "Recibidos " << bytesRecv << " bytes \n";
         LOGGER_WRITE(Logger::DEBUG, toLog.str(), CLASSNAME);**/
@@ -94,5 +104,5 @@ int readSocket(int socket, char *buffer, int length) {
     /**
      LOGGER_WRITE(Logger::DEBUG, "Se recibio el mensaje: " + buffer, CLASSNAME);
      */
-    return bytesRecv;
+    return bytesRecv == int(realsize);
 }
