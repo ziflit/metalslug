@@ -1,6 +1,10 @@
 #include <iostream>
-#include <iostream>
 #include "message.h"
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+
 
 //_______________________________Messages______________________________________
 
@@ -27,7 +31,7 @@ Message::Message(string messageToDeserialize) {
     std::string token;
 
     pos = msg.find(delimiter);
-    this->timestamp = msg.substr(0,pos);
+    this->timestamp = std::stoi(msg.substr(0,pos));
     msg.erase(0,pos+delimiter.length());
 
     pos = msg.find(delimiter);
@@ -52,35 +56,45 @@ string Message::getTo(){ return to;}
 string Message::getContent(){ return content; }
 
 string Message::serialize() {
-    return (to_string(timestamp) +","+ from +","+ to +","+ content);
+    return ((std::to_string(timestamp)) +","+ from +","+ to +","+ content);
 }
 
 bool Message::isToUser(string username) { return (to == username || to == "everyone"); }
+
+bool Message::isToUser(User* user){
+    return (user->isUsername(to));
+}
 
 bool Message::isToEveryone() { return (to == "everyone");}
 
 //_______________________________MessagesList__________________________________
 
-void MessagesList::addMessage(Message msg) {
+MessagesList::MessagesList() {}
+
+unsigned long  MessagesList::size(){
+    return messagesList.size();
+}
+
+
+void MessagesList::addMessage(Message* msg) {
     messagesList.push_back(msg);
 }
 
-std::vector<Message> MessagesList::filterMessagesPerUser(User user){
-    std::vector<Message> messagesFiltered;
+std::vector<Message* > MessagesList::filterMessagesPerUser(User* user){
+    std::vector<Message* > messagesFiltered;
 
-    vector<Message>::iterator it = messagesList.begin();
+    vector<Message* >::iterator it = messagesList.begin();
 
     while(it != messagesList.end()){
 
-        if(it->isToUser(user.getUsername())){
-            Message* msg = new Message(it->getTimestamp(),it->getFrom(),it->getTo(),it->getContent());
-            messagesFiltered.push_back((*msg));
+        if( (*it)->isToUser(user)){
+            messagesFiltered.push_back((*it));
 
-            if(it->isToEveryone()){
+            if((*it)->isToEveryone()){
                 ++it;
                 //no borra el mensaje por ser to everyone.
             }
-            else if(! it->isToEveryone()){
+            else if(! (*it)->isToEveryone()){
                 messagesList.erase(it++);
                 //elima el mensaje de messagesList
             }

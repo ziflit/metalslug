@@ -32,47 +32,29 @@ class Message {
 	//Constructor de Mensaje desde el string completo separado por comas.
 	Message(string messageToDeserialize);
 
-    /* Pre:
-     * Post:
-		 */
-	int getTimestamp();
-
-    /* Pre:
-     * Post:
-		 */
-    string getFrom();
-
-    /* Pre:
-     * Post:
-		 */
+    int getTimestamp();
+	string getFrom();
     string getTo();
-
-    /* Pre:
-     * Post:
-		 */
     string getContent();
-
-	/* Pre:
-     * Post:
-         */
 	string serialize();
-
 	bool isToUser(string username);
-
+    bool isToUser(User* user);
     bool isToEveryone();
 };
 
 
 class MessagesList{
     private:
-
-        std::vector<Message> messagesList;
+        std::vector<Message* > messagesList;
 
 	public:
+		MessagesList();
 
-        void addMessage(Message msg);
+		unsigned long size();
 
-        std::vector<Message> filterMessagesPerUser(User user);
+        void addMessage(Message* msg);
+
+        std::vector<Message* > filterMessagesPerUser(User* user);
 };
 
 
