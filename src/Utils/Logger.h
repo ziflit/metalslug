@@ -2,9 +2,9 @@
 #define METALSLUG_LOGGER_H
 
 
-#define LOGGER_START(MIN_PRIORITY, FILE) Logger::Start(MIN_PRIORITY, FILE);
-#define LOGGER_STOP() Logger::Stop();
-#define LOGGER_WRITE(PRIORITY, MESSAGE) Logger::Write(PRIORITY, MESSAGE);
+#define LOGGER_START(MIN_PRIORITY, FILE) Logger::start(MIN_PRIORITY, FILE);
+#define LOGGER_STOP() Logger::stop();
+#define LOGGER_WRITE(PRIORITY, MESSAGE, CLASSNAME) Logger::write(PRIORITY, MESSAGE, CLASSNAME);
 
 #include <string>
 #include <fstream>
@@ -53,7 +53,7 @@ public:
      * @param priority
      * @param message
      */
-    static void write(Priority priority, const string &message);
+    static void write(Priority priority, const string &message, const string &className);
 
 private:
     bool active;
