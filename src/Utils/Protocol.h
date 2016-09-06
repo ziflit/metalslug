@@ -22,15 +22,15 @@ enum MessageCode {
     CLIENT_RECIEVE_MSG
 };
 
-struct msg_request_t {
-    MessageCode code;
-    msg_t message;
-};
-
 struct msg_t {
     string from;
     string to;
     string msg;
+};
+
+struct msg_request_t {
+    MessageCode code;
+    msg_t message;
 };
 
 

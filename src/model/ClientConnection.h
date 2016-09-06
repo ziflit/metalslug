@@ -4,12 +4,12 @@
 
 #include <string>
 #include <thread>
-#include "server.h"
 #include <unistd.h>
 #include "../Utils/Protocol.h"
 
 using namespace std;
 
+class Server;
 class ClientConnection {
 private:
     int clientSocket;
