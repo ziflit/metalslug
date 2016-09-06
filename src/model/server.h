@@ -2,6 +2,8 @@
 #define METALSLUG_SERVER_H
 
 #include "message.h"
+#include "ClientConnection.h"
+#include <memory>
 
 #define MAX_CONN 10
 #define BUFSIZE 1024
@@ -18,6 +20,7 @@ class Server {
     MessagesList messages; /* Lista de mensajes almacenados */
     int listen_socket_fd;
     int clients[MAX_CONN];
+    vector<shared_ptr<ClientConnection> > connections;
     pthread_t th_clientes[MAX_CONN];
 
   public:
@@ -65,6 +68,7 @@ class Server {
      */
     void accept_incoming_connections();
 
+    void add_connection(ClientConnection* handler);
 };
 
 

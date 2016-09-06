@@ -4,37 +4,32 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <pthread.h>
+#include <thread>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
 #include "server.h"
 #include "message.h"
+#include "ClientConnection.h"
 
 using namespace std;
 
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-void* client_comm(void* client) {
+void client_comm(Server* srv, int client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
-    string message;
-    int client_id = *(int*)client;
 
-    message = "Estás conectado! Bienvenido!";
-    send(client_id, message.data(), BUFSIZE, 0);
+    /* Esto crea un nuevo objeto ClientConnection que
+     * se comunicará con el cliente en cuestión. Le paso el fd */
+    ClientConnection* handler = new ClientConnection(client, srv, 0, "");
+    srv->add_connection(handler);
+}
 
-    char buffer[BUFSIZE];
-    int msg_size =  recv(client_id, &buffer, BUFSIZE, 0);
-    message.assign(buffer);
-
-    /* Checkeo estupido para probar algo que Fran me mandaba */
-
-    cout << message;
-    if (message.find("vieja") != string::npos) {
-        cout << "Me llegó tu vieja en tanga, piola" << endl;
-    }
-    return NULL;
+void Server::add_connection(ClientConnection* handler) {
+    /* No usar nunca más el puntero pelado luego de esta
+       llamada a emplace_back */
+    connections.emplace_back(handler);
 }
 
 int Server::get_listen_socket() {
@@ -123,16 +118,25 @@ void Server::accept_incoming_connections() {
     }
 
     cout << "Ingresando cliente numero" << client_id << endl;
-    pthread_create(&th_clientes[client_id], NULL, client_comm, (void*) &clients[client_id]);
+    // std::thread handler = std::thread(client_comm, this, clients[client_id]);
+    client_comm(this, clients[client_id]);
     client_id++;
 }
 
 int Server::close_connection(int client_id) {
+    /* responsabilidad de connectionHandler?
+    * el es el dueño del socket después de todo
+    */
     if (close(clients[client_id]) != 0) {
         //Log
         return -1;
     }
-    pthread_join(th_clientes[client_id], NULL);
+    for (unsigned int i = 0; i < connections.size(); ++i) {
+        if (connections[i]->getClientSocket() == client_id) {
+            connections.erase(connections.begin() + i);
+            break;
+        }
+    }
     clients[client_id] = 0; /* Libero el slot de cliente */
     return 0;
 }
