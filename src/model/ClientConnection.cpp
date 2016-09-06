@@ -29,6 +29,8 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, unsigned in
     this->server = server;
     this->clientId = id;
     this->username = username;
+    this->shouldClose = false;
+
 
     struct timeval timeout;
     timeout.tv_sec = 10000;
@@ -62,13 +64,18 @@ int connectionReader(void *data) {
             //MI IDEA ES QUE TENGAMOS UNA COLA DE EVENTOS EN EL SERVER Y QUE EL PROCESE LOS PEDIDOS
             //EN FUNCION DE LO QUE SE LE PASA
         }
-    } while (isComplete);
+    } while (isComplete and !client->shouldClose);
     /* Si no está completo devuelvo 0 */
     return isComplete ? 1 : 0;
 }
 
 int connectionWriter(void *data) {
     ClientConnection *client = (ClientConnection *) data;
+    while (!client->shouldClose) {
+        if (client->has_events()) {
+
+        }
+    }
     return 1;
 }
 
@@ -79,9 +86,13 @@ void ClientConnection::start() {
 }
 
 void ClientConnection::stop() {
-    this->reader.detach();
-    this->writer.detach();
+    this->reader.join();
+    this->writer.join(); /* Guarda que tiene un while true, no es join */
     //this->server->removeClient(this); --> pedir a santi
+}
+
+void ClientConnection::push_event(struct msg_request_t event) {
+    event_queue.push(event);
 }
 
 bool readSocket(int socket, char *buffer) {
