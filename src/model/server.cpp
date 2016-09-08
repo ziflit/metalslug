@@ -152,23 +152,23 @@ void Server::store_message() {
 }
 
 
-std::vector<msg_t> Server::get_messages_of(string user){
-    std::vector<msg_t> messagesFiltered;
-    vector<msg_t>::iterator it = messagesList.begin();
-
-    while(it != messagesList.end()){
-        if( it.isToUser(user)){
-            messagesFiltered.push_back((*it));
-            if( it.isToEveryone()){
-                ++it;
-                //no borra el mensaje por ser to everyone.
-            }
-            else if( !it.isToEveryone()){
-                messagesList.erase(it++);
-                //elima el mensaje de messagesList
-            }
+std::list<msg_t> Server::get_messages_of(string user){
+    // CAMBIAR VECTOR POR LIST
+    std::list<msg_t> messagesFiltered;
+    for (auto it = messagesList.begin(); it != messagesList.cend();){
+        if( it->to == user ){
+            messagesFiltered.push_back(*it);
+            it = messagesFiltered.erase(it); // ...
+        } else {
+            it++;
         }
-        else ++it;
     }
     return messagesFiltered;
 }
+
+
+
+
+/* Si  necesito acceso aleatorio, uso vector
+pero si necesito recorrer de principio a fin o voy borrando/insertando
+elementos en el medio, uso list */
