@@ -31,16 +31,19 @@ int main(int argc, char *argv[]) {
 
     bool endloop=false, conectado=false;
     char keypressed;
-    cout << "\033[2J\033[1;1H";
+
+    cout << "\033[2J\033[1;1H"; /* clear screen */
     do{
         cout << "*-----------------------*" << endl;
         cout << "! Bienvenido al cliente !" << endl;
         cout << "*-----------------------*" << endl << endl;
         cout << "\t1 .- Conectar al servidor" << endl;
-        cout << "\t2 .- Enviar Mensaje" << endl;
-        cout << "\t3 .- Chequear mensajes" << endl;
-        cout << "\t4 .- Desconectar" << endl;
-        cout << "\t5 .- Lorem Ipsum" << endl;
+        if (conectado == true){
+            cout << "\t2 .- Enviar Mensaje" << endl;
+            cout << "\t3 .- Chequear mensajes" << endl;
+            cout << "\t4 .- Desconectar" << endl;
+            cout << "\t5 .- Lorem Ipsum" << endl;
+        }
         cout << "\t6 .- Salir" << endl << endl;
         cout << "Elije una opcion: ";
  
@@ -50,6 +53,7 @@ int main(int argc, char *argv[]) {
         {
 
             case '1':
+                cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (!conectado) {
                 cout << "Estableciendo la conexion con el servidor..." << endl << endl;
                     cliente1->connect_to_server(ip, port);
@@ -62,6 +66,7 @@ int main(int argc, char *argv[]) {
 
 
             case '2':
+                cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (conectado) {
                     int userSelected;
                     cout << "*-----------------------*" << endl;
@@ -81,6 +86,7 @@ int main(int argc, char *argv[]) {
 
 
             case '3':
+                cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (conectado) {    
                     cout << "Solicitando mensajes al servidor..." << endl << endl;
                     cliente1->ask_for_messages(); /* implementar esto */
@@ -92,6 +98,7 @@ int main(int argc, char *argv[]) {
 
 
             case '4':
+                cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (conectado) {
                     cliente1->disconnect();
                     cout << "Ud. Se ha desconectado del servidor" << endl << endl;
@@ -104,6 +111,7 @@ int main(int argc, char *argv[]) {
 
 
              case '5':
+                cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (conectado) {
                     cout << "*-----------------------*" << endl;
                     cout << "!      Lorem Ipsum      !" << endl;
@@ -119,6 +127,7 @@ int main(int argc, char *argv[]) {
 
 
             case '6':
+                cout << "\033[2J\033[1;1H"; /* clear screen */
                 endloop=true;
                 cliente1->disconnect();;
                 conectado = false;
@@ -128,7 +137,7 @@ int main(int argc, char *argv[]) {
 
 
             default:
-                cin.clear();
+                cout << "\033[2J\033[1;1H"; /* clear screen */
                 cout << "Opcion no valida." << endl << endl;
                 break;
         }
