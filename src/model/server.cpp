@@ -18,18 +18,8 @@ using namespace std;
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-
-unsigned int calc_size(struct msg_request_t mssg) {
-    unsigned int size = 0;
-    size += mssg.message.msg.size();
-    size += sizeof(mssg.message.to);
-    size += sizeof(mssg.message.from);
-    size += sizeof(mssg.code);
-    return size;
-}
-
 int write_to_socket(int fd, struct msg_request_t msg) {
-    unsigned int realsize = calc_size(msg);
+    unsigned int realsize = sizeof(msg);
 
     int retcode = send(fd, (void*)&realsize, sizeof(realsize), 0);
 
@@ -70,7 +60,7 @@ void client_comm(Server* srv, int client) {
 }
 
 bool Server::auth_user(char* user, char* pass) {
-    return false;
+    return true;
 }
 
 void Server::add_connection(ClientConnection* handler) {
