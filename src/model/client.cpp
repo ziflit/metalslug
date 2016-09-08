@@ -54,7 +54,7 @@ int Client::connect_to_server(string ip, int port) {
     char* response;
     unsigned int size;
 
-    recv(socket_number, (void*)size, sizeof(unsigned int),0);
+    recv(socket_number, (void*)&size, sizeof(unsigned int),0);
     recv(socket_number, response, size, 0); // devuelve un int con la cantidad de bytes leidos
 
     if(((msg_request_t*)response)->code == MessageCode::LOGIN_FAIL){
