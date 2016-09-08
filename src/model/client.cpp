@@ -9,18 +9,18 @@
 #include <errno.h>
 #include "client.h"
 #include "message.h"
+#include "../Utils/Protocol.h"
 
 using namespace std;
 
 
 int Client::connect_to_server(string ip, int port) {
-    int client_socket_fd;
     struct sockaddr_in server_addr;
     socklen_t server_sock_size;
 
     /* Abro el socket del cliente */
-    client_socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (client_socket_fd < 0) {
+    socket_number = socket(AF_INET, SOCK_STREAM, 0);
+    if (socket_number < 0) {
         cout << "Error abriendo el socket del cliente: " << strerror(errno) << endl;
         cout << "Cerrando..." << endl;
         exit(EXIT_FAILURE);
@@ -33,14 +33,38 @@ int Client::connect_to_server(string ip, int port) {
     server_sock_size = sizeof(server_addr);
 
     /* Me conecto al servidor. Devuelve -1 si la conexion falla */
-    if (connect(client_socket_fd, (struct sockaddr *)&server_addr, server_sock_size) < 0) {
+    if (connect(socket_number, (struct sockaddr *)&server_addr, server_sock_size) < 0) {
         cout << "Error conectando al servidor: " << strerror(errno) << endl;
         cout << "Cerrando..." << endl;
         exit(EXIT_FAILURE);
     }
-    cout << "Conectado al servidor" << endl;
 
-    socket_number = client_socket_fd;
+
+    string user;
+    string pass;
+
+    cout << "Ingrese nombre de usuario: " << endl;
+    cin >> user;
+    cout << "Ingrese contrasenia: " << endl;
+    cin >> pass;
+
+    /*Envio mje al servidor*/
+    send(socket_number,user.data(),40,0);
+    send(socket_number,pass.data(),40,0);
+    char* response;
+    unsigned int size;
+
+    recv(socket_number, (void*)size, sizeof(unsigned int),0);
+    recv(socket_number, response, size, 0); // devuelve un int con la cantidad de bytes leidos
+
+    if(((msg_request_t*)response)->code == MessageCode::LOGIN_FAIL){
+        cout << "Error conectando al servidor, datos ingresados incorrectos" << endl;
+    }
+    else{
+        cout << "LOG OK GATO" << endl;
+    }
+
+    cout << "saliendo de la fn" <<endl;
 
     return 1;
 }
