@@ -146,3 +146,29 @@ void Server::close_all_connections() {
 int* Server::get_connections() {
     return clients;
 }
+
+void Server::store_message() {
+
+}
+
+
+std::vector<msg_t> Server::get_messages_of(string user){
+    std::vector<msg_t> messagesFiltered;
+    vector<msg_t>::iterator it = messagesList.begin();
+
+    while(it != messagesList.end()){
+        if( it.isToUser(user)){
+            messagesFiltered.push_back((*it));
+            if( it.isToEveryone()){
+                ++it;
+                //no borra el mensaje por ser to everyone.
+            }
+            else if( !it.isToEveryone()){
+                messagesList.erase(it++);
+                //elima el mensaje de messagesList
+            }
+        }
+        else ++it;
+    }
+    return messagesFiltered;
+}
