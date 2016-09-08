@@ -9,6 +9,7 @@ Table of Contents
 .. 5.1 Server
 .. 5.2 Cliente
 6 Comentarios de clase, miercoles 31
+7 Comentarios de clase, miercoles 7
 
 
 1 Reunión del viernes 26, en el starbucks
@@ -126,3 +127,16 @@ Table of Contents
 
 
 
+7 Comentarios de clase, miercoles 7
+════════════════════════════════════
+    -Frecuencia: si te dice 10 entonces serán 10 mensajes por segundo.
+     Ellos lo van a probar con 200bytes de long por mje, o mas.
+     Se establece la frecuencia y la cantidad de mensajes que se van a enviar.
+     ej: 1-10 van a salir 10 mensajes, uno por segundo.
+
+    -Para saber que te estas conectando al servidor correcto, para cada cliente
+     al conectarse se debe mostrar la lista de usuarios disponibles.
+     Solo en esa instancia se muestra la lista, no hace falta mostrarla cada vez
+     que decide enviar un mje.
+
+    -Loguear en e logger del servidor como fue que se cerró.
