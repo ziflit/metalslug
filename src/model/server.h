@@ -68,7 +68,7 @@ class Server {
     void accept_incoming_connections();
 
     /* guarda el mensaje pasado en la lista de mensajes que tiene almacenada */
-    void store_message();
+    void store_message(const msg_t& mensaje);
 
     /* filtra la lista de mensajes almacenados, y devuelve todos los que le
      * pertencen al usuario solicitado*/

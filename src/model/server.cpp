@@ -147,8 +147,8 @@ int* Server::get_connections() {
     return clients;
 }
 
-void Server::store_message() {
-
+void Server::store_message(const msg_t& mensaje) {
+    messagesList.emplace_back(mensaje);
 }
 
 
