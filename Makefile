@@ -23,7 +23,7 @@ LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2main -lyaml-cpp -lSDL2_ttf
 all : client server
 
 client : $(SRC_FILES)
-	$(CC) -I$(INC_FILES) $(SRC_FILES) $(COMPILER_FLAGS) -o $(OBJ_NAME)
+	$(CC) -I$(INC_FILES) $(SRC_FILES) $(COMPILER_FLAGS) -o $(OBJ_NAME) -pthread
 
 server : $(SRV_SRC_FILES)
 	$(CC) -I$(SRV_INC) $(SRV_SRC_FILES) $(SRV_DEP) $(COMPILER_FLAGS) -o $(SRV_OBJ_NAME)
