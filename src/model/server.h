@@ -69,6 +69,8 @@ class Server {
     void accept_incoming_connections();
 
     void add_connection(ClientConnection* handler);
+
+    bool auth_user(char* user, char* pass);
 };
 
 

@@ -11,19 +11,66 @@
 #include "server.h"
 #include "message.h"
 #include "ClientConnection.h"
+#include "../Utils/Protocol.h"
 
 using namespace std;
 
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
+
+unsigned int calc_size(struct msg_request_t mssg) {
+    unsigned int size = 0;
+    size += mssg.message.msg.size();
+    size += sizeof(mssg.message.to);
+    size += sizeof(mssg.message.from);
+    size += sizeof(mssg.code);
+    return size;
+}
+
+int write_to_socket(int fd, struct msg_request_t msg) {
+    unsigned int realsize = calc_size(msg);
+
+    int retcode = send(fd, (void*)&realsize, sizeof(realsize), 0);
+
+    if (retcode >= 0) {
+        send(fd, (char*)&msg, realsize, 0);
+    } else {
+        int interror = errno;
+        return interror;
+    }
+    return 0;
+}
 void client_comm(Server* srv, int client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
 
+    /* Recibo user y pass del cliente */
+    char user[40];
+    char pass[40];
+    cout << "esperando user" << endl;
+    recv(client, user, 40, 0);
+    cout << "esperando pass" << endl;
+    recv(client, pass, 40, 0);
+    if (srv->auth_user(user, pass)) {
+        struct msg_request_t resp;
+        resp.code = MessageCode::LOGIN_OK;
+
+        int retcode = write_to_socket(client, resp);
+        cout << "Lo que paso fue" << strerror(retcode) << endl;
+
+        ClientConnection* handler = new ClientConnection(client, srv, 0, "");
+        srv->add_connection(handler);
+    } else {
+        struct msg_request_t resp;
+        resp.code = MessageCode::LOGIN_FAIL;
+        write_to_socket(client, resp);
+    }
     /* Esto crea un nuevo objeto ClientConnection que
      * se comunicará con el cliente en cuestión. Le paso el fd */
-    ClientConnection* handler = new ClientConnection(client, srv, 0, "");
-    srv->add_connection(handler);
+}
+
+bool Server::auth_user(char* user, char* pass) {
+    return false;
 }
 
 void Server::add_connection(ClientConnection* handler) {
