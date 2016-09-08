@@ -2,6 +2,7 @@
 #define METALSLUG_CLIENT_H
 #define BUFSIZE 1024
 #include <iostream>
+#include <stdlib.h>
 #include "message.h"
 
 
@@ -9,7 +10,7 @@
 class Client {
 	private:
 	    int socket_number;
-	    int timestamp_last_msg;
+	    std::vector<string> usersList;
 	public:
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
@@ -39,6 +40,14 @@ class Client {
     void lorem_ipsum(int frec, int max_envios);
 
     int get_socket();
+
+    void show_users_list();
+
+	void send_message_to(int userSelected);
+
+	void ask_for_messages();
+
+	void send_message_to_all();
 };
 
 

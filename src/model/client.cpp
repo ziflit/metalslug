@@ -54,6 +54,9 @@ int Client::send_message(Message* msg){
     return 0;
 }
 
+void Client::send_message_to_all() {
+
+}
 
 int Client::receive_messages() {
 
@@ -72,3 +75,25 @@ void Client::lorem_ipsum(int frec, int max_envios) {
 int Client::get_socket() {
     return socket_number;
 }
+
+void Client::show_users_list() {
+    int i;
+    for ( i = 0 ; usersList.size() ; i++ ){
+        cout << i << " - " << usersList[i] << endl;
+    }
+    cout << i + 1 << endl;
+}
+
+void Client::send_message_to(int userSelected) {
+    if ( userSelected == (usersList.size() + 1) ){
+        send_message_to_all();
+        return ;
+    }
+    
+}
+
+void Client::ask_for_messages() {
+
+}
+
+

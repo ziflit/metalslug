@@ -31,9 +31,8 @@ int main(int argc, char *argv[]) {
 
     bool endloop=false, conectado=false;
     char keypressed;
- 
+    cout << "\033[2J\033[1;1H";
     do{
-        // cout << "\033[2J\033[1;1H";
         cout << "*-----------------------*" << endl;
         cout << "! Bienvenido al cliente !" << endl;
         cout << "*-----------------------*" << endl << endl;
@@ -54,12 +53,8 @@ int main(int argc, char *argv[]) {
                 if (!conectado) {
                 cout << "Estableciendo la conexion con el servidor..." << endl << endl;
                     cliente1->connect_to_server(ip, port);
-
-                    /* Implementar logueo de usuario */
-
-                    /* Recibir lista de usuarios en el servidor */
-
                     conectado = true;
+                    break;
                 } 
                 cout << " Ud. ya se encuentra conectado al servidor " << endl << endl;
                 break;
@@ -68,20 +63,16 @@ int main(int argc, char *argv[]) {
 
             case '2':
                 if (conectado) {
+                    int userSelected;
                     cout << "*-----------------------*" << endl;
                     cout << "!    Envio de mensajes   !" << endl;
                     cout << "*-----------------------*" << endl << endl;
                     cout << "Elija el destinatario" << endl << endl;
-                    /* aca va la logica de como elegir el destinatario
-                     * para poder armar el mensaje a enviar, se arma en base a
-                     * la lista que nos trajimos del servidor al conectar el 
-                     * programa*/
+                    
+                    cliente1->show_users_list();  /* implementar esto */
+                    cin >> userSelected;
+                    cliente1->send_message_to(userSelected); /* implementar esto */
 
-                     /* La ultima opcion manda mensaje que es para todos los users */
-
-                    Message* mensaje = new Message(20,"tu","vieja","entanga");
-                    cliente1->send_message(mensaje);
-                    delete mensaje;
                     break;
                     }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
@@ -92,15 +83,7 @@ int main(int argc, char *argv[]) {
             case '3':
                 if (conectado) {    
                     cout << "Solicitando mensajes al servidor..." << endl << endl;
-                    /* Enviar mensaje especial al server para que 
-                    * sepa que le estoy pidiendo los mensajes, el mensaje
-                    * especial, debe tener al usuario en cuestion */ 
-                    Message* mensaje = new Message(GETUSERMESSAGES,"","","");
-                    cliente1->send_message(mensaje) ;   
-
-                    cliente1->receive_messages();
-
-                    delete mensaje;
+                    cliente1->ask_for_messages(); /* implementar esto */
                     break;
                 }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
@@ -135,14 +118,12 @@ int main(int argc, char *argv[]) {
 
 
 
-
             case '6':
                 endloop=true;
                 cliente1->disconnect();;
                 conectado = false;
                 delete cliente1;
                 break;
-
 
 
 
