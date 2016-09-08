@@ -72,7 +72,7 @@ class Server {
 
     /* filtra la lista de mensajes almacenados, y devuelve todos los que le
      * pertencen al usuario solicitado*/
-    list<msg_t> get_messages_of(string user);;
+    list<msg_t> get_messages_of(string user);
 
 
 
