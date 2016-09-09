@@ -49,8 +49,8 @@ int connectionReader(void *data) {
     bool isComplete;
     SocketUtils sockutils;
     ClientConnection *client = (ClientConnection *) data;
-    struct msg_request_t message;
-    char buffer[BUFSIZE];
+    struct msg_request_t *message;
+    char* buffer;
     do {
         isComplete = sockutils.readSocket(client->getClientSocket(), buffer);
 
@@ -59,33 +59,39 @@ int connectionReader(void *data) {
             client->stop();
             //LOGGER_WRITE(Logger::ERROR, "Conexion cerrada.", CLASSNAME);
         } else {
-            message = *(struct msg_request_t *) buffer;
+            cout << "Está por castear, según Flor" << endl;
+            message = (struct msg_request_t *) buffer;
+            cout << "Casteo bien, no puedo creer esto" << endl;
             //HAY QUE DEFINIR QUE VAMOS A HACER CON EL MENSAJE QUE LLEGA...
             //MI IDEA ES QUE TENGAMOS UNA COLA DE EVENTOS EN EL SERVER Y QUE EL PROCESE LOS PEDIDOS
             //EN FUNCION DE LO QUE SE LE PASA
         }
+        cout << "JOJOJO" << endl;
     } while (isComplete and !client->shouldClose);
     /* Si no está completo devuelvo 0 */
     return isComplete ? 1 : 0;
 }
 
-int connectionWriter(void *data) {
-    ClientConnection *client = (ClientConnection *) data;
-    while (!client->shouldClose) {
-        if (client->has_events()) {
-
+int connectionWriter(ClientConnection* data) {
+    while (!data->shouldClose) {
+        data->queuemutex.lock();
+        if (data->has_events()) {
+            msg_request_t event = data->event_queue.front();
+            data->event_queue.pop();
+            data->queuemutex.unlock();
+            SocketUtils sockutils;
+            cout << sockutils.writeSocket(data->getClientSocket(), event) << endl;
         }
     }
     return 1;
 }
 
-
 void ClientConnection::start() {
     this->reader = std::thread(connectionReader, this);
-    this->reader = std::thread(connectionWriter, this);
+    this->writer = std::thread(connectionWriter, this);
 }
-
 void ClientConnection::stop() {
+    shouldClose = true;
     this->reader.join();
     this->writer.join(); /* Guarda que tiene un while true, no es join */
     //this->server->removeClient(this); --> pedir a santi

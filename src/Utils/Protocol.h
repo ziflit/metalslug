@@ -26,8 +26,8 @@ enum MessageCode {
 };
 
 struct msg_t {
-    char from[40];
-    char to[40];
+    string from;
+    string to;
     string msg;
 };
 

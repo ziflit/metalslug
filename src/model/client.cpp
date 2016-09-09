@@ -49,13 +49,13 @@ int Client::connect_to_server(string ip, int port) {
     cin >> pass;
 
     /*Envio mje al servidor*/
-    send(socket_number,user.data(),40,0);
-    send(socket_number,pass.data(),40,0);
+    cout << send(socket_number,user.data(),40,0) << endl;
+    cout << send(socket_number,pass.data(),40,0) << endl;
     char* response;
     unsigned int size;
 
-    recv(socket_number, (void*)&size, sizeof(unsigned int),0);
-    recv(socket_number, response, size, 0); // devuelve un int con la cantidad de bytes leidos
+    cout << recv(socket_number, (void*)&size, sizeof(unsigned int),0) << endl;
+    cout << recv(socket_number, response, size, 0) << endl;
 
     if(((msg_request_t*)response)->code == MessageCode::LOGIN_FAIL){
         cout << "Error conectando al servidor, datos ingresados incorrectos" << endl;
@@ -73,8 +73,16 @@ void Client::disconnect(){
     close(socket_number);
 }
 
-int Client::send_message(Message* msg){
-    send(socket_number, (msg->serialize()).data(), BUFSIZE, 0);
+int Client::send_message(string to, string content) {
+    msg_request_t msg;
+    msg.code = MessageCode::CLIENT_SEND_MSG;
+    msg.message.msg = content;
+    msg.message.to = to;
+    msg.message.from = me;
+
+    SocketUtils sockutils;
+    cout << sockutils.writeSocket(socket_number, msg) << endl;
+
     return 0;
 }
 

@@ -76,9 +76,9 @@ int main(int argc, char *argv[]) {
 
                      /* La ultima opcion manda mensaje que es para todos los users */
 
-                    Message* mensaje = new Message(20,"tu","vieja","entanga");
-                    cliente1->send_message(mensaje);
-                    delete mensaje;
+                    // Message* mensaje = new Message(20,"tu","vieja","entanga");
+                    cliente1->send_message("hola", "tuvieja");
+                    // delete mensaje;
                     break;
                     }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
@@ -92,12 +92,12 @@ int main(int argc, char *argv[]) {
                     /* Enviar mensaje especial al server para que 
                     * sepa que le estoy pidiendo los mensajes, el mensaje
                     * especial, debe tener al usuario en cuestion */ 
-                    Message* mensaje = new Message(GETUSERMESSAGES,"","","");
-                    cliente1->send_message(mensaje) ;   
+                    // Message* mensaje = new Message(GETUSERMESSAGES,"","","");
+                    // cliente1->send_message(mensaje) ;
 
                     cliente1->receive_messages();
 
-                    delete mensaje;
+                    // delete mensaje;
                     break;
                 }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;

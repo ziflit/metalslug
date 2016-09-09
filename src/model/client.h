@@ -3,13 +3,15 @@
 #define BUFSIZE 1024
 #include <iostream>
 #include "message.h"
+#include "../Utils/SocketUtils.h"
 
 
 
 class Client {
 	private:
-	    int socket_number;
-	    int timestamp_last_msg;
+    int socket_number;
+    int timestamp_last_msg;
+    string me;
 	public:
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
@@ -24,7 +26,7 @@ class Client {
 		/* Pre: 
 		 * Post: 
 		 */
-		int send_message(Message* msg);
+    int send_message(string to, string content);
 
 		/* Pre: 
 		 * Post: 

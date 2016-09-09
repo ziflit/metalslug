@@ -37,6 +37,7 @@ void client_comm(Server* srv, int client) {
         cout << "Lo que paso fue" << strerror(retcode) << endl;
 
         ClientConnection* handler = new ClientConnection(client, srv, 0, "");
+        handler->start();
         srv->add_connection(handler);
     } else {
         struct msg_request_t resp;

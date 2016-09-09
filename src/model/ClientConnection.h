@@ -5,6 +5,7 @@
 #include <string>
 #include <thread>
 #include <queue>
+#include <mutex>
 #include <unistd.h>
 #include "../Utils/Protocol.h"
 
@@ -18,14 +19,18 @@ private:
     string username;
     thread reader;
     thread writer;
-    queue<struct msg_request_t> event_queue;
     Server *server;
+
 
     int readSocket(int socket, char* buffer, int length);
 
 
 public:
     bool shouldClose;
+
+    std::mutex queuemutex;
+
+    queue<struct msg_request_t> event_queue;
 
     ClientConnection(int clientSocket, Server *server, unsigned int id, string username);
 
