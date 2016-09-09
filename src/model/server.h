@@ -4,6 +4,7 @@
 #include "message.h"
 #include "ClientConnection.h"
 #include <memory>
+#include "../Utils/SocketUtils.h"
 
 #define MAX_CONN 10
 #define BUFSIZE 1024

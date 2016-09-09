@@ -18,22 +18,10 @@ using namespace std;
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-int write_to_socket(int fd, struct msg_request_t msg) {
-    unsigned int realsize = sizeof(msg);
-
-    int retcode = send(fd, (void*)&realsize, sizeof(realsize), 0);
-
-    if (retcode >= 0) {
-        send(fd, (char*)&msg, realsize, 0);
-    } else {
-        int interror = errno;
-        return interror;
-    }
-    return 0;
-}
 void client_comm(Server* srv, int client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
 
+    SocketUtils sockutils;
     /* Recibo user y pass del cliente */
     char user[40];
     char pass[40];
@@ -45,7 +33,7 @@ void client_comm(Server* srv, int client) {
         struct msg_request_t resp;
         resp.code = MessageCode::LOGIN_OK;
 
-        int retcode = write_to_socket(client, resp);
+        int retcode = sockutils.writeSocket(client, resp);
         cout << "Lo que paso fue" << strerror(retcode) << endl;
 
         ClientConnection* handler = new ClientConnection(client, srv, 0, "");
@@ -53,7 +41,7 @@ void client_comm(Server* srv, int client) {
     } else {
         struct msg_request_t resp;
         resp.code = MessageCode::LOGIN_FAIL;
-        write_to_socket(client, resp);
+        sockutils.writeSocket(client, resp);
     }
     /* Esto crea un nuevo objeto ClientConnection que
      * se comunicará con el cliente en cuestión. Le paso el fd */
