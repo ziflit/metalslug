@@ -19,9 +19,6 @@ int main(int argc, char *argv[]) {
     /* Creo al cliente */
     Client* cliente1 = new Client();
 
-    /* Para el manejo de errores */
-    extern int errno;
-
     /* Configuracion del puerto
      * atoi() devuelve 0 si el parametro es invalido*/
     if (argc > 1)  port = atoi(argv[1]);
