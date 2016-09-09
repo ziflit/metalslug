@@ -129,9 +129,8 @@ int main(int argc, char *argv[]) {
             case '6':
                 cout << "\033[2J\033[1;1H"; /* clear screen */
                 endloop=true;
-                cliente1->disconnect();;
+                cliente1->disconnect();
                 conectado = false;
-                delete cliente1;
                 break;
 
 
@@ -143,6 +142,7 @@ int main(int argc, char *argv[]) {
         }
     }while(endloop!=true);
 
-    
+
+    delete cliente1;
     return 0;
 }
