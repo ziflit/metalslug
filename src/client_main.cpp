@@ -54,15 +54,12 @@ int main(int argc, char *argv[]) {
                 if (!conectado) {
                 cout << "Estableciendo la conexion con el servidor..." << endl << endl;
                     if (cliente1->connect_to_server(ip, port) ==  1 ){
+                        cliente1->store_users_list();
                         conectado = true;
                     } else {
                         break;
                     }
-                    /* Implementar logueo de usuario */
-
-                    /* Recibir lista de usuarios en el servidor */
-
-                    
+                   
                 }
                 cout << " Ud. ya se encuentra conectado al servidor " << endl << endl;
                 break;
@@ -73,29 +70,22 @@ int main(int argc, char *argv[]) {
                 cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (conectado) {
                     int userSelected;
+                    string contentMsg;
+
                     cout << "*-----------------------*" << endl;
                     cout << "!    Envio de mensajes   !" << endl;
                     cout << "*-----------------------*" << endl << endl;
-                    cout << "Elija el destinatario" << endl << endl;
-                    
                     cliente1->show_users_list();  /* implementar esto */
+
+                    cout << "Elija el destinatario:" << endl << endl;
                     cin >> userSelected;
-                    cliente1->send_message_to(userSelected); /* implementar esto */
 
-                    cliente1->send_message("hola", "tuvieja");
-                    cliente1->send_message("hola", "tuvieja3");
-                    cliente1->send_message("hola", "tuvieja");
-                    cliente1->send_message("hola", "tuvieja");
-                    cliente1->send_message("hola", "tuvieja");
-                    cliente1->send_message("hola", "tuvieja");
-                    cliente1->send_message("hola", "tuvieja5");
-                    cliente1->send_message("hola", "tuvieja");
-                    cliente1->send_message("hola", "tuvieja");
-                    cliente1->send_message("hola", "tuvieja");
-                    cliente1->send_message("hola", "tuvieja");
-                    cliente1->send_message("putoelquelee", "tuvieja20");
+                    cout << "Escriba el mensaje a enviar:" << endl << endl;
+                    cin >> contentMsg;
+                    // getline(cin,contentMsg);
 
-                    // delete mensaje;
+                    cliente1->send_message(userSelected, contentMsg);
+
                     break;
                     }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
