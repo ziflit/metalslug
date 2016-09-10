@@ -11,7 +11,7 @@
 class Client {
 	private:
     int socket_number;
-    string me;
+    char userName[20];
     std::vector<string> usersList;
 	public:
 		/* Pre: ip y puerto validos
