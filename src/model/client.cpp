@@ -101,7 +101,6 @@ void Client::send_message_to_all(string content) {
 int Client::receive_messages() {
 
     char buffer[BUFSIZE];
-
     recv(get_socket(), &buffer, BUFSIZE, 0);
     cout << buffer << endl;
     if (buffer=="ENDOFMESSAGES,,,"){return 1;}
@@ -129,6 +128,7 @@ void Client::ask_for_messages() {
     msg_request_t msg;
     msg.code = MessageCode::CLIENT_RECEIVE_MSGS;
 
+    strcpy(msg.message.from, userName);
     SocketUtils sockutils;
     sockutils.writeSocket(socket_number, msg);
 }
