@@ -141,7 +141,6 @@ void Server::accept_incoming_connections() {
     }
 
     cout << "Ingresando cliente numero" << client_id << endl;
-    // std::thread handler = std::thread(client_comm, this, clients[client_id]);
     client_comm(this, clients[client_id]);
     client_id++;
 }
@@ -179,3 +178,24 @@ void Server::handle_message(struct msg_request_t message) {
     content.assign(message.message.msg);
     cout << "El mensaje entrante es: " << content << endl;
 }
+
+void Server::store_message(const msg_t& mensaje) {
+    messagesList.push_back(mensaje);
+}
+
+
+std::list<msg_t> Server::get_messages_of(string user){
+    std::list<msg_t> messagesFiltered;
+    for (auto it = messagesList.begin(); it != messagesList.cend();){
+        if( it->to == user ){
+            messagesFiltered.push_back(*it);
+            it = messagesFiltered.erase(it); // ...
+        } else {
+            it++;
+        }
+    }
+    return messagesFiltered;
+}
+/* Si  necesito acceso aleatorio, uso vector
+pero si necesito recorrer de principio a fin o voy borrando/insertando
+elementos en el medio, uso list */

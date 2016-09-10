@@ -33,7 +33,6 @@ struct msg_t {
     char msg[200];
 };
 
-
 struct msg_request_t {
     MessageCode code;
     msg_t message;
