@@ -68,11 +68,20 @@ void Client::disconnect(){
     close(socket_number);
 }
 
-int Client::send_message(string to, string content) {
+int Client::send_message(int to, string content) {
     msg_request_t msg;
+    string destinatedUser;
     msg.code = MessageCode::CLIENT_SEND_MSG;
+
+    if ( to == (usersList.size() + 1) ){
+        send_message_to_all(content);
+        return 0;
+    } else {
+        destinatedUser = searchUser(to);
+    }
+
     strcpy(msg.message.msg, content.data());
-    strcpy(msg.message.to, to.data());
+    strcpy(msg.message.to, destinatedUser.data());
     strcpy(msg.message.from, me.data());
 
     SocketUtils sockutils;
@@ -81,8 +90,11 @@ int Client::send_message(string to, string content) {
     return 0;
 }
 
-void Client::send_message_to_all() {
-
+void Client::send_message_to_all(string content) {
+    int i;
+    for ( i = 0 ; i < usersList.size() ; i++ ){
+        send_message(i, content);
+    }
 }
 
 int Client::receive_messages() {
@@ -105,22 +117,37 @@ int Client::get_socket() {
 
 void Client::show_users_list() {
     int i;
-    for ( i = 0 ; usersList.size() ; i++ ){
+    for ( i = 0 ; i < usersList.size(); i++ ){
         cout << i << " - " << usersList[i] << endl;
     }
-    cout << i + 1 << endl;
+    cout << "vsda" << usersList.size() << " - All Users" << endl << endl;
 }
 
-void Client::send_message_to(int userSelected) {
-    if ( userSelected == (usersList.size() + 1) ){
-        send_message_to_all();
-        return ;
-    }
-    
-}
 
 void Client::ask_for_messages() {
+    msg_request_t msg;
+    msg.code = MessageCode::CLIENT_RECEIVE_MSGS;
 
+    SocketUtils sockutils;
+    sockutils.writeSocket(socket_number, msg);
+}
+
+
+void Client::store_users_list(){
+    /* Ace se va recibir la lista de usuarios, por el momento
+     * hago una lista trucha
+     */
+    string user1, user2, user3;
+    user1 = "usuario1";
+    user2 = "usuario2";
+    user3 = "usuario3";
+    usersList.push_back(user1);   
+    usersList.push_back(user2);
+    usersList.push_back(user3);
+}
+
+string Client::searchUser(int user){
+    return usersList[user];
 }
 
 
