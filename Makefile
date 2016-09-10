@@ -1,6 +1,8 @@
 # Para el cliente
-SRC_FILES = src/client_main.cpp $(filter-out src/model/server.cpp, $(wildcard src/model/*.cpp)) src/Utils/*.cpp
-INC_FILES = src/*.h -I$(filter-out src/model/server.h, $(wildcard src/model/*.h))
+#SRC_FILES = src/client_main.cpp $(filter-out src/model/server.cpp, $(wildcard src/model/*.cpp)) $(filter-out src/model/ClientConnection.cpp, $(wildcard src/model/*.cpp)) src/Utils/*.cpp
+SRC_FILES = src/client_main.cpp src/Utils/*.cpp src/model/client.cpp src/model/message.cpp src/model/User.cpp
+INC_FILES = src/model/client.h src/model/message.h src/model/User.h src/Utils/*.h
+#INC_FILES = src/*.h -I$(filter-out src/model/server.h, $(wildcard src/model/*.h))
 OBJ_NAME = client
 CLIENT_DEP =
 

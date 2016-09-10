@@ -88,10 +88,6 @@ int Server::initialize_server(string ip, int port) {
         cout << "Cerrando..." << endl;
         exit(1);
     }
-
-    for (int i=0; i < MAX_CONN; ++i) {
-        clients[i] = 0;
-    }
     return listen_socket_fd;
 }
 
@@ -105,67 +101,46 @@ void Server::shutdown() {
 }
 
 void Server::accept_incoming_connections() {
-    int client_id = -1;
-    for (int i=0; i < MAX_CONN; ++i) {
-        if (clients[i] == 0) {
-            client_id = i;
-            break;
-        }
-    }
-    // No hay conexiones disponibles
-    // Debería esperar hasta que haya una
-    if (client_id == -1) {
-        cout << "No hay más conexiones disponibles" << endl;
-        for (int i=0; i < MAX_CONN; ++i) {
-            cout << clients[i] << endl;
-        }
-        return;
-    }
-
+    int client_id;
     struct sockaddr_in client_addr;
     socklen_t caddr_size;
 
     /* accept() devuelve un file descriptor asociado a la conexión con el cliente
         * y sólo a el */
-    clients[client_id] = accept(listen_socket_fd, (struct sockaddr*)&client_addr,
+    client_id = accept(listen_socket_fd, (struct sockaddr*)&client_addr,
                                 &caddr_size);
-    if (clients[client_id] < 0) {
+    if (client_id < 0) {
         cout << "Hubo un error al conectar con el cliente: " << strerror(errno) << endl;
         cout << "Cerrando..." << endl;
         exit(1);
     }
 
     cout << "Ingresando cliente numero" << client_id << endl;
-    client_comm(this, clients[client_id]);
+    client_comm(this, client_id);
     client_id++;
 }
 
-int Server::close_connection(int client_id) {
+int Server::close_connection(char* username) {
     /* responsabilidad de connectionHandler?
     * el es el dueño del socket después de todo
     */
-    if (close(clients[client_id]) != 0) {
-        //Log
-        return -1;
-    }
     for (unsigned int i = 0; i < connections.size(); ++i) {
-        if (connections[i]->getClientSocket() == client_id) {
+        if (strcmp(connections[i]->getUsername(), username) == 0) {
             connections.erase(connections.begin() + i);
             break;
         }
     }
-    clients[client_id] = 0; /* Libero el slot de cliente */
     return 0;
 }
 
 void Server::close_all_connections() {
-    for (int i=0; i<MAX_CONN; ++i) {
-        close_connection(i);
+    for (unsigned int i = 0; i < connections.size(); ++i) {
+        connections[i]->stop();
     }
 }
 
-int* Server::get_connections() {
-    return clients;
+vector<shared_ptr<ClientConnection> > Server::get_connections() {
+    return connections;
 }
 
 

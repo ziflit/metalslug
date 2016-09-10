@@ -81,10 +81,12 @@ void ClientConnection::start() {
 }
 
 void ClientConnection::stop() {
+    cout << "Matando el client connection de " << username << endl;
     shouldClose = true;
     this->reader.detach();
     this->writer.detach(); /* Guarda que tiene un while true, no es join */
-    //this->server->close_connection(this->clientSocket);
+    close(this->clientSocket);
+    this->server->close_connection((char*)username);
 }
 
 void ClientConnection::push_event(struct msg_request_t event) {
@@ -92,9 +94,7 @@ void ClientConnection::push_event(struct msg_request_t event) {
 }
 
 void ClientConnection::handle_message(struct msg_request_t message) {
-    string content;
-    content.assign(message.message.msg);
-    cout << "El mensaje entrante es: " << content << endl;
+    server->handle_message(message);
 }
 
 ClientConnection::ClientConnection() {}

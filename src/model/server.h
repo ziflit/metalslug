@@ -14,7 +14,6 @@ class Server {
 	private:
     std::list<msg_t> messagesList; /* Lista de mensajes almacenados */
     int listen_socket_fd;
-    int clients[MAX_CONN];
     vector<shared_ptr<ClientConnection> > connections;
 
   public:
@@ -42,7 +41,7 @@ class Server {
      * Post: cierra la conexion de un cliente especifico y
      * actualiza la lista de conexiones disponibles liberando un lugar
 		 */
-    int close_connection(int client_id);
+    int close_connection(char* username);
 
     /* Pre:
      * Post: cierra todas las conexiones
@@ -54,7 +53,7 @@ class Server {
     /* y sus threads */
     void shutdown();
 
-    int* get_connections();
+    vector<shared_ptr<ClientConnection> > get_connections();
 
     /* Completa la lista de conexiones de clientes con sus respectivos
      * fd para identificarlos. También genera los threads de intercambio
