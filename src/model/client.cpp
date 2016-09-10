@@ -60,6 +60,7 @@ int Client::connect_to_server(string ip, int port) {
     }
     else {
         cout << "Autenticación OK. Conectado" << endl;
+        strcpy(userName, user.data());
     }
     return 1;
 }
@@ -73,7 +74,7 @@ int Client::send_message(int to, string content) {
     string destinatedUser;
     msg.code = MessageCode::CLIENT_SEND_MSG;
 
-    if ( to == (usersList.size() + 1) ){
+    if ( to == usersList.size() ){
         send_message_to_all(content);
         return 0;
     } else {
@@ -82,7 +83,7 @@ int Client::send_message(int to, string content) {
 
     strcpy(msg.message.msg, content.data());
     strcpy(msg.message.to, destinatedUser.data());
-    strcpy(msg.message.from, me.data());
+    strcpy(msg.message.from, userName);
 
     SocketUtils sockutils;
     sockutils.writeSocket(socket_number, msg);
@@ -100,7 +101,6 @@ void Client::send_message_to_all(string content) {
 int Client::receive_messages() {
 
     char buffer[BUFSIZE];
-
     recv(get_socket(), &buffer, BUFSIZE, 0);
     cout << buffer << endl;
     if (buffer=="ENDOFMESSAGES,,,"){return 1;}
@@ -120,7 +120,7 @@ void Client::show_users_list() {
     for ( i = 0 ; i < usersList.size(); i++ ){
         cout << i << " - " << usersList[i] << endl;
     }
-    cout << "vsda" << usersList.size() << " - All Users" << endl << endl;
+    cout << usersList.size() << " - All Users" << endl << endl;
 }
 
 
@@ -128,6 +128,7 @@ void Client::ask_for_messages() {
     msg_request_t msg;
     msg.code = MessageCode::CLIENT_RECEIVE_MSGS;
 
+    strcpy(msg.message.from, userName);
     SocketUtils sockutils;
     sockutils.writeSocket(socket_number, msg);
 }

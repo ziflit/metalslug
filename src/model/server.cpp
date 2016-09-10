@@ -145,9 +145,28 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
 
 
 void Server::handle_message(struct msg_request_t message) {
-    string content;
-    content.assign(message.message.msg);
-    cout << "Hola soy el server, quizas me recuerden ajsdghfksjdghfaskjdghf" << content << endl;
+    switch(message.code){
+        case MessageCode::CLIENT_SEND_MSG:
+            cout << "CLIENT_SEND_MSG" << endl;
+            store_message(message.message);
+            break;
+ 
+
+        case MessageCode::CLIENT_RECEIVE_MSGS:
+            cout << "CLIENT_RECEIVE_MSGS" << endl;
+            get_messages_of(message.message.from);
+            /* Aca hay que hacer la parte de enviar todos los
+             * mensajes que hay en la lista al usuario en cuestion
+             * deberia estar en un thread aparte */
+
+            break;
+
+        default:
+            string content;
+            content.assign(message.message.msg);
+            cout << "El mensaje entrante es: " << content << endl;
+            break;
+    }
 }
 
 void Server::store_message(const msg_t& mensaje) {
