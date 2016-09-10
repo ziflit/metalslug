@@ -31,8 +31,7 @@ void client_comm(Server* srv, int client) {
         struct msg_request_t resp;
         resp.code = MessageCode::LOGIN_OK;
 
-        int retcode = sockutils.writeSocket(client, resp);
-        cout << "Lo que paso fue: " << strerror(retcode) << endl;
+        sockutils.writeSocket(client, resp);
 
         ClientConnection* handler = new ClientConnection(client, srv, user);
         handler->start();

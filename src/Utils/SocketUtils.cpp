@@ -6,15 +6,18 @@
 using namespace std;
 
 int SocketUtils::writeSocket(int fd, struct msg_request_t msg) {
-    int retcode = send(fd, &msg, MSGSIZE, 0);
-    return retcode;
+    int bytesSent = send(fd, &msg, MSGSIZE, 0);
+    if (bytesSent < 0) {
+        cout << "Hubo un error y fue: " << strerror(bytesSent) << endl;
+    }
+    return bytesSent;
 }
 
 bool SocketUtils::readSocket(int socket, char* buffer) {
     int bytesRecv = 0;
 
     while (bytesRecv < MSGSIZE && bytesRecv != -1) {
-        bytesRecv += recv(socket, buffer, BUFSIZE, 0);
+        bytesRecv += recv(socket, buffer, MSGSIZE, 0);
     }
     if (bytesRecv == -1) {
         /* Loggeo un error */
