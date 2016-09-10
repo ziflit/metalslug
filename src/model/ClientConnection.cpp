@@ -16,14 +16,10 @@ ClientConnection::~ClientConnection() {
 }
 
 /**
- *
  * @param clientSocket <--- socket id
  * @param server
- * @param id   <--- client id
  * @param username
- * @return
  */
-
 ClientConnection::ClientConnection(int clientSocket, Server *server, char* username) {
     this->clientSocket = clientSocket;
     this->server = server;
@@ -85,6 +81,7 @@ void ClientConnection::start() {
     this->reader = std::thread(connectionReader, this);
     this->writer = std::thread(connectionWriter, this);
 }
+
 void ClientConnection::stop() {
     shouldClose = true;
     this->reader.join();
