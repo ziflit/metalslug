@@ -8,23 +8,18 @@
 #include <mutex>
 #include <unistd.h>
 #include "../Utils/Protocol.h"
+#include "server.h"
+
 
 using namespace std;
 
-class Server;
 class ClientConnection {
 private:
     int clientSocket;
-    unsigned int clientId;
-    string username;
+    char username[20];
     thread reader;
     thread writer;
-    Server *server;
-
-
-    int readSocket(int socket, char* buffer, int length);
-
-
+    Server* server;
 public:
     bool shouldClose;
 
@@ -32,11 +27,13 @@ public:
 
     queue<struct msg_request_t> event_queue;
 
-    ClientConnection(int clientSocket, Server *server, unsigned int id, string username);
+    ClientConnection(int clientSocket, Server* server, char* username);
 
     virtual ~ClientConnection();
 
     int getClientSocket() { return clientSocket; }
+
+    void handle_message(struct msg_request_t message);
 
     void start();
 

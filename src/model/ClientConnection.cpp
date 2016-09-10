@@ -5,6 +5,7 @@
 #include <sstream>
 #include "ClientConnection.h"
 #include "../Utils/Logger.h"
+#include <string.h>
 #include "../Utils/SocketUtils.h"
 
 #define CLASSNAME "ClientConnection.class"
@@ -23,11 +24,10 @@ ClientConnection::~ClientConnection() {
  * @return
  */
 
-ClientConnection::ClientConnection(int clientSocket, Server *server, unsigned int id, string username) {
+ClientConnection::ClientConnection(int clientSocket, Server *server, char* username) {
     this->clientSocket = clientSocket;
     this->server = server;
-    this->clientId = id;
-    this->username = username;
+    strcpy(this->username, username);
     this->shouldClose = false;
 
 
@@ -45,29 +45,24 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, unsigned in
     }
 }
 
-int connectionReader(void *data) {
+int connectionReader(ClientConnection *handler) {
     bool isComplete;
     SocketUtils sockutils;
-    ClientConnection *client = (ClientConnection *) data;
     struct msg_request_t *message;
-    char* buffer;
+    char buffer[BUFSIZE];
+
     do {
-        isComplete = sockutils.readSocket(client->getClientSocket(), buffer);
+        isComplete = sockutils.readSocket(handler->getClientSocket(), buffer);
 
         if (!isComplete) {
             //LOGGER_WRITE(Logger::ERROR, "Error de recepcion de mensaje. \n " + strerror(errno), CLASSNAME);
-            client->stop();
+            handler->stop();
             //LOGGER_WRITE(Logger::ERROR, "Conexion cerrada.", CLASSNAME);
         } else {
-            cout << "Está por castear, según Flor" << endl;
             message = (struct msg_request_t *) buffer;
-            cout << "Casteo bien, no puedo creer esto" << endl;
-            //HAY QUE DEFINIR QUE VAMOS A HACER CON EL MENSAJE QUE LLEGA...
-            //MI IDEA ES QUE TENGAMOS UNA COLA DE EVENTOS EN EL SERVER Y QUE EL PROCESE LOS PEDIDOS
-            //EN FUNCION DE LO QUE SE LE PASA
+            handler->handle_message(*message);
         }
-        cout << "JOJOJO" << endl;
-    } while (isComplete and !client->shouldClose);
+    } while (isComplete and !handler->shouldClose);
     /* Si no está completo devuelvo 0 */
     return isComplete ? 1 : 0;
 }
@@ -80,7 +75,7 @@ int connectionWriter(ClientConnection* data) {
             data->event_queue.pop();
             data->queuemutex.unlock();
             SocketUtils sockutils;
-            cout << sockutils.writeSocket(data->getClientSocket(), event) << endl;
+            sockutils.writeSocket(data->getClientSocket(), event);
         }
     }
     return 1;
@@ -101,3 +96,8 @@ void ClientConnection::push_event(struct msg_request_t event) {
     event_queue.push(event);
 }
 
+void ClientConnection::handle_message(struct msg_request_t message) {
+    string content;
+    content.assign(message.message.msg);
+    cout << "El mensaje entrante es: " << content << endl;
+}
