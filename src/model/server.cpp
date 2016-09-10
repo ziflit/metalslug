@@ -1,17 +1,12 @@
 #include <iostream>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <thread>
-#include <stdlib.h>
 #include <unistd.h>
-#include <errno.h>
 #include "server.h"
-#include "message.h"
 #include "ClientConnection.h"
-#include "../Utils/Protocol.h"
 
 using namespace std;
 
@@ -172,6 +167,7 @@ void Server::close_all_connections() {
 int* Server::get_connections() {
     return clients;
 }
+
 
 void Server::handle_message(struct msg_request_t message) {
     string content;

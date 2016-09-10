@@ -1,6 +1,3 @@
-//
-// Created by leandro on 27/08/16.
-//
 
 #ifndef METALSLUG_FILEUTIL_H
 #define METALSLUG_FILEUTIL_H

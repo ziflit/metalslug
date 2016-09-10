@@ -5,8 +5,6 @@
 #include <sstream>
 #include "ClientConnection.h"
 #include "../Utils/Logger.h"
-#include <string.h>
-#include "../Utils/SocketUtils.h"
 
 #define CLASSNAME "ClientConnection.class"
 
@@ -20,7 +18,7 @@ ClientConnection::~ClientConnection() {
  * @param server
  * @param username
  */
-ClientConnection::ClientConnection(int clientSocket, Server *server, char* username) {
+ClientConnection::ClientConnection(int clientSocket, Server *server, char *username) {
     this->clientSocket = clientSocket;
     this->server = server;
     strcpy(this->username, username);
@@ -63,7 +61,7 @@ int connectionReader(ClientConnection *handler) {
     return isComplete ? 1 : 0;
 }
 
-int connectionWriter(ClientConnection* data) {
+int connectionWriter(ClientConnection *data) {
     while (!data->shouldClose) {
         data->queuemutex.lock();
         if (data->has_events()) {
@@ -84,9 +82,9 @@ void ClientConnection::start() {
 
 void ClientConnection::stop() {
     shouldClose = true;
-    this->reader.join();
-    this->writer.join(); /* Guarda que tiene un while true, no es join */
-    //this->server->removeClient(this); --> pedir a santi
+    this->reader.detach();
+    this->writer.detach(); /* Guarda que tiene un while true, no es join */
+    //this->server->close_connection(this->clientSocket);
 }
 
 void ClientConnection::push_event(struct msg_request_t event) {
@@ -97,4 +95,10 @@ void ClientConnection::handle_message(struct msg_request_t message) {
     string content;
     content.assign(message.message.msg);
     cout << "El mensaje entrante es: " << content << endl;
+}
+
+ClientConnection::ClientConnection() {}
+
+char *ClientConnection::getUsername() {
+    return username;
 }

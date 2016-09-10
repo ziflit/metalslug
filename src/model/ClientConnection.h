@@ -21,6 +21,9 @@ private:
     thread writer;
     Server* server;
 public:
+    ClientConnection();
+
+public:
     bool shouldClose;
 
     std::mutex queuemutex;
@@ -42,6 +45,8 @@ public:
     void push_event(struct msg_request_t event);
 
     bool has_events() { return !event_queue.empty(); }
+
+    char* getUsername();
 
 };
 

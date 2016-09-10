@@ -1,9 +1,5 @@
 #include <iostream>
 #include "message.h"
-#include <vector>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
 
 
 //_______________________________Messages______________________________________
