@@ -1,25 +1,22 @@
+
 #include "User.h"
 
-User::User(string username, string password, int id) {
-    User::username = username;
-    User::password = password;
-    User::id = id;
+void User::setUsername(string name){
+    
+    strcpy(this->username,name.data());
+    
 }
 
-const string &User::getUsername() const {
+void User::setPassword(string pass){
+    strcpy(this->password,pass.data());
+    
+}
+
+char* User::getUsername() {
     return username;
 }
-
-void User::setUsername(const string &username) {
-    User::username = username;
-}
-
-const string &User::getPassword() const {
+char* User::getPassword() {
     return password;
-}
-
-void User::setPassword(const string &password) {
-    User::password = password;
 }
 
 int User::getId() const {
@@ -27,9 +24,15 @@ int User::getId() const {
 }
 
 void User::setId(int id) {
-    User::id = id;
+    this->id = id;
 }
 
-bool User::isUsername(string name) {
-    return (username == name);
+bool User::isMyPassword(char *password){
+
+    return ((strcmp(this->password, password) == 0));
+}
+
+bool User::isMyUsername(char *username) {
+
+    return ((strcmp(this->username, username) == 0));
 }
