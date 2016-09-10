@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include "Utils/loremIpsum.h"
 
 using namespace std;
 
@@ -116,7 +117,9 @@ int main(int argc, char *argv[]) {
                     cout << "*-----------------------*" << endl;
                     cout << "!      Lorem Ipsum      !" << endl;
                     cout << "*-----------------------*" << endl << endl;
-
+                    char* path = "src/Utils/arch.txt";
+                    LoremIpsum* lorem = new LoremIpsum(10,10,path,cliente1);
+                    lorem->iniciar();
                     /* Falta implementar el lorem */
                     
                     break;
