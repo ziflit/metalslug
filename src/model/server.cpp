@@ -1,40 +1,53 @@
 #include <iostream>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <pthread.h>
-#include <stdlib.h>
+#include <thread>
 #include <unistd.h>
-#include <errno.h>
 #include "server.h"
-#include "message.h"
+#include "ClientConnection.h"
 
 using namespace std;
 
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-void* client_comm(void* client) {
+void client_comm(Server* srv, int client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
-    string message;
-    int client_id = *(int*)client;
 
-    message = "Estás conectado! Bienvenido!";
-    send(client_id, message.data(), BUFSIZE, 0);
+    SocketUtils sockutils;
+    /* Recibo user y pass del cliente */
+    char user[20];
+    char pass[20];
+    recv(client, user, 20, 0);
+    recv(client, pass, 20, 0);
+    if (srv->auth_user(user, pass)) {
+        struct msg_request_t resp;
+        resp.code = MessageCode::LOGIN_OK;
 
-    char buffer[BUFSIZE];
-    int msg_size =  recv(client_id, &buffer, BUFSIZE, 0);
-    message.assign(buffer);
+        sockutils.writeSocket(client, resp);
 
-    /* Checkeo estupido para probar algo que Fran me mandaba */
-
-    cout << message;
-    if (message.find("vieja") != string::npos) {
-        cout << "Me llegó tu vieja en tanga, piola" << endl;
+        ClientConnection* handler = new ClientConnection(client, srv, user);
+        handler->start();
+        srv->add_connection(handler);
+    } else {
+        struct msg_request_t resp;
+        resp.code = MessageCode::LOGIN_FAIL;
+        sockutils.writeSocket(client, resp);
     }
-    return NULL;
+    /* Esto crea un nuevo objeto ClientConnection que
+     * se comunicará con el cliente en cuestión. Le paso el fd */
+}
+
+bool Server::auth_user(char* user, char* pass) {
+    return true;
+}
+
+void Server::add_connection(ClientConnection* handler) {
+    /* No usar nunca más el puntero pelado luego de esta
+       llamada a emplace_back */
+    connections.emplace_back(handler);
 }
 
 int Server::get_listen_socket() {
@@ -75,10 +88,6 @@ int Server::initialize_server(string ip, int port) {
         cout << "Cerrando..." << endl;
         exit(1);
     }
-
-    for (int i=0; i < MAX_CONN; ++i) {
-        clients[i] = 0;
-    }
     return listen_socket_fd;
 }
 
@@ -92,59 +101,72 @@ void Server::shutdown() {
 }
 
 void Server::accept_incoming_connections() {
-    int client_id = -1;
-    for (int i=0; i < MAX_CONN; ++i) {
-        if (clients[i] == 0) {
-            client_id = i;
-            break;
-        }
-    }
-    // No hay conexiones disponibles
-    // Debería esperar hasta que haya una
-    if (client_id == -1) {
-        cout << "No hay más conexiones disponibles" << endl;
-        for (int i=0; i < MAX_CONN; ++i) {
-            cout << clients[i] << endl;
-        }
-        return;
-    }
-
+    int client_id;
     struct sockaddr_in client_addr;
     socklen_t caddr_size;
 
     /* accept() devuelve un file descriptor asociado a la conexión con el cliente
         * y sólo a el */
-    clients[client_id] = accept(listen_socket_fd, (struct sockaddr*)&client_addr,
+    client_id = accept(listen_socket_fd, (struct sockaddr*)&client_addr,
                                 &caddr_size);
-    if (clients[client_id] < 0) {
+    if (client_id < 0) {
         cout << "Hubo un error al conectar con el cliente: " << strerror(errno) << endl;
         cout << "Cerrando..." << endl;
         exit(1);
     }
 
     cout << "Ingresando cliente numero" << client_id << endl;
-    pthread_create(&th_clientes[client_id], NULL, client_comm, (void*) &clients[client_id]);
+    client_comm(this, client_id);
     client_id++;
 }
 
-int Server::close_connection(int client_id) {
-    if (close(clients[client_id]) != 0) {
-        //Log
-        return -1;
+int Server::close_connection(char* username) {
+    /* responsabilidad de connectionHandler?
+    * el es el dueño del socket después de todo
+    */
+    for (unsigned int i = 0; i < connections.size(); ++i) {
+        if (strcmp(connections[i]->getUsername(), username) == 0) {
+            connections.erase(connections.begin() + i);
+            break;
+        }
     }
-    pthread_join(th_clientes[client_id], NULL);
-    clients[client_id] = 0; /* Libero el slot de cliente */
     return 0;
 }
 
 void Server::close_all_connections() {
-    for (int i=0; i<MAX_CONN; ++i) {
-        close_connection(i);
+    for (unsigned int i = 0; i < connections.size(); ++i) {
+        connections[i]->stop();
     }
 }
 
-int* Server::get_connections() {
-    return clients;
+vector<shared_ptr<ClientConnection> > Server::get_connections() {
+    return connections;
+}
+
+
+void Server::handle_message(struct msg_request_t message) {
+    switch(message.code){
+        case MessageCode::CLIENT_SEND_MSG:
+            cout << "CLIENT_SEND_MSG" << endl;
+            store_message(message.message);
+            break;
+ 
+
+        case MessageCode::CLIENT_RECEIVE_MSGS:
+            cout << "CLIENT_RECEIVE_MSGS" << endl;
+            get_messages_of(message.message.from);
+            /* Aca hay que hacer la parte de enviar todos los
+             * mensajes que hay en la lista al usuario en cuestion
+             * deberia estar en un thread aparte */
+
+            break;
+
+        default:
+            string content;
+            content.assign(message.message.msg);
+            cout << "El mensaje entrante es: " << content << endl;
+            break;
+    }
 }
 
 void Server::store_message(const msg_t& mensaje) {
@@ -153,7 +175,6 @@ void Server::store_message(const msg_t& mensaje) {
 
 
 std::list<msg_t> Server::get_messages_of(string user){
-    // CAMBIAR VECTOR POR LIST
     std::list<msg_t> messagesFiltered;
     for (auto it = messagesList.begin(); it != messagesList.cend();){
         if( it->to == user ){
@@ -165,10 +186,6 @@ std::list<msg_t> Server::get_messages_of(string user){
     }
     return messagesFiltered;
 }
-
-
-
-
 /* Si  necesito acceso aleatorio, uso vector
 pero si necesito recorrer de principio a fin o voy borrando/insertando
 elementos en el medio, uso list */

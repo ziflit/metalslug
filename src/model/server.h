@@ -2,25 +2,19 @@
 #define METALSLUG_SERVER_H
 
 #include "message.h"
+#include <memory>
+#include "../Utils/SocketUtils.h"
 #include <list>
 #include "../Utils/Protocol.h"
 
-#define MAX_CONN 10
-#define BUFSIZE 1024
+#define MAX_CONN 6
 
-struct arg_struct {
-    int id;
-    int* connections;
-};
-
+class ClientConnection;
 class Server {
 	private:
-    int log_type; /* Para saber que tipo de log se va usar */
-    int listen_port;
     std::list<msg_t> messagesList; /* Lista de mensajes almacenados */
     int listen_socket_fd;
-    int clients[MAX_CONN];
-    pthread_t th_clientes[MAX_CONN];
+    vector<shared_ptr<ClientConnection> > connections;
 
   public:
     /* Dada una ip y un puerto para escuchar, pide un socket al sistema
@@ -47,7 +41,7 @@ class Server {
      * Post: cierra la conexion de un cliente especifico y
      * actualiza la lista de conexiones disponibles liberando un lugar
 		 */
-    int close_connection(int client_id);
+    int close_connection(char* username);
 
     /* Pre:
      * Post: cierra todas las conexiones
@@ -59,13 +53,19 @@ class Server {
     /* y sus threads */
     void shutdown();
 
-    int* get_connections();
+    vector<shared_ptr<ClientConnection> > get_connections();
 
     /* Completa la lista de conexiones de clientes con sus respectivos
      * fd para identificarlos. También genera los threads de intercambio
      * de mensajes para cada cliente conectado.
      */
     void accept_incoming_connections();
+
+    void add_connection(ClientConnection* handler);
+
+    bool auth_user(char* user, char* pass);
+
+    void handle_message(struct msg_request_t message);
 
     /* guarda el mensaje pasado en la lista de mensajes que tiene almacenada */
     void store_message(const msg_t& mensaje);
@@ -74,9 +74,7 @@ class Server {
      * pertencen al usuario solicitado*/
     list<msg_t> get_messages_of(string user);
 
-
-
+    void removeClient(char* username);
 };
-
 
 #endif //METALSLUG_SERVER_H

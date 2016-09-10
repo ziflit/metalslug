@@ -4,13 +4,15 @@
 #include <iostream>
 #include <stdlib.h>
 #include "message.h"
+#include "../Utils/SocketUtils.h"
 
 
 
 class Client {
 	private:
-	    int socket_number;
-	    std::vector<string> usersList;
+    int socket_number;
+    char userName[20];
+    std::vector<string> usersList;
 	public:
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
@@ -25,7 +27,7 @@ class Client {
 		/* Pre: 
 		 * Post: 
 		 */
-		int send_message(Message* msg);
+    int send_message(int to, string content);
 
 		/* Pre: 
 		 * Post: 
@@ -43,11 +45,13 @@ class Client {
 
     void show_users_list();
 
-	void send_message_to(int userSelected);
+    void store_users_list();
 
 	void ask_for_messages();
 
-	void send_message_to_all();
+	void send_message_to_all(string content);
+
+	string searchUser(int user);
 };
 
 

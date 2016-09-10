@@ -1,6 +1,7 @@
 
 #include <asm/socket.h>
 #include <sys/socket.h>
+#include <iostream>
 #include <sstream>
 #include "ClientConnection.h"
 #include "../Utils/Logger.h"
@@ -8,26 +9,21 @@
 #define CLASSNAME "ClientConnection.class"
 
 
-int readSocket(int socket, char *buffer, int length);
-
 ClientConnection::~ClientConnection() {
     close(this->clientSocket);
 }
 
 /**
- *
  * @param clientSocket <--- socket id
  * @param server
- * @param id   <--- client id
  * @param username
- * @return
  */
-
-ClientConnection::ClientConnection(int clientSocket, Server *server, unsigned int id, string username) {
+ClientConnection::ClientConnection(int clientSocket, Server *server, char *username) {
     this->clientSocket = clientSocket;
     this->server = server;
-    this->clientId = id;
-    this->username = username;
+    strcpy(this->username, username);
+    this->shouldClose = false;
+
 
     struct timeval timeout;
     timeout.tv_sec = 10000;
@@ -43,56 +39,66 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, unsigned in
     }
 }
 
-int connectionReader(void *data) {
-    int result = 1;
-    ClientConnection *client = (ClientConnection *) data;
-    struct msg_request_t message;
-    int length = sizeof(struct msg_request_t);
-    char buffer[length];
-    do {
-        result = readSocket(client->getClientSocket(), buffer, length);
+int connectionReader(ClientConnection *handler) {
+    bool isComplete;
+    SocketUtils sockutils;
+    struct msg_request_t *message;
+    char buffer[BUFSIZE];
 
-        if (result <= 0) {
+    do {
+        isComplete = sockutils.readSocket(handler->getClientSocket(), buffer);
+
+        if (!isComplete) {
             //LOGGER_WRITE(Logger::ERROR, "Error de recepcion de mensaje. \n " + strerror(errno), CLASSNAME);
-            client->stop();
+            handler->stop();
             //LOGGER_WRITE(Logger::ERROR, "Conexion cerrada.", CLASSNAME);
         } else {
-            message = *(struct msg_request_t *) buffer;
-            //HAY QUE DEFINIR QUE VAMOS A HACER CON EL MENSAJE QUE LLEGA...
-            //MI IDEA ES QUE TENGAMOS UNA COLA DE EVENTOS EN EL SERVER Y QUE EL PROCESE LOS PEDIDOS
-            //EN FUNCION DE LO QUE SE LE PASA
+            message = (struct msg_request_t *) buffer;
+            handler->handle_message(*message);
         }
-    } while (result > 0);
-    return 1;
+    } while (isComplete and !handler->shouldClose);
+    /* Si no está completo devuelvo 0 */
+    return isComplete ? 1 : 0;
 }
 
-int connectionWriter(void *data) {
-    ClientConnection *client = (ClientConnection *) data;
+int connectionWriter(ClientConnection *data) {
+    while (!data->shouldClose) {
+        data->queuemutex.lock();
+        if (data->has_events()) {
+            msg_request_t event = data->event_queue.front();
+            data->event_queue.pop();
+            data->queuemutex.unlock();
+            SocketUtils sockutils;
+            sockutils.writeSocket(data->getClientSocket(), event);
+        }
+    }
     return 1;
 }
-
 
 void ClientConnection::start() {
     this->reader = std::thread(connectionReader, this);
-    this->reader = std::thread(connectionWriter, this);
+    this->writer = std::thread(connectionWriter, this);
 }
 
 void ClientConnection::stop() {
+    cout << "Matando el client connection de " << username << endl;
+    shouldClose = true;
     this->reader.detach();
-    this->writer.detach();
-    //this->server->removeClient(this); --> pedir a santi
+    this->writer.detach(); /* Guarda que tiene un while true, no es join */
+    close(this->clientSocket);
+    this->server->close_connection((char*)username);
 }
 
-int readSocket(int socket, char *buffer, int length) {
-    int bytesRecv = 0;
-    while (bytesRecv < length && bytesRecv != -1) {
-        bytesRecv += recv(socket, buffer + bytesRecv, length - bytesRecv, 0);
-        /** std::stringstream toLog;
-        toLog << "Recibidos " << bytesRecv << " bytes \n";
-        LOGGER_WRITE(Logger::DEBUG, toLog.str(), CLASSNAME);**/
-    }
-    /**
-     LOGGER_WRITE(Logger::DEBUG, "Se recibio el mensaje: " + buffer, CLASSNAME);
-     */
-    return bytesRecv;
+void ClientConnection::push_event(struct msg_request_t event) {
+    event_queue.push(event);
+}
+
+void ClientConnection::handle_message(struct msg_request_t message) {
+    server->handle_message(message);
+}
+
+ClientConnection::ClientConnection() {}
+
+char *ClientConnection::getUsername() {
+    return username;
 }
