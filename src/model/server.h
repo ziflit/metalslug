@@ -2,18 +2,17 @@
 #define METALSLUG_SERVER_H
 
 #include "message.h"
-#include "ClientConnection.h"
 #include <memory>
 #include "../Utils/SocketUtils.h"
 
-#define MAX_CONN 10
-#define BUFSIZE 1024
+#define MAX_CONN 6
 
 struct arg_struct {
     int id;
     int* connections;
 };
 
+class ClientConnection;
 class Server {
 	private:
     int log_type; /* Para saber que tipo de log se va usar */
@@ -72,6 +71,8 @@ class Server {
     void add_connection(ClientConnection* handler);
 
     bool auth_user(char* user, char* pass);
+
+    void handle_message(struct msg_request_t message);
 };
 
 

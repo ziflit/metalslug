@@ -23,20 +23,18 @@ void client_comm(Server* srv, int client) {
 
     SocketUtils sockutils;
     /* Recibo user y pass del cliente */
-    char user[40];
-    char pass[40];
-    cout << "esperando user" << endl;
-    recv(client, user, 40, 0);
-    cout << "esperando pass" << endl;
-    recv(client, pass, 40, 0);
+    char user[20];
+    char pass[20];
+    recv(client, user, 20, 0);
+    recv(client, pass, 20, 0);
     if (srv->auth_user(user, pass)) {
         struct msg_request_t resp;
         resp.code = MessageCode::LOGIN_OK;
 
         int retcode = sockutils.writeSocket(client, resp);
-        cout << "Lo que paso fue" << strerror(retcode) << endl;
+        cout << "Lo que paso fue: " << strerror(retcode) << endl;
 
-        ClientConnection* handler = new ClientConnection(client, srv, 0, "");
+        ClientConnection* handler = new ClientConnection(client, srv, user);
         handler->start();
         srv->add_connection(handler);
     } else {
@@ -175,4 +173,10 @@ void Server::close_all_connections() {
 
 int* Server::get_connections() {
     return clients;
+}
+
+void Server::handle_message(struct msg_request_t message) {
+    string content;
+    content.assign(message.message.msg);
+    cout << "El mensaje entrante es: " << content << endl;
 }

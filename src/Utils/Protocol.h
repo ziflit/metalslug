@@ -4,7 +4,9 @@
 
 #include <string>
 
-#define BUFSIZE 1024
+#define BUFSIZE 256
+#define MSGSIZE sizeof(struct msg_request_t)
+
 using namespace std;
 
 
@@ -26,9 +28,9 @@ enum MessageCode {
 };
 
 struct msg_t {
-    string from;
-    string to;
-    string msg;
+    char from[20];
+    char to[20];
+    char msg[200];
 };
 
 

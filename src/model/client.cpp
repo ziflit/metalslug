@@ -49,8 +49,8 @@ int Client::connect_to_server(string ip, int port) {
     cin >> pass;
 
     /*Envio mje al servidor*/
-    cout << send(socket_number,user.data(),40,0) << endl;
-    cout << send(socket_number,pass.data(),40,0) << endl;
+    cout << send(socket_number,user.data(),20,0) << endl;
+    cout << send(socket_number,pass.data(),20,0) << endl;
     char* response;
     unsigned int size;
 
@@ -76,12 +76,12 @@ void Client::disconnect(){
 int Client::send_message(string to, string content) {
     msg_request_t msg;
     msg.code = MessageCode::CLIENT_SEND_MSG;
-    msg.message.msg = content;
-    msg.message.to = to;
-    msg.message.from = me;
+    strcpy(msg.message.msg, content.data());
+    strcpy(msg.message.to, to.data());
+    strcpy(msg.message.from, me.data());
 
     SocketUtils sockutils;
-    cout << sockutils.writeSocket(socket_number, msg) << endl;
+    sockutils.writeSocket(socket_number, msg);
 
     return 0;
 }
