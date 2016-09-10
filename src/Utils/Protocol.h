@@ -22,7 +22,7 @@ using namespace std;
 
 enum MessageCode {
     CLIENT_SEND_MSG,
-    CLIENT_RECIEVE_MSG,
+    CLIENT_RECEIVE_MSGS,
     LOGIN_OK,
     LOGIN_FAIL
 };

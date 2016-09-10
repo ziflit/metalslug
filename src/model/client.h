@@ -27,7 +27,7 @@ class Client {
 		/* Pre: 
 		 * Post: 
 		 */
-    int send_message(string to, string content);
+    int send_message(int to, string content);
 
 		/* Pre: 
 		 * Post: 
@@ -45,11 +45,13 @@ class Client {
 
     void show_users_list();
 
-	void send_message_to(int userSelected);
+    void store_users_list();
 
 	void ask_for_messages();
 
-	void send_message_to_all();
+	void send_message_to_all(string content);
+
+	string searchUser(int user);
 };
 
 
