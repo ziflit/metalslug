@@ -174,9 +174,30 @@ int* Server::get_connections() {
 }
 
 void Server::handle_message(struct msg_request_t message) {
-    string content;
-    content.assign(message.message.msg);
-    cout << "El mensaje entrante es: " << content << endl;
+    switch(message.code){
+        case CLIENT_SEND_MSG:
+            cout << "CLIENT_SEND_MSG" << endl;
+            break;
+ 
+
+        case CLIENT_RECEIVE_MSGS:
+            cout << "CLIENT_RECEIVE_MSGS" << endl;
+            break;
+
+        case LOGIN_OK:
+            cout << "LOGIN_OK" << endl;
+            break;
+
+        case LOGIN_FAIL:
+            cout << "LOGIN_FAIL" << endl;
+            break;
+
+        default:
+            string content;
+            content.assign(message.message.msg);
+            cout << "El mensaje entrante es: " << content << endl;
+            break;
+    }
 }
 
 void Server::store_message(const msg_t& mensaje) {
