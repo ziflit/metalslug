@@ -22,8 +22,7 @@ int Client::connect_to_server(string ip, int port) {
     socket_number = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_number < 0) {
         cout << "Error abriendo el socket del cliente: " << strerror(errno) << endl;
-        cout << "Cerrando..." << endl;
-        exit(EXIT_FAILURE);
+        return 0;
     }
     /* Configuro las direcciones del cliente */
     server_addr.sin_family = AF_INET;
@@ -35,8 +34,7 @@ int Client::connect_to_server(string ip, int port) {
     /* Me conecto al servidor. Devuelve -1 si la conexion falla */
     if (connect(socket_number, (struct sockaddr *)&server_addr, server_sock_size) < 0) {
         cout << "Error conectando al servidor: " << strerror(errno) << endl;
-        cout << "Cerrando..." << endl;
-        exit(EXIT_FAILURE);
+        return 0;
     }
 
 

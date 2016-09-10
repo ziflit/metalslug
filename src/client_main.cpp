@@ -14,7 +14,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
     /* Seteo puerto e ip del server*/
     int port = 0;
-    string ip = "127.0.0.1";
+    string ip = "192.168.0.7";
 
     /* Creo al cliente */
     Client* cliente1 = new Client();
@@ -50,14 +50,17 @@ int main(int argc, char *argv[]) {
             case '1':
                 if (!conectado) {
                 cout << "Estableciendo la conexion con el servidor..." << endl << endl;
-                    cliente1->connect_to_server(ip, port);
-
+                    if (cliente1->connect_to_server(ip, port) ==  1 ){
+                        conectado = true;
+                    } else {
+                        break;
+                    }
                     /* Implementar logueo de usuario */
 
                     /* Recibir lista de usuarios en el servidor */
 
-                    conectado = true;
-                } 
+                    
+                }
                 cout << " Ud. ya se encuentra conectado al servidor " << endl << endl;
                 break;
  
@@ -78,6 +81,18 @@ int main(int argc, char *argv[]) {
 
                     // Message* mensaje = new Message(20,"tu","vieja","entanga");
                     cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja3");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja5");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("putoelquelee", "tuvieja20");
+
                     // delete mensaje;
                     break;
                     }
