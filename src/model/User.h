@@ -4,13 +4,6 @@
 #include <string.h>
 #include <string>
 
-//se tiene qu sacar
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-//-------
 
 using namespace std;
 

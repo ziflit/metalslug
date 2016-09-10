@@ -49,3 +49,19 @@ bool UserLoader::isPasswordOk(char *username,char *password){
 
 }
 
+unsigned int UserLoader::usersRegistered() {
+    return usersList.size();
+}
+string UserLoader::getUsersList() {
+    string users = "";
+    std::vector<User*>::iterator it ;
+    for(it= this->usersList.begin(); it != (this->usersList.end()-1); ++it) {
+
+        users += (*it)->getUsername();
+        users += ",";
+    }
+
+    users += (*it)->getUsername();
+    return users;
+}
+

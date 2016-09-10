@@ -28,9 +28,10 @@ public:
     bool processCSV();
     
     bool isPasswordOk(char* username, char* password);
-    
-    bool isUserRegistered(char* username);
-    
+
+    unsigned int usersRegistered();
+
+    string getUsersList();
 };
 
 
