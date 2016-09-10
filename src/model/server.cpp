@@ -4,37 +4,55 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <pthread.h>
+#include <thread>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
 #include "server.h"
 #include "message.h"
+#include "ClientConnection.h"
+#include "../Utils/Protocol.h"
 
 using namespace std;
 
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-void* client_comm(void* client) {
+void client_comm(Server* srv, int client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
-    string message;
-    int client_id = *(int*)client;
 
-    message = "Estás conectado! Bienvenido!";
-    send(client_id, message.data(), BUFSIZE, 0);
+    SocketUtils sockutils;
+    /* Recibo user y pass del cliente */
+    char user[20];
+    char pass[20];
+    recv(client, user, 20, 0);
+    recv(client, pass, 20, 0);
+    if (srv->auth_user(user, pass)) {
+        struct msg_request_t resp;
+        resp.code = MessageCode::LOGIN_OK;
 
-    char buffer[BUFSIZE];
-    int msg_size =  recv(client_id, &buffer, BUFSIZE, 0);
-    message.assign(buffer);
+        sockutils.writeSocket(client, resp);
 
-    /* Checkeo estupido para probar algo que Fran me mandaba */
-
-    cout << message;
-    if (message.find("vieja") != string::npos) {
-        cout << "Me llegó tu vieja en tanga, piola" << endl;
+        ClientConnection* handler = new ClientConnection(client, srv, user);
+        handler->start();
+        srv->add_connection(handler);
+    } else {
+        struct msg_request_t resp;
+        resp.code = MessageCode::LOGIN_FAIL;
+        sockutils.writeSocket(client, resp);
     }
-    return NULL;
+    /* Esto crea un nuevo objeto ClientConnection que
+     * se comunicará con el cliente en cuestión. Le paso el fd */
+}
+
+bool Server::auth_user(char* user, char* pass) {
+    return true;
+}
+
+void Server::add_connection(ClientConnection* handler) {
+    /* No usar nunca más el puntero pelado luego de esta
+       llamada a emplace_back */
+    connections.emplace_back(handler);
 }
 
 int Server::get_listen_socket() {
@@ -123,16 +141,24 @@ void Server::accept_incoming_connections() {
     }
 
     cout << "Ingresando cliente numero" << client_id << endl;
-    pthread_create(&th_clientes[client_id], NULL, client_comm, (void*) &clients[client_id]);
+    client_comm(this, clients[client_id]);
     client_id++;
 }
 
 int Server::close_connection(int client_id) {
+    /* responsabilidad de connectionHandler?
+    * el es el dueño del socket después de todo
+    */
     if (close(clients[client_id]) != 0) {
         //Log
         return -1;
     }
-    pthread_join(th_clientes[client_id], NULL);
+    for (unsigned int i = 0; i < connections.size(); ++i) {
+        if (connections[i]->getClientSocket() == client_id) {
+            connections.erase(connections.begin() + i);
+            break;
+        }
+    }
     clients[client_id] = 0; /* Libero el slot de cliente */
     return 0;
 }
@@ -147,13 +173,18 @@ int* Server::get_connections() {
     return clients;
 }
 
+void Server::handle_message(struct msg_request_t message) {
+    string content;
+    content.assign(message.message.msg);
+    cout << "El mensaje entrante es: " << content << endl;
+}
+
 void Server::store_message(const msg_t& mensaje) {
     messagesList.push_back(mensaje);
 }
 
 
 std::list<msg_t> Server::get_messages_of(string user){
-    // CAMBIAR VECTOR POR LIST
     std::list<msg_t> messagesFiltered;
     for (auto it = messagesList.begin(); it != messagesList.cend();){
         if( it->to == user ){
@@ -165,10 +196,6 @@ std::list<msg_t> Server::get_messages_of(string user){
     }
     return messagesFiltered;
 }
-
-
-
-
 /* Si  necesito acceso aleatorio, uso vector
 pero si necesito recorrer de principio a fin o voy borrando/insertando
 elementos en el medio, uso list */

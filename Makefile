@@ -6,13 +6,14 @@ CLIENT_DEP =
 
 # Para el server
 SRV_SRC_FILES = $(filter-out src/model/client.cpp, $(wildcard src/model/*.cpp)) src/server_main.cpp
-SRV_INC = src/model/server.h 
+SRV_INC = src/model/server.h src/Utils/*.cpp
 SRV_DEP = -pthread
 SRV_OBJ_NAME = server
 
 # Para test
-TEST_SRC_FILES = test/*.cpp
-OBJ_NAME_TEST = metalslug_tests.out
+TEST_SRC_FILES = test/*.cpp src/model/*.cpp src/Utils/*.cpp
+TEST_INC_FILES = src/model/*.h src/Utils/*.h
+OBJ_NAME_TEST = run-tests
 
 # General
 CC = g++
@@ -29,4 +30,4 @@ server : $(SRV_SRC_FILES)
 	$(CC) -I$(SRV_INC) $(SRV_SRC_FILES) $(SRV_DEP) $(COMPILER_FLAGS) -o $(SRV_OBJ_NAME)
 
 test : $(SRC_FILES) $(TEST_SRC_FILES)
-	$(CC) $(SRC_FILES) $(TEST_SRC_FILES) $(COMPILER_FLAGS) -lgtest -o $(OBJ_NAME_TEST)
+	$(CC) $(TEST_SRC_FILES) -I$(TEST_INC_FILES) $(COMPILER_FLAGS) -lgtest -o $(OBJ_NAME_TEST)

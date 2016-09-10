@@ -19,9 +19,6 @@ int main(int argc, char *argv[]) {
     /* Creo al cliente */
     Client* cliente1 = new Client();
 
-    /* Para el manejo de errores */
-    extern int errno;
-
     /* Configuracion del puerto
      * atoi() devuelve 0 si el parametro es invalido*/
     if (argc > 1)  port = atoi(argv[1]);
@@ -56,10 +53,17 @@ int main(int argc, char *argv[]) {
                 cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (!conectado) {
                 cout << "Estableciendo la conexion con el servidor..." << endl << endl;
-                    cliente1->connect_to_server(ip, port);
-                    conectado = true;
-                    break;
-                } 
+                    if (cliente1->connect_to_server(ip, port) ==  1 ){
+                        conectado = true;
+                    } else {
+                        break;
+                    }
+                    /* Implementar logueo de usuario */
+
+                    /* Recibir lista de usuarios en el servidor */
+
+                    
+                }
                 cout << " Ud. ya se encuentra conectado al servidor " << endl << endl;
                 break;
  
@@ -78,6 +82,20 @@ int main(int argc, char *argv[]) {
                     cin >> userSelected;
                     cliente1->send_message_to(userSelected); /* implementar esto */
 
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja3");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja5");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("hola", "tuvieja");
+                    cliente1->send_message("putoelquelee", "tuvieja20");
+
+                    // delete mensaje;
                     break;
                     }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
@@ -89,7 +107,16 @@ int main(int argc, char *argv[]) {
                 cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (conectado) {    
                     cout << "Solicitando mensajes al servidor..." << endl << endl;
+                    /* Enviar mensaje especial al server para que 
+                    * sepa que le estoy pidiendo los mensajes, el mensaje
+                    * especial, debe tener al usuario en cuestion */ 
+                    // Message* mensaje = new Message(GETUSERMESSAGES,"","","");
+                    // cliente1->send_message(mensaje) ;
                     cliente1->ask_for_messages(); /* implementar esto */
+
+                    cliente1->receive_messages();
+
+                    // delete mensaje;
                     break;
                 }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;

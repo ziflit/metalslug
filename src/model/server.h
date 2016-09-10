@@ -2,17 +2,19 @@
 #define METALSLUG_SERVER_H
 
 #include "message.h"
+#include <memory>
+#include "../Utils/SocketUtils.h"
 #include <list>
 #include "../Utils/Protocol.h"
 
-#define MAX_CONN 10
-#define BUFSIZE 1024
+#define MAX_CONN 6
 
 struct arg_struct {
     int id;
     int* connections;
 };
 
+class ClientConnection;
 class Server {
 	private:
     int log_type; /* Para saber que tipo de log se va usar */
@@ -20,6 +22,7 @@ class Server {
     std::list<msg_t> messagesList; /* Lista de mensajes almacenados */
     int listen_socket_fd;
     int clients[MAX_CONN];
+    vector<shared_ptr<ClientConnection> > connections;
     pthread_t th_clientes[MAX_CONN];
 
   public:
@@ -67,16 +70,18 @@ class Server {
      */
     void accept_incoming_connections();
 
+    void add_connection(ClientConnection* handler);
+
+    bool auth_user(char* user, char* pass);
+
+    void handle_message(struct msg_request_t message);
+
     /* guarda el mensaje pasado en la lista de mensajes que tiene almacenada */
     void store_message(const msg_t& mensaje);
 
     /* filtra la lista de mensajes almacenados, y devuelve todos los que le
      * pertencen al usuario solicitado*/
     list<msg_t> get_messages_of(string user);
-
-
-
 };
-
 
 #endif //METALSLUG_SERVER_H
