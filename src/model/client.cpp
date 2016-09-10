@@ -52,18 +52,15 @@ int Client::connect_to_server(string ip, int port) {
     char* response;
     unsigned int size;
 
-    cout << recv(socket_number, (void*)&size, sizeof(unsigned int),0) << endl;
-    cout << recv(socket_number, response, size, 0) << endl;
+    recv(socket_number, (void*)&size, sizeof(unsigned int),0);
+    recv(socket_number, response, size, 0);
 
     if(((msg_request_t*)response)->code == MessageCode::LOGIN_FAIL){
         cout << "Error conectando al servidor, datos ingresados incorrectos" << endl;
     }
-    else{
-        cout << "LOG OK GATO" << endl;
+    else {
+        cout << "Autenticación OK. Conectado" << endl;
     }
-
-    cout << "saliendo de la fn" <<endl;
-
     return 1;
 }
 
