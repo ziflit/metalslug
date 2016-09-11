@@ -99,14 +99,13 @@ void Client::send_message_to_all(string content) {
 }
 
 int Client::receive_messages() {
-
-    char buffer[BUFSIZE];
-    recv(get_socket(), &buffer, BUFSIZE, 0);
-    cout << buffer << endl;
-    if (buffer=="ENDOFMESSAGES,,,"){return 1;}
-    return 0;
+    char buffer[MSGSIZE];
+    SocketUtils sockutils;
+    sockutils.readSocket(socket_number, buffer);
+    struct msg_request_t recv_msg = *(struct msg_request_t*) buffer;
+    cout << "Mensaje recibidos de: " << recv_msg.message.from << endl;
+    cout << recv_msg.message.msg << endl;
 }
-
 
 void Client::lorem_ipsum(int frec, int max_envios) {
 }
