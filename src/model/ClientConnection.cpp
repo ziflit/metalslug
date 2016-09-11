@@ -70,7 +70,7 @@ int connectionWriter(ClientConnection *data) {
             data->queuemutex.unlock();
             SocketUtils sockutils;
             sockutils.writeSocket(data->getClientSocket(), event);
-        }
+        } else { data->queuemutex.unlock(); }
     }
     return 1;
 }
@@ -90,7 +90,9 @@ void ClientConnection::stop() {
 }
 
 void ClientConnection::push_event(struct msg_request_t event) {
+    this->queuemutex.lock();
     event_queue.push(event);
+    this->queuemutex.unlock();
 }
 
 void ClientConnection::handle_message(struct msg_request_t message) {
