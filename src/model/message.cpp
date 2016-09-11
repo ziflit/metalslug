@@ -58,7 +58,7 @@ string Message::serialize() {
 bool Message::isToUser(string username) { return (to == username || to == "everyone"); }
 
 bool Message::isToUser(User* user){
-    return (user->isUsername(to));
+    return (user->isMyUsername(to.data()));
 }
 
 bool Message::isToEveryone() { return (to == "everyone");}

@@ -32,7 +32,7 @@ bool User::isMyPassword(char *password){
     return ((strcmp(this->password, password) == 0));
 }
 
-bool User::isMyUsername(char *username) {
+bool User::isMyUsername(const char *username) {
 
     return ((strcmp(this->username, username) == 0));
 }

@@ -26,7 +26,7 @@ public:
 
     void setId(int id);
 
-    bool isMyUsername(char* username);
+    bool isMyUsername(const char* username);
 
     bool isMyPassword(char *password);
 };
