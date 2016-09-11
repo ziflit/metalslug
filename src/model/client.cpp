@@ -137,9 +137,9 @@ void Client::store_users_list(){
      * hago una lista trucha
      */
     string user1, user2, user3;
-    user1 = "usuario1";
-    user2 = "usuario2";
-    user3 = "usuario3";
+    user1 = "santi";
+    user2 = "fran";
+    user3 = "lean";
     usersList.push_back(user1);   
     usersList.push_back(user2);
     usersList.push_back(user3);

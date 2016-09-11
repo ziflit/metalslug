@@ -153,14 +153,7 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
 }
 
 void filter_and_send(Server* server, char* requester, shared_ptr<ClientConnection> handler) {
-    // auto realmessages = server->get_messages_of(requester);
-
-    std::list<msg_t> messages;
-    struct msg_t dummy;
-    strcpy(dummy.from, "santi");
-    strcpy(dummy.to, "santi");
-    strcpy(dummy.msg, "saraza");
-    messages.push_back(dummy);
+    auto realmessages = server->get_messages_of(requester);
 
     /* Consigo el handler del usuario que pide y le agrego
        los mensajes para mandar */
@@ -168,7 +161,7 @@ void filter_and_send(Server* server, char* requester, shared_ptr<ClientConnectio
     /* Cuando le seteo el código en realidad voy a estar poniendo
         si es final o no */
     full_msg.code = MessageCode::CLIENT_SEND_MSG;
-    full_msg.message = messages.front();
+    full_msg.message = realmessages.front();
     handler->push_event(full_msg);
 }
 
