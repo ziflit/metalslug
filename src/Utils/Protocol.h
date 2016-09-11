@@ -5,6 +5,7 @@
 #include <string>
 
 #define BUFSIZE 256
+#define CONTENT_TRANSFER_SIZE 200
 #define MSGSIZE sizeof(struct msg_request_t)
 
 using namespace std;
