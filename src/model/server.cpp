@@ -49,7 +49,7 @@ void client_comm(Server* srv, int client) {
 }
 
 bool Server::auth_user(char* user, char* pass) {
-    return true;
+    userloader->isPasswordOk(user, pass);
 }
 
 void Server::add_connection(ClientConnection* handler) {
