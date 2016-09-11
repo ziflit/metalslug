@@ -82,8 +82,9 @@ int main(int argc, char *argv[]) {
                     cin >> userSelected;
 
                     cout << "Escriba el mensaje a enviar:" << endl << endl;
-                    cin >> contentMsg;
-                    // getline(cin,contentMsg);
+                    // cin >> contentMsg;
+                    cin.ignore();
+                    getline(cin,contentMsg);
 
                     cliente1->send_message(userSelected, contentMsg);
 

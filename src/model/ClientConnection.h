@@ -20,10 +20,10 @@ private:
     thread reader;
     thread writer;
     Server* server;
+
 public:
     ClientConnection();
 
-public:
     bool shouldClose;
 
     std::mutex queuemutex;

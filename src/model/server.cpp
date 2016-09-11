@@ -143,22 +143,43 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
     return connections;
 }
 
+void filter_and_send(Server* server, char* requester, shared_ptr<ClientConnection> handler) {
+    // auto realmessages = server->get_messages_of(requester);
+
+    std::list<msg_t> messages;
+    struct msg_t dummy;
+    strcpy(dummy.from, "santi");
+    strcpy(dummy.to, "santi");
+    strcpy(dummy.msg, "saraza");
+    messages.push_back(dummy);
+
+    /* Consigo el handler del usuario que pide y le agrego
+       los mensajes para mandar */
+    struct msg_request_t full_msg;
+    /* Cuando le seteo el código en realidad voy a estar poniendo
+        si es final o no */
+    full_msg.code = MessageCode::CLIENT_SEND_MSG;
+    full_msg.message = messages.front();
+    handler->push_event(full_msg);
+}
 
 void Server::handle_message(struct msg_request_t message) {
+    shared_ptr<ClientConnection> handler;
+    std::thread writer_thread;
     switch(message.code){
         case MessageCode::CLIENT_SEND_MSG:
             cout << "CLIENT_SEND_MSG" << endl;
             store_message(message.message);
             break;
- 
 
         case MessageCode::CLIENT_RECEIVE_MSGS:
             cout << "CLIENT_RECEIVE_MSGS" << endl;
-            get_messages_of(message.message.from);
             /* Aca hay que hacer la parte de enviar todos los
              * mensajes que hay en la lista al usuario en cuestion
              * deberia estar en un thread aparte */
-
+            handler = this->get_user_handler(message.message.from);
+            writer_thread = std::thread(filter_and_send, this, message.message.from, handler);
+            writer_thread.detach();
             break;
 
         default:
@@ -169,15 +190,23 @@ void Server::handle_message(struct msg_request_t message) {
     }
 }
 
+std::shared_ptr<ClientConnection> Server::get_user_handler(char* username) {
+    for (auto user : this->connections) {
+        if (strcmp(user->getUsername(), username) == 0) {
+            return user;
+        }
+    }
+    return nullptr;
+}
+
 void Server::store_message(const msg_t& mensaje) {
     messagesList.push_back(mensaje);
 }
 
-
-std::list<msg_t> Server::get_messages_of(string user){
+std::list<msg_t> Server::get_messages_of(char* user){
     std::list<msg_t> messagesFiltered;
     for (auto it = messagesList.begin(); it != messagesList.cend();){
-        if( it->to == user ){
+        if(strcmp(it->to, user) == 0){
             messagesFiltered.push_back(*it);
             it = messagesFiltered.erase(it); // ...
         } else {
