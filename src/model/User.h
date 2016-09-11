@@ -1,32 +1,34 @@
 #ifndef METALSLUG_USER_H
 #define METALSLUG_USER_H
 
+#include <string.h>
 #include <string>
+
 
 using namespace std;
 
 class User {
 private:
-    string username;
-    string password;
+    char username[20];
+    char password[20];
     int id;
 
 public:
-    User(string username,string password, int id);
+    void setUsername(string name);
+    
+    void setPassword(string pass);
+    
+    char* getUsername();
 
-    const string &getUsername() const;
-
-    void setUsername(const string &username);
-
-    const string &getPassword() const;
-
-    bool isUsername(string name);
-
-    void setPassword(const string &password);
+    char* getPassword();
 
     int getId() const;
 
     void setId(int id);
+
+    bool isMyUsername(char* username);
+
+    bool isMyPassword(char *password);
 };
 
 
