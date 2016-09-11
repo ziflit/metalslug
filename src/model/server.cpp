@@ -209,11 +209,14 @@ std::shared_ptr<ClientConnection> Server::get_user_handler(char* username) {
 }
 
 void Server::store_message(const msg_t& mensaje) {
+    msglist_mutex.lock();
     messagesList.push_back(mensaje);
+    msglist_mutex.unlock();
 }
 
 std::list<msg_t> Server::get_messages_of(char* user){
     std::list<msg_t> messagesFiltered;
+    msglist_mutex.lock();
     for (auto it = messagesList.begin(); it != messagesList.cend();){
         if(strcmp(it->to, user) == 0){
             messagesFiltered.push_back(*it);
@@ -222,6 +225,7 @@ std::list<msg_t> Server::get_messages_of(char* user){
             it++;
         }
     }
+    msglist_mutex.unlock();
     return messagesFiltered;
 }
 /* Si  necesito acceso aleatorio, uso vector

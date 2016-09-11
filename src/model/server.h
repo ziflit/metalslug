@@ -3,6 +3,7 @@
 
 #include "message.h"
 #include <memory>
+#include <mutex>
 #include "../Utils/SocketUtils.h"
 #include <list>
 #include "../Utils/Protocol.h"
@@ -14,6 +15,7 @@ class ClientConnection;
 class Server {
 	private:
     std::list<msg_t> messagesList; /* Lista de mensajes almacenados */
+    std::mutex msglist_mutex;
     UserLoader* userloader;
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
