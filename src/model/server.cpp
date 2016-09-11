@@ -10,6 +10,14 @@
 
 using namespace std;
 
+Server::Server(string path) {
+    this->userloader = new UserLoader(path);
+}
+
+Server::~Server() {
+    this->shutdown();
+}
+
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
@@ -96,6 +104,7 @@ void Server::start_listening() {
 }
 
 void Server::shutdown() {
+    delete userloader;
     close_all_connections();
     close(listen_socket_fd);
 }

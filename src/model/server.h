@@ -6,6 +6,7 @@
 #include "../Utils/SocketUtils.h"
 #include <list>
 #include "../Utils/Protocol.h"
+#include "UserLoader.h"
 
 #define MAX_CONN 6
 
@@ -13,10 +14,14 @@ class ClientConnection;
 class Server {
 	private:
     std::list<msg_t> messagesList; /* Lista de mensajes almacenados */
+    UserLoader* userloader;
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
 
   public:
+    Server(string path);
+
+    ~Server();
     /* Dada una ip y un puerto para escuchar, pide un socket al sistema
      * y bindea el proceso a esa dirección.
      * Devuelve el file descriptor del socket ya bindeado para su uso.
