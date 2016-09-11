@@ -49,11 +49,9 @@ int Client::connect_to_server(string ip, int port) {
     /*Envio mje al servidor*/
     cout << send(socket_number,user.data(),20,0) << endl;
     cout << send(socket_number,pass.data(),20,0) << endl;
-    char* response;
-    unsigned int size;
+    char response[MSGSIZE];
 
-    recv(socket_number, (void*)&size, sizeof(unsigned int),0);
-    recv(socket_number, response, size, 0);
+    recv(socket_number, response, MSGSIZE, 0);
 
     if(((msg_request_t*)response)->code == MessageCode::LOGIN_FAIL){
         cout << "Error conectando al servidor, datos ingresados incorrectos" << endl;
@@ -138,9 +136,9 @@ void Client::store_users_list(){
      * hago una lista trucha
      */
     string user1, user2, user3;
-    user1 = "usuario1";
-    user2 = "usuario2";
-    user3 = "usuario3";
+    user1 = "santi";
+    user2 = "fran";
+    user3 = "lean";
     usersList.push_back(user1);   
     usersList.push_back(user2);
     usersList.push_back(user3);

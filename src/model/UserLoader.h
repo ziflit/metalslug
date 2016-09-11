@@ -22,10 +22,11 @@ private:
     vector<User*> usersList;
     
 public:
-    
     UserLoader();
+
+    UserLoader(string path);
     
-    bool processCSV();
+    bool processCSV(string path);
     
     bool isPasswordOk(char* username, char* password);
 

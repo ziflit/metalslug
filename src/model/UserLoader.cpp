@@ -1,12 +1,11 @@
 #include "UserLoader.h"
 
 using namespace std;
-UserLoader::UserLoader(){
-    this->processCSV();
+UserLoader::UserLoader(string path){
+    this->processCSV(path);
 }
 
-bool UserLoader::processCSV(){
-    char* path = "../UserLoader/userlist.csv";
+bool UserLoader::processCSV(string path){
     std::fstream file;
     file.open(path,std::fstream::in);
     if(file.fail()){
@@ -42,16 +41,15 @@ bool UserLoader::processCSV(){
 
 bool UserLoader::isPasswordOk(char *username,char *password){
     for(auto it = usersList.begin(); it != usersList.end(); ++it) {
-
         if((*it)->isMyUsername(username)){return (*it)->isMyPassword(password);}
     }
     return false;
-
 }
 
 unsigned int UserLoader::usersRegistered() {
     return usersList.size();
 }
+
 string UserLoader::getUsersList() {
     string users = "";
     std::vector<User*>::iterator it ;
