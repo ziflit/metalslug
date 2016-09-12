@@ -19,6 +19,7 @@ class Server {
     UserLoader* userloader;
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
+    bool shouldClose;
 
   public:
     Server(string path);
@@ -58,7 +59,7 @@ class Server {
 
     /* Cierra el socket de listening y todos los de clientes */
     /* y sus threads */
-    void shutdown();
+    void shutdownServer();
 
     vector<shared_ptr<ClientConnection> > get_connections();
 
@@ -82,6 +83,8 @@ class Server {
     list<msg_t> get_messages_of(char* user);
 
     void removeClient(char* username);
+
+    void shouldCloseFunc(bool should);
 
     std::shared_ptr<ClientConnection> get_user_handler(char* username);
 };

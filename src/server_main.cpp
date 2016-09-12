@@ -1,13 +1,28 @@
 #include <iostream>
+#include <thread>
 #include "model/server.h"
 
+bool onlinethread = true;
+
+void start_server_online(Server* server, string ip, int port){
+
+    server->initialize_server(ip, port);
+
+    cout << "Esperando conexion de cliente" << endl;
+    /* La ejecucion se bloquea en este punto hasta que haya una conexion */
+    /* El segundo parametro indica la cantidad de clientes maximos posibles */
+    /* Escucho esperando al cliente */
+    server->start_listening();
+
+    while (onlinethread) {
+        server->accept_incoming_connections();
+        cout << onlinethread << endl;
+    }
+
+}
+
 int main(int argc, char* argv[]) {
-    /* Variables iniciales
-     * int port: puerto en el cual el server escucha
-     * int lserver_socket_fd: file desc. para el socket de listen
-     * char buffer[BUFSIZE]: buffer para transferencia de mensajes
-     * struct sockaddr_in client_addr: se guardan aca los datos del cliente conectado
-    */
+    
     int port = 0;
     string ip = "127.0.0.1";
 
@@ -20,22 +35,24 @@ int main(int argc, char* argv[]) {
     if (argc > 2) string path = argv[2];
 
     Server* server = new Server(path);
-    server->initialize_server(ip, port);
+    server->shouldCloseFunc(false);
 
-    cout << "Esperando conexion de cliente" << endl;
-    /* La ejecucion se bloquea en este punto hasta que haya una conexion */
-    /* El segundo parametro indica la cantidad de clientes maximos posibles */
-    /* Escucho esperando al cliente */
-    server->start_listening();
+    std::thread server_online_in_thread;
+    server_online_in_thread = std::thread(start_server_online, server, ip, port);
 
-    while (true) {
-        server->accept_incoming_connections();
+    bool online = true;
+    while (online) {
+        std::string keypressed;
+        getline(std::cin, keypressed);
+        if (keypressed == "q") {
+            online = false;
+            server->shouldCloseFunc(true);            
+        }
     }
-
-    cout << "Servidor cerrado" << endl;
-    /* LIBERA MEMORIA BOLUDO QUE SI ENTRA EN UN EXIT(1) SE CAGA TODO */
-
-    server->shutdown();
+    onlinethread = false;
+    server->shutdownServer();
+    server_online_in_thread.join();
     delete server;
+
     return 0;
 }
