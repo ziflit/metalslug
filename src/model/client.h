@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "message.h"
 #include "../Utils/SocketUtils.h"
+#include "../Utils/MessageUtils.h"
 
 
 
@@ -55,6 +56,7 @@ class Client {
 
 	string searchUser(int user);
 
+    std::vector<string> makeUsersList(Message *msg);
 };
 
 

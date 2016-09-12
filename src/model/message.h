@@ -15,8 +15,6 @@
 
 class Message {
 private:
-    int id;
-    int timestamp;
     string from;
     string to;
     string content;
@@ -25,23 +23,19 @@ public:
     Message();
 
     //Constructor de Mensaje a un unico cliente.
-    Message(int timestamp, string from, string to, string content);
+    Message(string from, string to, string content);
 
     //Constructor de Mensaje to everyone.
-    Message(int timestamp, string from, string content);
+    Message(string from, string content);
 
     //Constructor de Mensaje desde el string completo separado por comas.
     Message(string messageToDeserialize);
-
-    int getTimestamp();
 
     string getFrom();
 
     string getTo();
 
     string getContent();
-
-    string serialize();
 
     bool isToUser(string username);
 

@@ -159,26 +159,24 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
     return connections;
 }
 
-void filter_and_send(Server* server, char* requester, shared_ptr<ClientConnection> handler) {
+void filter_and_send(Server* server, const char* requester, shared_ptr<ClientConnection> handler) {
     auto realmessages = server->get_messages_of(requester);
-
-    /* Consigo el handler del usuario que pide y le agrego
-       los mensajes para mandar */
-    struct msg_request_t full_msg;
-    /* Cuando le seteo el código en realidad voy a estar poniendo
-        si es final o no */
-    full_msg.code = MessageCode::CLIENT_SEND_MSG;
-    full_msg.message = realmessages.front();
-    handler->push_event(full_msg);
+    MessageUtils messageutils;
+    for (auto message : realmessages) {
+        vector<struct msg_request_t> requests = messageutils.buildRequests(message, MessageCode::CLIENT_RECEIVE_MSGS);
+        for (auto req : requests) {
+            handler->push_event(req);
+        }
+    }
 }
 
-void Server::handle_message(struct msg_request_t message) {
+void Server::handle_message(Message* message, MessageCode code) {
     shared_ptr<ClientConnection> handler;
     std::thread writer_thread;
-    switch(message.code){
+    switch(code){
         case MessageCode::CLIENT_SEND_MSG:
             cout << "CLIENT_SEND_MSG" << endl;
-            store_message(message.message);
+            store_message(message);
             break;
 
         case MessageCode::CLIENT_RECEIVE_MSGS:
@@ -186,20 +184,20 @@ void Server::handle_message(struct msg_request_t message) {
             /* Aca hay que hacer la parte de enviar todos los
              * mensajes que hay en la lista al usuario en cuestion
              * deberia estar en un thread aparte */
-            handler = this->get_user_handler(message.message.from);
-            writer_thread = std::thread(filter_and_send, this, message.message.from, handler);
+            handler = this->get_user_handler(message->getFrom().data());
+            writer_thread = std::thread(filter_and_send, this, message->getFrom().data(), handler);
             writer_thread.detach();
             break;
 
         default:
             string content;
-            content.assign(message.message.msg);
+            content = message->getContent();
             cout << "El mensaje entrante es: " << content << endl;
             break;
     }
 }
 
-std::shared_ptr<ClientConnection> Server::get_user_handler(char* username) {
+std::shared_ptr<ClientConnection> Server::get_user_handler(const char* username) {
     for (auto user : this->connections) {
         if (strcmp(user->getUsername(), username) == 0) {
             return user;
@@ -208,23 +206,22 @@ std::shared_ptr<ClientConnection> Server::get_user_handler(char* username) {
     return nullptr;
 }
 
-void Server::store_message(const msg_t& mensaje) {
+void Server::store_message(Message* message) {
+    cout << "Guardando el mensaje: " << message->getContent() << endl;
     msglist_mutex.lock();
-    messagesList.push_back(mensaje);
+    messagesList.push_back(message);
     msglist_mutex.unlock();
 }
 
 void Server::shouldCloseFunc(bool should){
     shouldClose = should;
 }
-        
 
-
-std::list<msg_t> Server::get_messages_of(char* user){
-    std::list<msg_t> messagesFiltered;
+std::list<Message*> Server::get_messages_of(const char* user){
+    std::list<Message*> messagesFiltered;
     msglist_mutex.lock();
     for (auto it = messagesList.begin(); it != messagesList.cend();){
-        if(strcmp(it->to, user) == 0){
+        if(strcmp( (*it)->getTo().data(), user) == 0){
             messagesFiltered.push_back(*it);
             it = messagesFiltered.erase(it); // ...
         } else {
