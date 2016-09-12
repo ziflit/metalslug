@@ -148,4 +148,13 @@ string Client::searchUser(int user){
     return usersList[user];
 }
 
+std::vector<string> Client::makeUsersList(Message *msg) {
+    std::vector<string> usersList;
+    stringstream ss;
+    ss.str(msg->getContent());
+    string item;
+    while(getline(ss,item,',')){usersList.push_back(item);}
+
+    return usersList;
+}
 
