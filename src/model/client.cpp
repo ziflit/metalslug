@@ -106,9 +106,9 @@ int Client::receive_messages() {
             small_messages.clear();
             sockutils.readSocket(socket_number, buffer);
             small_messages.push_back(*(struct msg_request_t*)buffer);
-        } while ((*(struct msg_request_t*)buffer).completion != MessageCompletion::FINAL_MSG);
+        } while ( (*(struct msg_request_t*)buffer).completion != MessageCompletion::FINAL_MSG );
         Message* message = messageutils.buildMessage(small_messages);
-        cout << "Mensaje recibidos:" << endl;
+        cout << "Mensaje recibidos:" << endl << endl;
         cout << message->getFrom() << ": " << message->getContent() << endl;
     } while ( (*(struct msg_request_t*)buffer).code != MessageCode::LAST_MESSAGE );
 }

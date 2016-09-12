@@ -130,7 +130,7 @@ void Server::accept_incoming_connections() {
     }
 
     if (shouldClose == false){
-        cout << "Ingresando cliente numero" << client_id << endl;
+        cout << "Ingresando cliente numero" << client_id << endl;  
         client_comm(this, client_id);
         client_id++;
     }
@@ -168,8 +168,10 @@ void filter_and_send(Server* server, const char* requester, shared_ptr<ClientCon
             handler->push_event(req);
         }
     }
-    struct msg_request_t lastMsg = messageutils.buildRequests(new Message(), MessageCode::LAST_MESSAGE).front();
+    Message* lastmsgmsg = new Message("server", "user", "Ud. no tiene mas mensajes");
+    struct msg_request_t lastMsg = messageutils.buildRequests(lastmsgmsg, MessageCode::LAST_MESSAGE).front();
     handler->push_event(lastMsg);
+
 }
 
 void Server::handle_message(Message* message, MessageCode code) {
