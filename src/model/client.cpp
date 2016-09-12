@@ -15,7 +15,7 @@
 using namespace std;
 
 
-int Client::connect_to_server(string ip, int port) {
+bool Client::connect_to_server(string ip, int port) {
     struct sockaddr_in server_addr;
     socklen_t server_sock_size;
 
@@ -23,7 +23,7 @@ int Client::connect_to_server(string ip, int port) {
     socket_number = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_number < 0) {
         cout << "Error abriendo el socket del cliente: " << strerror(errno) << endl;
-        return 0;
+        return false;
     }
     /* Configuro las direcciones del cliente */
     server_addr.sin_family = AF_INET;
@@ -35,7 +35,7 @@ int Client::connect_to_server(string ip, int port) {
     /* Me conecto al servidor. Devuelve -1 si la conexion falla */
     if (connect(socket_number, (struct sockaddr *)&server_addr, server_sock_size) < 0) {
         cout << "Error conectando al servidor: " << strerror(errno) << endl;
-        return 0;
+        return false;
     }
 
 
@@ -55,13 +55,12 @@ int Client::connect_to_server(string ip, int port) {
     recv(socket_number, response, MSGSIZE, 0);
 
     if(((msg_request_t*)response)->code == MessageCode::LOGIN_FAIL){
-        cout << "Error conectando al servidor, datos ingresados incorrectos" << endl;
-    }
-    else {
-        cout << "Autenticación OK. Conectado" << endl;
+        cout << "No se pudo loguear, por favor revise Usuario y contrasenia " << endl;
+        return false;
+    } else {
         strcpy(userName, user.data());
+        return true;
     }
-    return 1;
 }
 
 void Client::disconnect(){

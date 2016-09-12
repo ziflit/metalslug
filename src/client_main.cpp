@@ -35,7 +35,9 @@ int main(int argc, char *argv[]) {
         cout << "*-----------------------*" << endl;
         cout << "! Bienvenido al cliente !" << endl;
         cout << "*-----------------------*" << endl << endl;
-        cout << "\t1 .- Conectar al servidor" << endl;
+        if (conectado == false){
+            cout << "\t1 .- Conectar al servidor" << endl;
+        }
         if (conectado == true){
             cout << "\t2 .- Enviar Mensaje" << endl;
             cout << "\t3 .- Chequear mensajes" << endl;
@@ -54,10 +56,14 @@ int main(int argc, char *argv[]) {
                 cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (!conectado) {
                 cout << "Estableciendo la conexion con el servidor..." << endl << endl;
-                    if (cliente1->connect_to_server(ip, port) ==  1 ){
+                    if (cliente1->connect_to_server(ip, port) ==  true ){
                         cliente1->store_users_list();
                         conectado = true;
+                        cout << "\033[2J\033[1;1H"; /* clear screen */
+                        cout << " Conexion establecida con exito " << endl << endl;
+                        break;
                     } else {
+                        conectado = false;
                         break;
                     }
                    
@@ -78,14 +84,15 @@ int main(int argc, char *argv[]) {
                     cout << "*-----------------------*" << endl << endl;
                     cliente1->show_users_list();  /* implementar esto */
 
-                    cout << "Elija el destinatario:" << endl << endl;
+                    cout << "Elija el destinatario: " ;
                     cin >> userSelected;
 
-                    cout << "Escriba el mensaje a enviar:" << endl << endl;
-                    // cin >> contentMsg;
+                    cout << "Escriba el mensaje a enviar: " << endl;
                     cin.ignore();
                     getline(cin,contentMsg);
 
+                    cout << "\033[2J\033[1;1H"; /* clear screen */
+                    cout << "El mensaje fue enviado con exito. " << endl;
                     cliente1->send_message(userSelected, contentMsg);
 
                     break;

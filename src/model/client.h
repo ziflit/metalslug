@@ -18,7 +18,7 @@ class Client {
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
 		 */
-		int connect_to_server(string ip, int port);
+		bool connect_to_server(string ip, int port);
 
 		/* Pre: cliente conectado a un servidor
 		 * Post: cliente desconectado del servidor
