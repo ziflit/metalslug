@@ -1,7 +1,9 @@
 #include <iostream>
+#include <thread>
 #include "model/server.h"
 
-int main(int argc, char* argv[]) {
+
+void start_server_online(int argc, char* argv[], Server* server){
     /* Variables iniciales
      * int port: puerto en el cual el server escucha
      * int lserver_socket_fd: file desc. para el socket de listen
@@ -16,7 +18,10 @@ int main(int argc, char* argv[]) {
     /* Si no se pasa un puerto o es invalido uso 1500 */
     if (port == 0) port = 1500;
 
-    Server* server = new Server();
+    string path = "userslist.csv";
+    if (argc > 2) string path = argv[2];
+
+
     server->initialize_server(ip, port);
 
     cout << "Esperando conexion de cliente" << endl;
@@ -28,11 +33,19 @@ int main(int argc, char* argv[]) {
     while (true) {
         server->accept_incoming_connections();
     }
+}
+
+int main(int argc, char* argv[]) {
+    
+    Server* server = new Server(path);
+
+    std::thread server_online_in_thread;
+    writer_thread = std::thread(start_server_online, argc, argv, server);
+    writer_thread.detach();
 
     cout << "Servidor cerrado" << endl;
-    /* LIBERA MEMORIA BOLUDO QUE SI ENTRA EN UN EXIT(1) SE CAGA TODO */
-
     server->shutdown();
     delete server;
+    
     return 0;
 }
