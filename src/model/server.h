@@ -14,7 +14,7 @@
 class ClientConnection;
 class Server {
 	private:
-    std::list<msg_t> messagesList; /* Lista de mensajes almacenados */
+    std::list<Message*> messagesList; /* Lista de mensajes almacenados */
     std::mutex msglist_mutex;
     UserLoader* userloader;
     int listen_socket_fd;
@@ -72,18 +72,18 @@ class Server {
 
     bool auth_user(char* user, char* pass);
 
-    void handle_message(struct msg_request_t message);
+    void handle_message(Message* message, MessageCode code);
 
     /* guarda el mensaje pasado en la lista de mensajes que tiene almacenada */
-    void store_message(const msg_t& mensaje);
+    void store_message(Message* message);
 
     /* filtra la lista de mensajes almacenados, y devuelve todos los que le
      * pertencen al usuario solicitado*/
-    list<msg_t> get_messages_of(char* user);
+    list<Message*> get_messages_of(const char* user);
 
     void removeClient(char* username);
 
-    std::shared_ptr<ClientConnection> get_user_handler(char* username);
+    std::shared_ptr<ClientConnection> get_user_handler(const char* username);
 };
 
 #endif //METALSLUG_SERVER_H
