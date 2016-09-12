@@ -10,6 +10,7 @@
 #include "client.h"
 #include "message.h"
 #include "../Utils/Protocol.h"
+#include <sstream>
 
 using namespace std;
 
@@ -149,8 +150,23 @@ void Client::store_users_list(){
     usersList.push_back(user3);
 }
 
+
+int Client::sizeofUserList(){
+    return usersList.size();
+}
+
+
 string Client::searchUser(int user){
     return usersList[user];
 }
 
+std::vector<string> Client::makeUsersList(Message *msg) {
+    std::vector<string> usersList;
+    stringstream ss;
+    ss.str(msg->getContent());
+    string item;
+    while(getline(ss,item,',')){usersList.push_back(item);}
+
+    return usersList;
+}
 

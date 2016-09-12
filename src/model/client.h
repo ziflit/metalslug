@@ -48,11 +48,15 @@ class Client {
 
     void store_users_list();
 
+    int sizeofUserList();
+
 	void ask_for_messages();
 
 	void send_message_to_all(string content);
 
 	string searchUser(int user);
+
+    std::vector<string> makeUsersList(Message *msg);
 };
 
 

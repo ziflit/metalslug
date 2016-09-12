@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include "Utils/loremIpsum.h"
 
 using namespace std;
 
@@ -81,8 +82,9 @@ int main(int argc, char *argv[]) {
                     cin >> userSelected;
 
                     cout << "Escriba el mensaje a enviar:" << endl << endl;
-                    cin >> contentMsg;
-                    // getline(cin,contentMsg);
+                    // cin >> contentMsg;
+                    cin.ignore();
+                    getline(cin,contentMsg);
 
                     cliente1->send_message(userSelected, contentMsg);
 
@@ -130,11 +132,20 @@ int main(int argc, char *argv[]) {
              case '5':
                 cout << "\033[2J\033[1;1H"; /* clear screen */
                 if (conectado) {
+                    long max_sends, frequency;
                     cout << "*-----------------------*" << endl;
                     cout << "!      Lorem Ipsum      !" << endl;
                     cout << "*-----------------------*" << endl << endl;
 
-                    /* Falta implementar el lorem */
+                    cout << "Ingrese la frecuencia deseada:" << endl;
+                    cin >> frequency;
+
+                    cout << "Ingrese la cantidad de mensajes a enviar:" << endl;
+                    cin >> max_sends;
+
+                    char* path = "src/Utils/arch.txt";
+                    LoremIpsum* lorem = new LoremIpsum(frequency,max_sends,path,cliente1);
+                    lorem->iniciar();
                     
                     break;
                 }
