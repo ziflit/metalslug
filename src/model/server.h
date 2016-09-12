@@ -3,9 +3,11 @@
 
 #include "message.h"
 #include <memory>
+#include <mutex>
 #include "../Utils/SocketUtils.h"
 #include <list>
 #include "../Utils/Protocol.h"
+#include "UserLoader.h"
 
 #define MAX_CONN 6
 
@@ -13,10 +15,16 @@ class ClientConnection;
 class Server {
 	private:
     std::list<msg_t> messagesList; /* Lista de mensajes almacenados */
+    std::mutex msglist_mutex;
+    UserLoader* userloader;
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
+    bool shouldClose;
 
   public:
+    Server(string path);
+
+    ~Server();
     /* Dada una ip y un puerto para escuchar, pide un socket al sistema
      * y bindea el proceso a esa dirección.
      * Devuelve el file descriptor del socket ya bindeado para su uso.
@@ -51,7 +59,7 @@ class Server {
 
     /* Cierra el socket de listening y todos los de clientes */
     /* y sus threads */
-    void shutdown();
+    void shutdownServer();
 
     vector<shared_ptr<ClientConnection> > get_connections();
 
@@ -75,6 +83,8 @@ class Server {
     list<msg_t> get_messages_of(char* user);
 
     void removeClient(char* username);
+
+    void shouldCloseFunc(bool should);
 
     std::shared_ptr<ClientConnection> get_user_handler(char* username);
 };

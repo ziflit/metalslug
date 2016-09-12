@@ -4,6 +4,9 @@
 
 //_______________________________Messages______________________________________
 
+
+Message::Message() {}
+
 Message::Message(int timestamp, string from, string to, string content) {
     this->timestamp = timestamp;
     this->from = from;
@@ -27,75 +30,85 @@ Message::Message(string messageToDeserialize) {
     std::string token;
 
     pos = msg.find(delimiter);
-    this->timestamp = std::stoi(msg.substr(0,pos));
-    msg.erase(0,pos+delimiter.length());
+    this->timestamp = std::stoi(msg.substr(0, pos));
+    msg.erase(0, pos + delimiter.length());
 
     pos = msg.find(delimiter);
-    this->from = msg.substr(0,pos);
-    msg.erase(0,pos+delimiter.length());
+    this->from = msg.substr(0, pos);
+    msg.erase(0, pos + delimiter.length());
 
     pos = msg.find(delimiter);
-    this->to = msg.substr(0,pos);
-    msg.erase(0,pos+delimiter.length());
+    this->to = msg.substr(0, pos);
+    msg.erase(0, pos + delimiter.length());
 
     pos = msg.find(delimiter);
-    this->content = msg.substr(0,pos);
-    msg.erase(0,pos+delimiter.length());
+    this->content = msg.substr(0, pos);
+    msg.erase(0, pos + delimiter.length());
 }
 
-int Message::getTimestamp() { return timestamp;}
+int Message::getTimestamp() { return timestamp; }
 
-string Message::getFrom(){ return from;}
+string Message::getFrom() { return from; }
 
-string Message::getTo(){ return to;}
+string Message::getTo() { return to; }
 
-string Message::getContent(){ return content; }
+string Message::getContent() { return content; }
 
 string Message::serialize() {
-    return ((std::to_string(timestamp)) +","+ from +","+ to +","+ content);
+    return ((std::to_string(timestamp)) + "," + from + "," + to + "," + content);
 }
 
 bool Message::isToUser(string username) { return (to == username || to == "everyone"); }
 
-bool Message::isToUser(User* user){
+bool Message::isToUser(User *user) {
     return (user->isMyUsername(to.data()));
 }
 
-bool Message::isToEveryone() { return (to == "everyone");}
+bool Message::isToEveryone() { return (to == "everyone"); }
+
+void Message::setFrom(const string &from) {
+    Message::from = from;
+}
+
+void Message::setTo(const string &to) {
+    Message::to = to;
+}
+
+void Message::setContent(const string &content) {
+    Message::content = content;
+}
 
 //_______________________________MessagesList__________________________________
 
 MessagesList::MessagesList() {}
 
-unsigned long  MessagesList::size(){
+unsigned long MessagesList::size() {
     return messagesList.size();
 }
 
 
-void MessagesList::addMessage(Message* msg) {
+void MessagesList::addMessage(Message *msg) {
     messagesList.push_back(msg);
 }
 
-std::vector<Message* > MessagesList::filterMessagesPerUser(User* user){
-    std::vector<Message* > messagesFiltered;
+std::vector<Message *> MessagesList::filterMessagesPerUser(User *user) {
+    std::vector<Message *> messagesFiltered;
 
-    vector<Message* >::iterator it = messagesList.begin();
+    vector<Message *>::iterator it = messagesList.begin();
 
-    while(it != messagesList.end()){
+    while (it != messagesList.end()) {
 
-        if( (*it)->isToUser(user)){
+        if ((*it)->isToUser(user)) {
             messagesFiltered.push_back((*it));
 
-            if((*it)->isToEveryone()){
+            if ((*it)->isToEveryone()) {
                 ++it;
                 //no borra el mensaje por ser to everyone.
-            }
-            else if(! (*it)->isToEveryone()){
+            } else if (!(*it)->isToEveryone()) {
                 messagesList.erase(it++);
                 //elima el mensaje de messagesList
             }
-        }
-        else ++it;
+        } else ++it;
     }
 
 

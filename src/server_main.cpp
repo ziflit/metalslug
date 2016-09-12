@@ -2,14 +2,27 @@
 #include <thread>
 #include "model/server.h"
 
+bool onlinethread = true;
 
-void start_server_online(int argc, char* argv[], Server* server){
-    /* Variables iniciales
-     * int port: puerto en el cual el server escucha
-     * int lserver_socket_fd: file desc. para el socket de listen
-     * char buffer[BUFSIZE]: buffer para transferencia de mensajes
-     * struct sockaddr_in client_addr: se guardan aca los datos del cliente conectado
-    */
+void start_server_online(Server* server, string ip, int port){
+
+    server->initialize_server(ip, port);
+
+    cout << "Esperando conexion de cliente" << endl;
+    /* La ejecucion se bloquea en este punto hasta que haya una conexion */
+    /* El segundo parametro indica la cantidad de clientes maximos posibles */
+    /* Escucho esperando al cliente */
+    server->start_listening();
+
+    while (onlinethread) {
+        server->accept_incoming_connections();
+        cout << onlinethread << endl;
+    }
+
+}
+
+int main(int argc, char* argv[]) {
+    
     int port = 0;
     string ip = "127.0.0.1";
 
@@ -21,31 +34,25 @@ void start_server_online(int argc, char* argv[], Server* server){
     string path = "userslist.csv";
     if (argc > 2) string path = argv[2];
 
-
-    server->initialize_server(ip, port);
-
-    cout << "Esperando conexion de cliente" << endl;
-    /* La ejecucion se bloquea en este punto hasta que haya una conexion */
-    /* El segundo parametro indica la cantidad de clientes maximos posibles */
-    /* Escucho esperando al cliente */
-    server->start_listening();
-
-    while (true) {
-        server->accept_incoming_connections();
-    }
-}
-
-int main(int argc, char* argv[]) {
-    
     Server* server = new Server(path);
+    server->shouldCloseFunc(false);
 
     std::thread server_online_in_thread;
-    writer_thread = std::thread(start_server_online, argc, argv, server);
-    writer_thread.detach();
+    server_online_in_thread = std::thread(start_server_online, server, ip, port);
 
-    cout << "Servidor cerrado" << endl;
-    server->shutdown();
+    bool online = true;
+    while (online) {
+        std::string keypressed;
+        getline(std::cin, keypressed);
+        if (keypressed == "q") {
+            online = false;
+            server->shouldCloseFunc(true);            
+        }
+    }
+    onlinethread = false;
+    server->shutdownServer();
+    server_online_in_thread.join();
     delete server;
-    
+
     return 0;
 }
