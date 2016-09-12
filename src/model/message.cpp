@@ -7,15 +7,13 @@
 
 Message::Message() {}
 
-Message::Message(int timestamp, string from, string to, string content) {
-    this->timestamp = timestamp;
+Message::Message(string from, string to, string content) {
     this->from = from;
     this->to = to;
     this->content = content;
 }
 
-Message::Message(int timestamp, string from, string content) {
-    this->timestamp = timestamp;
+Message::Message(string from, string content) {
     this->from = from;
     this->to = "everyone";
     this->content = content;
@@ -30,7 +28,6 @@ Message::Message(string messageToDeserialize) {
     std::string token;
 
     pos = msg.find(delimiter);
-    this->timestamp = std::stoi(msg.substr(0, pos));
     msg.erase(0, pos + delimiter.length());
 
     pos = msg.find(delimiter);
@@ -46,17 +43,11 @@ Message::Message(string messageToDeserialize) {
     msg.erase(0, pos + delimiter.length());
 }
 
-int Message::getTimestamp() { return timestamp; }
-
 string Message::getFrom() { return from; }
 
 string Message::getTo() { return to; }
 
 string Message::getContent() { return content; }
-
-string Message::serialize() {
-    return ((std::to_string(timestamp)) + "," + from + "," + to + "," + content);
-}
 
 bool Message::isToUser(string username) { return (to == username || to == "everyone"); }
 
