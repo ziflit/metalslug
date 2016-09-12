@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "message.h"
 #include "../Utils/SocketUtils.h"
+#include "../Utils/MessageUtils.h"
 
 
 

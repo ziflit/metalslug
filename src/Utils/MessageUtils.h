@@ -9,9 +9,9 @@
 
 class MessageUtils {
 public:
-    vector<struct msg_request_t> &buildRequests(Message *message);
+    vector<struct msg_request_t> &buildRequests(Message *message, MessageCode code);
 
-    Message &buildMessages(Message *message);
+    Message* buildMessage(vector<struct msg_request_t>);
 };
 
 

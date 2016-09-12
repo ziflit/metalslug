@@ -10,6 +10,7 @@
 #include "client.h"
 #include "message.h"
 #include "../Utils/Protocol.h"
+#include <sstream>
 
 using namespace std;
 
@@ -68,9 +69,7 @@ void Client::disconnect(){
 }
 
 int Client::send_message(int to, string content) {
-    msg_request_t msg;
     string destinatedUser;
-    msg.code = MessageCode::CLIENT_SEND_MSG;
 
     if ( to == usersList.size() ){
         send_message_to_all(content);
@@ -79,13 +78,14 @@ int Client::send_message(int to, string content) {
         destinatedUser = searchUser(to);
     }
 
-    strcpy(msg.message.msg, content.data());
-    strcpy(msg.message.to, destinatedUser.data());
-    strcpy(msg.message.from, userName);
-
-    SocketUtils sockutils;
-    sockutils.writeSocket(socket_number, msg);
-
+    MessageUtils messageutils;
+    Message* message = new Message(userName, destinatedUser, content);
+    vector<struct msg_request_t> small_messages = messageutils.buildRequests(message, MessageCode::CLIENT_SEND_MSG);
+    for (auto msg : small_messages) {
+        SocketUtils sockutils;
+        sockutils.writeSocket(socket_number, msg);
+    }
+    delete message;
     return 0;
 }
 
@@ -98,11 +98,16 @@ void Client::send_message_to_all(string content) {
 
 int Client::receive_messages() {
     char buffer[MSGSIZE];
+    MessageUtils messageutils;
     SocketUtils sockutils;
-    sockutils.readSocket(socket_number, buffer);
-    struct msg_request_t recv_msg = *(struct msg_request_t*) buffer;
-    cout << "Mensaje recibidos de: " << recv_msg.message.from << endl;
-    cout << recv_msg.message.msg << endl;
+    vector<struct msg_request_t> small_messages;
+    do {
+        sockutils.readSocket(socket_number, buffer);
+        small_messages.push_back(*(struct msg_request_t*)buffer);
+    } while ((*(struct msg_request_t*)buffer).completion != MessageCompletion::FINAL_MSG);
+    Message* message = messageutils.buildMessage(small_messages);
+    cout << "Mensaje recibidos:" << endl;
+    cout << message->getFrom() << ": " << message->getContent() << endl;
 }
 
 void Client::lorem_ipsum(int frec, int max_envios) {
@@ -124,6 +129,7 @@ void Client::show_users_list() {
 void Client::ask_for_messages() {
     msg_request_t msg;
     msg.code = MessageCode::CLIENT_RECEIVE_MSGS;
+    msg.completion = MessageCompletion::FINAL_MSG;
 
     strcpy(msg.message.from, userName);
     SocketUtils sockutils;

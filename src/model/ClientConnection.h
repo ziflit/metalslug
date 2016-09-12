@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include "../Utils/Protocol.h"
 #include "server.h"
+#include "../Utils/MessageUtils.h"
 
 
 using namespace std;
@@ -36,7 +37,7 @@ public:
 
     int getClientSocket() { return clientSocket; }
 
-    void handle_message(struct msg_request_t message);
+    void handle_message(vector<struct msg_request_t> mensajes, MessageCode code);
 
     void start();
 

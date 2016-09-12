@@ -22,10 +22,15 @@ using namespace std;
  */
 
 enum MessageCode {
-    CLIENT_SEND_MSG,
-    CLIENT_RECEIVE_MSGS,
-    LOGIN_OK,
-    LOGIN_FAIL
+    CLIENT_SEND_MSG, /* El cliente quiere enviar un mensjae*/
+    CLIENT_RECEIVE_MSGS, /* El cliente quiere recibir sus mensajes*/
+    LOGIN_OK, /* El servidor auntentico bien al cliente */
+    LOGIN_FAIL /* El servidor no autentico bien al cliente */
+};
+
+enum MessageCompletion {
+    FINAL_MSG,
+    PARTIAL_MSG,
 };
 
 struct msg_t {
@@ -36,6 +41,7 @@ struct msg_t {
 
 struct msg_request_t {
     MessageCode code;
+    MessageCompletion completion;
     msg_t message;
 };
 

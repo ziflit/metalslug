@@ -42,7 +42,7 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, char *usern
 int connectionReader(ClientConnection *handler) {
     bool isComplete;
     SocketUtils sockutils;
-    struct msg_request_t *message;
+    vector<struct msg_request_t> mensajes;
     char buffer[BUFSIZE];
 
     do {
@@ -53,8 +53,11 @@ int connectionReader(ClientConnection *handler) {
             handler->stop();
             //LOGGER_WRITE(Logger::ERROR, "Conexion cerrada.", CLASSNAME);
         } else {
-            message = (struct msg_request_t *) buffer;
-            handler->handle_message(*message);
+            mensajes.push_back(*(struct msg_request_t *)buffer);
+            if ((*(struct msg_request_t*)buffer).completion == MessageCompletion::FINAL_MSG) {
+                handler->handle_message(mensajes, mensajes.front().code);
+                mensajes.clear();
+            }
         }
     } while (isComplete and !handler->shouldClose);
     /* Si no está completo devuelvo 0 */
@@ -95,8 +98,10 @@ void ClientConnection::push_event(struct msg_request_t event) {
     this->queuemutex.unlock();
 }
 
-void ClientConnection::handle_message(struct msg_request_t message) {
-    server->handle_message(message);
+void ClientConnection::handle_message(vector<struct msg_request_t> mensajes, MessageCode code) {
+    MessageUtils messageutils;
+    Message* message = messageutils.buildMessage(mensajes);
+    server->handle_message(message, code);
 }
 
 ClientConnection::ClientConnection() {}
