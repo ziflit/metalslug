@@ -168,11 +168,13 @@ void filter_and_send(Server* server, const char* requester, shared_ptr<ClientCon
             handler->push_event(req);
         }
     }
+    struct msg_request_t lastMsg = messageutils.buildRequests(new Message(), MessageCode::LAST_MESSAGE).front();
+    handler->push_event(lastMsg);
 }
 
 void Server::handle_message(Message* message, MessageCode code) {
     shared_ptr<ClientConnection> handler;
-    std::thread writer_thread;
+    thread writer_thread;
     switch(code){
         case MessageCode::CLIENT_SEND_MSG:
             cout << "CLIENT_SEND_MSG" << endl;
@@ -185,7 +187,7 @@ void Server::handle_message(Message* message, MessageCode code) {
              * mensajes que hay en la lista al usuario en cuestion
              * deberia estar en un thread aparte */
             handler = this->get_user_handler(message->getFrom().data());
-            writer_thread = std::thread(filter_and_send, this, message->getFrom().data(), handler);
+            writer_thread = thread(filter_and_send, this, message->getFrom().data(), handler);
             writer_thread.detach();
             break;
 
@@ -197,7 +199,7 @@ void Server::handle_message(Message* message, MessageCode code) {
     }
 }
 
-std::shared_ptr<ClientConnection> Server::get_user_handler(const char* username) {
+shared_ptr<ClientConnection> Server::get_user_handler(const char* username) {
     for (auto user : this->connections) {
         if (strcmp(user->getUsername(), username) == 0) {
             return user;
@@ -217,8 +219,8 @@ void Server::shouldCloseFunc(bool should){
     shouldClose = should;
 }
 
-std::list<Message*> Server::get_messages_of(const char* user){
-    std::list<Message*> messagesFiltered;
+list<Message*> Server::get_messages_of(const char* user){
+    list<Message*> messagesFiltered;
     msglist_mutex.lock();
     for (auto it = messagesList.begin(); it != messagesList.cend();){
         if(strcmp( (*it)->getTo().data(), user) == 0){
