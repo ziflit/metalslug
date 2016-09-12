@@ -25,7 +25,8 @@ enum MessageCode {
     CLIENT_SEND_MSG, /* El cliente quiere enviar un mensjae*/
     CLIENT_RECEIVE_MSGS, /* El cliente quiere recibir sus mensajes*/
     LOGIN_OK, /* El servidor auntentico bien al cliente */
-    LOGIN_FAIL /* El servidor no autentico bien al cliente */
+    LOGIN_FAIL, /* El servidor no autentico bien al cliente */
+    USERS_LIST_MSG /* El servidor envia al cliente los usuarios */
 };
 
 enum MessageCompletion {
