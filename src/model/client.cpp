@@ -147,6 +147,12 @@ void Client::store_users_list(){
     usersList.push_back(user3);
 }
 
+
+int Client::sizeofUserList(){
+    return usersList.size();
+}
+
+
 string Client::searchUser(int user){
     return usersList[user];
 }
