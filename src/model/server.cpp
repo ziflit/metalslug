@@ -10,6 +10,14 @@
 
 using namespace std;
 
+Server::Server(string path) {
+    this->userloader = new UserLoader(path);
+}
+
+Server::~Server() {
+    this->shutdown();
+}
+
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
@@ -41,7 +49,7 @@ void client_comm(Server* srv, int client) {
 }
 
 bool Server::auth_user(char* user, char* pass) {
-    return true;
+    userloader->isPasswordOk(user, pass);
 }
 
 void Server::add_connection(ClientConnection* handler) {
@@ -96,6 +104,7 @@ void Server::start_listening() {
 }
 
 void Server::shutdown() {
+    delete userloader;
     close_all_connections();
     close(listen_socket_fd);
 }
@@ -144,14 +153,7 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
 }
 
 void filter_and_send(Server* server, char* requester, shared_ptr<ClientConnection> handler) {
-    // auto realmessages = server->get_messages_of(requester);
-
-    std::list<msg_t> messages;
-    struct msg_t dummy;
-    strcpy(dummy.from, "santi");
-    strcpy(dummy.to, "santi");
-    strcpy(dummy.msg, "saraza");
-    messages.push_back(dummy);
+    auto realmessages = server->get_messages_of(requester);
 
     /* Consigo el handler del usuario que pide y le agrego
        los mensajes para mandar */
@@ -159,7 +161,7 @@ void filter_and_send(Server* server, char* requester, shared_ptr<ClientConnectio
     /* Cuando le seteo el código en realidad voy a estar poniendo
         si es final o no */
     full_msg.code = MessageCode::CLIENT_SEND_MSG;
-    full_msg.message = messages.front();
+    full_msg.message = realmessages.front();
     handler->push_event(full_msg);
 }
 
@@ -200,11 +202,14 @@ std::shared_ptr<ClientConnection> Server::get_user_handler(char* username) {
 }
 
 void Server::store_message(const msg_t& mensaje) {
+    msglist_mutex.lock();
     messagesList.push_back(mensaje);
+    msglist_mutex.unlock();
 }
 
 std::list<msg_t> Server::get_messages_of(char* user){
     std::list<msg_t> messagesFiltered;
+    msglist_mutex.lock();
     for (auto it = messagesList.begin(); it != messagesList.cend();){
         if(strcmp(it->to, user) == 0){
             messagesFiltered.push_back(*it);
@@ -213,6 +218,7 @@ std::list<msg_t> Server::get_messages_of(char* user){
             it++;
         }
     }
+    msglist_mutex.unlock();
     return messagesFiltered;
 }
 /* Si  necesito acceso aleatorio, uso vector

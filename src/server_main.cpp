@@ -16,7 +16,10 @@ int main(int argc, char* argv[]) {
     /* Si no se pasa un puerto o es invalido uso 1500 */
     if (port == 0) port = 1500;
 
-    Server* server = new Server();
+    string path = "userslist.csv";
+    if (argc > 2) string path = argv[2];
+
+    Server* server = new Server(path);
     server->initialize_server(ip, port);
 
     cout << "Esperando conexion de cliente" << endl;
