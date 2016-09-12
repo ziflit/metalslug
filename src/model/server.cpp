@@ -15,7 +15,7 @@ Server::Server(string path) {
 }
 
 Server::~Server() {
-    this->shutdown();
+    this->shutdownServer();
 }
 
 /* Función para el thread de comunicación con el cliente
@@ -103,10 +103,10 @@ void Server::start_listening() {
     listen(listen_socket_fd, MAX_CONN);
 }
 
-void Server::shutdown() {
+void Server::shutdownServer() {
     delete userloader;
     close_all_connections();
-    close(listen_socket_fd);
+    shutdown(listen_socket_fd, 2);
 }
 
 void Server::accept_incoming_connections() {
@@ -118,15 +118,22 @@ void Server::accept_incoming_connections() {
         * y sólo a el */
     client_id = accept(listen_socket_fd, (struct sockaddr*)&client_addr,
                                 &caddr_size);
-    if (client_id < 0) {
+    if (shouldClose == true){
+        cout << "Servidor cerrado" << endl;
+        exit(1);
+    }
+
+    if (client_id < 0 and shouldClose == false) {
         cout << "Hubo un error al conectar con el cliente: " << strerror(errno) << endl;
         cout << "Cerrando..." << endl;
         exit(1);
     }
 
-    cout << "Ingresando cliente numero" << client_id << endl;
-    client_comm(this, client_id);
-    client_id++;
+    if (shouldClose == false){
+        cout << "Ingresando cliente numero" << client_id << endl;
+        client_comm(this, client_id);
+        client_id++;
+    }
 }
 
 int Server::close_connection(char* username) {
@@ -206,6 +213,12 @@ void Server::store_message(const msg_t& mensaje) {
     messagesList.push_back(mensaje);
     msglist_mutex.unlock();
 }
+
+void Server::shouldCloseFunc(bool should){
+    shouldClose = should;
+}
+        
+
 
 std::list<msg_t> Server::get_messages_of(char* user){
     std::list<msg_t> messagesFiltered;

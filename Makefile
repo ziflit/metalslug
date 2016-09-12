@@ -8,7 +8,7 @@ CLIENT_DEP =
 
 # Para el server
 SRV_SRC_FILES = $(filter-out src/model/client.cpp, $(wildcard src/model/*.cpp)) src/server_main.cpp
-SRV_INC = src/model/server.h src/Utils/*.cpp
+SRV_INC = src/model/server.h $(filter-out src/Utils/loremIpsum.cpp, $(wildcard src/Utils/*.cpp))
 SRV_DEP = -pthread
 SRV_OBJ_NAME = server
 
