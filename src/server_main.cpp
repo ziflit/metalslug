@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include "model/server.h"
+#include "Utils/Logger.h"
 
 bool onlinethread = true;
 
@@ -22,7 +23,7 @@ void start_server_online(Server* server, string ip, int port){
 }
 
 int main(int argc, char* argv[]) {
-    
+    LOGGER_START(Logger::ERROR, "server.log")
     int port = 0;
     string ip = "127.0.0.1";
 
@@ -45,6 +46,8 @@ int main(int argc, char* argv[]) {
         std::string keypressed;
         getline(std::cin, keypressed);
         if (keypressed == "q") {
+            LOGGER_WRITE(Logger::INFO, "Apagando el servidor...", "ClientMain")
+
             online = false;
             server->shouldCloseFunc(true);            
         }
