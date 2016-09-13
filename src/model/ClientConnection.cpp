@@ -89,7 +89,6 @@ void ClientConnection::stop() {
     this->reader.detach();
     this->writer.detach(); /* Guarda que tiene un while true, no es join */
     close(this->clientSocket);
-    this->server->close_connection((char*)username);
 }
 
 void ClientConnection::push_event(struct msg_request_t event) {

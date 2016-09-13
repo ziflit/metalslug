@@ -76,8 +76,8 @@ void Client::send_disconnect_to_server() {
     Message* message = new Message(me, "disconnect");
     MessageUtils messageutils;
     vector<struct msg_request_t> small_message = messageutils.buildRequests(message, MessageCode::CLIENT_DISCONNECT);
-    SocketUtils sockutils;
     for (auto msg : small_message) {
+        SocketUtils sockutils;
         sockutils.writeSocket(socket_number, msg);
     }
     delete message;
@@ -96,8 +96,8 @@ int Client::send_message(int to, string content) {
     MessageUtils messageutils;
     Message* message = new Message(userName, destinatedUser, content);
     vector<struct msg_request_t> small_messages = messageutils.buildRequests(message, MessageCode::CLIENT_SEND_MSG);
-    SocketUtils sockutils;
     for (auto msg : small_messages) {
+        SocketUtils sockutils;
         sockutils.writeSocket(socket_number, msg);
     }
     delete message;
