@@ -57,6 +57,8 @@ class Client {
 	string searchUser(int user);
 
     std::vector<string> makeUsersList(Message *msg);
+
+    void send_disconnect_to_server();
 };
 
 
