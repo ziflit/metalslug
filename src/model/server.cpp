@@ -188,32 +188,32 @@ void Server::handle_message(Message* message, MessageCode code) {
     shared_ptr<ClientConnection> handler;
     thread writer_thread;
     switch(code){
-        case MessageCode::CLIENT_SEND_MSG:
-            cout << "CLIENT_SEND_MSG" << endl;
-            store_message(message);
-            break;
+    case MessageCode::CLIENT_SEND_MSG:
+        cout << "CLIENT_SEND_MSG" << endl;
+        store_message(message);
+        break;
 
-        case MessageCode::CLIENT_RECEIVE_MSGS:
-            cout << "CLIENT_RECEIVE_MSGS" << endl;
-            /* Aca hay que hacer la parte de enviar todos los
-             * mensajes que hay en la lista al usuario en cuestion
-             * deberia estar en un thread aparte */
-            handler = this->get_user_handler(message->getFrom().data());
-            writer_thread = thread(filter_and_send, this, message->getFrom().data(), handler);
-            writer_thread.detach();
-            break;
+    case MessageCode::CLIENT_DISCONNECT:
+        cout << "CLIENT_DISCONNECT" << endl;
+        handler = this->get_user_handler(message->getFrom().data());
+        close_connection(handler->getUsername());
+        break;
 
-        case MessageCode::CLIENT_DISCONNECT:
-            cout << "CLIENT_DISCONNECT" << endl;
-            handler = this->get_user_handler(message->getFrom().data());
-            close_connection(handler->getUsername());
-            break;
+    case MessageCode::CLIENT_RECEIVE_MSGS:
+        cout << "CLIENT_RECEIVE_MSGS" << endl;
+        /* Aca hay que hacer la parte de enviar todos los
+         * mensajes que hay en la lista al usuario en cuestion
+         * deberia estar en un thread aparte */
+        handler = this->get_user_handler(message->getFrom().data());
+        writer_thread = thread(filter_and_send, this, message->getFrom().data(), handler);
+        writer_thread.detach();
+        break;
 
-        default:
-            string content;
-            content = message->getContent();
-            cout << "El mensaje entrante es: " << content << endl;
-            break;
+    default:
+        string content;
+        content = message->getContent();
+        cout << "El mensaje entrante es: " << content << endl;
+        break;
     }
 }
 
