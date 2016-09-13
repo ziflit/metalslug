@@ -65,6 +65,7 @@ bool Client::connect_to_server(string ip, int port) {
 
 void Client::disconnect(){
     close(socket_number);
+    usersList.clear();
 }
 
 int Client::send_message(int to, string content) {
