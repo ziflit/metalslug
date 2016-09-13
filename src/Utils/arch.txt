@@ -1,10 +1,7 @@
-No que me hayas mentido, que ya no pueda creerte, eso me aterra.
-El individuo ha luchado siempre para no ser absorbido por la tribu. Si lo intentas, a menudo estarás solo, y a veces asustado. Pero ningún precio es demasiado alto por el privilegio de ser uno mismo.
-Los monos son demasiado buenos para que el hombre pueda descender de ellos.
-La esperanza es el peor de los males, pues prolonga el tormento del hombre.
-Aquel que tiene un porqué para vivir se puede enfrentar a todos los "cómos".
-Sin música la vida sería un error.
-El destino de los hombres está hecho de momentos felices, toda la vida los tiene, pero no de épocas felices.
-Todo lo que se hace por amor, se hace más allá del bien y del mal.
-La palabra más soez y la carta más grosera son mejores, son más educadas que el silencio.
-Los que más han amado al hombre le han hecho siempre el máximo daño. Han exigido de él lo imposible, como todos los amantes.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec efficitur a erat et suscipit. Quisque quis interdum augue. Phasellus dolor metus, scelerisque non porttitor eu, accumsan ac est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a aliquet nisl. Mauris a urna vel neque pulvinar elementum. Curabitur placerat consectetur tellus, vel finibus lectus tincidunt vitae. Ut dignissim ipsum ullamcorper odio egestas dapibus a ut lorem. Aenean sed varius turpis.
+
+Etiam a arcu eget dui vestibulum placerat. Cras euismod nunc nec mi maximus congue. Cras sollicitudin cursus gravida. In hac habitasse platea dictumst. Nam nec sodales diam, id dictum ante. Duis interdum laoreet sapien, vel pulvinar lectus vestibulum sed. Pellentesque id finibus nunc, a consequat eros. Praesent sollicitudin turpis odio, sagittis ullamcorper risus vulputate ac. Vivamus congue mi sit amet dui finibus iaculis. Cras suscipit nulla elit, eu vestibulum libero malesuada at.
+
+In egestas felis at ipsum posuere, eget aliquet est auctor. Sed tempor, quam a condimentum tristique, enim elit fermentum est, sit amet sollicitudin quam risus nec libero. Proin dictum urna eu urna cursus porttitor. Duis viverra lectus massa, sed consectetur lectus bibendum sed. Proin ac ante nec ligula imperdiet convallis. Proin in risus sit amet est tristique sollicitudin. Aenean eget tellus sed purus mattis condimentum.
+
+Proin ornare nibh ornare eros gravida, sed scelerisque libero blandit. Nulla a ligula quis enim ornare pretium. Sed fermentum, felis sit amet vulputate rutrum, orci ligula blandit nunc, vitae cursus ipsum metus eget tortor. Pellentesque cursus ex in turpis ultrices commodo in feugiat elit. Cras luctus dictum iaculis. In elementum finibus orci sed eleifend. Mauris quis mauris ante. Curabitur malesuada felis eget velit egestas, nec pretium orci commodo. Nullam euismod dapibus sapien, eget eleifend risus convallis et. Donec scelerisque est fringilla, lacinia justo at, tristique orci. 
