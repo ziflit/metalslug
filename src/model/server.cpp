@@ -36,9 +36,19 @@ void client_comm(Server* srv, int client) {
 
         sockutils.writeSocket(client, resp);
 
+        /* Envio de lista de usuarios */
+        Message* usersListMsg = new Message();
+        usersListMsg->setContent((srv->getUserLoader())->getUsersList());
+        MessageUtils messageUtils;
+        vector<struct msg_request_t> requests =  messageUtils.buildRequests(usersListMsg, MessageCode:: USERS_LIST_MSG);
+
         ClientConnection* handler = new ClientConnection(client, srv, user);
         handler->start();
         srv->add_connection(handler);
+        for (auto req : requests) {
+            handler->push_event(req);
+        }
+
     } else {
         struct msg_request_t resp;
         resp.code = MessageCode::LOGIN_FAIL;
@@ -238,3 +248,7 @@ list<Message*> Server::get_messages_of(const char* user){
 /* Si  necesito acceso aleatorio, uso vector
 pero si necesito recorrer de principio a fin o voy borrando/insertando
 elementos en el medio, uso list */
+
+UserLoader* Server::getUserLoader() {
+    return this->userloader;
+}

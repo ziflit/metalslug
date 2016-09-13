@@ -57,7 +57,6 @@ int main(int argc, char *argv[]) {
                 if (!conectado) {
                 cout << "Estableciendo la conexion con el servidor..." << endl << endl;
                     if (cliente1->connect_to_server(ip, port) ==  true ){
-                        cliente1->store_users_list();
                         conectado = true;
                         cout << "\033[2J\033[1;1H"; /* clear screen */
                         cout << " Conexion establecida con exito " << endl << endl;

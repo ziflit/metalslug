@@ -59,8 +59,10 @@ bool Client::connect_to_server(string ip, int port) {
         return false;
     } else {
         strcpy(userName, user.data());
+        this->store_users_list();
         return true;
     }
+
 }
 
 void Client::disconnect(){
@@ -140,16 +142,18 @@ void Client::ask_for_messages() {
 
 
 void Client::store_users_list(){
-    /* Ace se va recibir la lista de usuarios, por el momento
-     * hago una lista trucha
-     */
-    string user1, user2, user3;
-    user1 = "santi";
-    user2 = "fran";
-    user3 = "lean";
-    usersList.push_back(user1);   
-    usersList.push_back(user2);
-    usersList.push_back(user3);
+    /* Leo la lista de usruarios*/
+    char buffer[MSGSIZE];
+    MessageUtils messageutils;
+    SocketUtils sockutils;
+    vector<struct msg_request_t> small_messages;
+    do {
+        sockutils.readSocket(socket_number, buffer);
+        small_messages.push_back(*(struct msg_request_t*)buffer);
+    } while ((*(struct msg_request_t*)buffer).completion != MessageCompletion::FINAL_MSG);
+
+    Message* message = messageutils.buildMessage(small_messages);
+    this->usersList = this->makeUsersList(message);
 }
 
 
