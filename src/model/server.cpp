@@ -118,9 +118,11 @@ void Server::start_listening() {
 }
 
 void Server::shutdownServer() {
+    LOGGER_WRITE(Logger::INFO, "Apagando Server", "Server.class")
     delete userloader;
     close_all_connections();
     shutdown(listen_socket_fd, 2);
+    LOGGER_WRITE(Logger::INFO, "El server se a apagado", "Server.class")
 }
 
 void Server::accept_incoming_connections() {
@@ -179,6 +181,7 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
 }
 
 void filter_and_send(Server *server, const char *requester, shared_ptr<ClientConnection> handler) {
+    LOGGER_WRITE(Logger::INFO, "Filtrando mensajes de cliente " + string(requester), "Server.class")
     auto realmessages = server->get_messages_of(requester);
     MessageUtils messageutils;
     for (auto message : realmessages) {

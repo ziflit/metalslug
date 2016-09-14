@@ -1,4 +1,3 @@
-
 #include <asm/socket.h>
 #include <sys/socket.h>
 #include <iostream>
@@ -55,6 +54,7 @@ int connectionReader(ClientConnection *handler) {
         } else {
             mensajes.push_back(*(struct msg_request_t *)buffer);
             if ((*(struct msg_request_t*)buffer).completion == MessageCompletion::FINAL_MSG) {
+                LOGGER_WRITE(Logger::INFO, "Se recibio mensaje de " + string(handler->getUsername()) ,"ClientConnection.class")
                 handler->handle_message(mensajes, mensajes.front().code);
                 mensajes.clear();
             }
@@ -73,6 +73,7 @@ int connectionWriter(ClientConnection *data) {
             data->queuemutex.unlock();
             SocketUtils sockutils;
             sockutils.writeSocket(data->getClientSocket(), event);
+
         } else { data->queuemutex.unlock(); }
     }
     return 1;
@@ -84,6 +85,7 @@ void ClientConnection::start() {
 }
 
 void ClientConnection::stop() {
+    LOGGER_WRITE(Logger::INFO, "Matando el client connection de " + string(username), "ClientConnection.class")
     cout << "Matando el client connection de " << username << endl;
     shouldClose = true;
     this->reader.detach();
