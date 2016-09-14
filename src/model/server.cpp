@@ -149,7 +149,7 @@ void Server::accept_incoming_connections() {
     }
 
     if (!shouldClose) {
-        LOGGER_WRITE(Logger::INFO, "Ingresando cliente numero " + client_id, "Server.class")
+        LOGGER_WRITE(Logger::INFO, "Ingresando cliente numero " + to_string(client_id), "Server.class")
 
         cout << "Ingresando cliente numero " << client_id << endl;
         client_comm(this, client_id);
