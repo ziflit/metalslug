@@ -4,9 +4,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <thread>
-#include <unistd.h>
 #include "server.h"
 #include "ClientConnection.h"
+#include "../Utils/Logger.h"
 
 using namespace std;
 
@@ -21,7 +21,7 @@ Server::~Server() {
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
-void client_comm(Server* srv, int client) {
+void client_comm(Server *srv, int client) {
     /* Mensaje de bienvenida. Se manda una vez fijo */
 
     SocketUtils sockutils;
@@ -43,6 +43,7 @@ void client_comm(Server* srv, int client) {
         vector<struct msg_request_t> requests =  messageUtils.buildRequests(usersListMsg, MessageCode:: USERS_LIST_MSG);
 
         ClientConnection* handler = new ClientConnection(client, srv, user);
+
         handler->start();
         srv->add_connection(handler);
         for (auto req : requests) {
@@ -58,11 +59,11 @@ void client_comm(Server* srv, int client) {
      * se comunicará con el cliente en cuestión. Le paso el fd */
 }
 
-bool Server::auth_user(char* user, char* pass) {
+bool Server::auth_user(char *user, char *pass) {
     userloader->isPasswordOk(user, pass);
 }
 
-void Server::add_connection(ClientConnection* handler) {
+void Server::add_connection(ClientConnection *handler) {
     /* No usar nunca más el puntero pelado luego de esta
        llamada a emplace_back */
     connections.emplace_back(handler);
@@ -101,8 +102,11 @@ int Server::initialize_server(string ip, int port) {
     /* Asigno el nombre al socket usando bind():
      * es decir, le asigno una direccion
     */
-    if (bind(listen_socket_fd, (struct sockaddr*)&server_addr, addr_size) < 0) {
-        cout << "Hubo un error al hacer el binding del socket: " << strerror(errno) << endl;
+    if (bind(listen_socket_fd, (struct sockaddr *) &server_addr, addr_size) < 0) {
+        string error = strerror(errno);
+        LOGGER_WRITE(Logger::ERROR, "Hubo un error al hacer el binding del socket: " + error, "Server.class")
+
+        cout << "Hubo un error al hacer el binding del socket: " << error << endl;
         cout << "Cerrando..." << endl;
         exit(1);
     }
@@ -114,9 +118,11 @@ void Server::start_listening() {
 }
 
 void Server::shutdownServer() {
+    LOGGER_WRITE(Logger::INFO, "Apagando Server", "Server.class")
     delete userloader;
     close_all_connections();
     shutdown(listen_socket_fd, 2);
+    LOGGER_WRITE(Logger::INFO, "El server se a apagado", "Server.class")
 }
 
 void Server::accept_incoming_connections() {
@@ -126,27 +132,32 @@ void Server::accept_incoming_connections() {
 
     /* accept() devuelve un file descriptor asociado a la conexión con el cliente
         * y sólo a el */
-    client_id = accept(listen_socket_fd, (struct sockaddr*)&client_addr,
-                                &caddr_size);
-    if (shouldClose == true){
+    client_id = accept(listen_socket_fd, (struct sockaddr *) &client_addr,
+                       &caddr_size);
+    if (shouldClose) {
         cout << "Servidor cerrado" << endl;
         exit(1);
     }
 
-    if (client_id < 0 and shouldClose == false) {
-        cout << "Hubo un error al conectar con el cliente: " << strerror(errno) << endl;
+    if (client_id < 0 and !shouldClose) {
+        string error = strerror(errno);
+        LOGGER_WRITE(Logger::INFO, "Hubo un error al conectar con el cliente: " + error, "Server.class")
+
+        cout << "Hubo un error al conectar con el cliente: " << error << endl;
         cout << "Cerrando..." << endl;
         exit(1);
     }
 
-    if (shouldClose == false){
-        cout << "Ingresando cliente numero" << client_id << endl;  
+    if (!shouldClose) {
+        LOGGER_WRITE(Logger::INFO, "Ingresando cliente numero " + to_string(client_id), "Server.class")
+
+        cout << "Ingresando cliente numero " << client_id << endl;
         client_comm(this, client_id);
         client_id++;
     }
 }
 
-int Server::close_connection(char* username) {
+int Server::close_connection(char *username) {
     /* responsabilidad de connectionHandler?
     * el es el dueño del socket después de todo
     */
@@ -169,7 +180,8 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
     return connections;
 }
 
-void filter_and_send(Server* server, const char* requester, shared_ptr<ClientConnection> handler) {
+void filter_and_send(Server *server, const char *requester, shared_ptr<ClientConnection> handler) {
+    LOGGER_WRITE(Logger::INFO, "Filtrando mensajes de cliente " + string(requester), "Server.class")
     auto realmessages = server->get_messages_of(requester);
     MessageUtils messageutils;
     for (auto message : realmessages) {
@@ -178,16 +190,16 @@ void filter_and_send(Server* server, const char* requester, shared_ptr<ClientCon
             handler->push_event(req);
         }
     }
-    Message* lastmsgmsg = new Message("server", "user", "Ud. no tiene mas mensajes");
+    Message *lastmsgmsg = new Message("server", "user", "Ud. no tiene mas mensajes");
     struct msg_request_t lastMsg = messageutils.buildRequests(lastmsgmsg, MessageCode::LAST_MESSAGE).front();
     handler->push_event(lastMsg);
 
 }
 
-void Server::handle_message(Message* message, MessageCode code) {
+void Server::handle_message(Message *message, MessageCode code) {
     shared_ptr<ClientConnection> handler;
     thread writer_thread;
-    switch(code){
+    switch (code) {
         case MessageCode::CLIENT_SEND_MSG:
             cout << "CLIENT_SEND_MSG" << endl;
             store_message(message);
@@ -211,7 +223,7 @@ void Server::handle_message(Message* message, MessageCode code) {
     }
 }
 
-shared_ptr<ClientConnection> Server::get_user_handler(const char* username) {
+shared_ptr<ClientConnection> Server::get_user_handler(const char *username) {
     for (auto user : this->connections) {
         if (strcmp(user->getUsername(), username) == 0) {
             return user;
@@ -220,22 +232,24 @@ shared_ptr<ClientConnection> Server::get_user_handler(const char* username) {
     return nullptr;
 }
 
-void Server::store_message(Message* message) {
+void Server::store_message(Message *message) {
+    LOGGER_WRITE(Logger::INFO, "Guardando mensaje de " + message->getFrom() + " para " + message->getTo(),
+                 "Server.class")
     cout << "Guardando el mensaje: " << message->getContent() << endl;
     msglist_mutex.lock();
     messagesList.push_back(message);
     msglist_mutex.unlock();
 }
 
-void Server::shouldCloseFunc(bool should){
+void Server::shouldCloseFunc(bool should) {
     shouldClose = should;
 }
 
-list<Message*> Server::get_messages_of(const char* user){
-    list<Message*> messagesFiltered;
+list<Message *> Server::get_messages_of(const char *user) {
+    std::list<Message *> messagesFiltered;
     msglist_mutex.lock();
-    for (auto it = messagesList.begin(); it != messagesList.cend();){
-        if(strcmp( (*it)->getTo().data(), user) == 0){
+    for (auto it = messagesList.begin(); it != messagesList.cend();) {
+        if (strcmp((*it)->getTo().data(), user) == 0) {
             messagesFiltered.push_back(*it);
             it = messagesFiltered.erase(it); // ...
         } else {
