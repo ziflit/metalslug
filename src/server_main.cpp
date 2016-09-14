@@ -23,7 +23,7 @@ void start_server_online(Server* server, string ip, int port){
 }
 
 int main(int argc, char* argv[]) {
-    LOGGER_START(Logger::ERROR, "server.log")
+    LOGGER_START(Logger::INFO, "server.log")
     int port = 0;
     string ip = "127.0.0.1";
 

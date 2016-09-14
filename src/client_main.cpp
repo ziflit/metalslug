@@ -1,13 +1,5 @@
 #include <iostream>
 #include "model/client.h"
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
 #include "Utils/loremIpsum.h"
 #include "Utils/Logger.h"
 
@@ -15,7 +7,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     /* Seteo puerto e ip del server*/
-    LOGGER_START(Logger::ERROR, "client.log")
+    LOGGER_START(Logger::INFO, "client.log")
     int port = 0;
     string ip = "127.0.0.1";
 
@@ -59,7 +51,6 @@ int main(int argc, char *argv[]) {
                     LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
                     cout << "Estableciendo la conexion con el servidor..." << endl << endl;
                     if (cliente1->connect_to_server(ip, port)) {
-                        cliente1->store_users_list();
 
                         conectado = true;
                         cout << "\033[2J\033[1;1H"; /* clear screen */
@@ -174,7 +165,7 @@ int main(int argc, char *argv[]) {
 
                 cliente1->disconnect();
                 conectado = false;
-                LOGGER_WRITE(Logger::INFO, "Se desconectado el cliente exitosamente.", "ClientMain")
+                LOGGER_WRITE(Logger::INFO, "Se ha desconectado el cliente exitosamente.", "ClientMain")
 
                 break;
 
