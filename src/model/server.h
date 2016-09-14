@@ -91,7 +91,10 @@ public:
 
     void shouldCloseFunc(bool should);
 
-    std::shared_ptr<ClientConnection> get_user_handler(const char *username);
+    std::shared_ptr<ClientConnection> get_user_handler(const char* username);
+
+    UserLoader* getUserLoader();
+
 };
 
 #endif //METALSLUG_SERVER_H

@@ -37,10 +37,10 @@ int main(int argc, char *argv[]) {
         cout << "*-----------------------*" << endl;
         cout << "! Bienvenido al cliente !" << endl;
         cout << "*-----------------------*" << endl << endl;
-        if (conectado == false) {
+        if (!conectado) {
             cout << "\t1 .- Conectar al servidor" << endl;
         }
-        if (conectado == true) {
+        if (conectado) {
             cout << "\t2 .- Enviar Mensaje" << endl;
             cout << "\t3 .- Chequear mensajes" << endl;
             cout << "\t4 .- Desconectar" << endl;
@@ -58,8 +58,9 @@ int main(int argc, char *argv[]) {
                 if (!conectado) {
                     LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
                     cout << "Estableciendo la conexion con el servidor..." << endl << endl;
-                    if (cliente1->connect_to_server(ip, port) == true) {
+                    if (cliente1->connect_to_server(ip, port)) {
                         cliente1->store_users_list();
+
                         conectado = true;
                         cout << "\033[2J\033[1;1H"; /* clear screen */
                         LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
@@ -183,7 +184,7 @@ int main(int argc, char *argv[]) {
                 cout << "Opcion no valida." << endl << endl;
                 break;
         }
-    } while (endloop != true);
+    } while (!endloop);
 
 
     delete cliente1;

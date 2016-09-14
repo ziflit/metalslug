@@ -9,7 +9,7 @@ bool UserLoader::processCSV(string path){
     std::fstream file;
     file.open(path,std::fstream::in);
     if(file.fail()){
-        std::cout << "File not found!\n";
+        std::cout << "No se pudo abrir el archivo!\n";
         return false;
     }
     
