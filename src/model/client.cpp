@@ -65,8 +65,21 @@ bool Client::connect_to_server(string ip, int port) {
 }
 
 void Client::disconnect() {
+    send_disconnect_to_server();
     close(socket_number);
     usersList.clear();
+}
+
+void Client::send_disconnect_to_server() {
+    string me = userName;
+    Message* message = new Message(me, "disconnect");
+    MessageUtils messageutils;
+    vector<struct msg_request_t> small_message = messageutils.buildRequests(message, MessageCode::CLIENT_DISCONNECT);
+    for (auto msg : small_message) {
+        SocketUtils sockutils;
+        sockutils.writeSocket(socket_number, msg);
+    }
+    delete message;
 }
 
 int Client::send_message(int to, string content) {

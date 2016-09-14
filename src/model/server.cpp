@@ -163,6 +163,7 @@ int Server::close_connection(char *username) {
     */
     for (unsigned int i = 0; i < connections.size(); ++i) {
         if (strcmp(connections[i]->getUsername(), username) == 0) {
+            connections[i]->stop();
             connections.erase(connections.begin() + i);
             break;
         }
@@ -172,7 +173,7 @@ int Server::close_connection(char *username) {
 
 void Server::close_all_connections() {
     for (unsigned int i = 0; i < connections.size(); ++i) {
-        connections[i]->stop();
+        close_connection(connections[i]->getUsername());
     }
 }
 
@@ -193,33 +194,38 @@ void filter_and_send(Server *server, const char *requester, shared_ptr<ClientCon
     Message *lastmsgmsg = new Message("server", "user", "Ud. no tiene mas mensajes");
     struct msg_request_t lastMsg = messageutils.buildRequests(lastmsgmsg, MessageCode::LAST_MESSAGE).front();
     handler->push_event(lastMsg);
-
 }
 
 void Server::handle_message(Message *message, MessageCode code) {
     shared_ptr<ClientConnection> handler;
     thread writer_thread;
-    switch (code) {
-        case MessageCode::CLIENT_SEND_MSG:
-            cout << "CLIENT_SEND_MSG" << endl;
-            store_message(message);
-            break;
+    switch(code) {
+    case MessageCode::CLIENT_SEND_MSG:
+        cout << "CLIENT_SEND_MSG" << endl;
+        store_message(message);
+        break;
 
-        case MessageCode::CLIENT_RECEIVE_MSGS:
-            cout << "CLIENT_RECEIVE_MSGS" << endl;
-            /* Aca hay que hacer la parte de enviar todos los
-             * mensajes que hay en la lista al usuario en cuestion
-             * deberia estar en un thread aparte */
-            handler = this->get_user_handler(message->getFrom().data());
-            writer_thread = thread(filter_and_send, this, message->getFrom().data(), handler);
-            writer_thread.detach();
-            break;
+    case MessageCode::CLIENT_DISCONNECT:
+        cout << "CLIENT_DISCONNECT" << endl;
+        handler = this->get_user_handler(message->getFrom().data());
+        close_connection(handler->getUsername());
+        break;
 
-        default:
-            string content;
-            content = message->getContent();
-            cout << "El mensaje entrante es: " << content << endl;
-            break;
+    case MessageCode::CLIENT_RECEIVE_MSGS:
+        cout << "CLIENT_RECEIVE_MSGS" << endl;
+        /* Aca hay que hacer la parte de enviar todos los
+         * mensajes que hay en la lista al usuario en cuestion
+         * deberia estar en un thread aparte */
+        handler = this->get_user_handler(message->getFrom().data());
+        writer_thread = thread(filter_and_send, this, message->getFrom().data(), handler);
+        writer_thread.detach();
+        break;
+
+    default:
+        string content;
+        content = message->getContent();
+        cout << "El mensaje entrante es: " << content << endl;
+        break;
     }
 }
 
