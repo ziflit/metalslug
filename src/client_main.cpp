@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
     int port = 0;
     string ip = "127.0.0.1";
 
+
     /* Creo al cliente */
     Client *cliente1 = new Client();
 
@@ -18,6 +19,8 @@ int main(int argc, char *argv[]) {
      * atoi() devuelve 0 si el parametro es invalido*/
     if (argc > 1) port = atoi(argv[1]);
     if (port == 0) port = 1500;
+
+    if (argc > 2) ip = argv[2];
 
     /* Menu de cliente */
 
