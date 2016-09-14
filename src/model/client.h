@@ -1,6 +1,7 @@
 #ifndef METALSLUG_CLIENT_H
 #define METALSLUG_CLIENT_H
 #define BUFSIZE 1024
+#define CLASSNAME "Client.class"
 #include <iostream>
 #include <stdlib.h>
 #include "message.h"
