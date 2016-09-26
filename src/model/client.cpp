@@ -62,6 +62,7 @@ bool Client::connect_to_server(string ip, int port) {
         this->store_users_list();
         /* Lanzo el handler del cliente */
         this->handler = new ClientHandler(socket_number, this, user.data());
+        this->handler->start();
         return true;
     }
 
@@ -69,7 +70,8 @@ bool Client::connect_to_server(string ip, int port) {
 
 void Client::disconnect() {
     send_disconnect_to_server();
-    close(socket_number);
+    this->handler->stop();
+    delete this->handler;
     usersList.clear();
 }
 
@@ -99,8 +101,9 @@ int Client::send_message(int to, string content) {
     Message *message = new Message(userName, destinatedUser, content);
     vector<struct msg_request_t> small_messages = messageutils.buildRequests(message, MessageCode::CLIENT_SEND_MSG);
     for (auto msg : small_messages) {
-        SocketUtils sockutils;
-        sockutils.writeSocket(socket_number, msg);
+        this->handler->push_event(msg);
+        // SocketUtils sockutils;
+        // sockutils.writeSocket(socket_number, msg);
     }
     delete message;
     return 0;
@@ -119,12 +122,17 @@ int Client::receive_messages() {
     MessageUtils messageutils;
     SocketUtils sockutils;
     vector<struct msg_request_t> small_messages;
+    bool is_server_alive;
     do {
         do {
             small_messages.clear();
-            sockutils.readSocket(socket_number, buffer);
+            is_server_alive = sockutils.readSocket(socket_number, buffer);
+            if (not is_server_alive) {
+                return -1;
+            }
             small_messages.push_back(*(struct msg_request_t *) buffer);
-        } while ((*(struct msg_request_t *) buffer).completion != MessageCompletion::FINAL_MSG);
+        } while ((*(struct msg_request_t *) buffer).completion != MessageCompletion::FINAL_MSG and is_server_alive);
+        if ((*(struct msg_request_t *)buffer).code == MessageCode::MSG_OK) { continue; } /* Ignoro el heartbeat */
         Message *message = messageutils.buildMessage(small_messages);
         countMessages++;
         cout << message->getFrom() << ": " << message->getContent() << endl;

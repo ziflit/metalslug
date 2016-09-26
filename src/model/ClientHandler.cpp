@@ -38,44 +38,29 @@ ClientHandler::ClientHandler(int clientSocket, Client *client, const char *usern
     }
 }
 
-void connectionControl(ClientHandler* handler) {
+void sendHeartbeat(ClientHandler* handler) {
     struct msg_request_t alive;
     alive.code = MessageCode::MSG_OK;
-    while (true) { // while está vivo
+    while (!handler->shouldClose) { // while está vivo
         handler->push_event(alive);
         sleep(5);
     }
 }
 
-int connectionReader(ClientHandler *handler) {
+int receiveHeartbeat(ClientHandler *handler) {
     bool isComplete;
     SocketUtils sockutils;
     vector<struct msg_request_t> mensajes;
     char buffer[BUFSIZE];
 
-    do {
-        isComplete = sockutils.readSocket(handler->getClientSocket(), buffer);
-        if (((*(struct msg_request_t*)buffer)).code == MessageCode::MSG_OK) { continue; }
-        else {
-            if (!isComplete) {
-                //LOGGER_WRITE(Logger::ERROR, "Error de recepcion de mensaje. \n " + strerror(errno), CLASSNAME);
-                handler->stop();
-                //LOGGER_WRITE(Logger::ERROR, "Conexion cerrada.", CLASSNAME);
-            } else {
-                mensajes.push_back(*(struct msg_request_t *)buffer);
-                if ((*(struct msg_request_t*)buffer).completion == MessageCompletion::FINAL_MSG) {
-                    LOGGER_WRITE(Logger::INFO, "Se recibio mensaje de " + string(handler->getUsername()) ,"ClientHandler.class")
-                        handler->handle_message(mensajes, mensajes.front().code);
-                    mensajes.clear();
-                }
-            }
-        }
-    } while (isComplete and !handler->shouldClose);
+    while (!handler->shouldClose) {
+        isComplete = sockutils.peek(handler->getClientSocket(), buffer);
+    }
     /* Si no está completo devuelvo 0 */
     return isComplete ? 1 : 0;
 }
-
 int connectionWriter(ClientHandler *data) {
+    int result;
     while (!data->shouldClose) {
         data->queuemutex.lock();
         if (data->has_events()) {
@@ -83,7 +68,11 @@ int connectionWriter(ClientHandler *data) {
             data->event_queue.pop();
             data->queuemutex.unlock();
             SocketUtils sockutils;
-            sockutils.writeSocket(data->getClientSocket(), event);
+            result = sockutils.writeSocket(data->getClientSocket(), event);
+            if (result == -1) {
+                cout << "El servidor está desconectado" << endl;
+                data->stop();
+            }
 
         } else { data->queuemutex.unlock(); }
     }
@@ -91,17 +80,16 @@ int connectionWriter(ClientHandler *data) {
 }
 
 void ClientHandler::start() {
-    this->reader = std::thread(connectionReader, this);
+    this->reader = std::thread(receiveHeartbeat, this);
     this->writer = std::thread(connectionWriter, this);
-    this->control = std::thread(connectionControl, this);
+    this->control = std::thread(sendHeartbeat, this);
 }
 
 void ClientHandler::stop() {
-    LOGGER_WRITE(Logger::INFO, "Matando el client connection de " + string(username), "ClientHandler.class")
-    cout << "Matando el client connection de " << username << endl;
     shouldClose = true;
     this->reader.detach();
     this->writer.detach(); /* Guarda que tiene un while true, no es join */
+    this->control.detach();
     close(this->clientSocket);
 }
 
