@@ -41,9 +41,11 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, char *usern
 void connectionControl(ClientConnection* handler) {
     struct msg_request_t alive;
     alive.code = MessageCode::MSG_OK;
-    while (true) { // while está vivo
-        handler->push_event(alive);
+    while (!handler->shouldClose) { // while está vivo
         sleep(5);
+        handler->queuemutex.lock();
+        handler->event_queue.push_front(alive);
+        handler->queuemutex.unlock();
     }
 }
 
@@ -80,7 +82,7 @@ int connectionWriter(ClientConnection *data) {
         data->queuemutex.lock();
         if (data->has_events()) {
             msg_request_t event = data->event_queue.front();
-            data->event_queue.pop();
+            data->event_queue.pop_front();
             data->queuemutex.unlock();
             SocketUtils sockutils;
             sockutils.writeSocket(data->getClientSocket(), event);
@@ -108,7 +110,7 @@ void ClientConnection::stop() {
 
 void ClientConnection::push_event(struct msg_request_t event) {
     this->queuemutex.lock();
-    event_queue.push(event);
+    event_queue.push_back(event);
     this->queuemutex.unlock();
 }
 

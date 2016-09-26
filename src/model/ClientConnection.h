@@ -30,7 +30,7 @@ public:
 
     std::mutex queuemutex;
 
-    queue<struct msg_request_t> event_queue;
+    list<struct msg_request_t> event_queue;
 
     ClientConnection(int clientSocket, Server* server, char* username);
 
