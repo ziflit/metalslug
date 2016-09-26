@@ -27,3 +27,24 @@ bool SocketUtils::readSocket(int socket, char* buffer) {
 
     return bytesRecv == MSGSIZE;
 }
+
+int SocketUtils::peek(int fd, char* buffer) {
+    int bytesRecv = 0;
+
+    while (bytesRecv < MSGSIZE && bytesRecv != -1) {
+        bytesRecv += recv(fd, buffer, MSGSIZE, MSG_PEEK);
+    }
+    if (bytesRecv == -1) {
+        /* Loggeo un error */
+        int interror = errno;
+        cout << "Hubo un error en la lectura del socket: " << strerror(interror) << endl;
+        return false;
+    }
+
+    if ( (*(struct msg_request_t*)buffer).code == MessageCode::MSG_OK) {
+        cout << "LLEGO UN MENSAJE DE VIVO" << endl;
+        /* Lo borro de la lista de mensajes a recibir */
+        this->readSocket(fd, buffer);
+    }
+    return bytesRecv == MSGSIZE;
+}
