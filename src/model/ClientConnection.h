@@ -20,6 +20,7 @@ private:
     char username[20];
     thread reader;
     thread writer;
+    thread control;
     Server* server;
 
 public:

@@ -1,0 +1,100 @@
+Table of Contents
+─────────────────
+
+1 Hay que arreglar la entrega anterior con lo siguiente
+.. 1.1 Hay que arreglar que el servidor y el cliente tengan un ping para ver que están vivos
+2 Ideas para la siguiente entrega
+.. 2.1 Hay que armar una suerte de ACK para cada mensaje (o ventana de mensajes)
+.. 2.2 Separar los proyectos (cliente y servidor)
+.. 2.3 Armar un handler de cliente y hacer que los handlers se comuniquen entre ellos.
+.. 2.4 Levantar un <algo> de XML.
+.. 2.5 Alguien tiene que estar investigando y programando algo básico de parallax.
+.. 2.6 SDL básico también tiene que hacerse.
+.. 2.7 Poder dibujar un sprite básico.
+3 Sobre cómo dividirnos
+
+
+1 Hay que arreglar la entrega anterior con lo siguiente:
+════════════════════════════════════════════════════════
+
+1.1 Hay que arreglar que el servidor y el cliente tengan un ping para ver que están vivos
+─────────────────────────────────────────────────────────────────────────────────────────
+
+
+2 Ideas para la siguiente entrega
+═════════════════════════════════
+
+2.1 Hay que armar una suerte de ACK para cada mensaje (o ventana de mensajes)
+─────────────────────────────────────────────────────────────────────────────
+
+
+2.2 Separar los proyectos (cliente y servidor)
+──────────────────────────────────────────────
+
+
+2.3 Armar un handler de cliente y hacer que los handlers se comuniquen entre ellos.
+───────────────────────────────────────────────────────────────────────────────────
+Armar una clase Handler de la cual heredan ClientHandler y ServerHandler (ya no más
+connection). O quizás sea un solo Handler que tiene void* hay que probar cosas de C++.
+
+Básicamente vamos a tener 2 threads corriendo en cada proceso (o más?) uno para escribir
+y otro para leer. Va a haber un 3er thread de control (dije 2 antes?) donde voy a ACOLAR
+un MessageCode::ESTOY_VIVO (o MSG_ALIVE).
+
+Del otro lado (no importa si es Sv o Cliente), voy a estar colgado en un Recv(). El timeout
+del socket mismo va a ser un número bajo (10 segundos?) Nunca va a pasar que mate a un cliente/
+servidor por idle porque siempre va a haber un mensaje de MSG_ALIVE.
+
+
+2.4 Levantar un <algo> de XML.
+──────────────────────────────
+
+
+2.5 Alguien tiene que estar investigando y programando algo básico de parallax.
+───────────────────────────────────────────────────────────────────────────────
+
+  El manejo del fondo es un parallax. Hay que manejar índices Z con
+  velocidades relativas diferenciadas entre lo que está enfrente y lo
+  que está en el fondo.
+
+
+2.6 SDL básico también tiene que hacerse.
+─────────────────────────────────────────
+
+  SDL básico siendo: dibujar una ventana, poder procesar (o por lo menos
+  entender) ingreso de teclado. Nada demasiado complejo, si se termina
+  rápido como mucho cambiar la ubicación de un bloque cuadrado cuando se
+  toca una tecla. Recomendación santi: ni pensar en movimiento fluido al
+  principio, sólo mover un bloque entre 4 ubicaciones predefinidas y con
+  eso alcanza bastante. El cliente no se va a encargar de modificar esas
+  posiciones de todas formas, así que sólo nos interesa el evento del
+  ingreso de teclado (pero es interesante saber qué implica "modificar"
+  una posición: quizás significa eliminar el bloque de una ubicación (se
+  redibuja el fondo?) e insertarlo en la nueva. Ver qué pasa con las
+  cosas que se desdibujan y todo eso. Recordar que estamos a 'bajo'
+  nivel. Medir un poco el tema del rendimiento (cuánto chupa CPU el tema
+  de dibujar algo tan pelotudo?)
+
+
+2.7 Poder dibujar un sprite básico.
+───────────────────────────────────
+
+  Tener una ventana básica inicial y dibujar una serie de sprites en la
+  misma ubicación. Probar con series distintas de sprites. Levantar una
+  secuencia en memoria, armarlo de tipo "array" Hacer que por lo menos
+  al principio (idealemnte siempre sería así?) sean todas del mismo
+  tamaño y
+
+
+3 Sobre cómo dividirnos:
+════════════════════════
+
+  Tenemos la ligera 'ventaja' de que SDL y la estructura
+  cliente-servidor del chat no las podemos integrar todavía. Todo lo que
+  se haga por XML o SDL (ya sea la parte de sprites o la otra) NO
+  DEBERIA TENER ABSOLUTAMENTE NADA QUE VER con la parte del
+  cliente-servidor. Ármenlo en proyectos separados, usen Eclipse, CLion,
+  Codeblocks o XCode, lo que mierda sea, y sean felices con ese entorno
+  ahí. Tampoco forreen y hagan código más o menos bien estructurado en
+  funciones "reusables" así podemos copiar y pegar después parte de eso,
+  una vez que tengamos el modelo armado.
