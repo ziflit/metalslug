@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "client.h"
 #include "../Utils/Logger.h"
+#include "ClientHandler.h"
 #include <sstream>
 
 using namespace std;
@@ -59,6 +60,8 @@ bool Client::connect_to_server(string ip, int port) {
     } else {
         strcpy(userName, user.data());
         this->store_users_list();
+        /* Lanzo el handler del cliente */
+        this->handler = new ClientHandler(socket_number, this, user.data());
         return true;
     }
 
@@ -129,8 +132,9 @@ int Client::receive_messages() {
     LOGGER_WRITE(Logger::INFO, "Se han recibido " + to_string(countMessages) + " mensajes.", CLASSNAME)
 }
 
-void Client::lorem_ipsum(int frec, int max_envios) {
-}
+void Client::handle_message(Message *message, MessageCode code) {}
+
+void Client::lorem_ipsum(int frec, int max_envios) {}
 
 int Client::get_socket() {
     return socket_number;
@@ -144,7 +148,6 @@ void Client::show_users_list() {
     cout << usersList.size() << " - All Users" << endl << endl;
 }
 
-
 void Client::ask_for_messages() {
     msg_request_t msg;
     msg.code = MessageCode::CLIENT_RECEIVE_MSGS;
@@ -155,8 +158,7 @@ void Client::ask_for_messages() {
     sockutils.writeSocket(socket_number, msg);
 }
 
-
-void Client::store_users_list(){
+void Client::store_users_list() {
     /* Leo la lista de usruarios*/
     char buffer[MSGSIZE];
     MessageUtils messageutils;
@@ -171,11 +173,9 @@ void Client::store_users_list(){
     this->usersList = this->makeUsersList(message);
 }
 
-
 int Client::sizeofUserList() {
     return usersList.size();
 }
-
 
 string Client::searchUser(int user) {
     return usersList[user];
@@ -190,4 +190,3 @@ std::vector<string> Client::makeUsersList(Message *msg) {
 
     return usersList;
 }
-

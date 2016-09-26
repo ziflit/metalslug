@@ -1,21 +1,24 @@
 #ifndef METALSLUG_CLIENT_H
 #define METALSLUG_CLIENT_H
-#define BUFSIZE 1024
 #define CLASSNAME "Client.class"
 #include <iostream>
 #include <stdlib.h>
+#include <memory>
 #include "message.h"
 #include "../Utils/SocketUtils.h"
 #include "../Utils/MessageUtils.h"
 
+using namespace std;
 
+class ClientHandler;
 
 class Client {
-	private:
+private:
     int socket_number;
+    ClientHandler* handler;
     char userName[20];
     std::vector<string> usersList;
-	public:
+public:
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
 		 */
@@ -51,15 +54,17 @@ class Client {
 
     int sizeofUserList();
 
-	void ask_for_messages();
+    void ask_for_messages();
 
-	void send_message_to_all(string content);
+    void send_message_to_all(string content);
 
-	string searchUser(int user);
+    string searchUser(int user);
 
     std::vector<string> makeUsersList(Message *msg);
 
     void send_disconnect_to_server();
+
+    void handle_message(Message *message, MessageCode code);
 };
 
 

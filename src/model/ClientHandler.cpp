@@ -2,24 +2,24 @@
 #include <sys/socket.h>
 #include <iostream>
 #include <sstream>
-#include "ClientConnection.h"
+#include "ClientHandler.h"
 #include "../Utils/Logger.h"
 
-#define CLASSNAME "ClientConnection.class"
+#define CLASSNAME "ClientHandler.class"
 
 
-ClientConnection::~ClientConnection() {
+ClientHandler::~ClientHandler() {
     close(this->clientSocket);
 }
 
 /**
  * @param clientSocket <--- socket id
- * @param server
+ * @param client
  * @param username
  */
-ClientConnection::ClientConnection(int clientSocket, Server *server, char *username) {
+ClientHandler::ClientHandler(int clientSocket, Client *client, const char *username) {
     this->clientSocket = clientSocket;
-    this->server = server;
+    this->client = client;
     strcpy(this->username, username);
     this->shouldClose = false;
 
@@ -38,7 +38,7 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, char *usern
     }
 }
 
-void connectionControl(ClientConnection* handler) {
+void connectionControl(ClientHandler* handler) {
     struct msg_request_t alive;
     alive.code = MessageCode::MSG_OK;
     while (true) { // while está vivo
@@ -47,7 +47,7 @@ void connectionControl(ClientConnection* handler) {
     }
 }
 
-int connectionReader(ClientConnection *handler) {
+int connectionReader(ClientHandler *handler) {
     bool isComplete;
     SocketUtils sockutils;
     vector<struct msg_request_t> mensajes;
@@ -64,7 +64,7 @@ int connectionReader(ClientConnection *handler) {
             } else {
                 mensajes.push_back(*(struct msg_request_t *)buffer);
                 if ((*(struct msg_request_t*)buffer).completion == MessageCompletion::FINAL_MSG) {
-                    LOGGER_WRITE(Logger::INFO, "Se recibio mensaje de " + string(handler->getUsername()) ,"ClientConnection.class")
+                    LOGGER_WRITE(Logger::INFO, "Se recibio mensaje de " + string(handler->getUsername()) ,"ClientHandler.class")
                         handler->handle_message(mensajes, mensajes.front().code);
                     mensajes.clear();
                 }
@@ -75,7 +75,7 @@ int connectionReader(ClientConnection *handler) {
     return isComplete ? 1 : 0;
 }
 
-int connectionWriter(ClientConnection *data) {
+int connectionWriter(ClientHandler *data) {
     while (!data->shouldClose) {
         data->queuemutex.lock();
         if (data->has_events()) {
@@ -90,36 +90,35 @@ int connectionWriter(ClientConnection *data) {
     return 1;
 }
 
-void ClientConnection::start() {
+void ClientHandler::start() {
     this->reader = std::thread(connectionReader, this);
     this->writer = std::thread(connectionWriter, this);
     this->control = std::thread(connectionControl, this);
 }
 
-void ClientConnection::stop() {
-    LOGGER_WRITE(Logger::INFO, "Matando el client connection de " + string(username), "ClientConnection.class")
+void ClientHandler::stop() {
+    LOGGER_WRITE(Logger::INFO, "Matando el client connection de " + string(username), "ClientHandler.class")
     cout << "Matando el client connection de " << username << endl;
     shouldClose = true;
     this->reader.detach();
     this->writer.detach(); /* Guarda que tiene un while true, no es join */
-    this->control.detach();
     close(this->clientSocket);
 }
 
-void ClientConnection::push_event(struct msg_request_t event) {
+void ClientHandler::push_event(struct msg_request_t event) {
     this->queuemutex.lock();
     event_queue.push(event);
     this->queuemutex.unlock();
 }
 
-void ClientConnection::handle_message(vector<struct msg_request_t> mensajes, MessageCode code) {
+void ClientHandler::handle_message(vector<struct msg_request_t> mensajes, MessageCode code) {
     MessageUtils messageutils;
     Message* message = messageutils.buildMessage(mensajes);
-    server->handle_message(message, code);
+    this->client->handle_message(message, code);
 }
 
-ClientConnection::ClientConnection() {}
+ClientHandler::ClientHandler() {}
 
-char *ClientConnection::getUsername() {
+char *ClientHandler::getUsername() {
     return username;
 }
