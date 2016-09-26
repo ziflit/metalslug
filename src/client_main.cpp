@@ -113,7 +113,9 @@ int main(int argc, char *argv[]) {
                     // cliente1->send_message(mensaje) ;
                     cliente1->ask_for_messages(); /* implementar esto */
 
-                    cliente1->receive_messages();
+                    if (cliente1->receive_messages() == -1) {
+                        conectado = false;
+                    };
                     LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
 
                     // delete mensaje;

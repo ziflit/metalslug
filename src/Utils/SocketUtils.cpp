@@ -1,10 +1,12 @@
 #include "SocketUtils.h"
 #include <iostream>
 #include <string.h>
+#include <signal.h>
 
 using namespace std;
 
 int SocketUtils::writeSocket(int fd, struct msg_request_t msg) {
+    signal(SIGPIPE, SIG_IGN);
     int bytesSent = send(fd, &msg, MSGSIZE, 0);
     if (bytesSent < 0) {
         cout << "Hubo un error y fue: " << strerror(bytesSent) << endl;
@@ -37,7 +39,7 @@ int SocketUtils::peek(int fd, char* buffer) {
     if (bytesRecv == -1) {
         /* Loggeo un error */
         int interror = errno;
-        cout << "Hubo un error en la lectura del socket: " << strerror(interror) << endl;
+        cout << "Hubo un error en el peek del socket: " << strerror(interror) << endl;
         return false;
     }
 
