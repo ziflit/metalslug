@@ -30,7 +30,7 @@ bool SocketUtils::readSocket(int socket, char* buffer) {
     return bytesRecv == MSGSIZE;
 }
 
-int SocketUtils::peek(int fd, char* buffer) {
+bool SocketUtils::peek(int fd, char* buffer) {
     int bytesRecv = 0;
 
     while (bytesRecv < MSGSIZE && bytesRecv != -1) {

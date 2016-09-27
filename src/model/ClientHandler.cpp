@@ -48,16 +48,19 @@ void sendHeartbeat(ClientHandler* handler) {
 }
 
 int receiveHeartbeat(ClientHandler *handler) {
-    bool isComplete;
+    bool is_server_alive;
     SocketUtils sockutils;
     vector<struct msg_request_t> mensajes;
     char buffer[BUFSIZE];
 
     while (!handler->shouldClose) {
-        isComplete = sockutils.peek(handler->getClientSocket(), buffer);
+        is_server_alive = sockutils.peek(handler->getClientSocket(), buffer);
+        if (not is_server_alive) {
+            handler->stop();
+        }
     }
     /* Si no está completo devuelvo 0 */
-    return isComplete ? 1 : 0;
+    return is_server_alive ? 1 : 0;
 }
 int connectionWriter(ClientHandler *data) {
     int result;
