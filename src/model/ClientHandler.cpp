@@ -93,6 +93,7 @@ void ClientHandler::stop() {
     this->reader.detach();
     this->writer.detach(); /* Guarda que tiene un while true, no es join */
     this->control.detach();
+    this->client->set_connection_status(false);
     close(this->clientSocket);
 }
 

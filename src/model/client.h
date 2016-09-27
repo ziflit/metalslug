@@ -15,6 +15,7 @@ class ClientHandler;
 class Client {
 private:
     int socket_number;
+    bool connected;
     ClientHandler* handler;
     char userName[20];
     std::vector<string> usersList;
@@ -65,6 +66,10 @@ public:
     void send_disconnect_to_server();
 
     void handle_message(Message *message, MessageCode code);
+
+    bool is_connected() { return connected; }
+
+    void set_connection_status(bool status) { this->connected = status; }
 };
 
 
