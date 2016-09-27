@@ -81,8 +81,7 @@ void Client::send_disconnect_to_server() {
     MessageUtils messageutils;
     vector<struct msg_request_t> small_message = messageutils.buildRequests(message, MessageCode::CLIENT_DISCONNECT);
     for (auto msg : small_message) {
-        SocketUtils sockutils;
-        sockutils.writeSocket(socket_number, msg);
+        this->handler->push_event(msg);
     }
     delete message;
 }
