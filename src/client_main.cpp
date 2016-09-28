@@ -168,7 +168,9 @@ int main(int argc, char *argv[]) {
                 endloop = true;
                 LOGGER_WRITE(Logger::INFO, "Desconectando Cliente.", "ClientMain")
 
-                cliente1->disconnect();
+                if (cliente1->is_connected()) {
+                    cliente1->disconnect();
+                }
                 cliente1->set_connection_status(false);
                 LOGGER_WRITE(Logger::INFO, "Se ha desconectado el cliente exitosamente.", "ClientMain")
 

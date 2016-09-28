@@ -25,7 +25,7 @@ ClientHandler::ClientHandler(int clientSocket, Client *client, const char *usern
 
 
     struct timeval timeout;
-    timeout.tv_sec = 60;
+    timeout.tv_sec = 10;
     timeout.tv_usec = 0;
 
     if (setsockopt(this->clientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout))) {
@@ -47,7 +47,7 @@ void sendHeartbeat(ClientHandler* handler) {
     }
 }
 
-int receiveHeartbeat(ClientHandler *handler) {
+void receiveHeartbeat(ClientHandler *handler) {
     bool is_server_alive;
     SocketUtils sockutils;
     vector<struct msg_request_t> mensajes;
@@ -55,13 +55,13 @@ int receiveHeartbeat(ClientHandler *handler) {
 
     while (!handler->shouldClose) {
         is_server_alive = sockutils.peek(handler->getClientSocket(), buffer);
-        if (not is_server_alive) {
+        if (not is_server_alive and !handler->shouldClose) {
             handler->stop();
+            break;
         }
     }
-    /* Si no está completo devuelvo 0 */
-    return is_server_alive ? 1 : 0;
 }
+
 int connectionWriter(ClientHandler *data) {
     int result;
     while (!data->shouldClose) {
@@ -74,7 +74,9 @@ int connectionWriter(ClientHandler *data) {
             result = sockutils.writeSocket(data->getClientSocket(), event);
             if (result == -1) {
                 cout << "El servidor está desconectado" << endl;
-                data->stop();
+                if (!data->shouldClose) {
+                    data->stop();
+                }
             }
 
         } else { data->queuemutex.unlock(); }
@@ -89,12 +91,14 @@ void ClientHandler::start() {
 }
 
 void ClientHandler::stop() {
-    shouldClose = true;
-    this->reader.detach();
-    this->writer.detach(); /* Guarda que tiene un while true, no es join */
-    this->control.detach();
-    this->client->set_connection_status(false);
-    close(this->clientSocket);
+    if (not shouldClose) {
+        this->shouldClose = true;
+        close(this->clientSocket);
+        this->writer.detach(); /* Guarda que tiene un while true, no es join */
+        this->reader.detach();
+        this->control.detach();
+        this->client->set_connection_status(false);
+    }
 }
 
 void ClientHandler::push_event(struct msg_request_t event) {

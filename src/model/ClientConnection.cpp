@@ -25,7 +25,7 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, char *usern
 
 
     struct timeval timeout;
-    timeout.tv_sec = 60;
+    timeout.tv_sec = 10;
     timeout.tv_usec = 0;
 
     if (setsockopt(this->clientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout))) {
@@ -78,14 +78,18 @@ int connectionReader(ClientConnection *handler) {
 }
 
 int connectionWriter(ClientConnection *data) {
+    int result;
+    SocketUtils sockutils;
     while (!data->shouldClose) {
         data->queuemutex.lock();
         if (data->has_events()) {
             msg_request_t event = data->event_queue.front();
             data->event_queue.pop_front();
             data->queuemutex.unlock();
-            SocketUtils sockutils;
-            sockutils.writeSocket(data->getClientSocket(), event);
+            result = sockutils.writeSocket(data->getClientSocket(), event);
+            if (result == -1) {
+                data->stop();
+            }
 
         } else { data->queuemutex.unlock(); }
     }
