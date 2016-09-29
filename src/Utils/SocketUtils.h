@@ -10,6 +10,7 @@ class SocketUtils {
     private:
     public:
     int writeSocket(int fd, struct msg_request_t msg);
+    bool peek(int fd, char* buffer);
     bool readSocket(int socket, char *buffer);
 };
 #endif

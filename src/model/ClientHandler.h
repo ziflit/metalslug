@@ -8,33 +8,33 @@
 #include <mutex>
 #include <unistd.h>
 #include "../Utils/Protocol.h"
-#include "server.h"
+#include "client.h"
 #include "../Utils/MessageUtils.h"
 
 
 using namespace std;
 
-class ClientConnection {
+class ClientHandler {
 private:
     int clientSocket;
     char username[20];
     thread reader;
     thread writer;
     thread control;
-    Server* server;
+    Client* client;
 
 public:
-    ClientConnection();
+    ClientHandler();
 
     bool shouldClose;
 
     std::mutex queuemutex;
 
-    list<struct msg_request_t> event_queue;
+    queue<struct msg_request_t> event_queue;
 
-    ClientConnection(int clientSocket, Server* server, char* username);
+    ClientHandler(int serverSocket, Client* client, const char* username);
 
-    virtual ~ClientConnection();
+    virtual ~ClientHandler();
 
     int getClientSocket() { return clientSocket; }
 

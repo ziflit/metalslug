@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "client.h"
 #include "../Utils/Logger.h"
+#include "ClientHandler.h"
 #include <sstream>
 
 using namespace std;
@@ -59,6 +60,9 @@ bool Client::connect_to_server(string ip, int port) {
     } else {
         strcpy(userName, user.data());
         this->store_users_list();
+        /* Lanzo el handler del cliente */
+        this->handler = new ClientHandler(socket_number, this, user.data());
+        this->handler->start();
         return true;
     }
 
@@ -66,7 +70,9 @@ bool Client::connect_to_server(string ip, int port) {
 
 void Client::disconnect() {
     send_disconnect_to_server();
-    close(socket_number);
+    this->handler->stop();
+    delete this->handler;
+    this->set_connection_status(false);
     usersList.clear();
 }
 
@@ -76,8 +82,7 @@ void Client::send_disconnect_to_server() {
     MessageUtils messageutils;
     vector<struct msg_request_t> small_message = messageutils.buildRequests(message, MessageCode::CLIENT_DISCONNECT);
     for (auto msg : small_message) {
-        SocketUtils sockutils;
-        sockutils.writeSocket(socket_number, msg);
+        this->handler->push_event(msg);
     }
     delete message;
 }
@@ -96,8 +101,9 @@ int Client::send_message(int to, string content) {
     Message *message = new Message(userName, destinatedUser, content);
     vector<struct msg_request_t> small_messages = messageutils.buildRequests(message, MessageCode::CLIENT_SEND_MSG);
     for (auto msg : small_messages) {
-        SocketUtils sockutils;
-        sockutils.writeSocket(socket_number, msg);
+        this->handler->push_event(msg);
+        // SocketUtils sockutils;
+        // sockutils.writeSocket(socket_number, msg);
     }
     delete message;
     return 0;
@@ -116,12 +122,17 @@ int Client::receive_messages() {
     MessageUtils messageutils;
     SocketUtils sockutils;
     vector<struct msg_request_t> small_messages;
+    bool is_server_alive;
     do {
         do {
             small_messages.clear();
-            sockutils.readSocket(socket_number, buffer);
+            is_server_alive = sockutils.readSocket(socket_number, buffer);
+            if (not is_server_alive) {
+                return -1;
+            }
             small_messages.push_back(*(struct msg_request_t *) buffer);
-        } while ((*(struct msg_request_t *) buffer).completion != MessageCompletion::FINAL_MSG);
+        } while ((*(struct msg_request_t *) buffer).completion != MessageCompletion::FINAL_MSG and is_server_alive);
+        if ((*(struct msg_request_t *)buffer).code == MessageCode::MSG_OK) { continue; } /* Ignoro el heartbeat */
         Message *message = messageutils.buildMessage(small_messages);
         countMessages++;
         cout << message->getFrom() << ": " << message->getContent() << endl;
@@ -129,8 +140,9 @@ int Client::receive_messages() {
     LOGGER_WRITE(Logger::INFO, "Se han recibido " + to_string(countMessages) + " mensajes.", CLASSNAME)
 }
 
-void Client::lorem_ipsum(int frec, int max_envios) {
-}
+void Client::handle_message(Message *message, MessageCode code) {}
+
+void Client::lorem_ipsum(int frec, int max_envios) {}
 
 int Client::get_socket() {
     return socket_number;
@@ -144,7 +156,6 @@ void Client::show_users_list() {
     cout << usersList.size() << " - All Users" << endl << endl;
 }
 
-
 void Client::ask_for_messages() {
     msg_request_t msg;
     msg.code = MessageCode::CLIENT_RECEIVE_MSGS;
@@ -155,8 +166,7 @@ void Client::ask_for_messages() {
     sockutils.writeSocket(socket_number, msg);
 }
 
-
-void Client::store_users_list(){
+void Client::store_users_list() {
     /* Leo la lista de usruarios*/
     char buffer[MSGSIZE];
     MessageUtils messageutils;
@@ -171,11 +181,9 @@ void Client::store_users_list(){
     this->usersList = this->makeUsersList(message);
 }
 
-
 int Client::sizeofUserList() {
     return usersList.size();
 }
-
 
 string Client::searchUser(int user) {
     return usersList[user];
@@ -190,4 +198,3 @@ std::vector<string> Client::makeUsersList(Message *msg) {
 
     return usersList;
 }
-

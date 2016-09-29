@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 
     /* Menu de cliente */
 
-    bool endloop = false, conectado = false;
+    bool endloop = false;
     char keypressed;
 
     cout << "\033[2J\033[1;1H"; /* clear screen */
@@ -32,10 +32,10 @@ int main(int argc, char *argv[]) {
         cout << "*-----------------------*" << endl;
         cout << "! Bienvenido al cliente !" << endl;
         cout << "*-----------------------*" << endl << endl;
-        if (!conectado) {
+        if (!cliente1->is_connected()) {
             cout << "\t1 .- Conectar al servidor" << endl;
         }
-        if (conectado) {
+        if (cliente1->is_connected()) {
             cout << "\t2 .- Enviar Mensaje" << endl;
             cout << "\t3 .- Chequear mensajes" << endl;
             cout << "\t4 .- Desconectar" << endl;
@@ -50,18 +50,18 @@ int main(int argc, char *argv[]) {
 
             case '1':
                 cout << "\033[2J\033[1;1H"; /* clear screen */
-                if (!conectado) {
+                if (!cliente1->is_connected()) {
                     LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
                     cout << "Estableciendo la conexion con el servidor..." << endl << endl;
                     if (cliente1->connect_to_server(ip, port)) {
 
-                        conectado = true;
+                        cliente1->set_connection_status(true);
                         cout << "\033[2J\033[1;1H"; /* clear screen */
                         LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
                         cout << " Conexion establecida con exito " << endl << endl;
                         break;
                     } else {
-                        conectado = false;
+                        cliente1->set_connection_status(false);
                         break;
                     }
 
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 
             case '2':
                 cout << "\033[2J\033[1;1H"; /* clear screen */
-                if (conectado) {
+                if (cliente1->is_connected()) {
                     int userSelected;
                     string contentMsg;
 
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
 
             case '3':
                 cout << "\033[2J\033[1;1H"; /* clear screen */
-                if (conectado) {
+                if (cliente1->is_connected()) {
                     LOGGER_WRITE(Logger::INFO, "Pidiendo mensajes al servidor.", "ClientMain")
 
                     cout << "Solicitando mensajes al servidor..." << endl << endl;
@@ -113,7 +113,9 @@ int main(int argc, char *argv[]) {
                     // cliente1->send_message(mensaje) ;
                     cliente1->ask_for_messages(); /* implementar esto */
 
-                    cliente1->receive_messages();
+                    if (cliente1->receive_messages() == -1) {
+                        cliente1->set_connection_status(false);
+                    };
                     LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
 
                     // delete mensaje;
@@ -126,10 +128,10 @@ int main(int argc, char *argv[]) {
 
             case '4':
                 cout << "\033[2J\033[1;1H"; /* clear screen */
-                if (conectado) {
+                if (cliente1->is_connected()) {
                     cliente1->disconnect();
                     cout << "Ud. Se ha desconectado del servidor" << endl << endl;
-                    conectado = false;
+                    cliente1->set_connection_status(false);
                     break;
                 }
                 cout << "Por favor, primero conectese al servidor" << endl << endl;
@@ -138,7 +140,7 @@ int main(int argc, char *argv[]) {
 
             case '5':
                 cout << "\033[2J\033[1;1H"; /* clear screen */
-                if (conectado) {
+                if (cliente1->is_connected()) {
                     long max_sends, frequency;
                     cout << "*-----------------------*" << endl;
                     cout << "!      Lorem Ipsum      !" << endl;
@@ -166,8 +168,10 @@ int main(int argc, char *argv[]) {
                 endloop = true;
                 LOGGER_WRITE(Logger::INFO, "Desconectando Cliente.", "ClientMain")
 
-                cliente1->disconnect();
-                conectado = false;
+                if (cliente1->is_connected()) {
+                    cliente1->disconnect();
+                }
+                cliente1->set_connection_status(false);
                 LOGGER_WRITE(Logger::INFO, "Se ha desconectado el cliente exitosamente.", "ClientMain")
 
                 break;
