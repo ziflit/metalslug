@@ -1,0 +1,39 @@
+* Qué vamos a mandar:
+
+** Cliente -> Servidor:
+Manda eventos que realizó.
+Evento de tecla PRESS y RELEASE
+(key down y key up) para una lista de teclas (controles del juego, no variantes)
+
+Puede mandar algunos mensajes de mantenimiento (algo del estilo de "no me mori (red) o
+me quiero conectar, o este es mi nombre de usuario)
+
+** Servidor -> Cliente:
+Envía mensajes de actualización constantemente (incluye mensajes de creación).
+
+Manda la creación del escenario.
+
+
+Mensaje de update
+#+BEGIN_SRC json
+  {
+      [
+          "id_objeto": {
+              "x": x,
+              "y": y,
+              "x_rect": x_rect,
+              "y_rect": y_rect,
+              "w": w,
+              "h": h
+          },
+          "id_objeto2": {
+              "x": x,
+              "y": y,
+              "x_rect": x_rect,
+              "y_rect": y_rect,
+              "w": w,
+              "h": h
+          }
+      ]
+  }
+#+END_SRC
