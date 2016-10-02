@@ -6,9 +6,9 @@
 #include "../utils/SocketUtils.h"
 #include <list>
 
-#include "message.h"
 #include "UserLoader.h"
 #include "../utils/Protocol.h"
+#include "Event.h"
 
 #define MAX_CONN 6
 
