@@ -21,6 +21,8 @@ public:
 
     SDL_Window* getMainWindow(){return InitialWindow::mainWindow;}
 
+    SDL_Renderer* getMainRenderer(){ return InitialWindow::mainRender;}
+
     void evetsHanddler(SDL_Event event);
 };
 

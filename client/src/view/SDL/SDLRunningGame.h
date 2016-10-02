@@ -9,12 +9,12 @@
 #define gameMusicPath "audios/circuit.wav"
 
 
-#include "SDL_Classes & tools/AudioTools.h"
-#include "SDL_Classes & tools/SDLTools.h"
-#include "SDL_Classes & tools/Sprite.cpp"
-#include "SDL_Classes & tools/PlayerSprite.h"
-#include "SDL_Classes & tools/BackgroundSprite.h"
-#include "SDL_Classes & tools/SDLEvents.h"
+#include "AudioTools.h"
+#include "SDLTools.h"
+#include "Sprite.cpp"
+#include "PlayerSprite.h"
+#include "BackgroundSprite.h"
+#include "SDLEvents.h"
 
 class SDLRunningGame {
 private:
