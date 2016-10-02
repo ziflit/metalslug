@@ -120,8 +120,9 @@ void ClientConnection::push_event(struct event event) {
 }
 
 void ClientConnection::handle_message(vector<struct event> mensajes, EventCode code) {
-    MessageUtils messageutils;
-    Message* message = messageutils.buildMessage(mensajes);
+    // MessageUtils messageutils;
+    // Message* message = messageutils.buildMessage(mensajes);
+    Message* message = NULL;
     server->handle_message(message, code);
 }
 
