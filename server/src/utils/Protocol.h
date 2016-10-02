@@ -21,7 +21,7 @@ using namespace std;
  * SI NO FUNCA CON STRING LO PASAMOS A CHAR[]
  */
 
-enum MessageCode {
+enum EventCode {
     CLIENT_SEND_MSG, /* El cliente quiere enviar un mensjae*/
     CLIENT_RECEIVE_MSGS, /* El cliente quiere recibir sus mensajes*/
     LOGIN_OK, /* El servidor auntentico bien al cliente */
@@ -29,24 +29,35 @@ enum MessageCode {
     USERS_LIST_MSG, /* El servidor envia al cliente los usuarios */
     LAST_MESSAGE, /* Es el ultimo mensaje, para saber hasta cuando recibir */
     CLIENT_DISCONNECT, /* El cliente se desconecta del servidor */
-    MSG_OK /* ACK */
+    MSG_OK, /* ACK */
+    SDL_KEYUP,
+    SDL_KEYDOWN,
+    SDL_KEYLEFT,
+    SDL_KEYRIGHT
 };
 
-enum MessageCompletion {
+enum EventCompletion {
     FINAL_MSG,
     PARTIAL_MSG,
 };
 
-struct msg_t {
-    char from[20];
-    char to[20];
-    char msg[200];
+enum Entity {
+    MARCO,
+    TARMA,
+    ENEMY_NORMAL,
 };
 
-struct msg_request_t {
-    MessageCode code;
-    MessageCompletion completion;
-    msg_t message;
+struct event_ext {
+    EventCode code;
+    Entity id;
+    unsigned int x;
+    unsigned int y;
+    unsigned int h;
+};
+
+struct event {
+    EventCompletion completion;
+    event_ext data;
 };
 
 
