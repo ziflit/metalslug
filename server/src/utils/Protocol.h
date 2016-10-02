@@ -6,7 +6,7 @@
 
 #define BUFSIZE 256
 #define CONTENT_TRANSFER_SIZE 200
-#define MSGSIZE sizeof(struct msg_request_t)
+#define MSGSIZE sizeof(struct event)
 
 using namespace std;
 
