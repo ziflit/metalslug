@@ -41,8 +41,9 @@ void client_comm(Server *srv, int client) {
         /* Envio de lista de usuarios */
         Message* usersListMsg = new Message();
         usersListMsg->setContent((srv->getUserLoader())->getUsersList());
-        MessageUtils messageUtils;
-        vector<struct event> requests =  messageUtils.buildRequests(usersListMsg, EventCode:: USERS_LIST_MSG);
+        // MessageUtils messageUtils;
+        // vector<struct event> requests =  messageUtils.buildRequests(usersListMsg, EventCode:: USERS_LIST_MSG);
+        vector<struct event> requests;
 
         ClientConnection* handler = new ClientConnection(client, srv, user);
 
@@ -183,20 +184,20 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
     return connections;
 }
 
-void filter_and_send(Server *server, const char *requester, shared_ptr<ClientConnection> handler) {
-    LOGGER_WRITE(Logger::INFO, "Filtrando mensajes de cliente " + string(requester), "Server.class")
-    auto realmessages = server->get_messages_of(requester);
-    MessageUtils messageutils;
-    for (auto message : realmessages) {
-        vector<struct event> requests = messageutils.buildRequests(message, EventCode::CLIENT_RECEIVE_MSGS);
-        for (auto req : requests) {
-            handler->push_event(req);
-        }
-    }
-    Message *lastmsgmsg = new Message("server", "user", "Ud. no tiene mas mensajes");
-    struct event lastMsg = messageutils.buildRequests(lastmsgmsg, EventCode::LAST_MESSAGE).front();
-    handler->push_event(lastMsg);
-}
+// void filter_and_send(Server *server, const char *requester, shared_ptr<ClientConnection> handler) {
+//     LOGGER_WRITE(Logger::INFO, "Filtrando mensajes de cliente " + string(requester), "Server.class")
+//     auto realmessages = server->get_messages_of(requester);
+//     MessageUtils messageutils;
+//     for (auto message : realmessages) {
+//         vector<struct event> requests = messageutils.buildRequests(message, EventCode::CLIENT_RECEIVE_MSGS);
+//         for (auto req : requests) {
+//             handler->push_event(req);
+//         }
+//     }
+//     Message *lastmsgmsg = new Message("server", "user", "Ud. no tiene mas mensajes");
+//     struct event lastMsg = messageutils.buildRequests(lastmsgmsg, EventCode::LAST_MESSAGE).front();
+//     handler->push_event(lastMsg);
+// }
 
 void Server::handle_message(Message *message, EventCode code) {
     shared_ptr<ClientConnection> handler;
@@ -213,14 +214,20 @@ void Server::handle_message(Message *message, EventCode code) {
         close_connection(handler->getUsername());
         break;
 
-    case EventCode::CLIENT_RECEIVE_MSGS:
-        cout << "CLIENT_RECEIVE_MSGS" << endl;
-        /* Aca hay que hacer la parte de enviar todos los
-         * mensajes que hay en la lista al usuario en cuestion
-         * deberia estar en un thread aparte */
-        handler = this->get_user_handler(message->getFrom().data());
-        writer_thread = thread(filter_and_send, this, message->getFrom().data(), handler);
-        writer_thread.detach();
+    case EventCode::SDL_KEYUP:
+        cout << "SDL_KEYUP" << endl;
+        break;
+
+    case EventCode::SDL_KEYDOWN:
+        cout << "SDL_KEYDOWN" << endl;
+        break;
+
+    case EventCode::SDL_KEYLEFT:
+        cout << "SDL_KEYLEFT" << endl;
+        break;
+
+    case EventCode::SDL_KEYRIGHT:
+        cout << "SDL_KEYRIGHT" << endl;
         break;
 
     default:
