@@ -31,7 +31,7 @@ public:
 
     std::mutex queuemutex;
 
-    list<struct msg_request_t> event_queue;
+    list<struct event> event_queue;
 
     ClientConnection(int clientSocket, Server* server, char* username);
 
@@ -39,13 +39,13 @@ public:
 
     int getClientSocket() { return clientSocket; }
 
-    void handle_message(vector<struct msg_request_t> mensajes, MessageCode code);
+    void handle_message(vector<struct event> mensajes, EventCode code);
 
     void start();
 
     void stop();
 
-    void push_event(struct msg_request_t event);
+    void push_event(struct event event);
 
     bool has_events() { return !event_queue.empty(); }
 

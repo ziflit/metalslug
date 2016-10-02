@@ -40,8 +40,8 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, char *usern
 }
 
 void connectionControl(ClientConnection* handler) {
-    struct msg_request_t alive;
-    alive.code = MessageCode::MSG_OK;
+    struct event alive;
+    alive.data.code = EventCode::MSG_OK;
     while (!handler->shouldClose) { // while está vivo
         sleep(5);
         handler->queuemutex.lock();
@@ -53,22 +53,22 @@ void connectionControl(ClientConnection* handler) {
 int connectionReader(ClientConnection *handler) {
     bool isComplete;
     SocketUtils sockutils;
-    vector<struct msg_request_t> mensajes;
+    vector<struct event> mensajes;
     char buffer[BUFSIZE];
 
     do {
         isComplete = sockutils.readSocket(handler->getClientSocket(), buffer);
-        if (((*(struct msg_request_t*)buffer)).code == MessageCode::MSG_OK) { continue; }
+        if (((*(struct event*)buffer)).data.code == EventCode::MSG_OK) { continue; }
         else {
             if (!isComplete) {
                 //LOGGER_WRITE(Logger::ERROR, "Error de recepcion de mensaje. \n " + strerror(errno), CLASSNAME);
                 handler->stop();
                 //LOGGER_WRITE(Logger::ERROR, "Conexion cerrada.", CLASSNAME);
             } else {
-                mensajes.push_back(*(struct msg_request_t *)buffer);
-                if ((*(struct msg_request_t*)buffer).completion == MessageCompletion::FINAL_MSG) {
+                mensajes.push_back(*(struct event *)buffer);
+                if ((*(struct event*)buffer).completion == EventCompletion::FINAL_MSG) {
                     LOGGER_WRITE(Logger::INFO, "Se recibio mensaje de " + string(handler->getUsername()) ,"ClientConnection.class")
-                        handler->handle_message(mensajes, mensajes.front().code);
+                        handler->handle_message(mensajes, mensajes.front().data.code);
                     mensajes.clear();
                 }
             }
@@ -84,7 +84,7 @@ int connectionWriter(ClientConnection *data) {
     while (!data->shouldClose) {
         data->queuemutex.lock();
         if (data->has_events()) {
-            msg_request_t event = data->event_queue.front();
+            event event = data->event_queue.front();
             data->event_queue.pop_front();
             data->queuemutex.unlock();
             result = sockutils.writeSocket(data->getClientSocket(), event);
@@ -113,13 +113,13 @@ void ClientConnection::stop() {
     close(this->clientSocket);
 }
 
-void ClientConnection::push_event(struct msg_request_t event) {
+void ClientConnection::push_event(struct event event) {
     this->queuemutex.lock();
     event_queue.push_back(event);
     this->queuemutex.unlock();
 }
 
-void ClientConnection::handle_message(vector<struct msg_request_t> mensajes, MessageCode code) {
+void ClientConnection::handle_message(vector<struct event> mensajes, EventCode code) {
     MessageUtils messageutils;
     Message* message = messageutils.buildMessage(mensajes);
     server->handle_message(message, code);
