@@ -1,10 +1,10 @@
 #include <iostream>
-#include "SDL_Classes & tools/AudioTools.h"
-#include "SDL_Classes & tools/SDLTools.h"
-#include "SDL_Classes & tools/Sprite.cpp"
-#include "SDL_Classes & tools/PlayerSprite.cpp"
-#include "SDL_Classes & tools/BackgroundSprite.cpp"
-#include "SDL_Classes & tools/SDLEvents.h"
+#include "SDL/AudioTools.h"
+#include "SDL/SDLTools.h"
+#include "SDL/Sprite.cpp"
+#include "SDL/PlayerSprite.cpp"
+#include "SDL/BackgroundSprite.cpp"
+#include "SDL/SDLEvents.h"
 
 using namespace std;
 
