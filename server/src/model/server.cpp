@@ -33,8 +33,8 @@ void client_comm(Server *srv, int client) {
     recv(client, user, 20, 0);
     recv(client, pass, 20, 0);
     if (srv->auth_user(user, pass)) {
-        struct msg_request_t resp;
-        resp.code = MessageCode::LOGIN_OK;
+        struct event resp;
+        resp.data.code = EventCode::LOGIN_OK;
 
         sockutils.writeSocket(client, resp);
 
@@ -42,7 +42,7 @@ void client_comm(Server *srv, int client) {
         Message* usersListMsg = new Message();
         usersListMsg->setContent((srv->getUserLoader())->getUsersList());
         MessageUtils messageUtils;
-        vector<struct msg_request_t> requests =  messageUtils.buildRequests(usersListMsg, MessageCode:: USERS_LIST_MSG);
+        vector<struct event> requests =  messageUtils.buildRequests(usersListMsg, EventCode:: USERS_LIST_MSG);
 
         ClientConnection* handler = new ClientConnection(client, srv, user);
 
@@ -53,8 +53,8 @@ void client_comm(Server *srv, int client) {
         }
 
     } else {
-        struct msg_request_t resp;
-        resp.code = MessageCode::LOGIN_FAIL;
+        struct event resp;
+        resp.data.code = EventCode::LOGIN_FAIL;
         sockutils.writeSocket(client, resp);
     }
     /* Esto crea un nuevo objeto ClientConnection que
@@ -188,32 +188,32 @@ void filter_and_send(Server *server, const char *requester, shared_ptr<ClientCon
     auto realmessages = server->get_messages_of(requester);
     MessageUtils messageutils;
     for (auto message : realmessages) {
-        vector<struct msg_request_t> requests = messageutils.buildRequests(message, MessageCode::CLIENT_RECEIVE_MSGS);
+        vector<struct event> requests = messageutils.buildRequests(message, EventCode::CLIENT_RECEIVE_MSGS);
         for (auto req : requests) {
             handler->push_event(req);
         }
     }
     Message *lastmsgmsg = new Message("server", "user", "Ud. no tiene mas mensajes");
-    struct msg_request_t lastMsg = messageutils.buildRequests(lastmsgmsg, MessageCode::LAST_MESSAGE).front();
+    struct event lastMsg = messageutils.buildRequests(lastmsgmsg, EventCode::LAST_MESSAGE).front();
     handler->push_event(lastMsg);
 }
 
-void Server::handle_message(Message *message, MessageCode code) {
+void Server::handle_message(Message *message, EventCode code) {
     shared_ptr<ClientConnection> handler;
     thread writer_thread;
     switch(code) {
-    case MessageCode::CLIENT_SEND_MSG:
+    case EventCode::CLIENT_SEND_MSG:
         cout << "CLIENT_SEND_MSG" << endl;
         store_message(message);
         break;
 
-    case MessageCode::CLIENT_DISCONNECT:
+    case EventCode::CLIENT_DISCONNECT:
         cout << "CLIENT_DISCONNECT" << endl;
         handler = this->get_user_handler(message->getFrom().data());
         close_connection(handler->getUsername());
         break;
 
-    case MessageCode::CLIENT_RECEIVE_MSGS:
+    case EventCode::CLIENT_RECEIVE_MSGS:
         cout << "CLIENT_RECEIVE_MSGS" << endl;
         /* Aca hay que hacer la parte de enviar todos los
          * mensajes que hay en la lista al usuario en cuestion

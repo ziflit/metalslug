@@ -79,7 +79,7 @@ public:
 
     bool auth_user(char *user, char *pass);
 
-    void handle_message(Message *message, MessageCode code);
+    void handle_message(Message *message, EventCode code);
 
     /* guarda el mensaje pasado en la lista de mensajes que tiene almacenada */
     void store_message(Message *message);
