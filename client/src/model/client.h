@@ -1,12 +1,13 @@
 #ifndef METALSLUG_CLIENT_H
 #define METALSLUG_CLIENT_H
+
 #define CLASSNAME "Client.class"
 #include <iostream>
 #include <stdlib.h>
 #include <memory>
 #include "message.h"
-#include "../Utils/SocketUtils.h"
-#include "../Utils/MessageUtils.h"
+#include "../utils/SocketUtils.h"
+#include "../utils/MessageUtils.h"
 
 using namespace std;
 

@@ -1,7 +1,8 @@
 #include <iostream>
+
 #include "model/client.h"
-#include "Utils/loremIpsum.h"
-#include "Utils/Logger.h"
+#include "services/loremIpsum.h"
+#include "utils/Logger.h"
 
 using namespace std;
 

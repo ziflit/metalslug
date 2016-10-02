@@ -1,12 +1,14 @@
+#include "server.h"
+
 #include <iostream>
 #include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <thread>
-#include "server.h"
+
 #include "ClientConnection.h"
-#include "../Utils/Logger.h"
+#include "../utils/Logger.h"
 
 using namespace std;
 

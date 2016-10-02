@@ -1,5 +1,6 @@
-#include <iostream>
 #include "message.h"
+
+#include <iostream>
 
 
 //_______________________________Messages______________________________________

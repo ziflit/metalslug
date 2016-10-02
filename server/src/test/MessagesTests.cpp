@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
-#include "../model/User.h"
-#include "../model/message.h"
-#include "../model/message.cpp"
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../model/message.h"
+#include "../model/User.h"
 //__________________________________________________________________________________
 // Test structure:
 //TEST(test_case_name, test_name) {

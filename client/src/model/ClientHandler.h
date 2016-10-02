@@ -7,9 +7,10 @@
 #include <queue>
 #include <mutex>
 #include <unistd.h>
-#include "../Utils/Protocol.h"
+
 #include "client.h"
-#include "../Utils/MessageUtils.h"
+#include "../utils/Protocol.h"
+#include "../utils/MessageUtils.h"
 
 
 using namespace std;

@@ -7,12 +7,12 @@
 #ifndef UserLoader_h
 #define UserLoader_h
 
-#include "User.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+#include "User.h"
 
 
 using namespace std;

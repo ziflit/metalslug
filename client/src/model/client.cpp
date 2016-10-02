@@ -1,13 +1,14 @@
+#include "client.h"
+
 #include <iostream>
 #include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include "client.h"
-#include "../Utils/Logger.h"
-#include "ClientHandler.h"
+#include "../utils/Logger.h"
 #include <sstream>
+#include "ClientHandler.h"
 
 using namespace std;
 

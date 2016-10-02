@@ -1,9 +1,10 @@
+#include "ClientConnection.h"
+
 #include <asm/socket.h>
 #include <sys/socket.h>
 #include <iostream>
 #include <sstream>
-#include "ClientConnection.h"
-#include "../Utils/Logger.h"
+#include "../utils/Logger.h"
 
 #define CLASSNAME "ClientConnection.class"
 

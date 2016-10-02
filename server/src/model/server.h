@@ -1,13 +1,14 @@
 #ifndef METALSLUG_SERVER_H
 #define METALSLUG_SERVER_H
 
-#include "message.h"
 #include <memory>
 #include <mutex>
-#include "../Utils/SocketUtils.h"
+#include "../utils/SocketUtils.h"
 #include <list>
-#include "../Utils/Protocol.h"
+
+#include "message.h"
 #include "UserLoader.h"
+#include "../utils/Protocol.h"
 
 #define MAX_CONN 6
 
