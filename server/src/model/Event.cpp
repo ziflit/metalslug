@@ -6,21 +6,21 @@
 //_______________________________Messages______________________________________
 
 
-Message::Message() {}
+Event::Event() {}
 
-Message::Message(string from, string to, string content) {
+Event::Event(string from, string to, string content) {
     this->from = from;
     this->to = to;
     this->content = content;
 }
 
-Message::Message(string from, string content) {
+Event::Event(string from, string content) {
     this->from = from;
     this->to = "everyone";
     this->content = content;
 }
 
-Message::Message(string messageToDeserialize) {
+Event::Event(string messageToDeserialize) {
 
     std::string msg = messageToDeserialize;
     std::string delimiter = ",";
@@ -44,30 +44,30 @@ Message::Message(string messageToDeserialize) {
     msg.erase(0, pos + delimiter.length());
 }
 
-string Message::getFrom() { return from; }
+string Event::getFrom() { return from; }
 
-string Message::getTo() { return to; }
+string Event::getTo() { return to; }
 
-string Message::getContent() { return content; }
+string Event::getContent() { return content; }
 
-bool Message::isToUser(string username) { return (to == username || to == "everyone"); }
+bool Event::isToUser(string username) { return (to == username || to == "everyone"); }
 
-bool Message::isToUser(User *user) {
+bool Event::isToUser(User *user) {
     return (user->isMyUsername(to.data()));
 }
 
-bool Message::isToEveryone() { return (to == "everyone"); }
+bool Event::isToEveryone() { return (to == "everyone"); }
 
-void Message::setFrom(const string &from) {
-    Message::from = from;
+void Event::setFrom(const string &from) {
+    Event::from = from;
 }
 
-void Message::setTo(const string &to) {
-    Message::to = to;
+void Event::setTo(const string &to) {
+    Event::to = to;
 }
 
-void Message::setContent(const string &content) {
-    Message::content = content;
+void Event::setContent(const string &content) {
+    Event::content = content;
 }
 
 //_______________________________MessagesList__________________________________
@@ -79,14 +79,14 @@ unsigned long MessagesList::size() {
 }
 
 
-void MessagesList::addMessage(Message *msg) {
+void MessagesList::addMessage(Event *msg) {
     messagesList.push_back(msg);
 }
 
-std::vector<Message *> MessagesList::filterMessagesPerUser(User *user) {
-    std::vector<Message *> messagesFiltered;
+std::vector<Event *> MessagesList::filterMessagesPerUser(User *user) {
+    std::vector<Event *> messagesFiltered;
 
-    vector<Message *>::iterator it = messagesList.begin();
+    vector<Event *>::iterator it = messagesList.begin();
 
     while (it != messagesList.end()) {
 

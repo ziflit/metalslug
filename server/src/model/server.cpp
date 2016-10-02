@@ -39,7 +39,7 @@ void client_comm(Server *srv, int client) {
         sockutils.writeSocket(client, resp);
 
         /* Envio de lista de usuarios */
-        Message* usersListMsg = new Message();
+        Event* usersListMsg = new Event();
         usersListMsg->setContent((srv->getUserLoader())->getUsersList());
         // MessageUtils messageUtils;
         // vector<struct event> requests =  messageUtils.buildRequests(usersListMsg, EventCode:: USERS_LIST_MSG);
@@ -199,7 +199,7 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
 //     handler->push_event(lastMsg);
 // }
 
-void Server::handle_message(Message *message, EventCode code) {
+void Server::handle_message(Event *message, EventCode code) {
     shared_ptr<ClientConnection> handler;
     thread writer_thread;
     switch(code) {
@@ -247,7 +247,7 @@ shared_ptr<ClientConnection> Server::get_user_handler(const char *username) {
     return nullptr;
 }
 
-void Server::store_message(Message *message) {
+void Server::store_message(Event *message) {
     LOGGER_WRITE(Logger::INFO, "Guardando mensaje de " + message->getFrom() + " para " + message->getTo(),
                  "Server.class")
     cout << "Guardando el mensaje: " << message->getContent() << endl;
@@ -260,8 +260,8 @@ void Server::shouldCloseFunc(bool should) {
     shouldClose = should;
 }
 
-list<Message *> Server::get_messages_of(const char *user) {
-    std::list<Message *> messagesFiltered;
+list<Event *> Server::get_messages_of(const char *user) {
+    std::list<Event *> messagesFiltered;
     msglist_mutex.lock();
     for (auto it = messagesList.begin(); it != messagesList.cend();) {
         if (strcmp((*it)->getTo().data(), user) == 0) {

@@ -2,7 +2,7 @@
 
 #include "MessageUtils.h"
 
-vector<struct msg_request_t>& MessageUtils::buildRequests(Message *message, MessageCode code) {
+vector<struct msg_request_t>& MessageUtils::buildRequests(Event *message, MessageCode code) {
     vector<struct msg_request_t>* result = new vector<struct msg_request_t>();
     int offset = 0;
     while (offset <= message->getContent().length() - 1) {
@@ -32,8 +32,8 @@ vector<struct msg_request_t>& MessageUtils::buildRequests(Message *message, Mess
     return *result;
 }
 
-Message* MessageUtils::buildMessage(vector<struct msg_request_t> requests) {
-    Message* message = new Message();
+Event* MessageUtils::buildMessage(vector<struct msg_request_t> requests) {
+    Event* message = new Event();
     struct msg_request_t first = requests.front();
     message->setTo(first.message.to);
     message->setFrom(first.message.from);

@@ -62,11 +62,11 @@ public:
 
     string searchUser(int user);
 
-    std::vector<string> makeUsersList(Message *msg);
+    std::vector<string> makeUsersList(Event *msg);
 
     void send_disconnect_to_server();
 
-    void handle_message(Message *message, MessageCode code);
+    void handle_message(Event *message, MessageCode code);
 
     bool is_connected() { return connected; }
 

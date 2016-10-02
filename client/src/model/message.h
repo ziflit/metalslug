@@ -13,23 +13,23 @@
 
 #include <vector>
 
-class Message {
+class Event {
 private:
     string from;
     string to;
     string content;
 
 public:
-    Message();
+    Event();
 
     //Constructor de Mensaje a un unico cliente.
-    Message(string from, string to, string content);
+    Event(string from, string to, string content);
 
     //Constructor de Mensaje to everyone.
-    Message(string from, string content);
+    Event(string from, string content);
 
     //Constructor de Mensaje desde el string completo separado por comas.
-    Message(string messageToDeserialize);
+    Event(string messageToDeserialize);
 
     string getFrom();
 
@@ -53,16 +53,16 @@ public:
 
 class MessagesList {
 private:
-    std::vector<Message *> messagesList;
+    std::vector<Event *> messagesList;
 
 public:
     MessagesList();
 
     unsigned long size();
 
-    void addMessage(Message *msg);
+    void addMessage(Event *msg);
 
-    std::vector<Message *> filterMessagesPerUser(User *user);
+    std::vector<Event *> filterMessagesPerUser(User *user);
 };
 
 

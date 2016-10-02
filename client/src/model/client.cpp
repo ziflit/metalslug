@@ -79,7 +79,7 @@ void Client::disconnect() {
 
 void Client::send_disconnect_to_server() {
     string me = userName;
-    Message* message = new Message(me, "disconnect");
+    Event* message = new Event(me, "disconnect");
     MessageUtils messageutils;
     vector<struct msg_request_t> small_message = messageutils.buildRequests(message, MessageCode::CLIENT_DISCONNECT);
     for (auto msg : small_message) {
@@ -99,7 +99,7 @@ int Client::send_message(int to, string content) {
     }
 
     MessageUtils messageutils;
-    Message *message = new Message(userName, destinatedUser, content);
+    Event *message = new Event(userName, destinatedUser, content);
     vector<struct msg_request_t> small_messages = messageutils.buildRequests(message, MessageCode::CLIENT_SEND_MSG);
     for (auto msg : small_messages) {
         this->handler->push_event(msg);
@@ -134,14 +134,14 @@ int Client::receive_messages() {
             small_messages.push_back(*(struct msg_request_t *) buffer);
         } while ((*(struct msg_request_t *) buffer).completion != MessageCompletion::FINAL_MSG and is_server_alive);
         if ((*(struct msg_request_t *)buffer).code == MessageCode::MSG_OK) { continue; } /* Ignoro el heartbeat */
-        Message *message = messageutils.buildMessage(small_messages);
+        Event *message = messageutils.buildMessage(small_messages);
         countMessages++;
         cout << message->getFrom() << ": " << message->getContent() << endl;
     } while ((*(struct msg_request_t *) buffer).code != MessageCode::LAST_MESSAGE);
     LOGGER_WRITE(Logger::INFO, "Se han recibido " + to_string(countMessages) + " mensajes.", CLASSNAME)
 }
 
-void Client::handle_message(Message *message, MessageCode code) {}
+void Client::handle_message(Event *message, MessageCode code) {}
 
 void Client::lorem_ipsum(int frec, int max_envios) {}
 
@@ -178,7 +178,7 @@ void Client::store_users_list() {
         small_messages.push_back(*(struct msg_request_t*)buffer);
     } while ((*(struct msg_request_t*)buffer).completion != MessageCompletion::FINAL_MSG);
 
-    Message* message = messageutils.buildMessage(small_messages);
+    Event* message = messageutils.buildMessage(small_messages);
     this->usersList = this->makeUsersList(message);
 }
 
@@ -190,7 +190,7 @@ string Client::searchUser(int user) {
     return usersList[user];
 }
 
-std::vector<string> Client::makeUsersList(Message *msg) {
+std::vector<string> Client::makeUsersList(Event *msg) {
     std::vector<string> usersList;
     stringstream ss;
     ss.str(msg->getContent());

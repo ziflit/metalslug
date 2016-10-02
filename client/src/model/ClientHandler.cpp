@@ -110,7 +110,7 @@ void ClientHandler::push_event(struct msg_request_t event) {
 
 void ClientHandler::handle_message(vector<struct msg_request_t> mensajes, MessageCode code) {
     MessageUtils messageutils;
-    Message* message = messageutils.buildMessage(mensajes);
+    Event* message = messageutils.buildMessage(mensajes);
     this->client->handle_message(message, code);
 }
 

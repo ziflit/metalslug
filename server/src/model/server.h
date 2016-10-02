@@ -19,7 +19,7 @@ using namespace std;
 
 class Server {
 private:
-    list<Message *> messagesList; /* Lista de mensajes almacenados */
+    list<Event *> messagesList; /* Lista de mensajes almacenados */
     std::mutex msglist_mutex;
     UserLoader *userloader;
     int listen_socket_fd;
@@ -79,14 +79,14 @@ public:
 
     bool auth_user(char *user, char *pass);
 
-    void handle_message(Message *message, EventCode code);
+    void handle_message(Event *message, EventCode code);
 
     /* guarda el mensaje pasado en la lista de mensajes que tiene almacenada */
-    void store_message(Message *message);
+    void store_message(Event *message);
 
     /* filtra la lista de mensajes almacenados, y devuelve todos los que le
      * pertencen al usuario solicitado*/
-    list<Message *> get_messages_of(const char *user);
+    list<Event *> get_messages_of(const char *user);
 
     void removeClient(char *username);
 
