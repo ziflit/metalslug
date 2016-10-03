@@ -8,6 +8,11 @@
 #ifndef SRC_MODEL_GAME_SCENERY_H_
 #define SRC_MODEL_GAME_SCENERY_H_
 
+#include "Player.h"
+#include "Background.h"
+#include <vector>
+#include <string>
+
 using namespace std;
 
 class Scenery {
