@@ -8,7 +8,7 @@
 #include "Scenery.h"
 
 Scenery::Scenery() {
-	// TODO Auto-generated constructor stub
+
 
 }
 
