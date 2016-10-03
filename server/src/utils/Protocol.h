@@ -33,7 +33,8 @@ enum EventCode {
     SDL_KEYUP,
     SDL_KEYDOWN,
     SDL_KEYLEFT,
-    SDL_KEYRIGHT
+    SDL_KEYRIGHT,
+    PLAYER_STATUS
 };
 
 enum EventCompletion {

@@ -8,10 +8,13 @@
 #ifndef SRC_MODEL_GAME_PLAYER_H_
 #define SRC_MODEL_GAME_PLAYER_H_
 
+#include <string>
+#include "../../utils/Protocol.h"
+
 class Player {
 private:
-    char username[20];
-    char sprite[250];
+	string username;
+    string sprite;
     unsigned int x;
     unsigned int y;
     unsigned int speed;
@@ -20,6 +23,8 @@ private:
 public:
 	Player();
 	virtual ~Player();
+
+	struct event playerState();
 
 //getters y setters
 	unsigned int getSpeed() const {
@@ -30,11 +35,11 @@ public:
 		this->speed = speed;
 	}
 
-	const char* getSprite() const {
+	string getSprite() const {
 		return sprite;
 	}
 
-	const char* getUsername() const {
+	string getUsername() const {
 		return username;
 	}
 
