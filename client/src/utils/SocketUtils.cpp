@@ -43,7 +43,7 @@ bool SocketUtils::peek(int fd, char* buffer) {
         return false;
     }
 
-    if ( (*(struct msg_request_t*)buffer).code == MessageCode::MSG_OK) {
+    if ( (*(struct msg_request_t*)buffer).code == EventCode::MSG_OK) {
         cout << "LLEGO UN MENSAJE DE VIVO" << endl;
         /* Lo borro de la lista de mensajes a recibir */
         this->readSocket(fd, buffer);

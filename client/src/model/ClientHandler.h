@@ -39,7 +39,7 @@ public:
 
     int getClientSocket() { return clientSocket; }
 
-    void handle_message(vector<struct msg_request_t> mensajes, MessageCode code);
+    void handle_message(vector<struct msg_request_t> mensajes, EventCode code);
 
     void start();
 

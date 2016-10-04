@@ -9,7 +9,7 @@
 
 class MessageUtils {
 public:
-    vector<struct msg_request_t> &buildRequests(Event *message, MessageCode code);
+    vector<struct msg_request_t> &buildRequests(Event *message, EventCode code);
 
     Event* buildMessage(vector<struct msg_request_t>);
 };

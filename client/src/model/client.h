@@ -66,7 +66,7 @@ public:
 
     void send_disconnect_to_server();
 
-    void handle_message(Event *message, MessageCode code);
+    void handle_message(Event *message, EventCode code);
 
     bool is_connected() { return connected; }
 

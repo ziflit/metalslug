@@ -41,7 +41,7 @@ ClientHandler::ClientHandler(int clientSocket, Client *client, const char *usern
 
 void sendHeartbeat(ClientHandler* handler) {
     struct msg_request_t alive;
-    alive.code = MessageCode::MSG_OK;
+    alive.code = EventCode::MSG_OK;
     while (!handler->shouldClose) { // while está vivo
         handler->push_event(alive);
         sleep(5);
@@ -108,7 +108,7 @@ void ClientHandler::push_event(struct msg_request_t event) {
     this->queuemutex.unlock();
 }
 
-void ClientHandler::handle_message(vector<struct msg_request_t> mensajes, MessageCode code) {
+void ClientHandler::handle_message(vector<struct msg_request_t> mensajes, EventCode code) {
     MessageUtils messageutils;
     Event* message = messageutils.buildMessage(mensajes);
     this->client->handle_message(message, code);
