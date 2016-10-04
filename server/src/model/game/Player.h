@@ -26,6 +26,8 @@ public:
 
 	struct event playerState();
 
+	void movePlayer(EventCode movimiento);
+
 //getters y setters
 	unsigned int getSpeed() const {
 		return speed;

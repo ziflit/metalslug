@@ -25,10 +25,16 @@ public:
 	Scenery();
 	virtual ~Scenery();
 
+	//TODO: Esta funcion tiene que recibir las distintas teclas que manda cada
+	//jugador, para poder actualizar el escenario, hay que ver como va a funcionar
+	//lo dejo aca para discutir y ver como implementar
+	void actualizarEstadoDelScenario();
+
 	void addPlayer(Player player);
 	Player getPlayer(string playerName);
 	void configureParallaxBackgrounds(Background background);
 	unsigned int firstBackgroundPosition(); //
+
 
 
 

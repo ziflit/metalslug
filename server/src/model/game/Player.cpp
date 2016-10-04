@@ -18,6 +18,35 @@ Player::Player() {
 Player::~Player() {
 }
 
+void movePlayer(EventCode movimiento){
+	switch(movimiento) {
+	    case EventCode::CLIENT_DISCONNECT:
+	    	// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
+	  		// arrastarlo por la pantalla
+	        break;
+
+	    case EventCode::SDL_KEYUP:
+	        
+	        break;
+
+	    case EventCode::SDL_KEYDOWN:
+
+	        break;
+
+	    case EventCode::SDL_KEYLEFT:
+	        
+	        break;
+
+	    case EventCode::SDL_KEYRIGHT:
+
+	        break;
+
+	    default:
+	        break;
+    }
+
+}
+
 struct event Player::playerState(){
 	struct event estado;
 	struct event_ext eventExt;
@@ -32,7 +61,4 @@ struct event Player::playerState(){
 	estado.data = eventExt;
 
 	return estado;
-
-
-
 }

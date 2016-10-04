@@ -34,7 +34,8 @@ enum EventCode {
     SDL_KEYDOWN,
     SDL_KEYLEFT,
     SDL_KEYRIGHT,
-    PLAYER_STATUS
+    PLAYER_STATUS,
+    BACKGROUND_STATUS
 };
 
 enum EventCompletion {
@@ -46,6 +47,12 @@ enum Entity {
     MARCO,
     TARMA,
     ENEMY_NORMAL,
+    LEVEL1_Z1,    // fondo del level 1, con Z-index 1
+    LEVEL1_Z2,
+    LEVEL1_Z3,
+    LEVEL2_Z1,
+    LEVEL2_Z2,
+    LEVEL2_Z3,    
 };
 
 struct event_ext {

@@ -19,6 +19,8 @@ public:
 	Background();
 	virtual ~Background();
 
+	struct event Background::backgroundState();
+
 	unsigned int getSpeed() const {
 		return speed;
 	}
