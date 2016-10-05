@@ -30,8 +30,30 @@ void client_comm(Server *srv, int client) {
     /* Recibo user y pass del cliente */
     char user[20];
     char pass[20];
-    recv(client, user, 20, 0);
-    recv(client, pass, 20, 0);
+    recv(client, user, 20, 0); /* Nombre de usuario */
+    recv(client, pass, 20, 0); /* Contrasena */
+    srv->connect_user(user);
+
+    /* Le informo al cliente que se logueo ok */
+    struct event resp;
+    resp.data.code = EventCode::LOGIN_OK;
+    sockutils.writeSocket(client, resp);
+
+    /* Le empiezo a mandar los datos de la partida */
+    XMLData xmldata = srv->load_xml(); /* Se carga el XML o se da el que ya tiene cargado */
+    ClientConnection* handler = new ClientConnection(client, srv, user);
+    srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
+    handler->start();
+
+    /* Mando la configuración del juego desde el XML al usuario */
+    Event* gameconfig = new Event(xmldata); /* Cargo los datos del XML en el mensaje */
+    EventUtils eventutils; /* Para partir el xml grande en pedazos */
+    vector<struct event> gameconfig_pedacitos = eventutils.buildEvents(gameconfig); /* armo el vector de pedazos */
+    /* Le digo al handler que los mande */
+    for (auto req : gameconfig_pedacitos) {
+        handler->push_event(req);
+    }
+
     if (srv->auth_user(user, pass)) {
         struct event resp;
         resp.data.code = EventCode::LOGIN_OK;
@@ -48,7 +70,6 @@ void client_comm(Server *srv, int client) {
         ClientConnection* handler = new ClientConnection(client, srv, user);
 
         handler->start();
-        srv->add_connection(handler);
         for (auto req : requests) {
             handler->push_event(req);
         }
@@ -199,9 +220,11 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
 //     handler->push_event(lastMsg);
 // }
 
-void Server::handle_message(Event *message, EventCode code) {
+void Server::handle_message(Event *message, EventCode code, char* username) {
     shared_ptr<ClientConnection> handler;
-    thread writer_thread;
+    /* Me llega un Evento y me tengo que fijar de quién viene */
+    /* Tengo que pasarle al escenario el evento y el nombre de usuario que lo mandó */
+
     switch(code) {
     case EventCode::CLIENT_SEND_MSG:
         cout << "CLIENT_SEND_MSG" << endl;
@@ -214,26 +237,8 @@ void Server::handle_message(Event *message, EventCode code) {
         close_connection(handler->getUsername());
         break;
 
-    case EventCode::SDL_KEYUP:
-        cout << "SDL_KEYUP" << endl;
-        break;
-
-    case EventCode::SDL_KEYDOWN:
-        cout << "SDL_KEYDOWN" << endl;
-        break;
-
-    case EventCode::SDL_KEYLEFT:
-        cout << "SDL_KEYLEFT" << endl;
-        break;
-
-    case EventCode::SDL_KEYRIGHT:
-        cout << "SDL_KEYRIGHT" << endl;
-        break;
-
     default:
-        string content;
-        content = message->getContent();
-        cout << "El mensaje entrante es: " << content << endl;
+        this->incoming_events.push(message);
         break;
     }
 }

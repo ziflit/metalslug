@@ -9,6 +9,7 @@
 #include "UserLoader.h"
 #include "../utils/Protocol.h"
 #include "Event.h"
+#include "game/Scenery.h"
 
 #define MAX_CONN 6
 
@@ -20,6 +21,7 @@ using namespace std;
 class Server {
 private:
     list<Event *> messagesList; /* Lista de mensajes almacenados */
+    Scenery* scenery;
     std::mutex msglist_mutex;
     UserLoader *userloader;
     int listen_socket_fd;

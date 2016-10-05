@@ -16,6 +16,35 @@ void start_server_online(Server* server, string ip, int port){
     /* Escucho esperando al cliente */
     server->start_listening();
 
+
+    /* Ya no es tan dummy esto:
+
+       1. Levanto el XML que corresponde al escenario
+       2. Empiezo a escuchar conexiones hasta el límite indicado en el paso anterior
+       3. Una vez que llego al límite de conexiones (o al mínimo necesario) comienzo el gameloop
+       4. El loop: cuando se empieza el loop se cuentan con las siguientes cosas:
+            a) Clientes conectados con sus respectivos handlers
+            b) El modelo ya está creado (no empezó a correr aún)
+          La función del loop es desacolar eventos y procesarlos modelo por medio
+          vaciamos la cola de mensajes entrantes y los procesamos en el orden de llegada por el modelo.
+          Es más eficiente darle al modelo una cola entera de mensajes, posiblemente desde referencia en el
+          servidor, que pasarle uno por uno los eventos que llegaron.
+
+    */
+    while (true) {
+        incoming_messages_mutex.lock();
+        /* genero una copia de todos los eventos, libero la cola para que se pueda seguir usando y
+           le paso la copia (o refernecia, no se) al modelo */
+        vector<struct event> model_state = server->getScenery()->process_keys_queue(server->getIncomingEvents());
+        incoming_messages_mutex.unlock();
+        for (auto state : model_state) {
+            server->broadcast_event(state);
+        }
+    }
+
+    this->scenery->process_key(keycode, username);
+
+
     while (onlinethread) {
         server->accept_incoming_connections();
         cout << onlinethread << endl;

@@ -123,7 +123,7 @@ void ClientConnection::handle_message(vector<struct event> mensajes, EventCode c
     // MessageUtils messageutils;
     // Message* message = messageutils.buildMessage(mensajes);
     Event* message = NULL;
-    server->handle_message(message, code);
+    server->handle_message(message, this->getUsername());
 }
 
 ClientConnection::ClientConnection() {}
