@@ -25,13 +25,13 @@ void SDLRunningGame::spritesBuilding () {
     backgroundSprite1.setUpImage("sprites/backgrounds/backgroundMetal2.png");
     backgroundSprite1.set_position(0, window_height / 2);
     backgroundSprite1.setHeight(window_height / 2);
-
+    /*
     SDLRunningGame::cloudSprite = BackgroundSprite(SDLRunningGame::cloudLayer, SDLRunningGame::mainRenderer);
     SDLRunningGame::cloudSprite.setUpImage("sprites/backgrounds/nube.png");
     SDLRunningGame::cloudSprite.setWidth(200);
     SDLRunningGame::cloudSprite.setHeight(80);
     SDLRunningGame::cloudSprite.set_position(0, 100);
-
+    */
     SDLRunningGame::playerSprite = PlayerSprite(SDLRunningGame::playerLayer, SDLRunningGame::mainRenderer);
     SDLRunningGame::playerSprite.setUpImage("sprites/examplePlayerSprite.png", 3, 4);
 }
@@ -56,7 +56,7 @@ void SDLRunningGame::updateWindowSprites () {
     SDLRunningGame::backgroundSprite0.update();
     SDLRunningGame::backgroundSprite1.update();
     SDLRunningGame::playerSprite.update();
-    SDLRunningGame::cloudSprite.update();
+    //SDLRunningGame::cloudSprite.update();
 
     SDL_RenderPresent(SDLRunningGame::mainRenderer);
 }

@@ -12,9 +12,8 @@ class BackgroundSprite : Sprite{
 private:
     int spriteImageWidthPanned;
 
-
 public:
-    BackgroundSprite(SDL_Texture *texture, SDL_Renderer *renderer) :
+    BackgroundSprite(SDL_Texture *texture, SDL_Renderer *renderer):
     Sprite(texture, renderer) {
         BackgroundSprite::set_position(0,0);
         BackgroundSprite::spriteImageWidthPanned=0;
@@ -43,6 +42,8 @@ public:
 
     void moveRight();
     void moveLeft();
+
+    void detener();
 
 //_______________________________________________________________________________________________
 

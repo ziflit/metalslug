@@ -1,10 +1,10 @@
 #include <iostream>
-#include "SDL_Classes & tools/AudioTools.h"
-#include "SDL_Classes & tools/SDLTools.h"
-#include "SDL_Classes & tools/Sprite.cpp"
-#include "SDL_Classes & tools/PlayerSprite.cpp"
-#include "SDL_Classes & tools/BackgroundSprite.cpp"
-#include "SDL_Classes & tools/SDLEvents.h"
+#include "SDL/AudioTools.h"
+#include "SDL/SDLTools.h"
+#include "SDL/Sprite.cpp"
+#include "SDL/PlayerSprite.cpp"
+#include "SDL/BackgroundSprite.cpp"
+#include "SDL/SDLEvents.h"
 
 using namespace std;
 
@@ -21,26 +21,26 @@ int main(int argc, char *argv[]){
 
     SDL_Texture* backgroundLayer0 = createTransparentTexture(mainRenderer);
     SDL_Texture* backgroundLayer1 = createTransparentTexture(mainRenderer);
-    SDL_Texture* layerCloud = createTransparentTexture(mainRenderer);
+    SDL_Texture* layerFront = createTransparentTexture(mainRenderer);
     SDL_Texture* layerPlayer = createTransparentTexture(mainRenderer);
 //____________________________________________________________________________________________
 
     BackgroundSprite backgroundSprite0 = BackgroundSprite(backgroundLayer0,mainRenderer);
-    backgroundSprite0.setUpImage("sprites/backgrounds/backgroundMetal1.png");
+    backgroundSprite0.setUpImage("sprites/backgrounds/mountain.png");
 
     BackgroundSprite backgroundSprite1 = BackgroundSprite(backgroundLayer1,mainRenderer);
-    backgroundSprite1.setUpImage("sprites/backgrounds/backgroundMetal2.png");
-    backgroundSprite1.set_position(0,window_height/2);
-    backgroundSprite1.setHeight(window_height/2);
+    backgroundSprite1.setUpImage("sprites/backgrounds/demo.bmp");
+    //backgroundSprite1.set_position(0,window_height/2);
+    //backgroundSprite1.setHeight(window_height/2);
 
-    BackgroundSprite cloud = BackgroundSprite(layerCloud,mainRenderer);
-    cloud.setUpImage("sprites/backgrounds/nube.png");
-    cloud.setWidth(200);
-    cloud.setHeight(80);
-    cloud.set_position(0,100);
+    BackgroundSprite front = BackgroundSprite(layerFront,mainRenderer);
+    front.setUpImage("sprites/backgrounds/front.png");
+    //cloud.setWidth(200);
+    //cloud.setHeight(80);
+    //cloud.set_position(0,window_height-400);
 
     PlayerSprite player = PlayerSprite(layerPlayer,mainRenderer);
-    player.setUpImage("sprites/marco.png",9,6);
+    player.setUpImage("sprites/tarma.png",15,10);
 
 //____________________________________________________________________________________________
     initializeMixer();
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
     Mix_Chunk *sound = createSound((char*)"audios/wind.wav" );
     playSoundManyTimes(sound,2);
 
-    Mix_Music *music = createMusic((char*) "audios/circuit.wav" );
+    Mix_Music *music = createMusic((char*) "audios/demo.wav" );
     playMusicForever(music);
 
 //____________________________________________________________________________________________
@@ -66,11 +66,12 @@ int main(int argc, char *argv[]){
         if(fps / (backgroundSprite0.getFrameTime()) == 10){
             backgroundSprite0.setNextSpriteFrame();
             backgroundSprite0.restartFrameTime();
-
+            /*
             if(cloud.getXPosition()==window_width){
                 cloud.set_position(0,cloud.getYPosition());
             }
             cloud.set_position(cloud.getXPosition()+1,cloud.getYPosition());
+            */
         }
 
 //____________________________________________________________________________________________
@@ -95,7 +96,7 @@ int main(int argc, char *argv[]){
 
             if(fps / player.getFrameTime() == 30 ){
 
-                player.handlePlayerEvents(event,&backgroundSprite1);
+                player.handlePlayerEvents(event,&backgroundSprite1,&front);
                 player.restartFrameTime();
 
 
@@ -111,7 +112,7 @@ int main(int argc, char *argv[]){
         backgroundSprite0.update();
         backgroundSprite1.update();
         player.update();
-        cloud.update();
+        front.update();
 
         SDL_RenderPresent(mainRenderer);
 
@@ -122,7 +123,7 @@ int main(int argc, char *argv[]){
 
     SDL_DestroyTexture(backgroundLayer0);
     SDL_DestroyTexture(backgroundLayer1);
-    SDL_DestroyTexture(layerCloud);
+    SDL_DestroyTexture(layerFront);
     SDL_DestroyTexture(layerPlayer);
     SDL_DestroyRenderer(mainRenderer);
     freeMemorySoundUsed(sound);

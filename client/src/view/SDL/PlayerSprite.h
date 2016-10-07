@@ -21,7 +21,7 @@ private:
         PlayerSprite::setHeight(150);
         PlayerSprite::setWidth(150);
         //DEFAULT POSITION
-        PlayerSprite::set_position(100,window_height-200);  //Camino rocoso de la imagen
+        PlayerSprite::set_position(100,window_height-180); 
     }
 
 //_______________________________________________________________________________________________
@@ -49,7 +49,7 @@ private:
 
 
 //______________________________________________________________________________________________
-    void handlePlayerEvents(SDL_Event event,BackgroundSprite* backgroundSprite1);
+    void handlePlayerEvents(SDL_Event event,BackgroundSprite* backgroundSprite1,BackgroundSprite*);
 
     void moveRight();
     void moveLeft();

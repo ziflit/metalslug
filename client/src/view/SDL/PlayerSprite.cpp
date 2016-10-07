@@ -32,12 +32,12 @@ void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFram
 
 void PlayerSprite::upArrowPress() {
     PlayerSprite::setNextSpriteFrame();
-    PlayerSprite::sourceRect.y = 0;
+    PlayerSprite::sourceRect.y = (frameHeight*2);
 }
 
 void PlayerSprite::rightStep() {
 
-    PlayerSprite::sourceRect.y = (frameHeight*2);
+    PlayerSprite::sourceRect.y = (frameHeight*0);
     PlayerSprite::setNextSpriteFrame();
 }
 
@@ -48,7 +48,7 @@ void PlayerSprite::leftStep() {
 
 void PlayerSprite::downArrowPress() {
     PlayerSprite::setNextSpriteFrame();
-    PlayerSprite::sourceRect.y = (frameHeight*4);
+    PlayerSprite::sourceRect.y = (frameHeight*1);
 }
 
 void PlayerSprite::moveRight() {
@@ -75,7 +75,6 @@ void PlayerSprite::moveLeft() {
 }
 
 void PlayerSprite::jump() {
-
 }
 
 //_________________________________________________________________________________________________________
@@ -95,7 +94,7 @@ void PlayerSprite::setNextSpriteFrame() {
 
 //_________________________________________________________________________________________________________
 
-void PlayerSprite::handlePlayerEvents(SDL_Event event,BackgroundSprite* backgroundSprite1){
+void PlayerSprite::handlePlayerEvents(SDL_Event event,BackgroundSprite* backgroundSprite1,BackgroundSprite* front){
         if (event.type == SDL_KEYDOWN){  //si aprieto tal tecla:
             switch (event.key.keysym.sym){
 
@@ -104,8 +103,11 @@ void PlayerSprite::handlePlayerEvents(SDL_Event event,BackgroundSprite* backgrou
                     break;
                 case SDLK_RIGHT:
                     PlayerSprite::moveRight();
+                    
                     if(PlayerSprite::isInHalfWindow()){
-                        backgroundSprite1->setNextSpriteFrame();}
+                        backgroundSprite1->setNextSpriteFrame();
+                        front->setNextSpriteFrame();
+                    }
                     break;
                 case SDLK_UP:
                     PlayerSprite::upArrowPress();
