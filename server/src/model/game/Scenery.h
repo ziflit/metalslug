@@ -40,7 +40,7 @@ public:
 
 	// Funciones para agregar objetos al escenario, la idea es que el general recibe cualquier objeto y
 	// usa las demas funciones segun sea el caso
-	void addElementToScenary(void elem);
+	void addElementToScenary(void* elem);
 
 	// *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
 	void addPlayer(Player player);

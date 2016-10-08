@@ -37,10 +37,14 @@ public:
 	void setNextSpriteFrame();
 
 	// Indica si el jugador esta en el medio de la pantalla, esto va a ser consultado por el modelo para actualizar el fondo en cada loop
-	bool Player::isInHalfWindow();
+	bool isInHalfWindow();
 
-	void Player::moveLeft();
-	void Player::moveRight();
+	void moveLeft();
+	void moveRight();
+
+	void set_position(unsigned int posx, unsigned int posy);
+
+	void stopMoving();
 
 
 	//getters y setters -----------------------------------------------------------------------------------------

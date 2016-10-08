@@ -31,7 +31,7 @@ void Scenery::process_key(EventCode keycode, string userName) {
 }
 
 
-void Scenery::addElementToScenary(void elem) {
+void Scenery::addElementToScenary(void* elem) {
 
 }
 
