@@ -14,24 +14,23 @@
 class Player {
 private:
 	string username;
-    string sprite;
+	Entity entity;
     unsigned int x;
     unsigned int y;
-    unsigned int speed;
+    int speed;
     unsigned int actualPhotogramOfTheSprite;
     unsigned int anchoDelFotograma;
 	unsigned int anchoDelSprite; // Ancho de la imagen total, del sprite, se usa para calcular cuantos fotogramas tiene el sprite
 	unsigned int windowWidth;
 
-
 public:
-	Player();
+	Player(string user, Entity entitySelected);
 	virtual ~Player();
 
-	struct event playerState();
+	struct event getNewState();
 
 	// El parametro type, indica con '1' (para presionada)  o '0' (para soltada) si lo que paso fue que se solto o se presiono la tecla (keypressed o keyreleased)
-	void movePlayer(EventCode movimiento);
+	void updateState(EventCode movimiento);
 
 	// TODO:El modelo debe saber que fotograma del sprite debe mostrar para informarle al cliente, asi sabe que dibujar?
 	void setNextSpriteFrame();
@@ -56,10 +55,6 @@ public:
 		this->speed = speed;
 	}
 
-	string getSprite() const {
-		return sprite;
-	}
-
 	string getUsername() const {
 		return username;
 	}
@@ -80,7 +75,13 @@ public:
 		this->y = y;
 	}
 
+	Entity getEntity() const {
+		return entity;
+	}
 
+	void setEntity(Entity entity) {
+		this->entity = entity;
+	}
 };
 
 

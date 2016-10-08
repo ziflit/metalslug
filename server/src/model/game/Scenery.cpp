@@ -7,38 +7,50 @@
 
 #include "Scenery.h"
 
-Scenery::Scenery() {
+Scenery::Scenery(unsigned int width, unsigned int height) {
+	//TODO: Esto se va a cargar en base al XML para inicializar el escenario, o algo asi
+	windowWidth = 800;
+	windowHeight = 600;
 }
 
 Scenery::~Scenery() {
 }
 
-void Scenery::obtenerEstadoEscenario() {
-
+// La papa de la velocidad del juego esta en esta funcion
+vector<struct event> Scenery::obtenerEstadoEscenario() {
+	vector<struct event> eventsToReturn;
+	for (auto player : players) {
+		eventsToReturn.push_back(player.getNewState());
+	}
+	for (auto background : backgrounds) {
+		eventsToReturn.push_back(background.getState());
+	}
+	return eventsToReturn;
 }
 
-unsigned int Scenery::firstBackgroundPosition() {
 
-	return 0;
-}
-
-void Scenery::process_key(EventCode keycode, string userName) {
-	for (auto player : playerList) {
-		if (player.getUsername() == userName){
-			player.movePlayer(keycode);
+void Scenery::process_key(EventCode keycode, Entity entity) {
+	for (auto player : players) {
+		if (player.getEntity() == entity){
+			player.updateState(keycode);
 		}
 	}
 }
 
 
-void Scenery::addElementToScenary(void* elem) {
-
+vector<struct event> Scenery::process_keys_queue(queue<Event> keys){
+	for (unsigned int i = 0 ; i<keys.size() ; i++){
+		Event key = keys.front();
+		Scenery::process_key( key.getCode(), key.getEntity() );
+	}
+	return obtenerEstadoEscenario();
 }
 
-void Scenery::addPlayer(Player player) {
-	playerList.push_back(player);
+
+void Scenery::addElementToScenery(Player player) {
+	players.push_back(player);
 }
 
-void Scenery::addBackground(Background background) {
-	backParallax.push_back(background);
+void Scenery::addElementToScenery(Background background) {
+	backgrounds.push_back(background);
 }

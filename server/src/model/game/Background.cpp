@@ -13,7 +13,7 @@ Background::Background() {
 Background::~Background() {
 }
 
-struct event Background::backgroundState(){
+struct event Background::getState(){
 	struct event estado;
 	struct event_ext eventExt;
 

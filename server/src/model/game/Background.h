@@ -21,7 +21,7 @@ public:
 	Background();
 	virtual ~Background();
 
-	struct event backgroundState();
+	struct event getState();
 
 	unsigned int getSpeed() const {
 		return speed;

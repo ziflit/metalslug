@@ -7,9 +7,9 @@
 
 #include "Player.h"
 
-Player::Player() {
-	username = "user";
-	sprite = "../../../../client/view/sprites/player/marco.png";
+Player::Player(string user, Entity entitySelected) {
+	username = user;
+	entity = entitySelected;
 	x = 1;
 	y = 1;
 	speed = 0;
@@ -17,7 +17,6 @@ Player::Player() {
 
 Player::~Player() {
 }
-
 
 void Player::set_position(unsigned int posx, unsigned int posy) {
     x = posx;
@@ -27,7 +26,6 @@ void Player::set_position(unsigned int posx, unsigned int posy) {
 void upArrowPress(){
  // TODO: Comlpetar lo que hace cuando aprieta para arriba
 }
-
 
 void downArrowPress() {
 // TODO: Comlpetar lo que hace cuando aprieta para abajo
@@ -66,47 +64,55 @@ void Player::stopMoving(){
 	//TODO: Aca habria que cambiar algo de frames? para que quede quieto y muestre la animacion de quieto
 }
 
-void Player::movePlayer(EventCode movimiento){
-		switch(movimiento) {
-			case EventCode::CLIENT_DISCONNECT:
-				// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
-				// arrastarlo por la pantalla
-				break;
+void Player::updateState(EventCode movimiento){
+	switch(movimiento) {
+		case EventCode::CLIENT_DISCONNECT:
+			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
+			// arrastarlo por la pantalla
+			break;
 
-			case EventCode::SDL_KEYUP:
-				upArrowPress();
-				break;
+		case EventCode::SDL_KEYUP_PRESSED:
+			upArrowPress();
+			break;
 
-			case EventCode::SDL_KEYDOWN:
-				downArrowPress();
-				break;
+		case EventCode::SDL_KEYDOWN_PRESSED:
+			downArrowPress();
+			break;
 
-			case EventCode::SDL_KEYLEFT:
-				moveLeft();
-				break;
+		case EventCode::SDL_KEYLEFT_PRESSED:
+			//moveLeft();
+			speed = -1;
+			break;
 
-			case EventCode::SDL_KEYRIGHT:
-				moveRight();
-				if( isInHalfWindow() ){
-					// TODO: Si llego a la mitad de la ventana, tengo que mover el background, como hago? el player conoce al background??
-				}
-				break;
+		case EventCode::SDL_KEYRIGHT_PRESSED:
+			//moveRight();
+			speed = 1;
+			if( isInHalfWindow() ){
+				// TODO: Si llego a la mitad de la ventana, tengo que mover el background, como hago? el player conoce al background??
+			}
+			break;
 
-			default:
-				stopMoving();   // Si suelta la tecla, me quedo quieto
-				break;
-		}
+		case EventCode::SDL_KEYLEFT_RELEASED:
+		case EventCode::SDL_KEYRIGHT_RELEASED:
+			speed = 0;
+			break;
+
+		default:
+			break;
+	}
 }
 
-struct event Player::playerState(){
+struct event Player::getNewState(){
 	struct event estado;
 	struct event_ext eventExt;
 
-    eventExt.code = EventCode::PLAYER_STATUS;
-    eventExt.id = Entity::MARCO;  // Hardcodeo el nombre de la entidad
-    eventExt.x = x;
-    eventExt.y = y;
-    eventExt.h = speed;  // asumo que en h mando la velocidad
+	eventExt.code = EventCode::PLAYER_STATUS;
+	eventExt.id = entity;
+
+	eventExt.x += speed;  //Actualizo la posicion del player
+	eventExt.y = y;
+
+	// TODO: Hay que calcular el siguiente fotograma del sprite, para mandarlo.
 
 	estado.completion = EventCompletion::FINAL_MSG;
 	estado.data = eventExt;
