@@ -32,18 +32,13 @@ void start_server_online(Server* server, string ip, int port){
 
     */
     while (true) {
-        incoming_messages_mutex.lock();
         /* genero una copia de todos los eventos, libero la cola para que se pueda seguir usando y
            le paso la copia (o refernecia, no se) al modelo */
         vector<struct event> model_state = server->getScenery()->process_keys_queue(server->getIncomingEvents());
-        incoming_messages_mutex.unlock();
         for (auto state : model_state) {
             server->broadcast_event(state);
         }
     }
-
-    this->scenery->process_key(keycode, username);
-
 
     while (onlinethread) {
         server->accept_incoming_connections();
