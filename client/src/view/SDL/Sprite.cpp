@@ -1,5 +1,30 @@
 #include "Sprite.h"
 
+SDL_Texture* loadTexture(SDL_Renderer* renderer,string imageTexturePath){
+    /* The loading of the background layer. since SDL_LoadBMP() returns
+     * a surface, we convert it to a layer afterwards for fast accelerated
+     * blitting, handdling hardware. (Surface works with software) */
+
+    SDL_Texture* backgroundTexture = NULL;
+    SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
+
+    if(loadingSurface == NULL)
+        cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
+
+    else {
+        backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
+        if(backgroundTexture == NULL){
+            cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
+
+        }
+
+        SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
+        return backgroundTexture;
+    }
+}
+
+
+
 Sprite::Sprite(SDL_Texture *layer, SDL_Renderer *mainRenderer) {
 
     Sprite::layer = layer;
@@ -12,7 +37,7 @@ Sprite::Sprite(SDL_Texture *layer, SDL_Renderer *mainRenderer) {
 }
 
 void Sprite::setUpImage(string imageSpritePath) {
-    layer = loadTexture(renderer,imageSpritePath);
+    Sprite::layer = loadTexture( renderer, imageSpritePath);
     SDL_QueryTexture(layer,NULL,NULL,&spriteImageWidth,&spriteImageHeight);
 }
 

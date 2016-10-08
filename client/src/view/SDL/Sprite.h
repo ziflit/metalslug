@@ -1,11 +1,16 @@
 #ifndef SDLBASE_SPRITE_H
 #define SDLBASE_SPRITE_H
 
-
-
 using namespace std;
 #include <iostream>
-#include "SDLTools.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
+
+#define window_width 1200
+#define window_height 700
+#define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
+#define fps  30 //tasa de refrescamiento, fotogramas por segundo
+#define speedSprite 10
 
 class Sprite {
 protected:
@@ -21,15 +26,19 @@ protected:
 
     int frameTime;
 
-
 public:
     //CONSTRUCTOR
     Sprite(SDL_Texture *layer, SDL_Renderer *renderer);
+
+    SDL_Texture* loadTexture(SDL_Renderer* renderer,string imageTexturePath);
+
 
     void setUpImage(string imageSpritePath);
 //_________________________________________________________________________________________________________
     //ACTUALIZACION DEL SPRITE
     void setNextSpriteFrame();
+
+
     void update();
 //_________________________________________________________________________________________________________
     //TAMANO DEL SPRITE:

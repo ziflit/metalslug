@@ -3,9 +3,7 @@
 #include "model/client.h"
 #include "services/loremIpsum.h"
 #include "utils/Logger.h"
-#include "view/SDL/InitialWindow.h"
 #include "view/SDL/SDLRunningGame.h"
-#include "view/SDL/SDLTools.h"
 
 using namespace std;
 
@@ -49,9 +47,7 @@ int main(int argc, char *argv[]) {
 //        }
 //    }
 
-    SDL_Window* mainWindow = createWindow("METAL SLUG");
-    SDL_Renderer* mainRender = createRenderer();
-    SDLRunningGame sdlRunningGame = SDLRunningGame(,);
+    SDLRunningGame sdlRunningGame = SDLRunningGame();
     sdlRunningGame.updateWindowSprites();
 
 
@@ -218,6 +214,8 @@ int main(int argc, char *argv[]) {
 //        }
 //    } while (!endloop);
 
+
+//    sdlRunningGame.~SDLRunningGame();
 
     delete cliente1;
     return 0;
