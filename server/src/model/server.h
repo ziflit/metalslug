@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <mutex>
+#include <queue>
 #include "../utils/SocketUtils.h"
 #include <list>
 
@@ -20,9 +21,11 @@ using namespace std;
 
 class Server {
 private:
-    list<Event *> messagesList; /* Lista de mensajes almacenados */
+    list<Event *> outgoing_events; /* Lista de eventos a mandarse */
+    list<Event *> incoming_events; /*  Lista de eventos recibidos */
+    std::mutex incoming_mutex;
+    std::mutex outgoing_mutex;
     Scenery* scenery;
-    std::mutex msglist_mutex;
     UserLoader *userloader;
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
@@ -81,7 +84,7 @@ public:
 
     bool auth_user(char *user, char *pass);
 
-    void handle_message(Event *message, EventCode code);
+    void handle_message(Event *message, EventCode code, char* username);
 
     /* guarda el mensaje pasado en la lista de mensajes que tiene almacenada */
     void store_message(Event *message);
@@ -98,6 +101,13 @@ public:
 
     UserLoader* getUserLoader();
 
+    Scenery* getScenery() { return this->scenery; }
+
+    void connect_user(char* user);
+
+    void broadcast_event(struct event event);
+
+    queue<Event> getIncomingEvents();
 };
 
 #endif //METALSLUG_SERVER_H
