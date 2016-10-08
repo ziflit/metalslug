@@ -1,10 +1,12 @@
 #ifndef SDLBASE_SPRITE_H
 #define SDLBASE_SPRITE_H
 
+
+
 using namespace std;
 #include <iostream>
 #include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
+#include <SDL2/SDL_image.h>
 
 #define window_width 1200
 #define window_height 700
@@ -26,19 +28,16 @@ protected:
 
     int frameTime;
 
+
 public:
     //CONSTRUCTOR
     Sprite(SDL_Texture *layer, SDL_Renderer *renderer);
 
     SDL_Texture* loadTexture(SDL_Renderer* renderer,string imageTexturePath);
-
-
     void setUpImage(string imageSpritePath);
 //_________________________________________________________________________________________________________
     //ACTUALIZACION DEL SPRITE
     void setNextSpriteFrame();
-
-
     void update();
 //_________________________________________________________________________________________________________
     //TAMANO DEL SPRITE:

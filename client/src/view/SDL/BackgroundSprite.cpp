@@ -22,6 +22,7 @@ void BackgroundSprite::setNextSpriteFrame() {
     //Solo desplazamiento horizontal del frame en direccion ->.
     //Si el jugador principal esta en la mitad de la ventana y hace un paso a la derecha
     //Solo ahi se debe actualizar
+
     if((BackgroundSprite::spriteImageWidthPanned + window_width) >= Sprite::spriteImageWidth){
         //Recorrio toda la imagen
         printf("llego al limite del background");

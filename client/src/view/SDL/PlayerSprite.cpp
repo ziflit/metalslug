@@ -32,23 +32,23 @@ void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFram
 
 void PlayerSprite::upArrowPress() {
     PlayerSprite::setNextSpriteFrame();
-    PlayerSprite::sourceRect.y = (frameHeight*2);
+    PlayerSprite::sourceRect.y = 0;
 }
 
 void PlayerSprite::rightStep() {
 
-    PlayerSprite::sourceRect.y = (frameHeight*0);
+    PlayerSprite::sourceRect.y = (frameHeight*1);
     PlayerSprite::setNextSpriteFrame();
 }
 
 void PlayerSprite::leftStep() {
     PlayerSprite::setNextSpriteFrame();
-    PlayerSprite::sourceRect.y = (frameHeight*3);
+    PlayerSprite::sourceRect.y = (frameHeight*2);
 }
 
 void PlayerSprite::downArrowPress() {
     PlayerSprite::setNextSpriteFrame();
-    PlayerSprite::sourceRect.y = (frameHeight*1);
+    PlayerSprite::sourceRect.y = (frameHeight*4);
 }
 
 void PlayerSprite::moveRight() {
@@ -65,6 +65,7 @@ void PlayerSprite::moveRight() {
         PlayerSprite::set_position(newPos, PlayerSprite::destRect.y);}
 }
 
+
 void PlayerSprite::moveLeft() {
 //    PlayerSprite::set_position(PlayerSprite::destRect.x - speedSprite, PlayerSprite::destRect.y);}
 
@@ -75,6 +76,7 @@ void PlayerSprite::moveLeft() {
 }
 
 void PlayerSprite::jump() {
+
 }
 
 //_________________________________________________________________________________________________________
@@ -94,7 +96,7 @@ void PlayerSprite::setNextSpriteFrame() {
 
 //_________________________________________________________________________________________________________
 
-void PlayerSprite::handlePlayerEvents(SDL_Event event,BackgroundSprite* backgroundSprite1,BackgroundSprite* front){
+void PlayerSprite::handlePlayerEvents(SDL_Event event,BackgroundSprite* backgroundSprite1){
         if (event.type == SDL_KEYDOWN){  //si aprieto tal tecla:
             switch (event.key.keysym.sym){
 
@@ -103,11 +105,8 @@ void PlayerSprite::handlePlayerEvents(SDL_Event event,BackgroundSprite* backgrou
                     break;
                 case SDLK_RIGHT:
                     PlayerSprite::moveRight();
-                    
                     if(PlayerSprite::isInHalfWindow()){
-                        backgroundSprite1->setNextSpriteFrame();
-                        front->setNextSpriteFrame();
-                    }
+                        backgroundSprite1->setNextSpriteFrame();}
                     break;
                 case SDLK_UP:
                     PlayerSprite::upArrowPress();

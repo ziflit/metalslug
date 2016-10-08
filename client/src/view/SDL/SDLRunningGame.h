@@ -8,37 +8,31 @@
 #define speedSprite 10
 #define gameMusicPath "audios/circuit.wav"
 
-#include "PlayerSprite.h"
-#include "AudioToolsForRunningGame.h"
-
-using namespace std;
+//TODO: INCLUIR EN EL MAKEFILE LOS .cpp PARA QUE AQUI SE INCLUYAN UNICAMENTE LOS .h
+#include "Music.cpp"
+#include "Sprite.cpp"
+#include "PlayerSprite.cpp"
+#include "BackgroundSprite.cpp"
+#include <SDL2/SDL_events.h>
 
 class SDLRunningGame {
 private:
     SDL_Window* mainWindow;
     SDL_Renderer* mainRenderer;
-    Mix_Music* music;
+    Music* music;
     SDL_Texture *backgroundLayer0, *backgroundLayer1, *playersLayer, *cloudLayer;
-    BackgroundSprite *backgroundSprite0,*backgroundSprite1, *backgroundPlayersSprite, *cloudSprite;
-    PlayerSprite *player0Sprite;
-    //,*player1Sprite,*player2Sprite,*player3Sprite;
+    BackgroundSprite *backgroundSprite0, *backgroundPlayersSprite, *cloudSprite;
+    PlayerSprite *player0Sprite, *player1Sprite, *player2Sprite, *player3Sprite;
+    //TODO: EN EL DESTRUCTOR ELIMINAR LOS PUNTEROS UTILIZADOS
+    int handleLeftKey, handleRightKey;
 
 
 public:
-    SDLRunningGame();
+    SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer);
 
-    SDL_Window* createWindow(const char* windowName);
-
-    SDL_Renderer* createRenderer(SDL_Window* window);
-
-    void initialWindow();
-
-    void initializeMixer();
-
-    void initializeSDL();
-    void audioInitialization();
     SDL_Texture* createTransparentTexture(SDL_Renderer *renderer);
-    SDL_Texture* loadTexture(SDL_Renderer* renderer,string imageTexturePath);
+
+    void audioInitialization();
 
     void layersBuilding();
 
@@ -50,9 +44,10 @@ public:
 
     BackgroundSprite* getBackgroundPlayerSprite(){ return SDLRunningGame::backgroundPlayersSprite;}
 
-    SDL_Window* getMainWindow(){return SDLRunningGame::mainWindow;}
+    void eventsHandler(SDL_Event* event);
 
-    SDL_Renderer* getMainRenderer(){ return SDLRunningGame::mainRenderer;}
+
+
 
     ~SDLRunningGame();
 
