@@ -23,6 +23,8 @@ public:
 
 	struct event getState();
 
+	void avanzar();
+
 	unsigned int getSpeed() const {
 		return speed;
 	}

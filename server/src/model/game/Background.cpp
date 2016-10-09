@@ -12,7 +12,8 @@ Background::Background(int zindex) {
     this->zindex = zindex;
 }
 
-Background::~Background() {
+void Background::avanzar() {
+    this->x+=speed;
 }
 
 struct event Background::getState(){
@@ -20,7 +21,7 @@ struct event Background::getState(){
 	struct event_ext eventExt;
 
     eventExt.code = EventCode::BACKGROUND_STATUS;
-    eventExt.id = Entity::LEVEL1_Z1; // 
+    eventExt.id = Entity::LEVEL1_Z1; //
     eventExt.x = x;
     eventExt.y = y;
 
@@ -28,4 +29,8 @@ struct event Background::getState(){
 	estado.data = eventExt;
 
 	return estado;
+}
+
+
+Background::~Background() {
 }

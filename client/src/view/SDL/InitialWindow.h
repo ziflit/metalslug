@@ -1,15 +1,14 @@
-//
-// Created by mfprado on 30/09/16.
-//
-
 #ifndef SDLBASE_INITIALWINDOW_H
 #define SDLBASE_INITIALWINDOW_H
 
-#define window_width 1200
-#define window_height 700
 #define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
 
-#include "SDLTools.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
+#include <iostream>
+
+
+using namespace std;
 
 class InitialWindow {
 private:
@@ -17,13 +16,20 @@ private:
     SDL_Renderer* mainRender;
 
 public:
-    InitialWindow (bool* running, SDL_Window* mainWindow, SDL_Renderer* mainRenderer);
+    void initializeSDL();
+
+    void initializeMixer();
+
+    SDL_Window* createWindow(const char* windowName, unsigned int window_width,unsigned int window_height);
+
+    SDL_Renderer* createRenderer(SDL_Window* window);
+
+    InitialWindow ();
 
     SDL_Window* getMainWindow(){return InitialWindow::mainWindow;}
 
     SDL_Renderer* getMainRenderer(){ return InitialWindow::mainRender;}
 
-    void evetsHanddler(SDL_Event event);
 };
 
 

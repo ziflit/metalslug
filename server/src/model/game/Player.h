@@ -30,7 +30,7 @@ public:
 	struct event getNewState();
 
 	// El parametro type, indica con '1' (para presionada)  o '0' (para soltada) si lo que paso fue que se solto o se presiono la tecla (keypressed o keyreleased)
-	void updateState(EventCode movimiento);
+	void updateState(EventCode evento);
 
 	bool isMoving();
 

@@ -64,7 +64,7 @@ void Player::stopMoving(){
 	//TODO: Aca habria que cambiar algo de frames? para que quede quieto y muestre la animacion de quieto
 }
 
-void Player::updateState(EventCode movimiento){
+void Player::updateState(EventCode evento){
 	switch(movimiento) {
 		case EventCode::CLIENT_DISCONNECT:
 			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita

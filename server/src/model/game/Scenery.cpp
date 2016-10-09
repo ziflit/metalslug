@@ -9,7 +9,6 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
     //TODO: el seteo de cada jugador.
 }
 
-
 //______________________________________________________________________________________________________________________
 //PROCESAMIENTO DE EVENTOS:
 
@@ -66,8 +65,10 @@ void Scenery::updateBackgroudsState(){
      *  y alguno paso la mitad de pantalla
      *  Post el avance del background se debe restar a todos los jugadores una posicion
      */
+
     if( (todosJugadoresAvanzando()) and (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantalla()) ){
         for(auto background : backgrounds){
+
             background->avanzar();
             //como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
             //el asociado a los players debe avanzar exactamente igual que ellos.
