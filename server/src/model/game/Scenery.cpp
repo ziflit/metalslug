@@ -14,10 +14,10 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
 
 void Scenery::process_key(EventCode keycode, Entity entity) {
 	for (auto player : players) {
-		if (player->getEntity() == entity){
+    if (player->getEntity() == entity){
 			player->updateState(keycode);
 		}
-    }
+  }
 }
 
 vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
@@ -93,6 +93,8 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     for (auto background : backgrounds) {
         eventsToReturn.push_back(background->getState());
     }
+
+    eventsToReturn.back().completion = EventCompletion::FINAL_MSG;
     return eventsToReturn;
 }
 //______________________________________________________________________________________________________________________

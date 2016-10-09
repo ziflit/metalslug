@@ -29,9 +29,7 @@ void client_comm(Server *srv, int client) {
     SocketUtils sockutils;
     /* Recibo user y pass del cliente */
     char user[20];
-    char pass[20];
     recv(client, user, 20, 0); /* Nombre de usuario */
-    recv(client, pass, 20, 0); /* Contrasena */
     srv->connect_user(user); /* Acá tengo que crear un nuevo handler y pasarle el XML? */
 
     /* Le informo al cliente que se logueo ok */
@@ -39,46 +37,37 @@ void client_comm(Server *srv, int client) {
     resp.data.code = EventCode::LOGIN_OK;
     sockutils.writeSocket(client, resp);
 
-    /* Le empiezo a mandar los datos de la partida */
-    XMLData xmldata = srv->load_xml(); /* Se carga el XML o se da el que ya tiene cargado */
     ClientConnection* handler = new ClientConnection(client, srv, user);
     srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
     handler->start();
+    /* Le mando el estado actual del modelo al cliente */
+    srv->send_model_snapshot(handler);
 
-    /* Mando la configuración del juego desde el XML al usuario */
-    Event* gameconfig = new Event(xmldata); /* Cargo los datos del XML en el mensaje */
-    EventUtils eventutils; /* Para partir el xml grande en pedazos */
-    vector<struct event> gameconfig_pedacitos = eventutils.buildEvents(gameconfig); /* armo el vector de pedazos */
-    /* Le digo al handler que los mande */
-    for (auto req : gameconfig_pedacitos) {
-        handler->push_event(req);
-    }
+   // if (srv->auth_user(user, pass)) {
+   //      struct event resp;
+   //      resp.data.code = EventCode::LOGIN_OK;
 
-    if (srv->auth_user(user, pass)) {
-        struct event resp;
-        resp.data.code = EventCode::LOGIN_OK;
+   //      sockutils.writeSocket(client, resp);
 
-        sockutils.writeSocket(client, resp);
+   //      /* Envio de lista de usuarios */
+   //      Event* usersListMsg = new Event();
+   //      usersListMsg->setContent((srv->getUserLoader())->getUsersList());
+   //      // MessageUtils messageUtils;
+   //      // vector<struct event> requests =  messageUtils.buildRequests(usersListMsg, EventCode:: USERS_LIST_MSG);
+   //      vector<struct event> requests;
 
-        /* Envio de lista de usuarios */
-        Event* usersListMsg = new Event();
-        usersListMsg->setContent((srv->getUserLoader())->getUsersList());
-        // MessageUtils messageUtils;
-        // vector<struct event> requests =  messageUtils.buildRequests(usersListMsg, EventCode:: USERS_LIST_MSG);
-        vector<struct event> requests;
+   //      ClientConnection* handler = new ClientConnection(client, srv, user);
 
-        ClientConnection* handler = new ClientConnection(client, srv, user);
+   //      handler->start();
+   //      for (auto req : requests) {
+   //          handler->push_event(req);
+   //      }
 
-        handler->start();
-        for (auto req : requests) {
-            handler->push_event(req);
-        }
-
-    } else {
-        struct event resp;
-        resp.data.code = EventCode::LOGIN_FAIL;
-        sockutils.writeSocket(client, resp);
-    }
+   //  } else {
+   //      struct event resp;
+   //      resp.data.code = EventCode::LOGIN_FAIL;
+   //      sockutils.writeSocket(client, resp);
+   //  }
     /* Esto crea un nuevo objeto ClientConnection que
      * se comunicará con el cliente en cuestión. Le paso el fd */
 }

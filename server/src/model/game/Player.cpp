@@ -135,7 +135,7 @@ struct event Player::getNewState(){
 
 	// TODO: Hay que calcular el siguiente fotograma del sprite, para mandarlo.
 
-	estado.completion = EventCompletion::FINAL_MSG;
+  estado.completion = EventCompletion::PARTIAL_MSG;
 	estado.data = eventExt;
 
 	return estado;

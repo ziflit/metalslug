@@ -26,7 +26,7 @@ private:
     std::mutex incoming_mutex;
     std::mutex outgoing_mutex;
     Scenery* scenery;
-    UserLoader *userloader;
+    UserLoader *userloader; // TODO borrar
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
     bool shouldClose;
@@ -86,13 +86,6 @@ public:
 
     void handle_message(Event *message, EventCode code, char* username);
 
-    /* guarda el mensaje pasado en la lista de mensajes que tiene almacenada */
-    void store_message(Event *message);
-
-    /* filtra la lista de mensajes almacenados, y devuelve todos los que le
-     * pertencen al usuario solicitado*/
-    list<Event *> get_messages_of(const char *user);
-
     void removeClient(char *username);
 
     void shouldCloseFunc(bool should);
@@ -108,6 +101,8 @@ public:
     void broadcast_event(struct event event);
 
     queue<Event> getIncomingEvents();
+
+    void send_model_snapshot(ClientConnection* handler);
 };
 
 #endif //METALSLUG_SERVER_H
