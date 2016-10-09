@@ -35,6 +35,7 @@ void start_server_online(Server* server, string ip, int port){
         /* genero una copia de todos los eventos, libero la cola para que se pueda seguir usando y
            le paso la copia (o refernecia, no se) al modelo */
         vector<struct event> model_state = server->getScenery()->process_keys_queue(server->getIncomingEvents());
+        server->set_model_snapshot(model_state);
         for (auto state : model_state) {
             server->broadcast_event(state);
         }

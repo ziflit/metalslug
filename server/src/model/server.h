@@ -25,6 +25,7 @@ private:
     list<Event *> incoming_events; /*  Lista de eventos recibidos */
     std::mutex incoming_mutex;
     std::mutex outgoing_mutex;
+    vector<struct event> last_model_snapshot;
     Scenery* scenery;
     UserLoader *userloader; // TODO borrar
     int listen_socket_fd;
@@ -103,6 +104,8 @@ public:
     queue<Event> getIncomingEvents();
 
     void send_model_snapshot(ClientConnection* handler);
+
+    void set_model_snapshot(vector<struct event> model_state);
 };
 
 #endif //METALSLUG_SERVER_H

@@ -247,10 +247,24 @@ queue<Event> Server::getIncomingEvents() {
 
 void Server::broadcast_event(struct event event) {
     for (auto client : connections) {
+        client->queuemutex.lock();
         client->event_queue.push_back(event);
+        client->queuemutex.unlock();
     }
 }
 
 void Server::connect_user(char* user) {
     return;
 }
+
+void Server::send_model_snapshot(ClientConnection* handler) {
+    /* Aca tengo que usar lo que me devolvió process_keys_queue en su última
+       corrida */
+    handler->queuemutex.lock();
+    for (auto event : last_model_snapshot) {
+        handler->event_queue.push_back(event);
+    }
+    handler->queuemutex.unlock();
+}
+
+void Server::set_model_snapshot(vector<struct event> model_state) { this->last_model_snapshot = model_state;}
