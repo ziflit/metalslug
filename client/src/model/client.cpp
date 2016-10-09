@@ -50,12 +50,13 @@ bool Client::connect_to_server(string ip, int port) {
 
 	/*Envio mje al servidor*/
 	cout << send(socket_number, user.data(), 20, 0) << endl;
-	cout << send(socket_number, pass.data(), 20, 0) << endl;
+//	cout << send(socket_number, pass.data(), 20, 0) << endl;
 	char response[MSGSIZE];
 
+	//respuesta de login OK/FAIL
 	recv(socket_number, response, MSGSIZE, 0);
 
-	if (((msg_request_t *) response)->code == EventCode::LOGIN_FAIL) {
+	if (((event *) response)->data.code == EventCode::LOGIN_FAIL) {
 		LOGGER_WRITE(Logger::ERROR, "Error de autenticacion de usuario.",
 				CLASSNAME)
 		cout << "No se pudo loguear, por favor revise Usuario y contrasenia "
@@ -63,7 +64,7 @@ bool Client::connect_to_server(string ip, int port) {
 		return false;
 	} else {
 		strcpy(userName, user.data());
-		this->store_users_list();
+//		this->store_users_list();
 		/* Lanzo el handler del cliente */
 		this->handler = new ClientHandler(socket_number, this, user.data());
 		this->handler->start();
@@ -81,53 +82,21 @@ void Client::disconnect() {
 }
 
 void Client::send_disconnect_to_server() {
-	string me = userName;
-	Event* message = new Event(me, "disconnect");
-	MessageUtils messageutils;
-	vector<struct msg_request_t> small_message = messageutils.buildRequests(
-			message, EventCode::CLIENT_DISCONNECT);
-	for (auto msg : small_message) {
-		this->handler->push_event(msg);
-	}
-	delete message;
+	struct event disconnectEvent;
+	disconnectEvent.data.code = EventCode::CLIENT_DISCONNECT;
+	this->handler->push_event(disconnectEvent);
 }
 
-int Client::send_message(int to, string content) {
-	string destinatedUser;
-
-	if (to == usersList.size()) {
-		send_message_to_all(content);
-		return 0;
-	} else {
-		destinatedUser = searchUser(to);
-	}
-
-	MessageUtils messageutils;
-	Event *message = new Event(userName, destinatedUser, content);
-	vector<struct msg_request_t> small_messages = messageutils.buildRequests(
-			message, EventCode::CLIENT_SEND_MSG);
-	for (auto msg : small_messages) {
-		this->handler->push_event(msg);
-		// SocketUtils sockutils;
-		// sockutils.writeSocket(socket_number, msg);
-	}
-	delete message;
-	return 0;
-}
-
-void Client::send_message_to_all(string content) {
-	int i;
-	for (i = 0; i < usersList.size(); i++) {
-		send_message(i, content);
-	}
+int Client::send_message(struct event eventToSend) {
+	this->handler->push_event(eventToSend);
 }
 
 int Client::receive_messages() {
 	char buffer[MSGSIZE];
 	int countMessages = 0;
-	MessageUtils messageutils;
+//	MessageUtils messageutils;
 	SocketUtils sockutils;
-	vector<struct msg_request_t> small_messages;
+	vector<struct event> small_messages;
 	bool is_server_alive;
 	do {
 		do {
@@ -136,81 +105,31 @@ int Client::receive_messages() {
 			if (not is_server_alive) {
 				return -1;
 			}
-			small_messages.push_back(*(struct msg_request_t *) buffer);
-		} while ((*(struct msg_request_t *) buffer).completion
+			small_messages.push_back(*(struct event *) buffer);
+		} while ((*(struct event *) buffer).completion
 				!= EventCompletion::FINAL_MSG and is_server_alive);
-		if ((*(struct msg_request_t *) buffer).code == EventCode::MSG_OK) {
+		if ((*(struct event *) buffer).data.code == EventCode::MSG_OK) {
 			continue;
 		} /* Ignoro el heartbeat */
-		Event *message = messageutils.buildMessage(small_messages);
+//		Event *message = messageutils.buildMessage(small_messages);
 		countMessages++;
-		cout << message->getFrom() << ": " << message->getContent() << endl;
-	} while ((*(struct msg_request_t *) buffer).code != EventCode::LAST_MESSAGE);
+//		cout << message->getFrom() << ": " << message->getContent() << endl;
+	} while ((*(struct event *) buffer).data.code != EventCode::LAST_MESSAGE);
 	LOGGER_WRITE(Logger::INFO,
 			"Se han recibido " + to_string(countMessages) + " mensajes.",
 			CLASSNAME)
 }
 
-void Client::handle_message(Event *message, EventCode code) {
-}
-
-void Client::lorem_ipsum(int frec, int max_envios) {
-}
 
 int Client::get_socket() {
 	return socket_number;
 }
 
+//todo: volar
 void Client::show_users_list() {
 	int i;
 	for (i = 0; i < usersList.size(); i++) {
 		cout << i << " - " << usersList[i] << endl;
 	}
 	cout << usersList.size() << " - All Users" << endl << endl;
-}
-
-void Client::ask_for_messages() {
-	msg_request_t msg;
-	msg.code = EventCode::CLIENT_RECEIVE_MSGS;
-	msg.completion = EventCompletion::FINAL_MSG;
-
-	strcpy(msg.message.from, userName);
-	SocketUtils sockutils;
-	sockutils.writeSocket(socket_number, msg);
-}
-
-void Client::store_users_list() {
-	/* Leo la lista de usruarios*/
-	char buffer[MSGSIZE];
-	MessageUtils messageutils;
-	SocketUtils sockutils;
-	vector<struct msg_request_t> small_messages;
-	do {
-		sockutils.readSocket(socket_number, buffer);
-		small_messages.push_back(*(struct msg_request_t*) buffer);
-	} while ((*(struct msg_request_t*) buffer).completion
-			!= EventCompletion::FINAL_MSG);
-
-	Event* message = messageutils.buildMessage(small_messages);
-	this->usersList = this->makeUsersList(message);
-}
-
-int Client::sizeofUserList() {
-	return usersList.size();
-}
-
-string Client::searchUser(int user) {
-	return usersList[user];
-}
-
-std::vector<string> Client::makeUsersList(Event *msg) {
-	std::vector<string> usersList;
-	stringstream ss;
-	ss.str(msg->getContent());
-	string item;
-	while (getline(ss, item, ',')) {
-		usersList.push_back(item);
-	}
-
-	return usersList;
 }

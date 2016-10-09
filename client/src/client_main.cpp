@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "model/client.h"
-#include "services/loremIpsum.h"
 #include "utils/Logger.h"
 //
 //#include "view/SDL/InitialWindow.h"

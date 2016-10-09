@@ -10,7 +10,6 @@
 
 #include "client.h"
 #include "../utils/Protocol.h"
-#include "../utils/MessageUtils.h"
 
 
 using namespace std;
@@ -31,7 +30,7 @@ public:
 
     std::mutex queuemutex;
 
-    queue<struct msg_request_t> event_queue;
+    queue<struct event> event_queue;
 
     ClientHandler(int serverSocket, Client* client, const char* username);
 
@@ -39,18 +38,19 @@ public:
 
     int getClientSocket() { return clientSocket; }
 
-    void handle_message(vector<struct msg_request_t> mensajes, EventCode code);
+    void handle_message(vector<struct event> mensajes, EventCode code);
 
     void start();
 
     void stop();
 
-    void push_event(struct msg_request_t event);
+    void push_event(struct event event);
 
     bool has_events() { return !event_queue.empty(); }
 
     char* getUsername();
 
+    void setSocketTimeout() const;
 };
 
 

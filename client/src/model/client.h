@@ -7,7 +7,6 @@
 #include <memory>
 #include "message.h"
 #include "../utils/SocketUtils.h"
-#include "../utils/MessageUtils.h"
 
 using namespace std;
 
@@ -34,7 +33,7 @@ public:
 		/* Pre: 
 		 * Post: 
 		 */
-    int send_message(int to, string content);
+    int send_message(struct event evenToSend);
 
 		/* Pre: 
 		 * Post: 
