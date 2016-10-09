@@ -3,4 +3,13 @@ server/server.log
 server/server
 client/client.log
 client/client
+.idea/
+client/.cproject
+client/.project
+client/.settings/
+client/Debug/
+server/.cproject
+server/.idea/
+server/.project
+server/.settings/
 

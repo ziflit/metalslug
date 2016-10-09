@@ -199,3 +199,5 @@ std::vector<string> Client::makeUsersList(Message *msg) {
 
     return usersList;
 }
+
+
