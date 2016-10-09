@@ -8,6 +8,8 @@
 #ifndef SRC_MODEL_GAME_BACKGROUND_H_
 #define SRC_MODEL_GAME_BACKGROUND_H_
 
+#include "../../utils/Protocol.h"
+
 class Background {
 private:
 	int zindex;  // para saber que background es, parallax
@@ -16,10 +18,12 @@ private:
 	unsigned int speed;
 
 public:
-	Background();
+	Background(int zindex);
 	virtual ~Background();
 
-	struct event Background::backgroundState();
+	struct event getState();
+
+	void avanzar();
 
 	unsigned int getSpeed() const {
 		return speed;

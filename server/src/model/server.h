@@ -3,12 +3,14 @@
 
 #include <memory>
 #include <mutex>
+#include <queue>
 #include "../utils/SocketUtils.h"
 #include <list>
 
 #include "UserLoader.h"
 #include "../utils/Protocol.h"
 #include "Event.h"
+#include "game/Scenery.h"
 
 #define MAX_CONN 6
 
@@ -19,9 +21,12 @@ using namespace std;
 
 class Server {
 private:
-    list<Event *> messagesList; /* Lista de mensajes almacenados */
-    std::mutex msglist_mutex;
-    UserLoader *userloader;
+    list<Event *> outgoing_events; /* Lista de eventos a mandarse */
+    list<Event *> incoming_events; /*  Lista de eventos recibidos */
+    std::mutex incoming_mutex;
+    std::mutex outgoing_mutex;
+    Scenery* scenery;
+    UserLoader *userloader; // TODO borrar
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
     bool shouldClose;
@@ -79,14 +84,7 @@ public:
 
     bool auth_user(char *user, char *pass);
 
-    void handle_message(Event *message, EventCode code);
-
-    /* guarda el mensaje pasado en la lista de mensajes que tiene almacenada */
-    void store_message(Event *message);
-
-    /* filtra la lista de mensajes almacenados, y devuelve todos los que le
-     * pertencen al usuario solicitado*/
-    list<Event *> get_messages_of(const char *user);
+    void handle_message(Event *message, EventCode code, char* username);
 
     void removeClient(char *username);
 
@@ -96,6 +94,15 @@ public:
 
     UserLoader* getUserLoader();
 
+    Scenery* getScenery() { return this->scenery; }
+
+    void connect_user(char* user);
+
+    void broadcast_event(struct event event);
+
+    queue<Event> getIncomingEvents();
+
+    void send_model_snapshot(ClientConnection* handler);
 };
 
 #endif //METALSLUG_SERVER_H

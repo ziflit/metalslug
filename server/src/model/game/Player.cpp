@@ -7,58 +7,201 @@
 
 #include "Player.h"
 
-Player::Player() {
-	username = "user";
-	sprite = "../../../../client/view/sprites/player/marco.png";
-	x = 1;
-	y = 1;
+Player::Player(string user, Entity entitySelected) {
+	username = user;
+	entity = entitySelected;
+	posHorizontal = 1;
+	posVertical = 1;
 	speed = 0;
 }
 
 Player::~Player() {
 }
 
-void movePlayer(EventCode movimiento){
-	switch(movimiento) {
-	    case EventCode::CLIENT_DISCONNECT:
-	    	// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
-	  		// arrastarlo por la pantalla
-	        break;
-
-	    case EventCode::SDL_KEYUP:
-	        
-	        break;
-
-	    case EventCode::SDL_KEYDOWN:
-
-	        break;
-
-	    case EventCode::SDL_KEYLEFT:
-	        
-	        break;
-
-	    case EventCode::SDL_KEYRIGHT:
-
-	        break;
-
-	    default:
-	        break;
-    }
-
+void Player::set_position(unsigned int posx, unsigned int posy) {
+    posHorizontal = posx;
+    posVertical = posy;
 }
 
-struct event Player::playerState(){
+void upArrowPress(){
+ // TODO: Comlpetar lo que hace cuando aprieta para arriba
+}
+
+void downArrowPress() {
+// TODO: Comlpetar lo que hace cuando aprieta para abajo
+}
+
+void Player::moveRight() {
+/* mueve el sprite en eje X hacia la derecha.
+ * Si el sprite tiene coordenadas (mitad de pantalla, y)
+ * entonces no sigue avanzando hacia la derecha
+ * Solo va a poder avanzar mas de la mitad de pantalla si
+ * el BackgroundSprite llego a su ultimo frame.
+*/
+	setNextSpriteFrame();
+//  Player::set_position(Player::destRect.x + speed, Player::destRect.y);}
+	unsigned int newPos = (posHorizontal + speed);
+	if(newPos < (windowWidth/2)){
+		set_position(newPos, posVertical);}
+}
+
+void Player::moveLeft() {
+//    Player::set_position(Player::destRect.x - speed, Player::destRect.y);}
+	setNextSpriteFrame();
+	int newPos = (posHorizontal - speed);
+	if(newPos > 0){
+		set_position(newPos, posVertical);}
+}
+
+void jump() {
+	//TODO: Hay que ver como hacer con los saltos y los "eventos" que toman mas de una posicion...
+	// se me ocurre que haya como un thread subiendole y bajandole el valor en y pero es muy bizarro.
+	// ALGUNA IDEA? puede ser que este quemado, son las 3.22am
+}
+
+void Player::stopMoving(){
+	speed = 0;
+	//TODO: Aca habria que cambiar algo de frames? para que quede quieto y muestre la animacion de quieto
+}
+
+void Player::updateState(EventCode movimiento){
+	switch(movimiento) {
+		case EventCode::CLIENT_DISCONNECT:
+			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
+			// arrastarlo por la pantalla
+			break;
+
+		case EventCode::SDL_KEYUP_PRESSED:
+			upArrowPress();
+			break;
+
+		case EventCode::SDL_KEYDOWN_PRESSED:
+			downArrowPress();
+			break;
+
+		case EventCode::SDL_KEYLEFT_PRESSED:
+			//moveLeft();
+			speed = -1;
+			break;
+
+		case EventCode::SDL_KEYRIGHT_PRESSED:
+			//moveRight();
+			speed = 1;
+			if( isInHalfWindow() ){
+				// TODO: Si llego a la mitad de la ventana, tengo que mover el background, como hago? el player conoce al background??
+			}
+			break;
+
+		case EventCode::SDL_KEYLEFT_RELEASED:
+		case EventCode::SDL_KEYRIGHT_RELEASED:
+			speed = 0;
+			break;
+
+		default:
+			break;
+	}
+}
+
+bool Player::isMoving() {
+	return (Player::speed != 0); // en -1 y 1 se esta moviendo
+}
+
+void Player::updatePosition() {
+	if(Player::isMoving()) {
+		if (!((speed == -1) and (posHorizontal == 0)) or (!((speed == 1) and (posHorizontal == windowWidth)))) {
+			posHorizontal += speed;
+		}
+	}
+}
+
+void Player::avanzar(){
+    posHorizontal += 1; //TODO: cuando se actualice speed refactorizar
+}
+
+void Player::retroceder(){
+    posHorizontal -=1;
+}
+
+
+struct event Player::getNewState(){
 	struct event estado;
 	struct event_ext eventExt;
 
-    eventExt.code = EventCode::PLAYER_STATUS;
-    eventExt.id = Entity::MARCO;  // Hardcodeo el nombre de la entidad
-    eventExt.x = 3;
-    eventExt.y = 5;
-    eventExt.h = 1;  // asumo que en h mando la velocidad
+	eventExt.code = EventCode::PLAYER_STATUS;
+	eventExt.id = entity;
 
-	estado.completion = EventCompletion::FINAL_MSG;
+	eventExt.x = posHorizontal;  //Actualizo la posicion del player
+	eventExt.y = posVertical;
+
+	// TODO: Hay que calcular el siguiente fotograma del sprite, para mandarlo.
+
+  estado.completion = EventCompletion::PARTIAL_MSG;
 	estado.data = eventExt;
 
 	return estado;
 }
+
+
+//_________________________________________
+
+bool Player::isInHalfWindow() {
+	return (posHorizontal >= ((windowWidth/2)-speed));
+}
+
+void Player::setNextSpriteFrame() {
+	if (actualPhotogramOfTheSprite == (anchoDelSprite - 1)) {
+		actualPhotogramOfTheSprite = 0;
+	}
+	posHorizontal = (anchoDelFotograma * actualPhotogramOfTheSprite);
+	actualPhotogramOfTheSprite++;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

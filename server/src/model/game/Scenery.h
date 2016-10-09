@@ -12,32 +12,43 @@
 #include "Background.h"
 #include <vector>
 #include <string>
+#include "../../utils/Protocol.h"
+#include <queue>
+#include "../Event.h"
 
 using namespace std;
 
 class Scenery {
 private:
-	vector<Player> playerLists;
-	vector<Background> backParallax;
-
+	vector<Player*> players;
+	vector<Background*> backgrounds;
+	unsigned int windowWidth, windowHeight;
 
 public:
-	Scenery();
+	Scenery(unsigned int width, unsigned int height);
 	virtual ~Scenery();
 
-	//TODO: Esta funcion tiene que recibir las distintas teclas que manda cada
-	//jugador, para poder actualizar el escenario, hay que ver como va a funcionar
-	//lo dejo aca para discutir y ver como implementar
-	void actualizarEstadoDelScenario();
+	void process_key(EventCode keycode, Entity entity);
 
-	void addPlayer(Player player);
-	Player getPlayer(string playerName);
-	void configureParallaxBackgrounds(Background background);
-	unsigned int firstBackgroundPosition(); //
+	vector<struct event> process_keys_queue(queue<struct event> *keys);
 
+    bool jugadorPasoMitadPantalla();
 
+    bool todosJugadoresAvanzando();
 
+    bool hayJugadorEnBordeIzq();
 
+    vector<Player*> getPosJugadorMasAdelantado();
+
+    void updateBackgroudsState();
+
+	vector<struct event> obtenerEstadoEscenario();
+
+	// *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
+	void addElementToScenery(Player* player);
+
+	// El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
+	void addElementToScenery(Background* background);
 
 };
 
