@@ -14,21 +14,48 @@
 class Player {
 private:
 	string username;
-    string sprite;
-    unsigned int x;
-    unsigned int y;
-    unsigned int speed;
+	Entity entity;
+    unsigned int posHorizontal;
+    unsigned int posVertical;
+    int speed;
+    unsigned int actualPhotogramOfTheSprite;
+    unsigned int anchoDelFotograma;
+	unsigned int anchoDelSprite; // Ancho de la imagen total, del sprite, se usa para calcular cuantos fotogramas tiene el sprite
+	unsigned int windowWidth;
 
 
 public:
-	Player();
+	Player(string user, Entity entitySelected);
 	virtual ~Player();
 
-	struct event playerState();
+	struct event getNewState();
 
-	void movePlayer(EventCode movimiento);
+	// El parametro type, indica con '1' (para presionada)  o '0' (para soltada) si lo que paso fue que se solto o se presiono la tecla (keypressed o keyreleased)
+	void updateState(EventCode evento);
 
-//getters y setters
+	bool isMoving();
+
+    void avanzar();
+
+    void retroceder();
+
+	void updatePosition();
+
+	// TODO:El modelo debe saber que fotograma del sprite debe mostrar para informarle al cliente, asi sabe que dibujar?
+	void setNextSpriteFrame();
+
+	// Indica si el jugador esta en el medio de la pantalla, esto va a ser consultado por el modelo para actualizar el fondo en cada loop
+	bool isInHalfWindow();
+
+	void moveLeft();
+	void moveRight();
+
+	void set_position(unsigned int posx, unsigned int posy);
+
+	void stopMoving();
+
+
+	//getters y setters -----------------------------------------------------------------------------------------
 	unsigned int getSpeed() const {
 		return speed;
 	}
@@ -37,31 +64,33 @@ public:
 		this->speed = speed;
 	}
 
-	string getSprite() const {
-		return sprite;
-	}
-
 	string getUsername() const {
 		return username;
 	}
 
 	unsigned int getX() const {
-		return x;
+		return posHorizontal;
 	}
 
 	void setX(unsigned int x) {
-		this->x = x;
+		this->posHorizontal = x;
 	}
 
 	unsigned int getY() const {
-		return y;
+		return posVertical;
 	}
 
 	void setY(unsigned int y) {
-		this->y = y;
+		this->posVertical = y;
 	}
 
+	Entity getEntity() const {
+		return entity;
+	}
 
+	void setEntity(Entity entity) {
+		this->entity = entity;
+	}
 };
 
 

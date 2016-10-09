@@ -29,35 +29,45 @@ void client_comm(Server *srv, int client) {
     SocketUtils sockutils;
     /* Recibo user y pass del cliente */
     char user[20];
-    char pass[20];
-    recv(client, user, 20, 0);
-    recv(client, pass, 20, 0);
-    if (srv->auth_user(user, pass)) {
-        struct event resp;
-        resp.data.code = EventCode::LOGIN_OK;
+    recv(client, user, 20, 0); /* Nombre de usuario */
+    srv->connect_user(user); /* Acá tengo que crear un nuevo handler y pasarle el XML? */
 
-        sockutils.writeSocket(client, resp);
+    /* Le informo al cliente que se logueo ok */
+    struct event resp;
+    resp.data.code = EventCode::LOGIN_OK;
+    sockutils.writeSocket(client, resp);
 
-        /* Envio de lista de usuarios */
-        Event* usersListMsg = new Event();
-        usersListMsg->setContent((srv->getUserLoader())->getUsersList());
-        // MessageUtils messageUtils;
-        // vector<struct event> requests =  messageUtils.buildRequests(usersListMsg, EventCode:: USERS_LIST_MSG);
-        vector<struct event> requests;
+    ClientConnection* handler = new ClientConnection(client, srv, user);
+    srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
+    handler->start();
+    /* Le mando el estado actual del modelo al cliente */
+    srv->send_model_snapshot(handler);
 
-        ClientConnection* handler = new ClientConnection(client, srv, user);
+   // if (srv->auth_user(user, pass)) {
+   //      struct event resp;
+   //      resp.data.code = EventCode::LOGIN_OK;
 
-        handler->start();
-        srv->add_connection(handler);
-        for (auto req : requests) {
-            handler->push_event(req);
-        }
+   //      sockutils.writeSocket(client, resp);
 
-    } else {
-        struct event resp;
-        resp.data.code = EventCode::LOGIN_FAIL;
-        sockutils.writeSocket(client, resp);
-    }
+   //      /* Envio de lista de usuarios */
+   //      Event* usersListMsg = new Event();
+   //      usersListMsg->setContent((srv->getUserLoader())->getUsersList());
+   //      // MessageUtils messageUtils;
+   //      // vector<struct event> requests =  messageUtils.buildRequests(usersListMsg, EventCode:: USERS_LIST_MSG);
+   //      vector<struct event> requests;
+
+   //      ClientConnection* handler = new ClientConnection(client, srv, user);
+
+   //      handler->start();
+   //      for (auto req : requests) {
+   //          handler->push_event(req);
+   //      }
+
+   //  } else {
+   //      struct event resp;
+   //      resp.data.code = EventCode::LOGIN_FAIL;
+   //      sockutils.writeSocket(client, resp);
+   //  }
     /* Esto crea un nuevo objeto ClientConnection que
      * se comunicará con el cliente en cuestión. Le paso el fd */
 }
@@ -184,28 +194,15 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
     return connections;
 }
 
-// void filter_and_send(Server *server, const char *requester, shared_ptr<ClientConnection> handler) {
-//     LOGGER_WRITE(Logger::INFO, "Filtrando mensajes de cliente " + string(requester), "Server.class")
-//     auto realmessages = server->get_messages_of(requester);
-//     MessageUtils messageutils;
-//     for (auto message : realmessages) {
-//         vector<struct event> requests = messageutils.buildRequests(message, EventCode::CLIENT_RECEIVE_MSGS);
-//         for (auto req : requests) {
-//             handler->push_event(req);
-//         }
-//     }
-//     Message *lastmsgmsg = new Message("server", "user", "Ud. no tiene mas mensajes");
-//     struct event lastMsg = messageutils.buildRequests(lastmsgmsg, EventCode::LAST_MESSAGE).front();
-//     handler->push_event(lastMsg);
-// }
-
-void Server::handle_message(Event *message, EventCode code) {
+void Server::handle_message(Event *message, EventCode code, char* username) {
     shared_ptr<ClientConnection> handler;
-    thread writer_thread;
+    /* Me llega un Evento y me tengo que fijar de quién viene */
+    /* Tengo que pasarle al escenario el evento y el nombre de usuario que lo mandó */
+
     switch(code) {
     case EventCode::CLIENT_SEND_MSG:
         cout << "CLIENT_SEND_MSG" << endl;
-        store_message(message);
+        // store_message(message);
         break;
 
     case EventCode::CLIENT_DISCONNECT:
@@ -214,26 +211,8 @@ void Server::handle_message(Event *message, EventCode code) {
         close_connection(handler->getUsername());
         break;
 
-    case EventCode::SDL_KEYUP:
-        cout << "SDL_KEYUP" << endl;
-        break;
-
-    case EventCode::SDL_KEYDOWN:
-        cout << "SDL_KEYDOWN" << endl;
-        break;
-
-    case EventCode::SDL_KEYLEFT:
-        cout << "SDL_KEYLEFT" << endl;
-        break;
-
-    case EventCode::SDL_KEYRIGHT:
-        cout << "SDL_KEYRIGHT" << endl;
-        break;
-
     default:
-        string content;
-        content = message->getContent();
-        cout << "El mensaje entrante es: " << content << endl;
+        this->incoming_events.push_back(message);
         break;
     }
 }
@@ -247,37 +226,31 @@ shared_ptr<ClientConnection> Server::get_user_handler(const char *username) {
     return nullptr;
 }
 
-void Server::store_message(Event *message) {
-    LOGGER_WRITE(Logger::INFO, "Guardando mensaje de " + message->getFrom() + " para " + message->getTo(),
-                 "Server.class")
-    cout << "Guardando el mensaje: " << message->getContent() << endl;
-    msglist_mutex.lock();
-    messagesList.push_back(message);
-    msglist_mutex.unlock();
-}
-
 void Server::shouldCloseFunc(bool should) {
     shouldClose = should;
 }
 
-list<Event *> Server::get_messages_of(const char *user) {
-    std::list<Event *> messagesFiltered;
-    msglist_mutex.lock();
-    for (auto it = messagesList.begin(); it != messagesList.cend();) {
-        if (strcmp((*it)->getTo().data(), user) == 0) {
-            messagesFiltered.push_back(*it);
-            it = messagesFiltered.erase(it); // ...
-        } else {
-            it++;
-        }
-    }
-    msglist_mutex.unlock();
-    return messagesFiltered;
-}
-/* Si  necesito acceso aleatorio, uso vector
-pero si necesito recorrer de principio a fin o voy borrando/insertando
-elementos en el medio, uso list */
-
 UserLoader* Server::getUserLoader() {
     return this->userloader;
+}
+
+queue<Event> Server::getIncomingEvents() {
+    this->incoming_mutex.lock();
+    queue<Event> ret;
+    for (auto event : incoming_events) {
+        ret.emplace(event->clone());
+    }
+    this->incoming_events.empty();
+    this->incoming_mutex.unlock();
+    return ret;
+}
+
+void Server::broadcast_event(struct event event) {
+    for (auto client : connections) {
+        client->event_queue.push_back(event);
+    }
+}
+
+void Server::connect_user(char* user) {
+    return;
 }

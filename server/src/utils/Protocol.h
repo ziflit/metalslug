@@ -30,11 +30,15 @@ enum EventCode {
     LAST_MESSAGE, /* Es el ultimo mensaje, para saber hasta cuando recibir */
     CLIENT_DISCONNECT, /* El cliente se desconecta del servidor */
     MSG_OK, /* ACK */
-    SDL_KEYUP,
-    SDL_KEYDOWN,
-    SDL_KEYLEFT,
-    SDL_KEYRIGHT,
-    PLAYER_STATUS,
+    SDL_KEYUP_PRESSED,
+    SDL_KEYDOWN_PRESSED,
+    SDL_KEYLEFT_PRESSED,
+    SDL_KEYRIGHT_PRESSED,
+    SDL_KEYUP_RELEASED,
+    SDL_KEYDOWN_RELEASED,
+    SDL_KEYLEFT_RELEASED,
+    SDL_KEYRIGHT_RELEASED,
+	PLAYER_STATUS,
     BACKGROUND_STATUS
 };
 
@@ -46,6 +50,8 @@ enum EventCompletion {
 enum Entity {
     MARCO,
     TARMA,
+	FIO,
+	ERI,
     ENEMY_NORMAL,
     LEVEL1_Z1,    // fondo del level 1, con Z-index 1
     LEVEL1_Z2,
