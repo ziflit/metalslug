@@ -8,7 +8,7 @@ void InitialWindow::initializeSDL() {
     }
 }
 
-SDL_Window* InitialWindow::createWindow(const char* windowName){
+SDL_Window* InitialWindow::createWindow(const char *windowName, unsigned int window_width, unsigned int window_height) {
     SDL_Window *window = SDL_CreateWindow(windowName,
                                           SDL_WINDOWPOS_UNDEFINED,
                                           SDL_WINDOWPOS_UNDEFINED,
@@ -43,9 +43,9 @@ void InitialWindow::initializeMixer() {
     };
 }
 
-InitialWindow::InitialWindow () {
+InitialWindow::InitialWindow(unsigned int window_width, unsigned int window_height) {
     InitialWindow::initializeMixer();
     InitialWindow::initializeSDL();
-    InitialWindow::mainWindow = createWindow("METAL SLUG");
+    InitialWindow::mainWindow = createWindow("METAL SLUG",window_width,window_height);
     InitialWindow::mainRender = createRenderer(InitialWindow::mainWindow);
 }

@@ -8,12 +8,6 @@ using namespace std;
 #include "SDL2/SDL.h"
 #include <SDL2/SDL_image.h>
 
-#define window_width 1200
-#define window_height 700
-#define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
-#define fps  30 //tasa de refrescamiento, fotogramas por segundo
-#define speedSprite 10
-
 class Sprite {
 protected:
     SDL_Rect sourceRect; //rect donde se dibuja el sprite
@@ -26,8 +20,6 @@ protected:
 
     int frameWidth, frameHeight;
 
-    int frameTime;
-
 
 public:
     //CONSTRUCTOR
@@ -38,7 +30,7 @@ public:
 //_________________________________________________________________________________________________________
     //ACTUALIZACION DEL SPRITE
     void setNextSpriteFrame();
-    void update();
+    void actualizarDibujo();
 //_________________________________________________________________________________________________________
     //TAMANO DEL SPRITE:
     void setWidth(int w){ Sprite::destRect.w = w;}
@@ -52,10 +44,6 @@ public:
 
     SDL_Texture* getLayer() const { return layer;}
 //_________________________________________________________________________________________________________
-    //FRAMETIME
-    void increaseFrameTime(){frameTime++;}
-    void restartFrameTime(){frameTime = 0;}
-    int getFrameTime(){ return frameTime;}
 
 };
 

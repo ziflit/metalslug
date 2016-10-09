@@ -16,7 +16,7 @@ void Sprite::setUpImage(string imageSpritePath) {
     SDL_QueryTexture(layer,NULL,NULL,&spriteImageWidth,&spriteImageHeight);
 }
 
-void Sprite::update(){   //COPIA EN LA CAPA DEL PLAYER EL NUEVO ESTADO DEL SPRITE
+void Sprite::actualizarDibujo(){   //COPIA EN LA CAPA DEL PLAYER EL NUEVO ESTADO DEL SPRITE
     SDL_RenderCopy(renderer,layer,&(Sprite::sourceRect),&(Sprite::destRect));
 }
 

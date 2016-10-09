@@ -58,6 +58,8 @@ void SDLRunningGame::spritesBuilding () {
 
 SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRenderer) {
     SDLRunningGame::mainWindow = mainWindow;
+    SDL_GetWindowSize(mainWindow, &window_width, &window_height);
+
     SDLRunningGame::mainRenderer = mainRenderer;
 //_______________________________________________________________________________________
    SDLRunningGame::layersBuilding();

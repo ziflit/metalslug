@@ -3,6 +3,7 @@
 #include "model/client.h"
 #include "services/loremIpsum.h"
 #include "utils/Logger.h"
+#include "view/SDL/InitialWindow.h"
 #include "view/SDL/SDLRunningGame.h"
 
 using namespace std;
@@ -29,26 +30,52 @@ int main(int argc, char *argv[]) {
     bool endloop = false;
     char keypressed;
 
-//
-//    cout << "\033[2J\033[1;1H"; /* clear screen */
-//    if (!cliente1->is_connected()) {
-//        LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
-//        cout << "Estableciendo la conexion con el servidor..." << endl << endl;
-//        if (cliente1->connect_to_server(ip, port)) {
-//
-//            cliente1->set_connection_status(true);
-//            cout << "\033[2J\033[1;1H"; /* clear screen */
-//            LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
-//            cout << " Conexion establecida con exito " << endl << endl;
-//            break;
-//        } else {
-//            cliente1->set_connection_status(false);
-//            break;
-//        }
-//    }
+    cout << "\033[2J\033[1;1H"; /* clear screen */
+    if (!cliente1->is_connected()) {
+        LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
+        cout << "Estableciendo la conexion con el servidor..." << endl << endl;
+        if (cliente1->connect_to_server(ip, port)) {
 
-    SDLRunningGame sdlRunningGame = SDLRunningGame();
-    sdlRunningGame.updateWindowSprites();
+            cliente1->set_connection_status(true);
+            cout << "\033[2J\033[1;1H"; /* clear screen */
+            LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
+            cout << " Conexion establecida con exito " << endl << endl;
+            break;
+        } else {
+            cliente1->set_connection_status(false);
+            break;
+        }
+    }
+
+
+
+//____________________________________________________________________________________________
+
+    bool running = true;
+
+    InitialWindow* initialWindow = new InitialWindow();
+
+    SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer());
+
+//    Uint32  starting_tick;
+//    SDL_Event event;
+//
+
+    SDL_Event event;
+    while(running){
+        while (SDL_PollEvent( &event )) {
+
+            if ( event.type == SDL_QUIT) {
+                running = false;
+                break;
+            }
+
+            sdlRunningGame->eventsHandler(&event); //El eventsHandler envia los mensajes al Server
+            sdlRunningGame->updateWindowSprites(); //TODO: EL updateWindow LO DEBE HACER DESP DE RECIBIR LOS MENSAJES DEL SERVER
+        }
+
+        SDL_Delay(100); //antes de procesar otro evento esta pausando 2 milisegundos
+    }
 
 
 

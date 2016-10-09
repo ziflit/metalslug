@@ -1,8 +1,6 @@
 #ifndef SDLBASE_SDLRUNNINGGAME_H
 #define SDLBASE_SDLRUNNINGGAME_H
 
-#define window_width 1200
-#define window_height 700
 #define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
 #define fps  30 //tasa de refrescamiento, fotogramas por segundo
 #define speedSprite 10
@@ -17,6 +15,7 @@
 
 class SDLRunningGame {
 private:
+    unsigned int window_width, window_height;
     SDL_Window* mainWindow;
     SDL_Renderer* mainRenderer;
     Music* music;

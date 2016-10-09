@@ -17,11 +17,12 @@ private:
     //Constructor:
 
     PlayerSprite(SDL_Texture *texture, SDL_Renderer *renderer) : Sprite(texture, renderer) {
+//        TODO: este seteo se hace a partir del XML
         //DEFAULT SIZE
         PlayerSprite::setHeight(100);
         PlayerSprite::setWidth(100);
         //DEFAULT POSITION
-        PlayerSprite::set_position(100,window_height-200);  //Camino rocoso de la imagen
+        PlayerSprite::set_position(0,0);  //Camino rocoso de la imagen
     }
 
 //_______________________________________________________________________________________________
@@ -29,7 +30,7 @@ private:
 
     void setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant);
 
-    void update(){Sprite::update();}
+    void actualizarDibujo(){Sprite::actualizarDibujo();}
 
     void setWidth(int w){ Sprite::setWidth(w);}
     void setHeight(int h){ Sprite::setHeight(h);}
@@ -40,29 +41,10 @@ private:
     int getXPosition(){ Sprite::getXPosition();}
     int getYPosition(){ Sprite::getYPosition();}
 
-
     void setNextSpriteFrame();
 
-    void increaseFrameTime(){Sprite::increaseFrameTime();}
-    void restartFrameTime(){Sprite::restartFrameTime();}
-    int getFrameTime(){ Sprite::getFrameTime();}
-
-
 //______________________________________________________________________________________________
-    void handlePlayerEvents(SDL_Event event,BackgroundSprite* backgroundSprite1);
 
-    void moveRight();
-    void moveLeft();
-    void rightStep();
-    void leftStep();
-    void downArrowPress();
-    void upArrowPress();
-
-
-    void jump(); //con tecla "A" en el juego original
-    void duck(); //agacharse
-
-    bool isInHalfWindow();
 };
 
 
