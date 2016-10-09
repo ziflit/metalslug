@@ -66,7 +66,7 @@ void Scenery::updateBackgroudsState(){
      *  y alguno paso la mitad de pantalla
      *  Post el avance del background se debe restar a todos los jugadores una posicion
      */
-    if( (todosJugadoresAvanzando()) and (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantalla())){
+    if( (todosJugadoresAvanzando()) and (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantalla()) ){
         for(auto background : backgrounds){
             background->avanzar();
             //como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
@@ -85,19 +85,21 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
         player->updatePosition();
         eventsToReturn.push_back(player->getNewState());
     }
+
+    updateBackgroundsState();
+
     for (auto background : backgrounds) {
-        updateBackgroundsState();
         eventsToReturn.push_back(background->getState());
     }
     return eventsToReturn;
 }
 //______________________________________________________________________________________________________________________
 
-void Scenery::addElementToScenery(Player player) {
+void Scenery::addElementToScenery(Player* player) {
 	players.push_back(player);
 }
 
-void Scenery::addElementToScenery(Background background) {
+void Scenery::addElementToScenery(Background* background) {
 	backgrounds.push_back(background);
 }
 //______________________________________________________________________________________________________________________
