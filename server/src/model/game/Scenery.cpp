@@ -20,10 +20,11 @@ void Scenery::process_key(EventCode keycode, Entity entity) {
     }
 }
 
-vector<struct event> Scenery::process_keys_queue(queue<Event> keys){
-    for (unsigned int i = 0 ; i<keys.size() ; i++){
-        Event key = keys.front();
-        process_key( key.getCode(), key.getEntity() );
+vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
+    while (not keys->empty()) {
+        struct event key = keys->front();
+        process_key( key.data.code, key.data.id );
+        keys->pop();
     }
     return obtenerEstadoEscenario();
 }
@@ -87,7 +88,7 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
         eventsToReturn.push_back(player->getNewState());
     }
 
-    updateBackgroundsState();
+    updateBackgroudsState();
 
     for (auto background : backgrounds) {
         eventsToReturn.push_back(background->getState());

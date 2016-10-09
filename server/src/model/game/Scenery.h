@@ -30,7 +30,7 @@ public:
 
 	void process_key(EventCode keycode, Entity entity);
 
-	vector<struct event> process_keys_queue(queue<Event> keys);
+	vector<struct event> process_keys_queue(queue<struct event> *keys);
 
     bool jugadorPasoMitadPantalla();
 
@@ -40,15 +40,15 @@ public:
 
     vector<Player*> getPosJugadorMasAdelantado();
 
-	void updateBackgroudsState();
+    void updateBackgroudsState();
 
 	vector<struct event> obtenerEstadoEscenario();
 
 	// *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
-	void addElementToScenery(Player player);
+	void addElementToScenery(Player* player);
 
 	// El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
-	void addElementToScenery(Background background);
+	void addElementToScenery(Background* background);
 
 };
 
