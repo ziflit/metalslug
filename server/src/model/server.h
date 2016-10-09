@@ -9,7 +9,6 @@
 
 #include "UserLoader.h"
 #include "../utils/Protocol.h"
-#include "Event.h"
 #include "game/Scenery.h"
 
 #define MAX_CONN 6
@@ -21,10 +20,11 @@ using namespace std;
 
 class Server {
 private:
-    list<Event *> outgoing_events; /* Lista de eventos a mandarse */
-    list<Event *> incoming_events; /*  Lista de eventos recibidos */
+    list<struct event> outgoing_events; /* Lista de eventos a mandarse */
+    list<struct event> incoming_events; /*  Lista de eventos recibidos */
     std::mutex incoming_mutex;
     std::mutex outgoing_mutex;
+    vector<struct event> last_model_snapshot;
     Scenery* scenery;
     UserLoader *userloader; // TODO borrar
     int listen_socket_fd;
@@ -84,7 +84,7 @@ public:
 
     bool auth_user(char *user, char *pass);
 
-    void handle_message(Event *message, EventCode code, char* username);
+    void handle_message(struct event event, EventCode code, char* username);
 
     void removeClient(char *username);
 
@@ -100,9 +100,11 @@ public:
 
     void broadcast_event(struct event event);
 
-    queue<Event> getIncomingEvents();
+    queue<struct event>* getIncomingEvents();
 
     void send_model_snapshot(ClientConnection* handler);
+
+    void set_model_snapshot(vector<struct event> model_state);
 };
 
 #endif //METALSLUG_SERVER_H

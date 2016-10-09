@@ -194,7 +194,7 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
     return connections;
 }
 
-void Server::handle_message(Event *message, EventCode code, char* username) {
+void Server::handle_message(struct event event, EventCode code, char* username) {
     shared_ptr<ClientConnection> handler;
     /* Me llega un Evento y me tengo que fijar de quién viene */
     /* Tengo que pasarle al escenario el evento y el nombre de usuario que lo mandó */
@@ -207,12 +207,12 @@ void Server::handle_message(Event *message, EventCode code, char* username) {
 
     case EventCode::CLIENT_DISCONNECT:
         cout << "CLIENT_DISCONNECT" << endl;
-        handler = this->get_user_handler(message->getFrom().data());
+        handler = this->get_user_handler(username);
         close_connection(handler->getUsername());
         break;
 
     default:
-        this->incoming_events.push_back(message);
+        this->incoming_events.push_back(event);
         break;
     }
 }
@@ -234,23 +234,37 @@ UserLoader* Server::getUserLoader() {
     return this->userloader;
 }
 
-queue<Event> Server::getIncomingEvents() {
+queue<struct event>* Server::getIncomingEvents() {
     this->incoming_mutex.lock();
-    queue<Event> ret;
+    queue<struct event> ret;
     for (auto event : incoming_events) {
-        ret.emplace(event->clone());
+        ret.emplace(event);
     }
     this->incoming_events.empty();
     this->incoming_mutex.unlock();
-    return ret;
+    return &ret;
 }
 
 void Server::broadcast_event(struct event event) {
     for (auto client : connections) {
+        client->queuemutex.lock();
         client->event_queue.push_back(event);
+        client->queuemutex.unlock();
     }
 }
 
 void Server::connect_user(char* user) {
     return;
 }
+
+void Server::send_model_snapshot(ClientConnection* handler) {
+    /* Aca tengo que usar lo que me devolvió process_keys_queue en su última
+       corrida */
+    handler->queuemutex.lock();
+    for (auto event : last_model_snapshot) {
+        handler->event_queue.push_back(event);
+    }
+    handler->queuemutex.unlock();
+}
+
+void Server::set_model_snapshot(vector<struct event> model_state) { this->last_model_snapshot = model_state;}

@@ -7,7 +7,6 @@
 #include <memory>
 #include "message.h"
 #include "../utils/SocketUtils.h"
-#include "../utils/MessageUtils.h"
 
 using namespace std;
 
@@ -34,7 +33,7 @@ public:
 		/* Pre: 
 		 * Post: 
 		 */
-    int send_message(int to, string content);
+    int send_message(struct event evenToSend);
 
 		/* Pre: 
 		 * Post: 
@@ -66,7 +65,7 @@ public:
 
     void send_disconnect_to_server();
 
-    void handle_message(Event *message, MessageCode code);
+    void handle_message(Event *message, EventCode code);
 
     bool is_connected() { return connected; }
 
