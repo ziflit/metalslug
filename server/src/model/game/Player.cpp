@@ -10,8 +10,8 @@
 Player::Player(string user, Entity entitySelected) {
 	username = user;
 	entity = entitySelected;
-	x = 1;
-	y = 1;
+	posHorizontal = 1;
+	posVertical = 1;
 	speed = 0;
 }
 
@@ -19,8 +19,8 @@ Player::~Player() {
 }
 
 void Player::set_position(unsigned int posx, unsigned int posy) {
-    x = posx;
-    y = posy;
+    posHorizontal = posx;
+    posVertical = posy;
 }
 
 void upArrowPress(){
@@ -40,17 +40,17 @@ void Player::moveRight() {
 */
 	setNextSpriteFrame();
 //  Player::set_position(Player::destRect.x + speed, Player::destRect.y);}
-	unsigned int newPos = (x + speed);
+	unsigned int newPos = (posHorizontal + speed);
 	if(newPos < (windowWidth/2)){
-		set_position(newPos, y);}
+		set_position(newPos, posVertical);}
 }
 
 void Player::moveLeft() {
 //    Player::set_position(Player::destRect.x - speed, Player::destRect.y);}
 	setNextSpriteFrame();
-	int newPos = (x - speed);
+	int newPos = (posHorizontal - speed);
 	if(newPos > 0){
-		set_position(newPos, y);}
+		set_position(newPos, posVertical);}
 }
 
 void jump() {
@@ -108,18 +108,18 @@ bool Player::isMoving() {
 
 void Player::updatePosition() {
 	if(Player::isMoving()) {
-		if (!((speed == -1) and (x == 0)) or (!((speed == 1) and (x == windowWidth)))) {
-			x += speed;
+		if (!((speed == -1) and (posHorizontal == 0)) or (!((speed == 1) and (posHorizontal == windowWidth)))) {
+			posHorizontal += speed;
 		}
 	}
 }
 
 void Player::avanzar(){
-    x += 1;
+    posHorizontal += 1; //TODO: cuando se actualice speed refactorizar
 }
 
 void Player::retroceder(){
-    x -=1;
+    posHorizontal -=1;
 }
 
 
@@ -130,8 +130,8 @@ struct event Player::getNewState(){
 	eventExt.code = EventCode::PLAYER_STATUS;
 	eventExt.id = entity;
 
-	eventExt.x = Player::x;  //Actualizo la posicion del player
-	eventExt.y = y;
+	eventExt.x = posHorizontal;  //Actualizo la posicion del player
+	eventExt.y = posVertical;
 
 	// TODO: Hay que calcular el siguiente fotograma del sprite, para mandarlo.
 
@@ -145,14 +145,14 @@ struct event Player::getNewState(){
 //_________________________________________
 
 bool Player::isInHalfWindow() {
-	return (x >= ((windowWidth/2)-speed));
+	return (posHorizontal >= ((windowWidth/2)-speed));
 }
 
 void Player::setNextSpriteFrame() {
 	if (actualPhotogramOfTheSprite == (anchoDelSprite - 1)) {
 		actualPhotogramOfTheSprite = 0;
 	}
-	x = (anchoDelFotograma * actualPhotogramOfTheSprite);
+	posHorizontal = (anchoDelFotograma * actualPhotogramOfTheSprite);
 	actualPhotogramOfTheSprite++;
 }
 

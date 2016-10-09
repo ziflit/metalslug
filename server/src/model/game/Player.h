@@ -15,13 +15,14 @@ class Player {
 private:
 	string username;
 	Entity entity;
-    unsigned int x;
-    unsigned int y;
+    unsigned int posHorizontal;
+    unsigned int posVertical;
     int speed;
     unsigned int actualPhotogramOfTheSprite;
     unsigned int anchoDelFotograma;
 	unsigned int anchoDelSprite; // Ancho de la imagen total, del sprite, se usa para calcular cuantos fotogramas tiene el sprite
 	unsigned int windowWidth;
+
 
 public:
 	Player(string user, Entity entitySelected);
@@ -68,19 +69,19 @@ public:
 	}
 
 	unsigned int getX() const {
-		return x;
+		return posHorizontal;
 	}
 
 	void setX(unsigned int x) {
-		this->x = x;
+		this->posHorizontal = x;
 	}
 
 	unsigned int getY() const {
-		return y;
+		return posVertical;
 	}
 
 	void setY(unsigned int y) {
-		this->y = y;
+		this->posVertical = y;
 	}
 
 	Entity getEntity() const {
