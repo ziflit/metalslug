@@ -7,7 +7,9 @@
 
 #include "Background.h"
 
-Background::Background() {
+Background::Background(int zindex) {
+    x=y=0;
+    this->zindex = zindex;
 }
 
 Background::~Background() {
@@ -21,7 +23,6 @@ struct event Background::getState(){
     eventExt.id = Entity::LEVEL1_Z1; // 
     eventExt.x = x;
     eventExt.y = y;
-    eventExt.h = speed;  // Speed del background
 
 	estado.completion = EventCompletion::FINAL_MSG;
 	estado.data = eventExt;

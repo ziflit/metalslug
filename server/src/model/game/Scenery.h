@@ -20,8 +20,8 @@ using namespace std;
 
 class Scenery {
 private:
-	vector<Player> players;
-	vector<Background> backgrounds;
+	vector<Player*> players;
+	vector<Background*> backgrounds;
 	unsigned int windowWidth, windowHeight;
 
 public:
@@ -31,6 +31,16 @@ public:
 	void process_key(EventCode keycode, Entity entity);
 
 	vector<struct event> process_keys_queue(queue<Event> keys);
+
+    bool jugadorPasoMitadPantalla();
+
+    bool todosJugadoresAvanzando();
+
+    bool hayJugadorEnBordeIzq();
+
+    vector<Player*> getPosJugadorMasAdelantado();
+
+	void updateBackgroudsState();
 
 	vector<struct event> obtenerEstadoEscenario();
 

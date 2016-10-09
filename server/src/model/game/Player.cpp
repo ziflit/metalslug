@@ -102,6 +102,27 @@ void Player::updateState(EventCode movimiento){
 	}
 }
 
+bool Player::isMoving() {
+	return (Player::speed != 0); // en -1 y 1 se esta moviendo
+}
+
+void Player::updatePosition() {
+	if(Player::isMoving()) {
+		if (!((speed == -1) and (x == 0)) or (!((speed == 1) and (x == windowWidth)))) {
+			x += speed;
+		}
+	}
+}
+
+void Player::avanzar(){
+    x += 1;
+}
+
+void Player::retroceder(){
+    x -=1;
+}
+
+
 struct event Player::getNewState(){
 	struct event estado;
 	struct event_ext eventExt;
@@ -109,7 +130,7 @@ struct event Player::getNewState(){
 	eventExt.code = EventCode::PLAYER_STATUS;
 	eventExt.id = entity;
 
-	eventExt.x += speed;  //Actualizo la posicion del player
+	eventExt.x = Player::x;  //Actualizo la posicion del player
 	eventExt.y = y;
 
 	// TODO: Hay que calcular el siguiente fotograma del sprite, para mandarlo.

@@ -18,7 +18,7 @@ private:
 	unsigned int speed;
 
 public:
-	Background();
+	Background(int zindex);
 	virtual ~Background();
 
 	struct event getState();

@@ -32,6 +32,14 @@ public:
 	// El parametro type, indica con '1' (para presionada)  o '0' (para soltada) si lo que paso fue que se solto o se presiono la tecla (keypressed o keyreleased)
 	void updateState(EventCode movimiento);
 
+	bool isMoving();
+
+    void avanzar();
+
+    void retroceder();
+
+	void updatePosition();
+
 	// TODO:El modelo debe saber que fotograma del sprite debe mostrar para informarle al cliente, asi sabe que dibujar?
 	void setNextSpriteFrame();
 
