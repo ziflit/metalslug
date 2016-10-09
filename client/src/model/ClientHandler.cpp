@@ -1,38 +1,47 @@
 #include "ClientHandler.h"
 
-#include <asm/socket.h>
-#include <sys/socket.h>
-#include <iostream>
-#include <sstream>
-#include "../utils/Logger.h"
-
-#define CLASSNAME "ClientHandler.class"
 
 void sendHeartbeat(ClientHandler* handler) {
 	struct event alive;
 	alive.data.code = EventCode::MSG_OK;
 	while (!handler->shouldClose) { // while está vivo
-		handler->push_event(alive);
+		handler->sendEvent(alive);
 		sleep(5);
 	}
 }
 
 void connectionReader(ClientHandler *handler) {
-	bool is_server_alive;
+	int is_server_alive;
+	bool isComplete;
+
 	SocketUtils sockutils;
 	vector<struct event> events;
+
 	char buffer[BUFSIZE];
-	int eventSize = sizeof(struct event);
-	char eventBuffer[eventSize];
+	char eventBuffer[BUFSIZE];
 
 	while (!handler->shouldClose) {
-		is_server_alive = sockutils.peek(handler->getClientSocket(), buffer);
-		if (not is_server_alive and !handler->shouldClose) {
-			handler->stop();
-			break;
-		}
-		if (!handler->shouldClose) {
-			sockutils.readSocket(handler->getClientSocket(), eventBuffer);
+//		is_server_alive = sockutils.peek(handler->getClientSocket(), buffer);
+//		if (not is_server_alive and !handler->shouldClose) {
+//			handler->stop();
+//			break;
+//		}
+		isComplete = sockutils.readSocket(handler->getClientSocket(),
+				eventBuffer);
+		if (isComplete) {
+			struct event incommingEvent = (*(struct event*) eventBuffer);
+			if (incommingEvent.data.code == EventCode::MSG_OK) {
+				continue;
+			}
+			handler->sendEvent(incommingEvent);
+		} else {
+			is_server_alive = recv(handler->getClientSocket(), &buffer, BUFSIZE,
+					MSG_PEEK);
+			if (is_server_alive == -1) {
+				LOGGER_WRITE(Logger::ERROR, "Conexion con el servidor perdida",
+						"ClientHandler.class")
+				handler->stop();
+			}
 		}
 	}
 }
@@ -40,13 +49,16 @@ void connectionReader(ClientHandler *handler) {
 int connectionWriter(ClientHandler *data) {
 	int result;
 	while (!data->shouldClose) {
-		data->queuemutex.lock();
+		data->outgoingMutex.lock();
+
 		if (data->has_events()) {
-			event event = data->event_queue.front();
-			data->event_queue.pop();
-			data->queuemutex.unlock();
+			event event = data->incommingEvents.front();
+			data->outgoingEvents.pop_front();
+			data->outgoingMutex.unlock();
+
 			SocketUtils sockutils;
 			result = sockutils.writeSocket(data->getClientSocket(), event);
+
 			if (result == -1) {
 				cout << "El servidor está desconectado" << endl;
 				if (!data->shouldClose) {
@@ -55,7 +67,7 @@ int connectionWriter(ClientHandler *data) {
 			}
 
 		} else {
-			data->queuemutex.unlock();
+			data->outgoingMutex.unlock();
 		}
 	}
 	return 1;
@@ -113,10 +125,10 @@ void ClientHandler::stop() {
 	}
 }
 
-void ClientHandler::push_event(struct event event) {
-	this->queuemutex.lock();
-	event_queue.push(event);
-	this->queuemutex.unlock();
+void ClientHandler::sendEvent(struct event event) {
+	this->incommingMutex.lock();
+	incommingEvents.push_back(event);
+	this->incommingMutex.unlock();
 }
 
 ClientHandler::ClientHandler() {
@@ -126,3 +138,19 @@ char *ClientHandler::getUsername() {
 	return username;
 }
 
+vector<struct event> ClientHandler::getModelState() {
+	//TODO caso borde: ultimo mensaje se pierde
+	vector<struct event> modelState;
+	bool final = false;
+
+	this->incommingMutex.lock();
+	list<struct event>::iterator it = incommingEvents.begin();
+	while (it != incommingEvents.end() && !final) {
+		struct event event = (*it);
+		modelState.push_back(event);
+		it = incommingEvents.erase(it);
+		final = event.completion == EventCompletion::FINAL_MSG;
+	}
+	this->incommingMutex.unlock();
+	return modelState;
+}

@@ -28,7 +28,6 @@ bool Client::connect_to_server(string ip, int port) {
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(port);
 	server_addr.sin_addr.s_addr = inet_addr(ip.data());
-
 	server_sock_size = sizeof(server_addr);
 
 	/* Me conecto al servidor. Devuelve -1 si la conexion falla */
@@ -84,11 +83,11 @@ void Client::disconnect() {
 void Client::send_disconnect_to_server() {
 	struct event disconnectEvent;
 	disconnectEvent.data.code = EventCode::CLIENT_DISCONNECT;
-	this->handler->push_event(disconnectEvent);
+	this->handler->sendEvent(disconnectEvent);
 }
 
 int Client::send_message(struct event eventToSend) {
-	this->handler->push_event(eventToSend);
+	this->handler->sendEvent(eventToSend);
 }
 
 int Client::receive_messages() {

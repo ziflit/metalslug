@@ -2,14 +2,23 @@
 #ifndef METALSLUG_CLIENTCONNECTION_H
 #define METALSLUG_CLIENTCONNECTION_H
 
-#include <string>
-#include <thread>
-#include <queue>
 #include <mutex>
+#include <thread>
+#include <vector>
+#include <list>
+#include <string.h>
+#include <asm/socket.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <unistd.h>
-
+#include <iostream>
+#include <sstream>
 #include "client.h"
+#include "../utils/Logger.h"
 #include "../utils/Protocol.h"
+#include "../utils/SocketUtils.h"
+
+class Client;
 
 
 using namespace std;
@@ -18,19 +27,22 @@ class ClientHandler {
 private:
     int clientSocket;
     char username[20];
+
     thread reader;
     thread writer;
     thread control;
-    Client* client;
 
+    Client* client;
 public:
     ClientHandler();
 
     bool shouldClose;
 
-    std::mutex queuemutex;
+    std::mutex incommingMutex;
+    std::mutex outgoingMutex;
 
-    queue<struct event> event_queue;
+    list<struct event> incommingEvents;
+    list<struct event> outgoingEvents;
 
     ClientHandler(int serverSocket, Client* client, const char* username);
 
@@ -44,13 +56,15 @@ public:
 
     void stop();
 
-    void push_event(struct event event);
+    void sendEvent(struct event event);
 
-    bool has_events() { return !event_queue.empty(); }
+    bool has_events() { return !incommingEvents.empty(); }
 
     char* getUsername();
 
     void setSocketTimeout() const;
+
+    vector<struct event> getModelState();
 };
 
 

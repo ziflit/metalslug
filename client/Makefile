@@ -1,6 +1,7 @@
 # Para el cliente
 #SRC_FILES = src/client_main.cpp $(filter-out src/model/server.cpp, $(wildcard src/model/*.cpp)) $(filter-out src/model/ClientConnection.cpp, $(wildcard src/model/*.cpp)) src/utils/*.cpp
-SRC_FILES = src/client_main.cpp src/utils/*.cpp src/model/client.cpp src/model/message.cpp src/model/User.cpp src/model/ClientHandler.cpp src/services/loremIpsum.cpp
+SRC_FILES = src/client_main.cpp src/utils/*.cpp src/model/client.cpp src/model/message.cpp src/model/User.cpp src/model/ClientHandler.cpp 
+
 INC_FILES = src/model/client.h src/model/message.h src/model/User.h src/utils/*.h src/model/ClientHandler.h
 #INC_FILES = src/*.h -I$(filter-out src/model/server.h, $(wildcard src/model/*.h))
 OBJ_NAME = client
