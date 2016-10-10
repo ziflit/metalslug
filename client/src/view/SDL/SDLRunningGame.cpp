@@ -68,79 +68,86 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     struct event nuevoEvento;
     if (sdlEvent->type == SDL_KEYDOWN){  //si aprieto tal tecla:
         switch (sdlEvent->key.keysym.sym){
-            case SDLK_LEFT:
-                printf("aprieto flecha izquierda");
-                //handleLeftKey != 0 no volver a enviarlo al servidor
-                if(handleLeftKey>0){
-                    return NULL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode::SDL_KEYLEFT_PRESSED;
-                    handleLeftKey = 1;
-                    return nuevoEvento;
-                }
-            case SDLK_RIGHT:
-                printf("aprieto flecha derecha");
-                if(handleRightKey>0){
-                    return NULL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_PRESSED;
-                    handleRightKey = 1;
-                    return nuevoEvento;
-                }
-            case SDLK_UP:
-                printf("aprieto flecha arriba");
-                if(handleUpKey>0){
-                    return NULL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode::SDL_KEYUP_PRESSED;
-                    handleUpKey = 1;
-                    return nuevoEvento;
-                }
-            case SDLK_DOWN:
-                printf("aprieto flecha abajo");
-                if(handleDownKey>0){
-                    return NULL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode::SDL_KEYDOWN_PRESSED;
-                    handleDownKey = 1;
-                    return nuevoEvento;
-                }
-            default:
-                return NULL;
+        case SDLK_LEFT:
+            printf("aprieto flecha izquierda");
+            //handleLeftKey != 0 no volver a enviarlo al servidor
+            if(handleLeftKey>0){
+                nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+                return nuevoEvento;;
+            }
+            else{
+                nuevoEvento.data.code = EventCode::SDL_KEYLEFT_PRESSED;
+                handleLeftKey = 1;
+                return nuevoEvento;
+            }
+        case SDLK_RIGHT:
+            printf("aprieto flecha derecha");
+            if(handleRightKey>0){
+                nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+                return nuevoEvento;;
+            }
+            else{
+                nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_PRESSED;
+                handleRightKey = 1;
+                return nuevoEvento;
+            }
+        case SDLK_UP:
+            printf("aprieto flecha arriba");
+            if(handleUpKey>0){
+                nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+                return nuevoEvento;;
+            }
+            else{
+                nuevoEvento.data.code = EventCode::SDL_KEYUP_PRESSED;
+                handleUpKey = 1;
+                return nuevoEvento;
+            }
+        case SDLK_DOWN:
+            printf("aprieto flecha abajo");
+            if(handleDownKey>0){
+                nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+                return nuevoEvento;;
+            }
+            else{
+                nuevoEvento.data.code = EventCode::SDL_KEYDOWN_PRESSED;
+                handleDownKey = 1;
+                return nuevoEvento;
+            }
+        default:
+            nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+            return nuevoEvento;;
         }
     }
 
     else if(sdlEvent->type == SDL_KEYUP){   //si dejo de apretar una tecla
         switch (sdlEvent->key.keysym.sym){
-            case SDLK_LEFT:
-                nuevoEvento.data.code = EventCode::SDL_KEYLEFT_RELEASED;
-                handleLeftKey = 0;
-                return nuevoEvento;
-            case SDLK_RIGHT:
-                cout<<"solte la flecha der"<<endl;
-                nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_RELEASED;
-                handleRightKey = 0;
-                return nuevoEvento;
-            case SDLK_UP:
-                cout<<"solte la flecha arriba"<<endl;
-                nuevoEvento.data.code = EventCode::SDL_KEYUP_RELEASED;
-                handleRightKey = 0;
-                return nuevoEvento;
-            case SDLK_DOWN:
-                cout<<"solte la flecha abajo"<<endl;
-                nuevoEvento.data.code = EventCode::SDL_KEYDOWN_RELEASED;
-                handleRightKey = 0;
-                return nuevoEvento;
-            default:
-                return NULL;
+        case SDLK_LEFT:
+            nuevoEvento.data.code = EventCode::SDL_KEYLEFT_RELEASED;
+            handleLeftKey = 0;
+            return nuevoEvento;
+        case SDLK_RIGHT:
+            cout<<"solte la flecha der"<<endl;
+            nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_RELEASED;
+            handleRightKey = 0;
+            return nuevoEvento;
+        case SDLK_UP:
+            cout<<"solte la flecha arriba"<<endl;
+            nuevoEvento.data.code = EventCode::SDL_KEYUP_RELEASED;
+            handleRightKey = 0;
+            return nuevoEvento;
+        case SDLK_DOWN:
+            cout<<"solte la flecha abajo"<<endl;
+            nuevoEvento.data.code = EventCode::SDL_KEYDOWN_RELEASED;
+            handleRightKey = 0;
+            return nuevoEvento;
+        default:
+            nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+            return nuevoEvento;;
 
         }
     }
-    return NULL;
+    nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+    return nuevoEvento;;
 
 //    SDL_Delay(100); //antes de procesar otro evento esta pausando 2 milisegundos
 }

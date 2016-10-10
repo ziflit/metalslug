@@ -4,6 +4,7 @@
 #include "utils/Logger.h"
 #include "view/SDL/InitialWindow.h"
 #include "view/SDL/SDLRunningGame.h"
+#include "model/ClientHandler.h"
 #include <thread>
 
 using namespace std;
@@ -19,8 +20,8 @@ void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
                 break;
             }
             struct event nuevoEvento = sdlRunningGame->eventsHandler(&sdlEvent); //El eventsHandler envia los mensajes al Server
-            if(not (nuevoEvento == NULL)){
-                cliente->getHandler()->send_event(nuevoEvento);
+            if(not (nuevoEvento.data.code == EventCode::TODO_SIGUE_IGUAL)){
+                cliente->getHandler()->sendEvent(nuevoEvento);
             }
         }
     }
