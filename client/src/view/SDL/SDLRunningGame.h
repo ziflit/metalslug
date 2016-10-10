@@ -20,7 +20,7 @@ private:
     SDL_Window* mainWindow;
     SDL_Renderer* mainRenderer;
     Music* music;
-    SDL_Texture *backgroundLayer0, *backgroundLayer1, *playersLayer, *cloudLayer;
+    SDL_Texture *backgroundLayer0, *backgroundLayer1, *playersLayer;
     BackgroundSprite *backgroundSprite0, *backgroundPlayersSprite, *cloudSprite;
     PlayerSprite *player0Sprite, *player1Sprite, *player2Sprite, *player3Sprite;
     //TODO: en el destructor eliminar todos los punteros utilizados.

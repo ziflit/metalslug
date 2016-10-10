@@ -30,7 +30,6 @@ void SDLRunningGame::layersBuilding (){
     //Layers Building
     SDLRunningGame::backgroundLayer0 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
     SDLRunningGame::backgroundLayer1 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
-    SDLRunningGame::cloudLayer = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
     SDLRunningGame::playersLayer = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
 }
 
@@ -45,12 +44,6 @@ void SDLRunningGame::spritesBuilding () {
     backgroundPlayersSprite->setUpImage("sprites/backgrounds/backgroundMetal2.png");
     backgroundPlayersSprite->set_position(0, window_height / 2);
     backgroundPlayersSprite->setHeight(window_height / 2);
-
-    SDLRunningGame::cloudSprite = new BackgroundSprite(SDLRunningGame::cloudLayer, SDLRunningGame::mainRenderer,window_width,window_height);
-    SDLRunningGame::cloudSprite->setUpImage("sprites/backgrounds/nube.png");
-    SDLRunningGame::cloudSprite->setWidth(200);
-    SDLRunningGame::cloudSprite->setHeight(80);
-    SDLRunningGame::cloudSprite->set_position(0, 100);
 
     SDLRunningGame::player0Sprite = new PlayerSprite(SDLRunningGame::playersLayer, SDLRunningGame::mainRenderer);
     SDLRunningGame::player0Sprite->setUpImage("sprites/marco.png", 12, 10);
@@ -170,7 +163,6 @@ SDLRunningGame::~SDLRunningGame () {
 
     SDL_DestroyTexture(SDLRunningGame::backgroundLayer0);
     SDL_DestroyTexture(SDLRunningGame::backgroundLayer1);
-    SDL_DestroyTexture(SDLRunningGame::cloudLayer);
     SDL_DestroyTexture(SDLRunningGame::playersLayer);
     SDL_DestroyRenderer(SDLRunningGame::mainRenderer);
 //    closeMixer();   //ESTA EN EL DESTRUCTOR DE MUSIC
