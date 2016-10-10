@@ -5,11 +5,11 @@
 #define gameMusicPath "audios/circuit.wav"
 
 //TODO: INCLUIR EN EL MAKEFILE LOS .cpp PARA QUE AQUI SE INCLUYAN UNICAMENTE LOS .h
-#include "Music.cpp"
+#include "Music.h"
 #include <vector>
-#include "Sprite.cpp"
-#include "PlayerSprite.cpp"
-#include "BackgroundSprite.cpp"
+#include "Sprite.h"
+#include "PlayerSprite.h"
+#include "BackgroundSprite.h"
 #include <SDL2/SDL_events.h>
 #include "../../utils/Protocol.h"
 #include <SDL2/SDL_events.h>
