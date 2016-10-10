@@ -8,7 +8,8 @@ Sprite::Sprite(SDL_Texture *layer, SDL_Renderer *mainRenderer) {
     Sprite::sourceRect.x = Sprite::sourceRect.y = 0; //FRAME INICIAL
     Sprite::destRect.x = Sprite::destRect.y = 0; //POSICION INICIAL
 
-    Sprite::frameTime = 0;
+    Sprite::window_width = 800;
+    Sprite::window_height = 600;
 }
 
 void Sprite::setUpImage(string imageSpritePath) {

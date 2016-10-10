@@ -43,6 +43,11 @@ private:
 
     void setNextSpriteFrame();
 
+    void upArrowPress();
+    void rightStep();
+    void leftStep();
+    void downArrowPress();
+
 //______________________________________________________________________________________________
 
 };
