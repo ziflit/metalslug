@@ -5,7 +5,8 @@
 
 using namespace std;
 #include <iostream>
-#include "SDLTools.h"
+#include "SDL2/SDL.h"
+#include <SDL2/SDL_image.h>
 
 class Sprite {
 protected:
@@ -19,18 +20,17 @@ protected:
 
     int frameWidth, frameHeight;
 
-    int frameTime;
-
 
 public:
     //CONSTRUCTOR
     Sprite(SDL_Texture *layer, SDL_Renderer *renderer);
 
+    SDL_Texture* loadTexture(SDL_Renderer* renderer,string imageTexturePath);
     void setUpImage(string imageSpritePath);
 //_________________________________________________________________________________________________________
     //ACTUALIZACION DEL SPRITE
     void setNextSpriteFrame();
-    void update();
+    void actualizarDibujo();
 //_________________________________________________________________________________________________________
     //TAMANO DEL SPRITE:
     void setWidth(int w){ Sprite::destRect.w = w;}
@@ -44,10 +44,6 @@ public:
 
     SDL_Texture* getLayer() const { return layer;}
 //_________________________________________________________________________________________________________
-    //FRAMETIME
-    void increaseFrameTime(){frameTime++;}
-    void restartFrameTime(){frameTime = 0;}
-    int getFrameTime(){ return frameTime;}
 
 };
 

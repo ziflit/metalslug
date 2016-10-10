@@ -20,11 +20,11 @@ public:
 
     void initializeMixer();
 
-    SDL_Window* createWindow(const char* windowName, unsigned int window_width,unsigned int window_height);
+    SDL_Window* createWindow(const char* windowName, unsigned int window_width, unsigned int window_height);
 
     SDL_Renderer* createRenderer(SDL_Window* window);
 
-    InitialWindow ();
+    InitialWindow (unsigned int window_width, unsigned int window_height);
 
     SDL_Window* getMainWindow(){return InitialWindow::mainWindow;}
 

@@ -2,12 +2,28 @@
 
 #include "model/client.h"
 #include "utils/Logger.h"
-//
-//#include "view/SDL/InitialWindow.h"
-//#include "view/SDL/SDLRunningGame.h"
-//#include "view/SDL/SDLTools.h"
+#include "view/SDL/InitialWindow.h"
+#include "view/SDL/SDLRunningGame.h"
+#include <thread>
 
 using namespace std;
+
+void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
+    // Ciclo que envia teclas al server, cuando hay una tecla presionada o soltada.(nuevo keyevent)
+    SDL_Event event;
+    while( cliente->is_connected()){
+        while (SDL_PollEvent( &event )) {
+            if ( event.type == SDL_QUIT) {
+            	cliente->disconnect();
+            	cliente->set_connection_status(false);
+                break;
+            }
+            struct event nuevoEvento = sdlRunningGame->eventsHandler(&event); //El eventsHandler envia los mensajes al Server
+            cliente->sendEventToServer(nuevoEvento)
+        }
+    }
+}
+
 
 int main(int argc, char *argv[]) {
     /* Seteo puerto e ip del server*/
@@ -17,42 +33,54 @@ int main(int argc, char *argv[]) {
 
 
     /* Creo al cliente */
-    Client *cliente1 = new Client();
+    Client *cliente = new Client();
 
     /* Configuracion del puerto
      * atoi() devuelve 0 si el parametro es invalido*/
     if (argc > 1) port = atoi(argv[1]);
     if (port == 0) port = 1500;
-
     if (argc > 2) ip = argv[2];
 
-    /* Menu de cliente */
 
-    bool endloop = false;
-    char keypressed;
+    // Conexion con el server
+    if (not cliente->is_connected()) {
+        LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
+        cout << "Estableciendo la conexion con el servidor..." << endl << endl;
+        if (cliente->connect_to_server(ip, port)) {
+            cliente->set_connection_status(true);
+            LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
+            cout << " Conexion establecida con exito " << endl << endl;
+            break;
+        } else {
+            cliente->set_connection_status(false);
+            break;
+        }
+    }
+    //____________________________________________________________________________________________
 
-//
-//    cout << "\033[2J\033[1;1H"; /* clear screen */
-//    if (!cliente1->is_connected()) {
-//        LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
-//        cout << "Estableciendo la conexion con el servidor..." << endl << endl;
-//        if (cliente1->connect_to_server(ip, port)) {
-//
-//            cliente1->set_connection_status(true);
-//            cout << "\033[2J\033[1;1H"; /* clear screen */
-//            LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
-//            cout << " Conexion establecida con exito " << endl << endl;
-//            break;
-//        } else {
-//            cliente1->set_connection_status(false);
-//            break;
-//        }
-//    }
 
-//    SDL_Window* mainWindow = createWindow("METAL SLUG");
-//    SDL_Renderer* mainRender = createRenderer();
-//    SDLRunningGame sdlRunningGame = SDLRunningGame(,);
-//    sdlRunningGame.updateWindowSprites();
+    InitialWindow* initialWindow = new InitialWindow();
+    SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer());
+
+    thread enviarTeclasAlServerEnThread;
+    enviarTeclasAlServerEnThread = thread(enviarTeclasAlServer, cliente, sdlRunningGame);
+
+    // Ciclo que recive constantemente el estado del escenario, y se lo manda al sdlRunningGame para que lo dibuje
+    vector<struct event> modelStateToRender;
+    while( cliente->is_connected() ){
+    	modelStateToRender = (cliente->getHandler())->getModelState();
+    	if (not modelStateToRender.empty()){
+    		sdlRunningGame->handleModelState(modelStateToRender);
+    	}
+    }
+
+    enviarTeclasAlServerEnThread.join();
+    delete cliente;
+    return 0;
+}
+
+
+
 
 
 
@@ -219,6 +247,4 @@ int main(int argc, char *argv[]) {
 //    } while (!endloop);
 
 
-    delete cliente1;
-    return 0;
-}
+//    sdlRunningGame.~SDLRunningGame();

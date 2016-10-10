@@ -1,15 +1,14 @@
 # Para el cliente
 #SRC_FILES = src/client_main.cpp $(filter-out src/model/server.cpp, $(wildcard src/model/*.cpp)) $(filter-out src/model/ClientConnection.cpp, $(wildcard src/model/*.cpp)) src/utils/*.cpp
-SRC_FILES = src/client_main.cpp src/utils/*.cpp src/model/client.cpp src/model/message.cpp src/model/User.cpp src/model/ClientHandler.cpp 
-
-INC_FILES = src/model/client.h src/model/message.h src/model/User.h src/utils/*.h src/model/ClientHandler.h
+SRC_FILES = src/client_main.cpp src/utils/*.cpp src/model/client.cpp  src/model/User.cpp src/model/ClientHandler.cpp  src/view/SDL/BackgroundSprite.cpp src/view/SDL/PlayerSprite.cpp src/view/SDL/SDLRunningGame.cpp src/view/SDL/Sprite.cpp
+INC_FILES = src/model/client.h  src/model/User.h src/utils/*.h src/model/ClientHandler.h src/view/SDL/BackgroundSprite.h src/view/SDL/PlayerSprite.h src/view/SDL/SDLRunningGame.h src/view/SDL/Sprite.h
 #INC_FILES = src/*.h -I$(filter-out src/model/server.h, $(wildcard src/model/*.h))
 OBJ_NAME = client
 CLIENT_DEP =
 
 # Para el server
 #SRV_SRC_FILES = $(filter-out src/model/client.cpp, $(wildcard src/model/*.cpp)) $(filter-out src/model/ClientHandler.cpp, $(wildcard src/model/*.cpp)) src/server_main.cpp
-SRV_SRC_FILES = src/model/server.cpp src/model/ClientConnection.cpp src/model/message.cpp src/model/UserLoader.cpp src/model/User.cpp src/utils/Logger.cpp \
+SRV_SRC_FILES = src/model/server.cpp src/model/ClientConnection.cpp  src/model/UserLoader.cpp src/model/User.cpp src/utils/Logger.cpp \
 src/utils/SocketUtils.cpp src/utils/MessageUtils.cpp src/server_main.cpp
 #SRV_SRC_FILES = src/model/server.cpp src/server_main.cpp
 # SRV_INC = src/model/server.h $(filter-out src/utils/loremIpsum.cpp, $(wildcard src/utils/*.cpp)) $(filter-out src/utils/User.cpp, $(wildcard src/utils/*.cpp))
@@ -24,8 +23,8 @@ OBJ_NAME_TEST = run-tests
 
 # General
 CC = g++
-COMPILER_FLAGS = -w -std=c++11 -g -Wall
-LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2main -lyaml-cpp -lSDL2_ttf
+COMPILER_FLAGS = -w -std=c++11 -g -Wall #`pkg-config --cflags --libs sdl2`
+LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2main -lyaml-cpp -lSDL2_ttf
 
 
 all : client

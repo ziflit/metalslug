@@ -14,17 +14,19 @@ private:
 
 
 public:
-    BackgroundSprite(SDL_Texture *texture, SDL_Renderer *renderer) :
+    BackgroundSprite(SDL_Texture *texture, SDL_Renderer *renderer, unsigned int window_widht, unsigned int window_height) :
     Sprite(texture, renderer) {
         BackgroundSprite::set_position(0,0);
         BackgroundSprite::spriteImageWidthPanned=0;
+        BackgroundSprite::frameWidth = window_widht;
+        BackgroundSprite::frameHeight = window_height;
     }
 
 //_______________________________________________________________________________________________
 
     void setUpImage(string imageSpritePath);
 
-    void update(){Sprite::update();}
+    void actualizarDibujo(){Sprite::actualizarDibujo();}
 
     void setWidth(int w){ Sprite::setWidth(w);}
     void setHeight(int h){ Sprite::setHeight(h);}
@@ -37,16 +39,7 @@ public:
 
     void setNextSpriteFrame();
 
-    void increaseFrameTime(){Sprite::increaseFrameTime();}
-    void restartFrameTime(){Sprite::restartFrameTime();}
-    int getFrameTime(){ Sprite::getFrameTime();}
-
-    void moveRight();
-    void moveLeft();
-
 //_______________________________________________________________________________________________
-
-    void handleBackgroundEvents(SDL_Event event);
 };
 
 
