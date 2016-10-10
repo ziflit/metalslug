@@ -6,6 +6,7 @@
 
 //TODO: INCLUIR EN EL MAKEFILE LOS .cpp PARA QUE AQUI SE INCLUYAN UNICAMENTE LOS .h
 #include "Music.cpp"
+#include <vector>
 #include "Sprite.cpp"
 #include "PlayerSprite.cpp"
 #include "BackgroundSprite.cpp"
@@ -46,6 +47,8 @@ public:
     struct event eventsHandler(SDL_Event* sdlEvent);
 
     ~SDLRunningGame();
+
+    void handleModelState(vector<struct event> model_state);
 
 };
 

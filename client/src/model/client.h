@@ -71,9 +71,9 @@ public:
 
     void set_connection_status(bool status) { this->connected = status; }
 
-	const ClientHandler*& getHandler() const {
-		return handler;
-	}
+    const ClientHandler* getHandler() const {
+        return handler;
+    }
 };
 
 

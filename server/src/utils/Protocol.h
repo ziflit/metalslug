@@ -50,8 +50,8 @@ enum EventCompletion {
 enum Entity {
     MARCO,
     TARMA,
-	FIO,
-	ERI,
+    FIO,
+    ERI,
     ENEMY_NORMAL,
     LEVEL1_Z1,    // fondo del level 1, con Z-index 1
     LEVEL1_Z2,

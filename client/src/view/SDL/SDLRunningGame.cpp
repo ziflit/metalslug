@@ -67,7 +67,7 @@ SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRender
 struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     struct event nuevoEvento;
     if (sdlEvent->type == SDL_KEYDOWN){  //si aprieto tal tecla:
-        switch (event->key.keysym.sym){
+        switch (sdlEvent->key.keysym.sym){
             case SDLK_LEFT:
                 printf("aprieto flecha izquierda");
                 //handleLeftKey != 0 no volver a enviarlo al servidor
@@ -86,7 +86,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 }
                 else{
                     nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_PRESSED;
-                    handlerRightKey = 1;
+                    handleRightKey = 1;
                     return nuevoEvento;
                 }
             case SDLK_UP:
@@ -115,7 +115,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     }
 
     else if(sdlEvent->type == SDL_KEYUP){   //si dejo de apretar una tecla
-        switch (event->key.keysym.sym){
+        switch (sdlEvent->key.keysym.sym){
             case SDLK_LEFT:
                 nuevoEvento.data.code = EventCode::SDL_KEYLEFT_RELEASED;
                 handleLeftKey = 0;
@@ -171,4 +171,9 @@ SDLRunningGame::~SDLRunningGame () {
     SDL_Quit();
 }
 
-
+void SDLRunningGame::handleModelState(vector<struct event> model_state)  {
+    // TODO implementar
+    for (auto event : model_state) {
+        cout << "X: " << event.data.x << endl << "Y: " << event.data.y << endl << "H: " << event.data.h << endl;
+    }
+}

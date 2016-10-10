@@ -12,15 +12,15 @@ void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
     // Ciclo que envia teclas al server, cuando hay una tecla presionada o soltada.(nuevo keyevent)
     SDL_Event sdlEvent;
     while( cliente->is_connected()){
-        while (SDL_PollEvent( &event )) {
-            if ( event.type == SDL_QUIT) {
+        while (SDL_PollEvent( &sdlEvent )) {
+            if ( sdlEvent.type == SDL_QUIT) {
             	cliente->disconnect();
             	cliente->set_connection_status(false);
                 break;
             }
             struct event nuevoEvento = sdlRunningGame->eventsHandler(&sdlEvent); //El eventsHandler envia los mensajes al Server
             if(not (nuevoEvento == NULL)){
-                cliente->sendEventToServer(nuevoEvento);
+                cliente->getHandler()->send_event(nuevoEvento);
             }
         }
     }
@@ -52,16 +52,14 @@ int main(int argc, char *argv[]) {
             cliente->set_connection_status(true);
             LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
             cout << " Conexion establecida con exito " << endl << endl;
-            break;
         } else {
             cliente->set_connection_status(false);
-            break;
         }
     }
     //____________________________________________________________________________________________
 
 
-    InitialWindow* initialWindow = new InitialWindow();
+    InitialWindow* initialWindow = new InitialWindow(800, 600);
     SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer());
 
     thread enviarTeclasAlServerEnThread;
