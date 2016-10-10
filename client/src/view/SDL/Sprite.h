@@ -18,8 +18,7 @@ protected:
 
     int spriteImageWidth,spriteImageHeight;
 
-    int frameWidth, frameHeight;
-
+    int frameWidth, frameHeight, window_height, window_width;
 
 public:
     //CONSTRUCTOR

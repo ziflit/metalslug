@@ -123,14 +123,3 @@ int Client::receive_messages() {
 int Client::get_socket() {
 	return socket_number;
 }
-
-//todo: volar
-void Client::show_users_list() {
-	int i;
-	for (i = 0; i < usersList.size(); i++) {
-		cout << i << " - " << usersList[i] << endl;
-	}
-	cout << usersList.size() << " - All Users" << endl << endl;
-}
-
-

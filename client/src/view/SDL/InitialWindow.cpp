@@ -2,7 +2,7 @@
 
 void InitialWindow::initializeSDL() {
     if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
-         //inicializa TIMER, VIDEO, AUDIO, JOISTICK, HAPTIC,GAMECONTROLLER, EVENTS...
+        //inicializa TIMER, VIDEO, AUDIO, JOISTICK, HAPTIC,GAMECONTROLLER, EVENTS...
         cout<<"There was error initializing SDL: "<< endl
             <<SDL_GetError() << endl;
     }

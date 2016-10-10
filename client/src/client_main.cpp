@@ -10,7 +10,7 @@ using namespace std;
 
 void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
     // Ciclo que envia teclas al server, cuando hay una tecla presionada o soltada.(nuevo keyevent)
-    SDL_Event event;
+    SDL_Event sdlEvent;
     while( cliente->is_connected()){
         while (SDL_PollEvent( &event )) {
             if ( event.type == SDL_QUIT) {
@@ -18,8 +18,10 @@ void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
             	cliente->set_connection_status(false);
                 break;
             }
-            struct event nuevoEvento = sdlRunningGame->eventsHandler(&event); //El eventsHandler envia los mensajes al Server
-            cliente->sendEventToServer(nuevoEvento)
+            struct event nuevoEvento = sdlRunningGame->eventsHandler(&sdlEvent); //El eventsHandler envia los mensajes al Server
+            if(not (nuevoEvento == NULL)){
+                cliente->sendEventToServer(nuevoEvento);
+            }
         }
     }
 }
