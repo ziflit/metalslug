@@ -36,15 +36,7 @@ SDL_Renderer* InitialWindow::createRenderer(SDL_Window* window){
 
 }
 
-void InitialWindow::initializeMixer() {
-    if( ( Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096 ) ) == -1 ){
-        //2-> set for stereo or 1 for mono, 4096->magia negra
-        printf("Mix_OpenAudio: %s\n", Mix_GetError());
-    };
-}
-
 InitialWindow::InitialWindow(unsigned int window_width, unsigned int window_height) {
-    InitialWindow::initializeMixer();
     InitialWindow::initializeSDL();
     InitialWindow::mainWindow = createWindow("METAL SLUG",window_width,window_height);
     InitialWindow::mainRender = createRenderer(InitialWindow::mainWindow);

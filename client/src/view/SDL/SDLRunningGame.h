@@ -4,17 +4,11 @@
 #define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
 #define gameMusicPath "audios/circuit.wav"
 
-//TODO: INCLUIR EN EL MAKEFILE LOS .cpp PARA QUE AQUI SE INCLUYAN UNICAMENTE LOS .h
 #include "Music.h"
 #include <vector>
-#include "Sprite.h"
-#include "PlayerSprite.h"
-#include "BackgroundSprite.h"
-#include <SDL2/SDL_events.h>
-#include "../../utils/Protocol.h"
+#include "SpritesClasses.h"
 #include <SDL2/SDL_events.h>
 
-//TODO: cambiar este include je.
 class SDLRunningGame {
 private:
     int window_width, window_height;
@@ -22,8 +16,8 @@ private:
     SDL_Renderer* mainRenderer;
     Music* music;
     SDL_Texture *backgroundLayer0, *backgroundLayer1, *playersLayer;
-    BackgroundSprite *backgroundSprite0, *backgroundPlayersSprite, *cloudSprite;
-    PlayerSprite *player0Sprite, *player1Sprite, *player2Sprite, *player3Sprite;
+    BackgroundSprite *backgroundSprite0, *backgroundPlayersSprite, *backgroundSprite2;
+    PlayerSprite *marcoSprite, *tarmaSprite, *player2Sprite, *player3Sprite;
     //TODO: en el destructor eliminar todos los punteros utilizados.
     int handleLeftKey, handleRightKey,handleUpKey, handleDownKey;
 
@@ -40,7 +34,7 @@ public:
 
     void updateWindowSprites();
 
-    PlayerSprite* getPlayerSprite(){ return SDLRunningGame::player0Sprite;}
+    PlayerSprite* getMarcoSprite(){ return SDLRunningGame::marcoSprite;}
 
     BackgroundSprite* getBackgroundPlayerSprite(){ return SDLRunningGame::backgroundPlayersSprite;}
 

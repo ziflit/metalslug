@@ -4,7 +4,6 @@
 #define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
 
 #include "SDL2/SDL.h"
-#include "SDL2/SDL_mixer.h"
 #include <iostream>
 
 
@@ -17,8 +16,6 @@ private:
 
 public:
     void initializeSDL();
-
-    void initializeMixer();
 
     SDL_Window* createWindow(const char* windowName, unsigned int window_width, unsigned int window_height);
 

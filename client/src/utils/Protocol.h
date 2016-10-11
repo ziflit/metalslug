@@ -30,6 +30,7 @@ enum EventCode {
     LAST_MESSAGE, /* Es el ultimo mensaje, para saber hasta cuando recibir */
     CLIENT_DISCONNECT, /* El cliente se desconecta del servidor */
     MSG_OK, /* ACK */
+	SDL_NO_KEY,
     SDL_KEYUP_PRESSED,
     SDL_KEYDOWN_PRESSED,
     SDL_KEYLEFT_PRESSED,
@@ -54,12 +55,9 @@ enum Entity {
     FIO,
     ERI,
     ENEMY_NORMAL,
-    LEVEL1_Z1,    // fondo del level 1, con Z-index 1
-    LEVEL1_Z2,
-    LEVEL1_Z3,
-    LEVEL2_Z1,
-    LEVEL2_Z2,
-    LEVEL2_Z3,    
+	BACKGROUND_Z0,    // fondo del level 1, con Z-index 1
+	BACKGROUND_Z1,
+	BACKGROUND_Z2,
 };
 
 struct event_ext {

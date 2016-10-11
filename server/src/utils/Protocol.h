@@ -54,12 +54,9 @@ enum Entity {
     FIO,
     ERI,
     ENEMY_NORMAL,
-    LEVEL1_Z1,    // fondo del level 1, con Z-index 1
-    LEVEL1_Z2,
-    LEVEL1_Z3,
-    LEVEL2_Z1,
-    LEVEL2_Z2,
-    LEVEL2_Z3,    
+	BACKGROUND_Z0,    // fondo con Z-index 1
+	BACKGROUND_Z1,
+	BACKGROUND_Z2,
 };
 
 struct event_ext {

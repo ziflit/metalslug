@@ -45,8 +45,7 @@ void SDLRunningGame::spritesBuilding () {
     backgroundPlayersSprite->set_position(0, window_height / 2);
     backgroundPlayersSprite->setHeight(window_height / 2);
 
-    SDLRunningGame::player0Sprite = new PlayerSprite(SDLRunningGame::playersLayer, SDLRunningGame::mainRenderer);
-    SDLRunningGame::player0Sprite->setUpImage("sprites/marco.png", 12, 10);
+    SDLRunningGame::marcoSprite = new Marco(SDLRunningGame::playersLayer, SDLRunningGame::mainRenderer);
 }
 
 SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRenderer) {
@@ -66,6 +65,7 @@ SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRender
 
 struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     struct event nuevoEvento;
+
     if (sdlEvent->type == SDL_KEYDOWN){  //si aprieto tal tecla:
         switch (sdlEvent->key.keysym.sym){
         case SDLK_LEFT:
@@ -73,7 +73,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
             //handleLeftKey != 0 no volver a enviarlo al servidor
             if(handleLeftKey>0){
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                return nuevoEvento;;
+                return nuevoEvento;
             }
             else{
                 nuevoEvento.data.code = EventCode::SDL_KEYLEFT_PRESSED;
@@ -84,7 +84,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
             printf("aprieto flecha derecha");
             if(handleRightKey>0){
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                return nuevoEvento;;
+                return nuevoEvento;
             }
             else{
                 nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_PRESSED;
@@ -95,7 +95,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
             printf("aprieto flecha arriba");
             if(handleUpKey>0){
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                return nuevoEvento;;
+                return nuevoEvento;
             }
             else{
                 nuevoEvento.data.code = EventCode::SDL_KEYUP_PRESSED;
@@ -106,7 +106,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
             printf("aprieto flecha abajo");
             if(handleDownKey>0){
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                return nuevoEvento;;
+                return nuevoEvento;
             }
             else{
                 nuevoEvento.data.code = EventCode::SDL_KEYDOWN_PRESSED;
@@ -115,7 +115,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
             }
         default:
             nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-            return nuevoEvento;;
+            return nuevoEvento;
         }
     }
 
@@ -142,14 +142,42 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
             return nuevoEvento;
         default:
             nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-            return nuevoEvento;;
+            return nuevoEvento;
 
         }
     }
     nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-    return nuevoEvento;;
+    return nuevoEvento;
 
 //    SDL_Delay(100); //antes de procesar otro evento esta pausando 2 milisegundos
+}
+
+void SDLRunningGame::handleModelState(vector <event> model_state) {
+    for (auto event : model_state) {
+        cout << "X: " << event.data.x << endl << "Y: " << event.data.y << endl << "H: " << event.data.h << endl;
+    }
+
+//TODO: manejar la actualizacion todos los sprites existentes.
+    for (auto nuevoEvento : model_state){
+        switch(nuevoEvento.data.id){
+            case Entity::MARCO:
+                this->marcoSprite->handle( nuevoEvento);
+            case Entity::TARMA:
+                this->tarmaSprite->handle(nuevoEvento);
+//            case FIO:
+//            case ERI:
+//            case ENEMY_NORMAL:
+            case Entity::BACKGROUND_Z0:
+                this->backgroundSprite0->handle(nuevoEvento);
+            case Entity::BACKGROUND_Z1:
+                this->backgroundPlayersSprite->handle(nuevoEvento);
+            case Entity::BACKGROUND_Z2:
+                this->backgroundSprite2->handle(nuevoEvento);
+
+        }
+    }
+
+    this->updateWindowSprites();
 }
 
 void SDLRunningGame::updateWindowSprites () {
@@ -157,8 +185,8 @@ void SDLRunningGame::updateWindowSprites () {
 
     SDLRunningGame::backgroundSprite0->actualizarDibujo();
     SDLRunningGame::backgroundPlayersSprite->actualizarDibujo();
-    SDLRunningGame::player0Sprite->actualizarDibujo();
-    SDLRunningGame::cloudSprite->actualizarDibujo();
+    SDLRunningGame::marcoSprite->actualizarDibujo();
+    SDLRunningGame::backgroundSprite2->actualizarDibujo();
 
     SDL_RenderPresent(SDLRunningGame::mainRenderer);
 }
@@ -168,7 +196,7 @@ SDLRunningGame::~SDLRunningGame () {
 //____________________________________________________________________________________________
     //Liberar todo
 
-    SDL_DestroyTexture(SDLRunningGame::backgroundLayer0);
+    SDL_DestroyTexture(backgroundLayer0);
     SDL_DestroyTexture(SDLRunningGame::backgroundLayer1);
     SDL_DestroyTexture(SDLRunningGame::playersLayer);
     SDL_DestroyRenderer(SDLRunningGame::mainRenderer);
@@ -176,11 +204,4 @@ SDLRunningGame::~SDLRunningGame () {
 //____________________________________________________________________________________________
     SDL_DestroyWindow(SDLRunningGame::mainWindow);
     SDL_Quit();
-}
-
-void SDLRunningGame::handleModelState(vector<struct event> model_state)  {
-    // TODO implementar
-    for (auto event : model_state) {
-        cout << "X: " << event.data.x << endl << "Y: " << event.data.y << endl << "H: " << event.data.h << endl;
-    }
 }
