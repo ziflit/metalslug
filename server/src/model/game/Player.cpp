@@ -33,16 +33,8 @@ void Player::set_position(unsigned int posx, unsigned int posy) {
     y = posy;
 }
 
-void upArrowPress(){
- // TODO: Comlpetar lo que hace cuando aprieta para arriba
-}
-
-void downArrowPress() {
-// TODO: Comlpetar lo que hace cuando aprieta para abajo
-}
-
 void Player::moveRight() {
-/* mueve el sprite en eje X hacia la derecha.
+/** mueve el sprite en eje X hacia la derecha.
  * Si el sprite tiene coordenadas (mitad de pantalla, y)
  * entonces no sigue avanzando hacia la derecha
  * Solo va a poder avanzar mas de la mitad de pantalla si
@@ -55,13 +47,6 @@ void Player::moveRight() {
 		set_position(newPos, y);}
 }
 
-void Player::moveLeft() {
-//    Player::set_position(Player::destRect.x - speed, Player::destRect.y);}
-	setNextSpriteFrame();
-	int newPos = (x - speed);
-	if(newPos > 0){
-		set_position(newPos, y);}
-}
 
 void jump() {
 	//TODO: Hay que ver como hacer con los saltos y los "eventos" que toman mas de una posicion...
@@ -73,6 +58,100 @@ void Player::stopMoving(){
 	direccion = 0;
 	//TODO: Aca habria que cambiar algo de frames? para que quede quieto y muestre la animacion de quieto
 }
+bool Player::isKeyPressed(EventCode nuevoEvento) {
+    return ((nuevoEvento == SDL_KEYUP_PRESSED) or (nuevoEvento == SDL_KEYDOWN_PRESSED) or (nuevoEvento == SDL_KEYLEFT_PRESSED) or (nuevoEvento == SDL_KEYRIGHT_PRESSED));
+}
+bool Player::isKeyRealeased(EventCode nuevoEvento) {
+
+    return ((nuevoEvento == SDL_KEYUP_RELEASED) or (nuevoEvento == SDL_KEYDOWN_RELEASED) or (nuevoEvento == SDL_KEYLEFT_RELEASED) or (nuevoEvento == SDL_KEYRIGHT_RELEASED));
+}
+
+void Player::handleRealeasedKey(EventCode nuevoEvento) {
+    switch (nuevoEvento) {
+        //REALEASED____________________________________________________________________________________________________________
+        case EventCode::SDL_KEYLEFT_RELEASED:
+            if(direccion == -1){
+                if(postura == Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA){postura = Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO;}
+                else if(postura == Postura::CAMINANDO_IZQUIERDA){postura = Postura::MIRANDO_IZQUIERDA_QUIETO;}
+                else if(postura == Postura::AGACHADO_AVANZANDO_IZQUIERDA){postura = Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO;}
+                direccion = 0;
+            }
+            if(direccion = 0){
+                if(postura == Postura::MIRANDO_DERECHA_QUIETO){postura = CAMINANDO_DERECHA;}
+                else if(postura == Postura::AGACHADO_MIRANDO_DERECHA_QUIETO){postura = Postura::AGACHADO_AVANZANDO_DERECHA;}
+                else if(postura == Postura::MIRANDO_ARRIBA_DERECHA_QUIETO){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
+                direccion = 1;
+            }
+            break;
+        case EventCode::SDL_KEYRIGHT_RELEASED:
+            if(direccion == 1){
+                if(postura == Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA){postura = Postura::MIRANDO_ARRIBA_DERECHA_QUIETO;}
+                else if(postura == Postura::CAMINANDO_DERECHA){postura = Postura::MIRANDO_DERECHA_QUIETO;}
+                else if(postura == Postura::AGACHADO_AVANZANDO_DERECHA){postura = Postura::AGACHADO_MIRANDO_DERECHA_QUIETO;}
+                direccion = 0;
+            }
+            if(direccion = 0){
+                if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO){postura = CAMINANDO_IZQUIERDA;}
+                else if(postura == Postura::AGACHADO_MIRANDO_IZQUIEDA_QUIETO){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
+                else if(postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
+                direccion = -1;
+            }
+            break;
+        case EventCode::SDL_KEYUP_RELEASED:
+    //TODO: hacer estos dos!!!!
+        case EventCode::SDL_KEYDOWN_RELEASED:
+        default:
+            break;
+
+    }
+}
+void Player::handlePressedKey(EventCode nuevoEvento){
+    switch (nuevoEvento){
+        //PRESSED____________________________________________________________________________________________________________
+        case EventCode::SDL_KEYUP_PRESSED:
+            if(direccion == 1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
+            else if(direccion == -1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
+            else if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO and direccion == 0){postura = Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO;}
+            else {postura = Postura::MIRANDO_ARRIBA_DERECHA_QUIETO;}
+            break;
+
+        case EventCode::SDL_KEYDOWN_PRESSED:
+            if(direccion == 1){postura = Postura::AGACHADO_AVANZANDO_DERECHA;}
+            else if(direccion == -1){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
+            else if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO and direccion == 0){postura = Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO;}
+            else {postura = Postura::AGACHADO_MIRANDO_DERECHA_QUIETO;}
+            break;
+
+        case EventCode::SDL_KEYLEFT_PRESSED:
+            if(direccion == 0){
+                if((postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_ARRIBA_DERECHA_QUIETO)){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
+                else if((postura == Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::AGACHADO_MIRANDO_DERECHA_QUIETO)){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
+                else if((postura == Postura::MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_DERECHA_QUIETO)){postura = Postura::CAMINANDO_IZQUIERDA; }
+                else{postura = Postura::CAMINANDO_IZQUIERDA;}
+                direccion = -1;
+            }
+            else if(direccion == 1){
+                direccion = 0;
+                postura = Postura::MIRANDO_DERECHA_QUIETO;}
+            break;
+
+        case EventCode::SDL_KEYRIGHT_PRESSED:
+            if(direccion == 0){
+                if((postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_ARRIBA_DERECHA_QUIETO)){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
+                else if((postura == Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::AGACHADO_MIRANDO_DERECHA_QUIETO)){postura = Postura::AGACHADO_AVANZANDO_DERECHA;}
+                else if((postura == Postura::MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_DERECHA_QUIETO)){postura = Postura::CAMINANDO_DERECHA; }
+                else{postura = Postura::CAMINANDO_DERECHA;}
+                direccion = 1;
+            }
+            else if(direccion == -1){
+                direccion = 0;
+                postura = Postura::MIRANDO_IZQUIERDA_QUIETO;}
+            break;
+        default:
+            break;
+    }
+}
+
 
 void Player::updateState(EventCode nuevoEvento){
 	switch(nuevoEvento) {
@@ -80,44 +159,10 @@ void Player::updateState(EventCode nuevoEvento){
 			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
 			// arrastarlo por la pantalla
 			break;
-
-		case EventCode::SDL_KEYUP_PRESSED:
-			if(direccion == 1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
-            else if(direccion == -1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
-			else if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO and direccion == 0){postura = Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO;}
-			else {postura = Postura::MIRANDO_ARRIBA_DERECHA_QUIETO;}
-			break;
-
-		case EventCode::SDL_KEYDOWN_PRESSED:
-            if(direccion == 1){postura = Postura::AGACHADO_AVANZANDO_DERECHA;}
-            else if(direccion == -1){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
-            else if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO and direccion == 0){postura = Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO;}
-            else {postura = Postura::AGACHADO_MIRANDO_DERECHA_QUIETO;}
-			break;
-
-		case EventCode::SDL_KEYLEFT_PRESSED:
-            if(direccion == 0){
-                if((postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_ARRIBA_DERECHA_QUIETO)){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
-                if((postura == Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::AGACHADO_MIRANDO_DERECHA_QUIETO)){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
-                else if((postura == Postura::MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_DERECHA_QUIETO)){postura = Postura::CAMINANDO_IZQUIERDA; }
-                direccion = -1;
-            }
-            else if(direccion == 1){
-                direccion = 0;
-                postura = Postura::MIRANDO_DERECHA_QUIETO;}
-            else{direccion = -1;}
-			break;
-
-		case EventCode::SDL_KEYRIGHT_PRESSED:
-			direccion = 1;
-			break;
-		case EventCode::SDL_KEYLEFT_RELEASED:
-            direccion = 0;
-            break;
-		case EventCode::SDL_KEYRIGHT_RELEASED:
-			direccion = 0;
-			break;
-
+        case isKeyPressed(nuevoEvento):
+            handlePressedKey(nuevoEvento);
+        case isKeyRealeasedKey(nuevoEvento):
+            handleRealeasedKey(nuevoEvento);
 		default:
 			break;
 	}

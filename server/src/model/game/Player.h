@@ -32,6 +32,13 @@ public:
 
 	struct event getNewState();
 
+	void handleRealeasedKey(EventCode nuevoEvento);
+
+	void handlePressedKey(EventCode nuevoEvento);
+
+	bool isKeyPressed(EventCode nuevoEvento);
+	bool isKeyRealeased(EventCode nuevoEvento);
+
 	// El parametro type, indica con '1' (para presionada)  o '0' (para soltada) si lo que paso fue que se solto o se presiono la tecla (keypressed o keyreleased)
 	void updateState(EventCode nuevoEvento);
 
