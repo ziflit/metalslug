@@ -10,7 +10,7 @@
 Player::Player(string user, Entity entitySelected) {
 	username = user;
 	entity = entitySelected;
-	/**Para que no arranque pegado al borde izq: | o      | posHorizontal = 100
+	/**Para que no arranque pegado al borde izq: | o      | x = 100
 	 * El sistema de coordenadas que vamos a usar es el de SDL
 	 * (0,0) en la esquina superior izquierda
 	 * 			(0,0)___________________(0,800)
@@ -18,18 +18,19 @@ Player::Player(string user, Entity entitySelected) {
 	 * 	   			|					|
 	 *      (600,800)___________________(600,800)
 	 */
-	posHorizontal = 100;
-	posVertical = 550;	//TODO: resetar cuando tengamos las imagenes del background completas
+	x = 100;
+	y = 550;
 	direccion = 0;
 	speed = 10;
+    postura = Postura ::MIRANDO_DERECHA_QUIETO;
 }
 
 Player::~Player() {
 }
 
 void Player::set_position(unsigned int posx, unsigned int posy) {
-    posHorizontal = posx;
-    posVertical = posy;
+    x = posx;
+    y = posy;
 }
 
 void upArrowPress(){
@@ -49,17 +50,17 @@ void Player::moveRight() {
 */
 	setNextSpriteFrame();
 //  Player::set_position(Player::destRect.x + speed, Player::destRect.y);}
-	unsigned int newPos = (posHorizontal + speed);
+	unsigned int newPos = (x + speed);
 	if(newPos < (windowWidth/2)){
-		set_position(newPos, posVertical);}
+		set_position(newPos, y);}
 }
 
 void Player::moveLeft() {
 //    Player::set_position(Player::destRect.x - speed, Player::destRect.y);}
 	setNextSpriteFrame();
-	int newPos = (posHorizontal - speed);
+	int newPos = (x - speed);
 	if(newPos > 0){
-		set_position(newPos, posVertical);}
+		set_position(newPos, y);}
 }
 
 void jump() {
@@ -81,27 +82,38 @@ void Player::updateState(EventCode nuevoEvento){
 			break;
 
 		case EventCode::SDL_KEYUP_PRESSED:
-			upArrowPress();
+			if(direccion == 1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
+            else if(direccion == -1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
+			else if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO and direccion == 0){postura = Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO;}
+			else {postura = Postura::MIRANDO_ARRIBA_DERECHA_QUIETO;}
 			break;
 
 		case EventCode::SDL_KEYDOWN_PRESSED:
-			downArrowPress();
+            if(direccion == 1){postura = Postura::AGACHADO_AVANZANDO_DERECHA;}
+            else if(direccion == -1){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
+            else if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO and direccion == 0){postura = Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO;}
+            else {postura = Postura::AGACHADO_MIRANDO_DERECHA_QUIETO;}
 			break;
 
 		case EventCode::SDL_KEYLEFT_PRESSED:
-			//moveLeft();
-			direccion = -1;
+            if(direccion == 0){
+                if((postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_ARRIBA_DERECHA_QUIETO)){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
+                if((postura == Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::AGACHADO_MIRANDO_DERECHA_QUIETO)){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
+                else if((postura == Postura::MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_DERECHA_QUIETO)){postura = Postura::CAMINANDO_IZQUIERDA; }
+                direccion = -1;
+            }
+            else if(direccion == 1){
+                direccion = 0;
+                postura = Postura::MIRANDO_DERECHA_QUIETO;}
+            else{direccion = -1;}
 			break;
 
 		case EventCode::SDL_KEYRIGHT_PRESSED:
-			//moveRight();
 			direccion = 1;
-			if( isInHalfWindow() ){
-				// TODO: Si llego a la mitad de la ventana, tengo que mover el background, como hago? el player conoce al background??
-			}
 			break;
-
 		case EventCode::SDL_KEYLEFT_RELEASED:
+            direccion = 0;
+            break;
 		case EventCode::SDL_KEYRIGHT_RELEASED:
 			direccion = 0;
 			break;
@@ -117,18 +129,18 @@ bool Player::isMoving() {
 
 void Player::updatePosition() {
 	if(Player::isMoving()) {
-		if (!((direccion == -1) and (posHorizontal == 0)) or (!((direccion == 1) and (posHorizontal == windowWidth)))) {
-			posHorizontal += direccion*speed;
+		if (!((direccion == -1) and (x == 0)) or (!((direccion == 1) and (x == windowWidth)))) {
+			x += direccion*speed;
 		}
 	}
 }
 
 void Player::avanzar(){
-    posHorizontal += speed; //TODO: cuando se actualice speed refactorizar
+    x += speed; //TODO: cuando se actualice speed refactorizar
 }
 
 void Player::retroceder(){
-    posHorizontal -=speed;
+    x -=speed;
 }
 
 
@@ -139,8 +151,9 @@ struct event Player::getNewState(){
 	eventExt.code = EventCode::PLAYER_STATUS;
 	eventExt.id = entity;
 
-	eventExt.x = posHorizontal;  //Actualizo la posicion del player
-	eventExt.y = posVertical;
+	eventExt.x = x;  //Actualizo la posicion del player
+	eventExt.y = y;
+    eventExt.postura = this->postura;
 
 	// TODO: Hay que calcular el siguiente fotograma del sprite, para mandarlo.
 
@@ -154,14 +167,14 @@ struct event Player::getNewState(){
 //_________________________________________
 
 bool Player::isInHalfWindow() {
-	return (posHorizontal >= ((windowWidth/2)-speed));
+	return (x >= ((windowWidth/2)-speed));
 }
 
 void Player::setNextSpriteFrame() {
 	if (actualPhotogramOfTheSprite == (anchoDelSprite - 1)) {
 		actualPhotogramOfTheSprite = 0;
 	}
-	posHorizontal = (anchoDelFotograma * actualPhotogramOfTheSprite);
+	x = (anchoDelFotograma * actualPhotogramOfTheSprite);
 	actualPhotogramOfTheSprite++;
 }
 

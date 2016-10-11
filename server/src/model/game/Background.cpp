@@ -22,7 +22,7 @@ struct event Background::getState(){
 	struct event_ext eventExt;
 
     eventExt.code = EventCode::BACKGROUND_STATUS;
-    eventExt.id = Entity::LEVEL1_Z1; //
+    eventExt.id = Entity::BACKGROUND_Z1; //
     eventExt.x = x;
     eventExt.y = y;
 

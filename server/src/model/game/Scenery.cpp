@@ -13,11 +13,11 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
 //PROCESAMIENTO DE EVENTOS:
 
 void Scenery::process_key(EventCode keycode, Entity entity) {
-	for (auto player : players) {
-    if (player->getEntity() == entity){
-			player->updateState(keycode);
-		}
-  }
+    for (auto player : players) {
+        if (player->getEntity() == entity){
+                player->updateState(keycode);
+        }
+    }
 }
 
 vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){

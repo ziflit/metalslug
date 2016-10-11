@@ -11,6 +11,15 @@
 #include "../../utils/Protocol.h"
 
 class Background {
+	/**
+	 *	Esta clase define al fondo directo a los jugadores,
+	 *	debera avanzar con el movimiento de ellos, cuando
+	 *  corresponda.
+	 *	El resto de los backgrounds como ser aquellos con nubes,
+	 *	por el momento se moveran solos, no tendran comportamiento
+	 *	definido.
+	 */
+
 private:
 	int zindex;  // para saber que background es, parallax
 	unsigned int x;
