@@ -136,7 +136,7 @@ void Player::updatePosition() {
 }
 
 void Player::avanzar(){
-    x += speed; //TODO: cuando se actualice speed refactorizar
+    x += speed;
 }
 
 void Player::retroceder(){
@@ -155,9 +155,8 @@ struct event Player::getNewState(){
 	eventExt.y = y;
     eventExt.postura = this->postura;
 
-	// TODO: Hay que calcular el siguiente fotograma del sprite, para mandarlo.
 
-  estado.completion = EventCompletion::PARTIAL_MSG;
+    estado.completion = EventCompletion::PARTIAL_MSG;
 	estado.data = eventExt;
 
 	return estado;

@@ -60,7 +60,7 @@ SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRender
 //_______________________________________________________________________________________
     SDLRunningGame::audioInitialization();
 //____________________________________________________________________________________________
-    SDLRunningGame::handleLeftKey = SDLRunningGame::handleRightKey = 0;
+    SDLRunningGame::holdLeftKey = SDLRunningGame::holdRightKey = 0;
 }
 
 struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
@@ -70,25 +70,25 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
         switch (sdlEvent->key.keysym.sym){
         case SDLK_LEFT:
             printf("aprieto flecha izquierda");
-            //handleLeftKey != 0 no volver a enviarlo al servidor
-            if(handleLeftKey>0){
+            //holdLeftKey != 0 no volver a enviarlo al servidor
+            if(holdLeftKey>0){
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
                 return nuevoEvento;
             }
             else{
                 nuevoEvento.data.code = EventCode::SDL_KEYLEFT_PRESSED;
-                handleLeftKey = 1;
+                holdLeftKey = 1;
                 return nuevoEvento;
             }
         case SDLK_RIGHT:
             printf("aprieto flecha derecha");
-            if(handleRightKey>0){
+            if(holdRightKey>0){
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
                 return nuevoEvento;
             }
             else{
                 nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_PRESSED;
-                handleRightKey = 1;
+                holdRightKey = 1;
                 return nuevoEvento;
             }
         case SDLK_UP:
@@ -123,22 +123,22 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
         switch (sdlEvent->key.keysym.sym){
         case SDLK_LEFT:
             nuevoEvento.data.code = EventCode::SDL_KEYLEFT_RELEASED;
-            handleLeftKey = 0;
+            holdLeftKey = 0;
             return nuevoEvento;
         case SDLK_RIGHT:
             cout<<"solte la flecha der"<<endl;
             nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_RELEASED;
-            handleRightKey = 0;
+            holdRightKey = 0;
             return nuevoEvento;
         case SDLK_UP:
             cout<<"solte la flecha arriba"<<endl;
             nuevoEvento.data.code = EventCode::SDL_KEYUP_RELEASED;
-            handleRightKey = 0;
+            holdRightKey = 0;
             return nuevoEvento;
         case SDLK_DOWN:
             cout<<"solte la flecha abajo"<<endl;
             nuevoEvento.data.code = EventCode::SDL_KEYDOWN_RELEASED;
-            handleRightKey = 0;
+            holdRightKey = 0;
             return nuevoEvento;
         default:
             nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
@@ -154,7 +154,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
 
 void SDLRunningGame::handleModelState(vector <event> model_state) {
     for (auto event : model_state) {
-        cout << "X: " << event.data.x << endl << "Y: " << event.data.y << endl << "H: " << event.data.h << endl;
+        cout << "X: " << event.data.x << endl << "Y: " << event.data.y << endl;
     }
 
 //TODO: manejar la actualizacion todos los sprites existentes.

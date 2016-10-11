@@ -19,7 +19,7 @@ private:
     BackgroundSprite *backgroundSprite0, *backgroundPlayersSprite, *backgroundSprite2;
     PlayerSprite *marcoSprite, *tarmaSprite, *player2Sprite, *player3Sprite;
     //TODO: en el destructor eliminar todos los punteros utilizados.
-    int handleLeftKey, handleRightKey,handleUpKey, handleDownKey;
+    int holdLeftKey, holdRightKey,handleUpKey, handleDownKey;
 
 public:
     SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer);
