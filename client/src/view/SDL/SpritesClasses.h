@@ -134,6 +134,24 @@ public:
         setUpImage("sprites/tarma.png",12,12);
     }
 };
+//_______________________________________________________________________________________________
+//FIO
+class Fio : public PlayerSprite{
+public:
+    Fio(SDL_Texture *texture, SDL_Renderer *renderer) : PlayerSprite(texture,renderer){
+        setUpImage("sprites/tarma.png",12,12); //TODO: cuando este el png listo, setearlo
+    }
+};
+//_______________________________________________________________________________________________
+//ERI
+class Eri : public PlayerSprite{
+public:
+    Eri(SDL_Texture *texture, SDL_Renderer *renderer) : PlayerSprite(texture,renderer){
+        setUpImage("sprites/tarma.png",12,12); //TODO: cuando este el png listo, setearlo
+    }
+};
+
+
 
 
 #endif //SDLBASE_SPRITE_H

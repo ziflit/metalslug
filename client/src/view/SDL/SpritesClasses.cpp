@@ -66,19 +66,21 @@ void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFram
     PlayerSprite::sourceRect.h = PlayerSprite::frameHeight;
 }
 
-//  MOVIMIENTOS
-//_________________________________________________________________________________________________________
-// _________________
-//|_____|_____|_____|       - De acuerdo a como este definido el sprite de los player
-//|_____|_____|_____|       - se fijaran los valores del frame correspondiente a cada
-//|_____|_____|_____|       - uno de los siquientes movimientos, lo que dara la coordenada
-//|_____|_____|_____|       - "y" que espera el "PlayerSprite::sourceRect.y".
-//
+/**  MOVIMIENTOS
+*_________________________________________________________________________________________________________
+* _________________
+*|_____|_____|_____|       - De acuerdo a como este definido el sprite de los player
+*|_____|_____|_____|       - se fijaran los valores del frame correspondiente a cada
+*|_____|_____|_____|       - uno de los siquientes movimientos, lo que dara la coordenada
+*|_____|_____|_____|       - "y" que espera el "PlayerSprite::sourceRect.y".
+*/
 
-void PlayerSprite::handle(struct event nuevoEvento) {
-
-    this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
-    //TODO: FALTA MANEJAR ACA EL CAMBIO DE FRAMES, PARA ESTA ENTREGA POR SER DEMO LO MANEJA SDL, PARA REINICIAR EL ARRANQUE DEL BACKGROUND
+void PlayerSprite::setNextSpriteFrame() {
+    if (PlayerSprite::wActualPosFrame == (PlayerSprite::wFramesCant - 1)) {
+        PlayerSprite::wActualPosFrame = 0;
+    }
+    PlayerSprite::sourceRect.x = (PlayerSprite::frameWidth * PlayerSprite::wActualPosFrame);
+    PlayerSprite::wActualPosFrame++;
 }
 
 void PlayerSprite::caminandoIzquierda() {
@@ -130,12 +132,51 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
     PlayerSprite::setNextSpriteFrame();
 }
 
-void PlayerSprite::setNextSpriteFrame() {
-    if (PlayerSprite::wActualPosFrame == (PlayerSprite::wFramesCant - 1)) {
-        PlayerSprite::wActualPosFrame = 0;
+
+void PlayerSprite::handle(struct event nuevoEvento) {
+
+    this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
+    //TODO: FALTA MANEJAR ACA EL CAMBIO DE FRAMES, PARA ESTA ENTREGA POR SER DEMO LO MANEJA SDL, PARA REINICIAR EL ARRANQUE DEL BACKGROUND
+    switch (nuevoEvento.data.postura){
+        case Postura::CAMINANDO_IZQUIERDA:
+            caminandoIzquierda();
+            break;
+        case Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA:
+            mirandoArribaCaminandoIzquierda();
+            break;
+        case Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO:
+            agachadoMirandoAIzquierdaQuieto();
+            break;
+        case Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO:
+            mirandoArribaIzquierdaQuieto();
+            break;
+        case Postura::CAMINANDO_DERECHA:
+            caminandoDerecha();
+            break;
+        case Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA:
+            mirandoArribaCaminandoDerecha();
+            break;
+        case Postura::AGACHADO_MIRANDO_DERECHA_QUIETO:
+            agachadoMirandoDerechaQuieto();
+            break;
+        case Postura::MIRANDO_ARRIBA_DERECHA_QUIETO:
+            mirandoArribaDerechaQuieto();
+            break;
+        case Postura::AGACHADO_AVANZANDO_IZQUIERDA:
+            agachadoAvanzandoAIzquierda();
+            break;
+        case AGACHADO_AVANZANDO_DERECHA:
+            agachadoAvanzandoADerecha();
+            break;
+        case Postura::MIRANDO_DERECHA_QUIETO:
+            mirandoDerechaQuieto();
+            break;
+        case Postura::MIRANDO_IZQUIERDA_QUIETO :
+            mirandoIzquierdaQuieto();
+            break;
+        default:
+            break;
     }
-    PlayerSprite::sourceRect.x = (PlayerSprite::frameWidth * PlayerSprite::wActualPosFrame);
-    PlayerSprite::wActualPosFrame++;
 }
 
 //_______________________________________________________________________________________________________

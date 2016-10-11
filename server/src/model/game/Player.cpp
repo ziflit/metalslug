@@ -98,8 +98,34 @@ void Player::handleRealeasedKey(EventCode nuevoEvento) {
             }
             break;
         case EventCode::SDL_KEYUP_RELEASED:
-    //TODO: hacer estos dos!!!!
+            switch (postura){
+                case Postura::MIRANDO_ARRIBA_DERECHA_QUIETO: postura = Postura::MIRANDO_DERECHA_QUIETO;
+                    break;
+                case Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO: postura = Postura::MIRANDO_IZQUIERDA_QUIETO;
+                    break;
+                case Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA: postura = Postura::CAMINANDO_DERECHA;
+                    break;
+                case Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA: postura = Postura::CAMINANDO_IZQUIERDA;
+                    break;
+                default:
+                    postura = Postura::MIRANDO_DERECHA_QUIETO;
+                    break;
+            }
+
         case EventCode::SDL_KEYDOWN_RELEASED:
+            switch (postura){
+                case Postura::AGACHADO_MIRANDO_DERECHA_QUIETO: postura = Postura::MIRANDO_DERECHA_QUIETO;
+                    break;
+                case Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO: postura = Postura::MIRANDO_IZQUIERDA_QUIETO;
+                    break;
+                case Postura::AGACHADO_AVANZANDO_DERECHA: postura = Postura::CAMINANDO_DERECHA;
+                    break;
+                case Postura::AGACHADO_AVANZANDO_IZQUIERDA: postura = Postura::CAMINANDO_IZQUIERDA;
+                    break;
+                default:
+                    postura = Postura::MIRANDO_DERECHA_QUIETO;
+                    break;
+            }
         default:
             break;
 
@@ -159,8 +185,10 @@ void Player::updateState(EventCode nuevoEvento){
 			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
 			// arrastarlo por la pantalla
 			break;
+
         case isKeyPressed(nuevoEvento):
             handlePressedKey(nuevoEvento);
+
         case isKeyRealeasedKey(nuevoEvento):
             handleRealeasedKey(nuevoEvento);
 		default:
