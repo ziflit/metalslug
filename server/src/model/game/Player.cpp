@@ -92,7 +92,7 @@ void Player::handleRealeasedKey(EventCode nuevoEvento) {
             }
             if(direccion = 0){
                 if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO){postura = CAMINANDO_IZQUIERDA;}
-                else if(postura == Postura::AGACHADO_MIRANDO_IZQUIEDA_QUIETO){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
+                else if(postura == Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
                 else if(postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
                 direccion = -1;
             }
@@ -180,19 +180,16 @@ void Player::handlePressedKey(EventCode nuevoEvento){
 
 
 void Player::updateState(EventCode nuevoEvento){
-	switch(nuevoEvento) {
-		case EventCode::CLIENT_DISCONNECT:
+
+		if (nuevoEvento == EventCode::CLIENT_DISCONNECT){
 			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
 			// arrastarlo por la pantalla
-			break;
-
-        case isKeyPressed(nuevoEvento):
-            handlePressedKey(nuevoEvento);
-
-        case isKeyRealeasedKey(nuevoEvento):
+    }
+        else if (isKeyPressed(nuevoEvento)) {
+        handlePressedKey(nuevoEvento);
+    }
+        else if (isKeyRealeased(nuevoEvento)) {
             handleRealeasedKey(nuevoEvento);
-		default:
-			break;
 	}
 }
 

@@ -17,9 +17,9 @@ private:
     Music* music;
     SDL_Texture *backgroundLayer0, *backgroundLayer1, *playersLayer;
     BackgroundSprite *backgroundSprite0, *backgroundPlayersSprite, *backgroundSprite2;
-    PlayerSprite *marcoSprite, *tarmaSprite, *player2Sprite, *player3Sprite;
+    PlayerSprite *marcoSprite, *tarmaSprite, *fioSprite, *eriSprite;
     //TODO: en el destructor eliminar todos los punteros utilizados.
-    int holdLeftKey, holdRightKey,handleUpKey, handleDownKey;
+    int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
 
 public:
     SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer);
@@ -33,6 +33,14 @@ public:
     void spritesBuilding();
 
     void updateWindowSprites();
+
+    void initializeMarco();
+
+    void initializeTarma();
+
+    void initializaFio();
+
+    void initializeEri();
 
     PlayerSprite* getMarcoSprite(){ return SDLRunningGame::marcoSprite;}
 
