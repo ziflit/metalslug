@@ -10,6 +10,7 @@
 Background::Background(int zindex) {
     x=y=0;
     this->zindex = zindex;
+    speed = 10;
 }
 
 void Background::avanzar() {

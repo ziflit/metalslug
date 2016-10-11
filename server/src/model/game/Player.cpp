@@ -10,9 +10,18 @@
 Player::Player(string user, Entity entitySelected) {
 	username = user;
 	entity = entitySelected;
-	posHorizontal = 1;
-	posVertical = 1;
-	speed = 0;
+	/**Para que no arranque pegado al borde izq: | o      | posHorizontal = 100
+	 * El sistema de coordenadas que vamos a usar es el de SDL
+	 * (0,0) en la esquina superior izquierda
+	 * 			(0,0)___________________(0,800)
+	 * 			    |					|
+	 * 	   			|					|
+	 *      (600,800)___________________(600,800)
+	 */
+	posHorizontal = 100;
+	posVertical = 550;	//TODO: resetar cuando tengamos las imagenes del background completas
+	direccion = 0;
+	speed = 10;
 }
 
 Player::~Player() {
@@ -60,12 +69,12 @@ void jump() {
 }
 
 void Player::stopMoving(){
-	speed = 0;
+	direccion = 0;
 	//TODO: Aca habria que cambiar algo de frames? para que quede quieto y muestre la animacion de quieto
 }
 
-void Player::updateState(EventCode movimiento){
-	switch(movimiento) {
+void Player::updateState(EventCode nuevoEvento){
+	switch(nuevoEvento) {
 		case EventCode::CLIENT_DISCONNECT:
 			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
 			// arrastarlo por la pantalla
@@ -81,12 +90,12 @@ void Player::updateState(EventCode movimiento){
 
 		case EventCode::SDL_KEYLEFT_PRESSED:
 			//moveLeft();
-			speed = -1;
+			direccion = -1;
 			break;
 
 		case EventCode::SDL_KEYRIGHT_PRESSED:
 			//moveRight();
-			speed = 1;
+			direccion = 1;
 			if( isInHalfWindow() ){
 				// TODO: Si llego a la mitad de la ventana, tengo que mover el background, como hago? el player conoce al background??
 			}
@@ -94,7 +103,7 @@ void Player::updateState(EventCode movimiento){
 
 		case EventCode::SDL_KEYLEFT_RELEASED:
 		case EventCode::SDL_KEYRIGHT_RELEASED:
-			speed = 0;
+			direccion = 0;
 			break;
 
 		default:
@@ -103,23 +112,23 @@ void Player::updateState(EventCode movimiento){
 }
 
 bool Player::isMoving() {
-	return (Player::speed != 0); // en -1 y 1 se esta moviendo
+	return (Player::direccion != 0); // en -1 y 1 se esta moviendo
 }
 
 void Player::updatePosition() {
 	if(Player::isMoving()) {
-		if (!((speed == -1) and (posHorizontal == 0)) or (!((speed == 1) and (posHorizontal == windowWidth)))) {
-			posHorizontal += speed;
+		if (!((direccion == -1) and (posHorizontal == 0)) or (!((direccion == 1) and (posHorizontal == windowWidth)))) {
+			posHorizontal += direccion*speed;
 		}
 	}
 }
 
 void Player::avanzar(){
-    posHorizontal += 1; //TODO: cuando se actualice speed refactorizar
+    posHorizontal += speed; //TODO: cuando se actualice speed refactorizar
 }
 
 void Player::retroceder(){
-    posHorizontal -=1;
+    posHorizontal -=speed;
 }
 
 

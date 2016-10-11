@@ -78,7 +78,7 @@ void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFram
 void PlayerSprite::handle(struct event nuevoEvento) {
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
-    //TODO: FALTA MANEJAR ACA EL CAMBIO DE FRAMES.
+    //TODO: FALTA MANEJAR ACA EL CAMBIO DE FRAMES, PARA ESTA ENTREGA POR SER DEMO LO MANEJA SDL, PARA REINICIAR EL ARRANQUE DEL BACKGROUND
 }
 
 void PlayerSprite::caminandoIzquierda() {

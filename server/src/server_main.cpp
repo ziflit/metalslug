@@ -67,6 +67,7 @@ int main(int argc, char* argv[]) {
     std::thread server_online_in_thread;
     server_online_in_thread = std::thread(start_server_online, server, ip, port);
 
+
     bool online = true;
     while (online) {
         std::string keypressed;

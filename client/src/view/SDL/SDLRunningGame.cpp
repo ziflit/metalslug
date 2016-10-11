@@ -161,7 +161,7 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
     for (auto nuevoEvento : model_state){
         switch(nuevoEvento.data.id){
             case Entity::MARCO:
-                this->marcoSprite->handle( nuevoEvento);
+                this->marcoSprite->handle(nuevoEvento);
             case Entity::TARMA:
                 this->tarmaSprite->handle(nuevoEvento);
 //            case FIO:
@@ -194,7 +194,6 @@ void SDLRunningGame::updateWindowSprites () {
 //DESTRUCTOR
 SDLRunningGame::~SDLRunningGame () {
 //____________________________________________________________________________________________
-    //Liberar todo
 
     SDL_DestroyTexture(backgroundLayer0);
     SDL_DestroyTexture(SDLRunningGame::backgroundLayer1);

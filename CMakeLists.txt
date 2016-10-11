@@ -28,6 +28,6 @@ set(SOURCE_FILES
     src/client_main.cpp
     src/server_main.cpp
     Makefile
-    README.md client/src/view/asdasdsa.cpp client/src/view/SDL/AudioToolsForRunningGame.h)
+    README.md client/src/view/asdasdsa.cpp client/src/view/SDL/AudioToolsForRunningGame.h )
 
 add_executable(metalslug ${SOURCE_FILES})
