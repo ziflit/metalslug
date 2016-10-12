@@ -28,7 +28,12 @@ private:
 
 public:
 	Player(string user, Entity entitySelected);
+
 	virtual ~Player();
+
+    Entity getEntity() {
+        return entity;
+    }
 
 	struct event getNewState();
 

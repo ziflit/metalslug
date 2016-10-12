@@ -30,8 +30,8 @@ Entity Scenery::buildPlayer(string user) {
         newPlayer = (new Player(user, ERI));
         this->addElementToScenery(newPlayer);
     }
-    else if(players.size>3){eturn NOPLAYER;}
-    return newPlayer.getEntity();
+    else if(players.size() > 3){return NOPLAYER;}
+    return newPlayer->getEntity();
 }
 
 void Scenery::process_key(EventCode keycode, Entity entity) {
