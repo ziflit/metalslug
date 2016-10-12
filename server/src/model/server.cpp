@@ -14,6 +14,7 @@ using namespace std;
 
 Server::Server(string path) {
     this->userloader = new UserLoader(path);
+    this->scenery = new Scenery(800,600);
 }
 
 Server::~Server() {
@@ -24,52 +25,30 @@ Server::~Server() {
  * Manda los mensajes que se ingresen por cin()
  */
 void client_comm(Server *srv, int client) {
-    /* Mensaje de bienvenida. Se manda una vez fijo */
-
     SocketUtils sockutils;
     /* Recibo user y pass del cliente */
     char user[20];
     recv(client, user, 20, 0); /* Nombre de usuario */
-    srv->connect_user(user); /* Acá tengo que crear un nuevo handler y pasarle el XML? */
+    Entity assignedPlayer = srv->connect_user(user);
 
-    /* Le informo al cliente que se logueo ok */
-    struct event resp;
-    resp.data.code = EventCode::LOGIN_OK;
-    sockutils.writeSocket(client, resp);
+    if (assignedPlayer != Entity::NOPLAYER) {
+        /* Le informo al cliente que se logueo ok */
+        struct event resp;
+        resp.data.code = EventCode::LOGIN_OK;
+        resp.data.id = assignedPlayer;
+        sockutils.writeSocket(client, resp);
 
-    ClientConnection* handler = new ClientConnection(client, srv, user);
-    srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
-    handler->start();
-    /* Le mando el estado actual del modelo al cliente */
-    srv->send_model_snapshot(handler);
-
-   // if (srv->auth_user(user, pass)) {
-   //      struct event resp;
-   //      resp.data.code = EventCode::LOGIN_OK;
-
-   //      sockutils.writeSocket(client, resp);
-
-   //      /* Envio de lista de usuarios */
-   //      Event* usersListMsg = new Event();
-   //      usersListMsg->setContent((srv->getUserLoader())->getUsersList());
-   //      // MessageUtils messageUtils;
-   //      // vector<struct event> requests =  messageUtils.buildRequests(usersListMsg, EventCode:: USERS_LIST_MSG);
-   //      vector<struct event> requests;
-
-   //      ClientConnection* handler = new ClientConnection(client, srv, user);
-
-   //      handler->start();
-   //      for (auto req : requests) {
-   //          handler->push_event(req);
-   //      }
-
-   //  } else {
-   //      struct event resp;
-   //      resp.data.code = EventCode::LOGIN_FAIL;
-   //      sockutils.writeSocket(client, resp);
-   //  }
-    /* Esto crea un nuevo objeto ClientConnection que
-     * se comunicará con el cliente en cuestión. Le paso el fd */
+        ClientConnection* handler = new ClientConnection(client, srv, user);
+        srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
+        handler->start();
+        /* Le mando el estado actual del modelo al cliente */
+        /* Tenemos forma de asegurar que el modelo haya empezado a correr cuando se llega a este punto? */
+        srv->send_model_snapshot(handler);
+    } else {
+        struct event resp;
+        resp.data.code = EventCode::LOGIN_FAIL;
+        sockutils.writeSocket(client, resp);
+    }
 }
 
 bool Server::auth_user(char *user, char *pass) {
@@ -236,13 +215,13 @@ UserLoader* Server::getUserLoader() {
 
 queue<struct event>* Server::getIncomingEvents() {
     this->incoming_mutex.lock();
-    queue<struct event> ret;
+    queue<struct event>* ret = new queue<struct event>;
     for (auto event : incoming_events) {
-        ret.emplace(event);
+        ret->emplace(event);
     }
     this->incoming_events.empty();
     this->incoming_mutex.unlock();
-    return &ret;
+    return ret;
 }
 
 void Server::broadcast_event(struct event event) {
@@ -253,8 +232,10 @@ void Server::broadcast_event(struct event event) {
     }
 }
 
-void Server::connect_user(char* user) {
-    return;
+Entity Server::connect_user(char* user) {
+    string nombre_elegido;
+    nombre_elegido.assign(user);
+    return this->scenery->buildPlayer(nombre_elegido);
 }
 
 void Server::send_model_snapshot(ClientConnection* handler) {

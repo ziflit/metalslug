@@ -6,6 +6,32 @@
 
 bool onlinethread = true;
 
+void correr_modelo(Server* server) {
+    /* Ya no es tan dummy esto:
+
+       1. Levanto el XML que corresponde al escenario
+       2. Empiezo a escuchar conexiones hasta el límite indicado en el paso anterior
+       3. Una vez que llego al límite de conexiones (o al mínimo necesario) comienzo el gameloop
+       4. El loop: cuando se empieza el loop se cuentan con las siguientes cosas:
+        a) Clientes conectados con sus respectivos handlers
+        b) El modelo ya está creado (no empezó a correr aún)
+        La función del loop es desacolar eventos y procesarlos modelo por medio
+        vaciamos la cola de mensajes entrantes y los procesamos en el orden de llegada por el modelo.
+        Es más eficiente darle al modelo una cola entera de mensajes, posiblemente desde referencia en el
+        servidor, que pasarle uno por uno los eventos que llegaron.
+
+    */
+    while (onlinethread) {
+        /* genero una copia de todos los eventos, libero la cola para que se pueda seguir usando y
+           le paso la copia (o refernecia, no se) al modelo */
+        vector<struct event> model_state = server->getScenery()->process_keys_queue(server->getIncomingEvents());
+        server->set_model_snapshot(model_state);
+        for (auto state : model_state) {
+            server->broadcast_event(state);
+        }
+    }
+}
+
 void start_server_online(Server* server, string ip, int port){
 
     server->initialize_server(ip, port);
@@ -16,35 +42,11 @@ void start_server_online(Server* server, string ip, int port){
     /* Escucho esperando al cliente */
     server->start_listening();
 
-
-    /* Ya no es tan dummy esto:
-
-       1. Levanto el XML que corresponde al escenario
-       2. Empiezo a escuchar conexiones hasta el límite indicado en el paso anterior
-       3. Una vez que llego al límite de conexiones (o al mínimo necesario) comienzo el gameloop
-       4. El loop: cuando se empieza el loop se cuentan con las siguientes cosas:
-            a) Clientes conectados con sus respectivos handlers
-            b) El modelo ya está creado (no empezó a correr aún)
-          La función del loop es desacolar eventos y procesarlos modelo por medio
-          vaciamos la cola de mensajes entrantes y los procesamos en el orden de llegada por el modelo.
-          Es más eficiente darle al modelo una cola entera de mensajes, posiblemente desde referencia en el
-          servidor, que pasarle uno por uno los eventos que llegaron.
-
-    */
-    while (true) {
-        /* genero una copia de todos los eventos, libero la cola para que se pueda seguir usando y
-           le paso la copia (o refernecia, no se) al modelo */
-        vector<struct event> model_state = server->getScenery()->process_keys_queue(server->getIncomingEvents());
-        server->set_model_snapshot(model_state);
-        for (auto state : model_state) {
-            server->broadcast_event(state);
-        }
-    }
-
     while (onlinethread) {
         server->accept_incoming_connections();
         cout << onlinethread << endl;
     }
+
 
 }
 
@@ -67,6 +69,8 @@ int main(int argc, char* argv[]) {
     std::thread server_online_in_thread;
     server_online_in_thread = std::thread(start_server_online, server, ip, port);
 
+    thread corredor_de_modelo = std::thread(correr_modelo, server);
+    corredor_de_modelo.detach();
 
     bool online = true;
     while (online) {

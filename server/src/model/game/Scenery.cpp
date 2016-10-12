@@ -1,9 +1,9 @@
 #include "Scenery.h"
 
 Scenery::Scenery(unsigned int width, unsigned int height) {
-	//TODO: Esto se va a cargar en base al XML para inicializar el escenario, o algo asi
+    //TODO: Esto se va a cargar en base al XML para inicializar el escenario, o algo asi
     windowWidth = width;
-	windowHeight = height;
+    windowHeight = height;
     //TODO: setear la velocidad de avance de cada background, el asociado a los players debe tener igual velocidad que ellos.
     //TODO: definir si del XML tambien se setea la cantidad de jugadores.
     //TODO: el seteo de cada jugador.

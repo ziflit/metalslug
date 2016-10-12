@@ -96,7 +96,7 @@ public:
 
     Scenery* getScenery() { return this->scenery; }
 
-    void connect_user(char* user);
+    Entity connect_user(char* user);
 
     void broadcast_event(struct event event);
 

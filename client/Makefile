@@ -24,13 +24,13 @@ OBJ_NAME_TEST = run-tests
 # General
 CC = g++
 COMPILER_FLAGS = -w -std=c++11 -g -Wall #`pkg-config --cflags --libs sdl2`
-LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2main -lyaml-cpp -lSDL2_ttf
+LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2_mixer
 
 
 all : client
 
 client : $(SRC_FILES)
-	$(CC) -I$(INC_FILES) $(SRC_FILES) $(COMPILER_FLAGS) -o $(OBJ_NAME) -pthread
+	$(CC) -I$(INC_FILES) $(SRC_FILES) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME) 
 
 server : $(SRV_SRC_FILES)
 	$(CC) -I$(SRV_INC) $(SRV_SRC_FILES) $(SRV_DEP) $(COMPILER_FLAGS) -o $(SRV_OBJ_NAME)
