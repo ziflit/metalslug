@@ -12,6 +12,28 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
 //______________________________________________________________________________________________________________________
 //PROCESAMIENTO DE EVENTOS:
 
+Entity Scenery::buildPlayer(string user) {
+    Player* newPlayer;
+    if(players.size() == 0){
+        newPlayer = new Player(user, MARCO);
+        this->addElementToScenery(newPlayer);
+    }
+    else if(players.size() == 1){
+        newPlayer = new Player(user, TARMA);
+        this->addElementToScenery(newPlayer);
+    }
+    else if(players.size() == 2){
+        newPlayer = new Player(user, FIO);
+        this->addElementToScenery(newPlayer);
+    }
+    else if(players.size() == 3){
+        newPlayer = (new Player(user, ERI));
+        this->addElementToScenery(newPlayer);
+    }
+    else if(players.size>3){eturn NOPLAYER;}
+    return newPlayer.getEntity();
+}
+
 void Scenery::process_key(EventCode keycode, Entity entity) {
     for (auto player : players) {
         if (player->getEntity() == entity){

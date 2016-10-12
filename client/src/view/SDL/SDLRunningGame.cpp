@@ -193,8 +193,8 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
         switch(nuevoEvento.data.id){
             case Entity::MARCO:
                 this->marcoSprite->handle(nuevoEvento);
-            case Entity::TARMA:
-                this->tarmaSprite->handle(nuevoEvento);
+//            case Entity::TARMA:
+//                this->tarmaSprite->handle(nuevoEvento);
 //            case FIO:
 //            case ERI:
 //            case ENEMY_NORMAL:
