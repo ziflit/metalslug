@@ -46,7 +46,7 @@ void start_server_online(Server* server, string ip, int port){
 
     while (onlinethread) {
         server->accept_incoming_connections();
-        cout << onlinethread << endl;
+        cout << "Onlinethread" << endl;
     }
 
 

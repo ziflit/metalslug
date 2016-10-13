@@ -54,7 +54,7 @@ int connectionReader(ClientConnection *handler) {
     bool isComplete;
     SocketUtils sockutils;
     vector<struct event> mensajes;
-    char buffer[BUFSIZE];
+    char buffer[MSGSIZE];
 
     do {
         isComplete = sockutils.readSocket(handler->getClientSocket(), buffer);
