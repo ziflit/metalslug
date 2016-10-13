@@ -26,7 +26,7 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, char *usern
 
 
     struct timeval timeout;
-    timeout.tv_sec = 10;
+    timeout.tv_sec = 100;
     timeout.tv_usec = 0;
 
     if (setsockopt(this->clientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout))) {
@@ -115,6 +115,9 @@ void ClientConnection::stop() {
 
 void ClientConnection::push_event(struct event event) {
     this->queuemutex.lock();
+    if (this->event_queue.size() >= 50) {
+        event_queue.pop_front();
+    }
     event_queue.push_back(event);
     this->queuemutex.unlock();
 }

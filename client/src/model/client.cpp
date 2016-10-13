@@ -39,8 +39,9 @@ bool Client::connect_to_server(string ip, int port) {
 	}
 
 //TODO: esto va a tener que cambiar para que solo se envie el player name
-	string user = "lean";
-	string pass = "asd";
+  string user = "lean";
+  cin >> user;
+  string pass = "asd";
 
 //    cout << "Ingrese nombre de usuario: " << endl;
 //    cin >> user;
@@ -64,7 +65,8 @@ bool Client::connect_to_server(string ip, int port) {
 	} else {
 		strcpy(userName, user.data());
 //		this->store_users_list();
-		/* Lanzo el handler del cliente */
+    /* Lanzo el handler del cliente */
+    cout << "Me logee bien con el server puto jaja " << endl;
 		this->handler = new ClientHandler(socket_number, this, user.data());
 		this->handler->start();
 		return true;

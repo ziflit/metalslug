@@ -15,8 +15,7 @@ void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
     while( cliente->is_connected()){
         while (SDL_PollEvent( &sdlEvent )) {
             if ( sdlEvent.type == SDL_QUIT) {
-            	cliente->disconnect();
-            	cliente->set_connection_status(false);
+                cliente->disconnect();
                 break;
             }
             struct event nuevoEvento = sdlRunningGame->eventsHandler(&sdlEvent); //El eventsHandler envia los mensajes al Server
