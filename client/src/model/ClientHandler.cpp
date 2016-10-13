@@ -17,8 +17,8 @@ void connectionReader(ClientHandler *handler) {
 	SocketUtils sockutils;
 	vector<struct event> events;
 
-	char buffer[BUFSIZE];
-	char eventBuffer[BUFSIZE];
+	char buffer[MSGSIZE];
+	char eventBuffer[MSGSIZE];
 
 	while (!handler->shouldClose) {
 //		is_server_alive = sockutils.peek(handler->getClientSocket(), buffer);
@@ -33,9 +33,9 @@ void connectionReader(ClientHandler *handler) {
 			if (incommingEvent.data.code == EventCode::MSG_OK) {
 				continue;
 			}
-			handler->sendEvent(incommingEvent);
+			handler->receiveEvent(incommingEvent);
 		} else {
-			is_server_alive = recv(handler->getClientSocket(), &buffer, BUFSIZE,
+			is_server_alive = recv(handler->getClientSocket(), &buffer, MSGSIZE,
 					MSG_PEEK);
 			if (is_server_alive == -1) {
 				LOGGER_WRITE(Logger::ERROR, "Conexion con el servidor perdida",
@@ -50,9 +50,8 @@ int connectionWriter(ClientHandler *data) {
 	int result;
 	while (!data->shouldClose) {
 		data->outgoingMutex.lock();
-
-		if (data->has_events()) {
-			event event = data->incommingEvents.front();
+		if (data->has_events_to_send()) {
+			event event = data->outgoingEvents.front();
 			data->outgoingEvents.pop_front();
 			data->outgoingMutex.unlock();
 
@@ -125,10 +124,17 @@ void ClientHandler::stop() {
 	}
 }
 
-void ClientHandler::sendEvent(struct event event) {
+void ClientHandler::receiveEvent(struct event event) {
 	this->incommingMutex.lock();
 	incommingEvents.push_back(event);
 	this->incommingMutex.unlock();
+}
+
+
+void ClientHandler::sendEvent(struct event event) {
+    this->outgoingMutex.lock();
+    outgoingEvents.push_back(event);
+    this->outgoingMutex.unlock();
 }
 
 ClientHandler::ClientHandler() {

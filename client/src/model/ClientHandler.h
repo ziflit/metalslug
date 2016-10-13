@@ -58,7 +58,11 @@ public:
 
     void sendEvent(struct event event);
 
-    inline bool has_events() { return !incommingEvents.empty(); }
+    void receiveEvent(struct event event);
+
+    inline bool has_events_to_send() { return !outgoingEvents.empty(); }
+
+    inline bool has_events_to_receive(){ return !incommingEvents.empty();}
 
     char* getUsername();
 
