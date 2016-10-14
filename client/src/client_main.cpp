@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 
 #include "model/client.h"
 #include "utils/Logger.h"
@@ -21,43 +22,46 @@ void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
             struct event nuevoEvento = sdlRunningGame->eventsHandler(&sdlEvent); //El eventsHandler envia los mensajes al Server
             if(not (nuevoEvento.data.code == EventCode::TODO_SIGUE_IGUAL)){
                 cliente->getHandler()->sendEvent(nuevoEvento);
+
             }
         }
+        usleep(100);
     }
 }
 
 
 int main(int argc, char *argv[]) {
-    /* Seteo puerto e ip del server*/
-    LOGGER_START(Logger::INFO, "client.log")
-    int port = 0;
-    string ip = "127.0.0.1";
+/* Seteo puerto e ip del server*/
+LOGGER_START(Logger::INFO, "client.log")
+int port = 0;
+string ip = "127.0.0.1";
 
 
-    /* Creo al cliente */
-    Client *cliente = new Client();
+/* Creo al cliente */
+Client *cliente = new Client();
 
-    /* Configuracion del puerto
-     * atoi() devuelve 0 si el parametro es invalido*/
-    if (argc > 1) port = atoi(argv[1]);
-    if (port == 0) port = 1500;
-    if (argc > 2) ip = argv[2];
+/* Configuracion del puerto
+ * atoi() devuelve 0 si el parametro es invalido*/
+if (argc > 1) port = atoi(argv[1]);
+if (port == 0) port = 1500;
+if (argc > 2) ip = argv[2];
 
 
-    // Conexion con el server
-    if (not cliente->is_connected()) {
-        LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
-        cout << "Estableciendo la conexion con el servidor..." << endl << endl;
-        if (cliente->connect_to_server(ip, port)) {
-            cliente->set_connection_status(true);
-            LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
-            cout << " Conexion establecida con exito " << endl << endl;
-        } else {
-            cliente->set_connection_status(false);
-        }
+// Conexion con el server
+if (not cliente->is_connected()) {
+    LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
+    cout << "Estableciendo la conexion con el servidor..." << endl << endl;
+    if (cliente->connect_to_server(ip, port)) {
+        cliente->set_connection_status(true);
+        LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
+        cout << " Conexion establecida con exito " << endl << endl;
+    } else {
+        cliente->set_connection_status(false);
     }
-    //____________________________________________________________________________________________
+}
+//____________________________________________________________________________________________
 
+if (cliente->is_connected()){
 
     InitialWindow* initialWindow = new InitialWindow(800, 600);
     SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer());
@@ -67,16 +71,17 @@ int main(int argc, char *argv[]) {
 
     // Ciclo que recive constantemente el estado del escenario, y se lo manda al sdlRunningGame para que lo dibuje
     vector<struct event> modelStateToRender;
-    while( cliente->is_connected() ){
+    while(cliente->is_connected()){
     	modelStateToRender = (cliente->getHandler())->getModelState();
     	if (not modelStateToRender.empty()){
     		sdlRunningGame->handleModelState(modelStateToRender);
     	}
     }
-
     enviarTeclasAlServerEnThread.join();
-    delete cliente;
-    return 0;
+}
+
+delete cliente;
+return 0;
 }
 
 
