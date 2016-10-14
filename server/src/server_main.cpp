@@ -1,8 +1,8 @@
 #include <iostream>
 #include <thread>
+#include <unistd.h>
 
 #include "model/server.h"
-#include "unistd.h"
 #include "utils/Logger.h"
 
 bool onlinethread = true;
@@ -30,7 +30,7 @@ void correr_modelo(Server* server) {
         for (auto state : model_state) {
             server->broadcast_event(state);
         }
-        sleep(3);
+        usleep(5000);
     }
 }
 
@@ -80,10 +80,10 @@ int main(int argc, char* argv[]) {
         getline(std::cin, keypressed);
         if (keypressed == "q") {
             LOGGER_WRITE(Logger::INFO, "Apagando el servidor...", "ClientMain")
-
             online = false;
             server->shouldCloseFunc(true);            
         }
+        sleep(2);
     }
     onlinethread = false;
     server->shutdownServer();
