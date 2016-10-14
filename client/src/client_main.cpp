@@ -51,6 +51,7 @@ if (argc > 2) ip = argv[2];
 if (not cliente->is_connected()) {
     LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
     cout << "Estableciendo la conexion con el servidor..." << endl << endl;
+    cout << "Ingrese su nombre de usuario: ";
     if (cliente->connect_to_server(ip, port)) {
         cliente->set_connection_status(true);
         LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
