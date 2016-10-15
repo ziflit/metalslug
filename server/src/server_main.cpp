@@ -32,20 +32,20 @@ void correr_modelo(Server* server) {
     int count = 0;
     double time_counter = 0;
 
-    clock_t now = clock();
-    clock_t last = now;
+    useconds_t ms_per_frame = 32000;
+    clock_t start = clock();
+    clock_t last = start;
 
     queue<struct event>* eventos;
     vector<struct event> model_state;
     while (onlinethread) {
-        now = clock();
-        time_counter += double(now - last);
+        start = clock();
+        time_counter += double(start - last);
         /* genero una copia de todos los eventos, libero la cola para que se pueda seguir usando y
            le paso la copia (o refernecia, no se) al modelo */
         eventos = server->getIncomingEvents();
         model_state = server->getScenery()->process_keys_queue(eventos);
         server->set_model_snapshot(model_state);
-        last = now;
         for (auto state : model_state) {
             server->broadcast_event(state);
         }
@@ -55,7 +55,11 @@ void correr_modelo(Server* server) {
         }
         count++;
         delete eventos;
-        usleep(32000);
+        double lalala = (double)start + (double)ms_per_frame - (double)clock();
+        last = clock();
+        if ((lalala) > 0) {
+            usleep (lalala);
+        }
         if (not eventos->empty())
         clearQueue(*eventos); //borra la cola de forma eficiente
         model_state.clear();
