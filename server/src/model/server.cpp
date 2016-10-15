@@ -214,6 +214,7 @@ UserLoader* Server::getUserLoader() {
 }
 
 queue<struct event>* Server::getIncomingEvents() {
+    // TODO lento! estas creando uan cola dentro de un while true por cada ciclo
     this->incoming_mutex.lock();
     queue<struct event>* ret = new queue<struct event>;
     for (auto event : incoming_events) {

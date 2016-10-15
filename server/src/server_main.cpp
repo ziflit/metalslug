@@ -25,12 +25,14 @@ void correr_modelo(Server* server) {
     while (onlinethread) {
         /* genero una copia de todos los eventos, libero la cola para que se pueda seguir usando y
            le paso la copia (o refernecia, no se) al modelo */
-        vector<struct event> model_state = server->getScenery()->process_keys_queue(server->getIncomingEvents());
+        queue<struct event>* eventos = server->getIncomingEvents();
+        vector<struct event> model_state = server->getScenery()->process_keys_queue(eventos);
         server->set_model_snapshot(model_state);
         for (auto state : model_state) {
             server->broadcast_event(state);
         }
-        sleep(3);
+        usleep(500);
+        delete eventos;
     }
 }
 

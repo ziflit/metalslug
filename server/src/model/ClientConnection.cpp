@@ -58,17 +58,26 @@ int connectionReader(ClientConnection *handler) {
 
     do {
         isComplete = sockutils.readSocket(handler->getClientSocket(), buffer);
-        if (((*(struct event*)buffer)).data.code == EventCode::MSG_OK) { continue; }
+        if (((*(struct event*)buffer)).data.code == EventCode::MSG_OK) { cout<<"esta vivo"<<endl;continue; }
         else {
             if (!isComplete) {
                 //LOGGER_WRITE(Logger::ERROR, "Error de recepcion de mensaje. \n " + strerror(errno), CLASSNAME);
                 handler->stop();
                 //LOGGER_WRITE(Logger::ERROR, "Conexion cerrada.", CLASSNAME);
             } else {
+                // TODO reveer si realmente todavía usamos un vector<struct event> mensajes, porque todos los eventos
+                // de tecla son FINAL_MSG
                 mensajes.push_back(*(struct event *)buffer);
                 if ((*(struct event*)buffer).completion == EventCompletion::FINAL_MSG) {
                     LOGGER_WRITE(Logger::INFO, "Se recibio mensaje de " + string(handler->getUsername()) ,"ClientConnection.class")
-                        handler->handle_message(mensajes, mensajes.front().data.code);
+                    cout << "Se recibio mensaje de " + string(handler->getUsername()) << endl;
+                    if (mensajes.front().data.code == EventCode::SDL_KEYRIGHT_PRESSED) {
+                        cout << "Llegó mensaje de tecla derecha apretada" << endl;
+                    }
+                    if (mensajes.front().data.code == EventCode::SDL_KEYLEFT_PRESSED) {
+                        cout << "Llegó mensaje de tecla derecha apretada" << endl;
+                    }
+                    handler->handle_message(mensajes, mensajes.front().data.code);
                     mensajes.clear();
                 }
             }
