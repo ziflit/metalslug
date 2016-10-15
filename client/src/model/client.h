@@ -19,6 +19,7 @@ private:
     ClientHandler* handler;
     char userName[20];
     std::vector<string> usersList;
+    Entity my_character;
 public:
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
@@ -73,6 +74,10 @@ public:
 
     ClientHandler* getHandler() {
         return handler;
+    }
+
+    Entity getEntity() {
+        return my_character;
     }
 };
 

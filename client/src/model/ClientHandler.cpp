@@ -132,6 +132,7 @@ void ClientHandler::receiveEvent(struct event event) {
 
 
 void ClientHandler::sendEvent(struct event event) {
+    event.data.id = client->getEntity();
     this->outgoingMutex.lock();
     outgoingEvents.push_back(event);
     this->outgoingMutex.unlock();

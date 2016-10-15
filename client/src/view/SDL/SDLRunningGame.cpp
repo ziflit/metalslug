@@ -70,7 +70,6 @@ void SDLRunningGame::initializeEri() {this->eriSprite = new Eri(playersLayer,mai
 
 struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     struct event nuevoEvento;
-    nuevoEvento.data.id = Entity::MARCO;
     nuevoEvento.completion = EventCompletion::FINAL_MSG;
 
     if (sdlEvent->type == SDL_KEYDOWN){  //si aprieto tal tecla:
