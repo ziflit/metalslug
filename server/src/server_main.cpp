@@ -31,8 +31,8 @@ void correr_modelo(Server* server) {
         for (auto state : model_state) {
             server->broadcast_event(state);
         }
-        usleep(5000);
         delete eventos;
+        usleep(32000);
     }
 }
 
