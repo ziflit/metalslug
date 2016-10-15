@@ -18,6 +18,7 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
 
 Entity Scenery::buildPlayer(string user) {
     Player* newPlayer;
+    cout<<"PLAYERS LIST SIZE: "<<players.size()<<endl;
     if(players.size() == 0){
         newPlayer = new Player(user, MARCO);
         this->addElementToScenery(newPlayer);

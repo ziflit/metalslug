@@ -193,19 +193,26 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
         switch(nuevoEvento.data.id){
             case Entity::MARCO:
                 this->marcoSprite->handle(nuevoEvento);
+                break;
             case Entity::TARMA:
                 this->tarmaSprite->handle(nuevoEvento);
+                break;
             case FIO:
                 this->fioSprite->handle(nuevoEvento);
+                break;
             case ERI:
                 this->eriSprite->handle(nuevoEvento);
+                break;
 //            case ENEMY_NORMAL:
             case Entity::BACKGROUND_Z0:
                 this->backgroundSprite0->handle(nuevoEvento);
+                break;
             case Entity::BACKGROUND_Z1:
                 this->backgroundSprite1->handle(nuevoEvento);
+                break;
             case Entity::BACKGROUND_Z2:
                 this->backgroundSprite2->handle(nuevoEvento);
+                break;
 
         }
     }

@@ -199,11 +199,11 @@ void BackgroundSprite::setUpImage(string imageSpritePath) {
 
 void BackgroundSprite::setFramePosition(int x) {
     int pos = (x + this->frameWidth);
-    if (pos == 8000){
+    if (pos == spriteImageWidth){
         //Recorrio toda la imagen
         //TODO: esto es solo para el demo, sacar para la proxima entrega
         printf("llego al limite del background");
-        Sprite::sourceRect.x = x-(8000 - this->frameWidth);
+        Sprite::sourceRect.x = x-(spriteImageWidth - this->frameWidth);
     }
     else{
         Sprite::sourceRect.x = x;
