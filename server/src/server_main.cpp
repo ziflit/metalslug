@@ -1,10 +1,12 @@
 #include <iostream>
 #include <thread>
 #include <unistd.h>
+#include <time.h>
 
 #include "model/server.h"
 #include "utils/Logger.h"
 
+const int FPS = 30;
 bool onlinethread = true;
 
 void correr_modelo(Server* server) {
@@ -22,15 +24,31 @@ void correr_modelo(Server* server) {
         servidor, que pasarle uno por uno los eventos que llegaron.
 
     */
+    int count = 0;
+    double time_counter = 0;
+
+    clock_t now = clock();
+    clock_t last = now;
+
     while (onlinethread) {
+        now = clock();
+
+
+        time_counter += double(now - last);
         /* genero una copia de todos los eventos, libero la cola para que se pueda seguir usando y
            le paso la copia (o refernecia, no se) al modelo */
         queue<struct event>* eventos = server->getIncomingEvents();
         vector<struct event> model_state = server->getScenery()->process_keys_queue(eventos);
         server->set_model_snapshot(model_state);
+        last = now;
         for (auto state : model_state) {
             server->broadcast_event(state);
         }
+        if (time_counter > (double)CLOCKS_PER_SEC) {
+            cout << count << endl;
+            time_counter -= (double)CLOCKS_PER_SEC;
+        }
+        count++;
         delete eventos;
         usleep(32000);
     }
