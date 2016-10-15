@@ -1,9 +1,7 @@
 #ifndef SDLBASE_SDLRUNNINGGAME_H
 #define SDLBASE_SDLRUNNINGGAME_H
 
-#define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
 #define gameMusicPath "audios/circuit.wav"
-
 #include "Music.h"
 #include <vector>
 #include "SpritesClasses.h"
@@ -48,7 +46,7 @@ public:
 
     struct event eventsHandler(SDL_Event* sdlEvent);
 
-    ~SDLRunningGame();
+    virtual~SDLRunningGame();
 
     void handleModelState(vector<struct event> model_state);
 

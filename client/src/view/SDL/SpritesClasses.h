@@ -62,7 +62,7 @@ public:
         PlayerSprite::setHeight(100);
         PlayerSprite::setWidth(100);
         //DEFAULT POSITION
-        PlayerSprite::set_position(0,0);  //Camino rocoso de la imagen
+        PlayerSprite::set_position(100,550);  //Camino rocoso de la imagen
     }
 
 //________________________________________________________________
@@ -91,7 +91,6 @@ public:
     void mirandoIzquierdaQuieto();
 
 };
-
 //______________________________________________________________________________________________
 //BACKGROUNDSPRITE
 class BackgroundSprite : public Sprite{
@@ -115,7 +114,6 @@ public:
 
     void setFramePosition(int x);
 };
-
 //_______________________________________________________________________________________________
 //MARCO
 class Marco : public PlayerSprite {
@@ -125,7 +123,6 @@ public:
     }
     void setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant){PlayerSprite::setUpImage(imageSpritePath,wFramesCant,hFramesCant);}
 };
-
 //_______________________________________________________________________________________________
 //TARMA
 class Tarma : public PlayerSprite{

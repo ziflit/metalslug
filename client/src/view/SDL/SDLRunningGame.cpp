@@ -8,7 +8,7 @@ void SDLRunningGame::audioInitialization () {
 
 SDL_Texture* SDLRunningGame::createTransparentTexture(SDL_Renderer *renderer){
     SDL_Texture* backgroundTexture = NULL;
-    SDL_Surface* loadingSurface = IMG_Load(backgroundTransparentPath);
+    SDL_Surface* loadingSurface = IMG_Load("sprites/backgroundTransparent.bmp" );
 
     if(loadingSurface == NULL)
         cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
@@ -78,7 +78,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     if (sdlEvent->type == SDL_KEYDOWN){  //si aprieto tal tecla:
         switch (sdlEvent->key.keysym.sym){
             case SDLK_LEFT:
-                printf("aprieto flecha izquierda");
+                cout<<"aprieto flecha izquierda"<<endl;
                 //holdLeftKey != 0 no volver a enviarlo al servidor
                 if(holdLeftKey>0){
                     nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
@@ -195,10 +195,12 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
         switch(nuevoEvento.data.id){
             case Entity::MARCO:
                 this->marcoSprite->handle(nuevoEvento);
-//            case Entity::TARMA:
-//                this->tarmaSprite->handle(nuevoEvento);
-//            case FIO:
-//            case ERI:
+            case Entity::TARMA:
+                this->tarmaSprite->handle(nuevoEvento);
+            case FIO:
+                this->fioSprite->handle(nuevoEvento);
+            case ERI:
+                this->eriSprite->handle(nuevoEvento);
 //            case ENEMY_NORMAL:
             case Entity::BACKGROUND_Z0:
                 this->backgroundSprite0->handle(nuevoEvento);
@@ -227,12 +229,14 @@ void SDLRunningGame::updateWindowSprites () {
 //DESTRUCTOR
 SDLRunningGame::~SDLRunningGame () {
 //____________________________________________________________________________________________
-
+    delete marcoSprite;
+    delete tarmaSprite;
+    delete fioSprite;
+    delete eriSprite;
     SDL_DestroyTexture(backgroundLayer0);
     SDL_DestroyTexture(SDLRunningGame::backgroundLayer1);
     SDL_DestroyTexture(SDLRunningGame::playersLayer);
     SDL_DestroyRenderer(SDLRunningGame::mainRenderer);
-//    closeMixer();   //ESTA EN EL DESTRUCTOR DE MUSIC
 //____________________________________________________________________________________________
     SDL_DestroyWindow(SDLRunningGame::mainWindow);
     SDL_Quit();

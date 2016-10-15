@@ -82,8 +82,8 @@ enum Postura{
 struct event_ext {
 	EventCode code;
 	Entity id;
-	unsigned int x;
-	unsigned int y;
+	int x;
+	int y;
 	Postura postura;
 };
 
