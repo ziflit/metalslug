@@ -45,7 +45,7 @@ struct event Background::getState(){
     eventExt.x = x;
     eventExt.y = y;
 
-	estado.completion = EventCompletion::FINAL_MSG;
+	estado.completion = EventCompletion::PARTIAL_MSG;
 	estado.data = eventExt;
 
 	return estado;

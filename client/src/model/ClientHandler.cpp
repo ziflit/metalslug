@@ -155,10 +155,11 @@ vector<struct event> ClientHandler::getModelState() {
 	list<struct event>::iterator it = incommingEvents.begin();
 	while (it != incommingEvents.end() && !final) {
 		struct event event = (*it);
-		modelState.push_back(event);
-		it = incommingEvents.erase(it);
-		final = event.completion == EventCompletion::FINAL_MSG;
-	}
-	this->incommingMutex.unlock();
-	return modelState;
+    modelState.push_back(event);
+    auto prev = it++;
+    incommingEvents.erase(prev);
+    final = event.completion == EventCompletion::FINAL_MSG;
+  }
+  this->incommingMutex.unlock();
+  return modelState;
 }
