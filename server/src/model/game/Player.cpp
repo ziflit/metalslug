@@ -18,8 +18,8 @@ Player::Player(string user, Entity entitySelected) {
 	 * 	   			|					|
 	 *      (600,800)___________________(600,800)
 	 */
-	x = 100;
-	y = 550;
+	x = 0;
+	y = 400;
 	direccion = 0;
 	speed = 10;
     postura = Postura ::MIRANDO_DERECHA_QUIETO;
@@ -199,7 +199,7 @@ bool Player::isMoving() {
 
 void Player::updatePosition() {
 	if(Player::isMoving()) {
-		if (!((direccion == -1) and (x == 0)) or (!((direccion == 1) and (x == windowWidth)))) {
+		if ((!((direccion == -1) and (x <= speed))) or (!((direccion == 1) and (x == windowWidth)))) {
 			x += direccion*speed;
 		}
 	}

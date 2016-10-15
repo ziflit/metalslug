@@ -23,7 +23,7 @@ protected:
 
 public:
     //CONSTRUCTOR
-    Sprite(SDL_Texture *layer, SDL_Renderer *renderer);
+    Sprite(SDL_Texture *layer, SDL_Renderer *renderer, int window_width, int window_height);
     SDL_Texture* loadTexture(SDL_Renderer* renderer,string imageTexturePath);
     void setUpImage(string imageSpritePath);
 //_________________________________________________________________________________________________________
@@ -56,14 +56,15 @@ public:
 //_______________________________________________________________________________________________
     //Constructor:
 
-    PlayerSprite(SDL_Texture *texture, SDL_Renderer *renderer) : Sprite(texture, renderer) {
+    PlayerSprite(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : Sprite(texture, renderer,window_width,window_height) {
 //        TODO: este seteo se hace a partir del XML
         //DEFAULT SIZE
         PlayerSprite::setHeight(100);
         PlayerSprite::setWidth(100);
         //DEFAULT POSITION
-        PlayerSprite::set_position(100,550);
-        caminandoDerecha();
+        PlayerSprite::set_position(10,550);
+        caminandoDerecha(); //TODO: CUANDO ESTEN LOS SPRITES DE MARCO COMPLETO BORRAR ESTA LINEA Y DESCOMENTAR LA SIGUIENTE
+//        mirandoDerechaQuieto();
     }
 
 //________________________________________________________________
@@ -77,7 +78,6 @@ public:
     void handle(struct event nuevoEvento);
 
     void setNextSpriteFrame();
-    void set_position(int x, int y){Sprite::set_position(x,y);}
     void caminandoIzquierda();
     void mirandoArribaCaminandoIzquierda();
     void agachadoMirandoAIzquierdaQuieto();
@@ -99,12 +99,20 @@ private:
     int spriteImageWidthPanned; //es la posicion horizontal que se va a a ir actualizando
 
 public:
-    BackgroundSprite(SDL_Texture *texture, SDL_Renderer *renderer, int window_widht,int window_height) :
-            Sprite(texture, renderer) {
+    BackgroundSprite(SDL_Texture* texture, SDL_Renderer* renderer, int window_width,int window_height) :
+            Sprite(texture, renderer,window_width,window_height) {
+
         BackgroundSprite::set_position(0,0);
         BackgroundSprite::spriteImageWidthPanned=0;
+
         BackgroundSprite::frameWidth = window_width;
         BackgroundSprite::frameHeight = window_height;
+
+        BackgroundSprite::setWidth(window_width);
+        BackgroundSprite::setHeight(window_height);
+
+        BackgroundSprite::sourceRect.w = window_width;
+        BackgroundSprite::sourceRect.h = window_height;
     }
 
 //_______________________________________________________________________________________________
@@ -119,7 +127,7 @@ public:
 //MARCO
 class Marco : public PlayerSprite {
 public:
-    Marco(SDL_Texture *texture,SDL_Renderer *renderer) : PlayerSprite(texture,renderer) {
+    Marco(SDL_Texture *texture,SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height) {
 //        setUpImage("sprites/marco.png",12,12);//TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
         setUpImage("sprites/marco.png",12,10);
     }
@@ -129,7 +137,7 @@ public:
 //TARMA
 class Tarma : public PlayerSprite{
 public:
-    Tarma(SDL_Texture *texture, SDL_Renderer *renderer) : PlayerSprite(texture,renderer){
+    Tarma(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
         setUpImage("sprites/tarma.png",12,12);
     }
 };
@@ -137,7 +145,7 @@ public:
 //FIO
 class Fio : public PlayerSprite{
 public:
-    Fio(SDL_Texture *texture, SDL_Renderer *renderer) : PlayerSprite(texture,renderer){
+    Fio(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
         setUpImage("sprites/tarma.png",12,12); //TODO: cuando este el png listo, setearlo
     }
 };
@@ -145,7 +153,7 @@ public:
 //ERI
 class Eri : public PlayerSprite{
 public:
-    Eri(SDL_Texture *texture, SDL_Renderer *renderer) : PlayerSprite(texture,renderer){
+    Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
         setUpImage("sprites/tarma.png",12,12); //TODO: cuando este el png listo, setearlo
     }
 };

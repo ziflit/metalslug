@@ -42,6 +42,7 @@ public:
 	void handlePressedKey(EventCode nuevoEvento);
 
 	bool isKeyPressed(EventCode nuevoEvento);
+
 	bool isKeyRealeased(EventCode nuevoEvento);
 
 	// El parametro type, indica con '1' (para presionada)  o '0' (para soltada) si lo que paso fue que se solto o se presiono la tecla (keypressed o keyreleased)
@@ -72,6 +73,10 @@ public:
 	unsigned int getSpeed() const {
 		return speed;
 	}
+
+    unsigned int getDireccion() const{
+        return direccion;
+    }
 
 	void setSpeed(unsigned int speed) {
 		this->speed = speed;
