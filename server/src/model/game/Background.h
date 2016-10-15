@@ -21,16 +21,18 @@ class Background {
 	 */
 
 private:
-	int zindex;  // para saber que background es, parallax
+	Entity entity;
 	unsigned int x;
 	unsigned int y;
 	unsigned int speed;
 
 public:
-	Background(int zindex);
+	Background(int zindex,int speed);
 	virtual ~Background();
 
 	struct event getState();
+
+	void setEntity(int zindex);
 
 	void avanzar();
 
@@ -58,13 +60,6 @@ public:
 		this->y = y;
 	}
 
-	int getZindex() const {
-		return zindex;
-	}
-
-	void setZindex(int zindex) {
-		this->zindex = zindex;
-	}
 };
 
 #endif /* SRC_MODEL_GAME_BACKGROUND_H_ */

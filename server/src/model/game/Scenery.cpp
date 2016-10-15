@@ -4,7 +4,10 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
     //TODO: Esto se va a cargar en base al XML para inicializar el escenario, o algo asi
     windowWidth = width;
     windowHeight = height;
-    this->backgrounds.push_back(new Background(1));
+
+    this->backgrounds.push_back(new Background(0,5));
+    this->backgrounds.push_back(new Background(1,10));
+    this->backgrounds.push_back(new Background(2,10));
     //TODO: setear la velocidad de avance de cada background, el asociado a los players debe tener igual velocidad que ellos.
     //TODO: definir si del XML tambien se setea la cantidad de jugadores.
     //TODO: el seteo de cada jugador.

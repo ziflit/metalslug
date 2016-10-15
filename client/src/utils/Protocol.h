@@ -61,6 +61,7 @@ enum Entity {
 	BACKGROUND_Z0,    // fondo con Z-index 1
 	BACKGROUND_Z1,
   	BACKGROUND_Z2,
+	BACKGROUND_Z3,
 	NOPLAYER
 };
 

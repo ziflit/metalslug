@@ -60,8 +60,9 @@ enum Entity {
 	ENEMY_NORMAL,
 	BACKGROUND_Z0,    // fondo con Z-index 1
 	BACKGROUND_Z1,
-  BACKGROUND_Z2,
-  NOPLAYER
+    BACKGROUND_Z2,
+	BACKGROUND_Z3,
+    NOPLAYER
 };
 
 enum Postura{

@@ -169,10 +169,12 @@ void PlayerSprite::handle(struct event nuevoEvento) {
             agachadoAvanzandoADerecha();
             break;
         case Postura::MIRANDO_DERECHA_QUIETO:
-            mirandoDerechaQuieto();
+//            mirandoDerechaQuieto(); //TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
+            caminandoDerecha();
             break;
         case Postura::MIRANDO_IZQUIERDA_QUIETO :
-            mirandoIzquierdaQuieto();
+//            mirandoIzquierdaQuieto();//TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
+            caminandoIzquierda();
             break;
         default:
             break;
@@ -196,12 +198,12 @@ void BackgroundSprite::setUpImage(string imageSpritePath) {
 }
 
 void BackgroundSprite::setFramePosition(int x) {
-
-    if ((x + frameWidth) == 8000){
+    int pos = (x + this->frameWidth);
+    if (pos == 8000){
         //Recorrio toda la imagen
         //TODO: esto es solo para el demo, sacar para la proxima entrega
         printf("llego al limite del background");
-        Sprite::sourceRect.x = x-(8000-frameWidth);
+        Sprite::sourceRect.x = x-(8000 - this->frameWidth);
     }
     else{
         Sprite::sourceRect.x = x;

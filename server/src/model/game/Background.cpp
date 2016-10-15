@@ -7,14 +7,33 @@
 
 #include "Background.h"
 
-Background::Background(int zindex) {
+Background::Background(int zindex, int speed) {
     x=y=0;
-    this->zindex = zindex;
-    speed = 10;
+    this->setEntity(zindex);
+    this->speed = speed;
 }
 
 void Background::avanzar() {
     this->x+=speed;
+}
+
+void setEntity(int zindex){
+    switch (zindex){
+        case 0:
+            this->entity = Entity::BACKGROUND_Z0;
+            break;
+        case 1:
+            this->entity = Entity::BACKGROUND_Z1;
+            break;
+        case 2:
+            this->entiry = Entity::BACKGROUND_Z2;
+            break;
+        case 3:
+            this->entity = Entity::BACKGROUND_Z3;
+            break;
+        default:
+            break;
+    }
 }
 
 struct event Background::getState(){
@@ -22,7 +41,7 @@ struct event Background::getState(){
 	struct event_ext eventExt;
 
     eventExt.code = EventCode::BACKGROUND_STATUS;
-    eventExt.id = Entity::BACKGROUND_Z1; //
+    eventExt.id = this->entity; //
     eventExt.x = x;
     eventExt.y = y;
 

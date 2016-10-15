@@ -62,7 +62,8 @@ public:
         PlayerSprite::setHeight(100);
         PlayerSprite::setWidth(100);
         //DEFAULT POSITION
-        PlayerSprite::set_position(100,550);  //Camino rocoso de la imagen
+        PlayerSprite::set_position(100,550);
+        caminandoDerecha();
     }
 
 //________________________________________________________________
@@ -76,7 +77,7 @@ public:
     void handle(struct event nuevoEvento);
 
     void setNextSpriteFrame();
-
+    void set_position(int x, int y){Sprite::set_position(x,y);}
     void caminandoIzquierda();
     void mirandoArribaCaminandoIzquierda();
     void agachadoMirandoAIzquierdaQuieto();
@@ -119,7 +120,8 @@ public:
 class Marco : public PlayerSprite {
 public:
     Marco(SDL_Texture *texture,SDL_Renderer *renderer) : PlayerSprite(texture,renderer) {
-        setUpImage("sprites/marco.png",12,12);
+//        setUpImage("sprites/marco.png",12,12);//TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
+        setUpImage("sprites/marco.png",12,10);
     }
     void setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant){PlayerSprite::setUpImage(imageSpritePath,wFramesCant,hFramesCant);}
 };

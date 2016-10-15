@@ -30,18 +30,20 @@ void SDLRunningGame::layersBuilding (){
     //Layers Building
     SDLRunningGame::backgroundLayer0 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
     SDLRunningGame::backgroundLayer1 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
+    SDLRunningGame::backgroundLayer2 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
     SDLRunningGame::playersLayer = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
 }
 
 void SDLRunningGame::spritesBuilding () {
     //Sprites Building
-    SDLRunningGame::backgroundSprite0 = new BackgroundSprite(SDLRunningGame::backgroundLayer0,
-                                                         SDLRunningGame::mainRenderer,window_width,window_height);
+    SDLRunningGame::backgroundSprite0 = new BackgroundSprite(backgroundLayer0, mainRenderer,window_width,window_height);
     SDLRunningGame::backgroundSprite0->setUpImage("sprites/backgrounds/backgroundMetal1.png");
 
-    SDLRunningGame::backgroundPlayersSprite = new BackgroundSprite(SDLRunningGame::backgroundLayer1,
-                                                         SDLRunningGame::mainRenderer,window_width,window_height);
-    backgroundPlayersSprite->setUpImage("sprites/backgrounds/backgroundMetal2.png");
+    SDLRunningGame::backgroundSprite1 = new BackgroundSprite(backgroundLayer1, mainRenderer,window_width,window_height);
+    backgroundSprite1->setUpImage("sprites/backgrounds/demo.bmp");
+
+    SDLRunningGame::backgroundSprite2 = new BackgroundSprite(backgroundLayer2,mainRenderer,window_width,window_height);
+    backgroundSprite2->setUpImage("sprites/backgrounds/front.png");
 
     SDLRunningGame::initializeMarco();
 }
@@ -61,13 +63,9 @@ SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRender
     holdLeftKey = holdRightKey = holdUpKey = holdDownKey = holdAKey= holdSKey = 0;
 }
 
-void SDLRunningGame::initializeMarco() {
-    this->marcoSprite = new Marco(playersLayer,mainRenderer);
-}
-void SDLRunningGame::initializeTarma() {
-    this->tarmaSprite = new Tarma(playersLayer,mainRenderer);
-}
-void SDLRunningGame::initializaFio() {this->fioSprite = new Fio(playersLayer,mainRenderer);}
+void SDLRunningGame::initializeMarco() { this->marcoSprite = new Marco(playersLayer,mainRenderer); }
+void SDLRunningGame::initializeTarma() { this->tarmaSprite = new Tarma(playersLayer,mainRenderer); }
+void SDLRunningGame::initializeFio() {this->fioSprite = new Fio(playersLayer,mainRenderer);}
 void SDLRunningGame::initializeEri() {this->eriSprite = new Eri(playersLayer,mainRenderer);}
 
 struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
@@ -205,7 +203,7 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
             case Entity::BACKGROUND_Z0:
                 this->backgroundSprite0->handle(nuevoEvento);
             case Entity::BACKGROUND_Z1:
-                this->backgroundPlayersSprite->handle(nuevoEvento);
+                this->backgroundSprite1->handle(nuevoEvento);
             case Entity::BACKGROUND_Z2:
                 this->backgroundSprite2->handle(nuevoEvento);
 
@@ -218,26 +216,33 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
 void SDLRunningGame::updateWindowSprites () {
     SDL_RenderClear(SDLRunningGame::mainRenderer);
 
-    SDLRunningGame::backgroundSprite0->actualizarDibujo();
-    SDLRunningGame::backgroundPlayersSprite->actualizarDibujo();
-    SDLRunningGame::marcoSprite->actualizarDibujo();
-    SDLRunningGame::backgroundSprite2->actualizarDibujo();
+    SDLRunningGame::backgroundSprite0->actualizarDibujo();  //nubes, arboles, fondo
+    SDLRunningGame::backgroundSprite1->actualizarDibujo();  //vendrian a ser los edificios
+    SDLRunningGame::marcoSprite->actualizarDibujo();        //se dibujan los personajes
+//    SDLRunningGame::tarmaSprite->actualizarDibujo();      //todo descomentar para multicliente cuando funcione
+//    SDLRunningGame::fioSprite->actualizarDibujo();
+//    SDLRunningGame::eriSprite->actualizarDibujo();
+    SDLRunningGame::backgroundSprite2->actualizarDibujo();  //la capa de las cajas o garra.
 
     SDL_RenderPresent(SDLRunningGame::mainRenderer);
 }
 
 //DESTRUCTOR
 SDLRunningGame::~SDLRunningGame () {
-//____________________________________________________________________________________________
+
     delete marcoSprite;
     delete tarmaSprite;
     delete fioSprite;
     delete eriSprite;
+    delete backgroundSprite0;
+    delete backgroundSprite1;
+    delete backgroundSprite2;
     SDL_DestroyTexture(backgroundLayer0);
-    SDL_DestroyTexture(SDLRunningGame::backgroundLayer1);
-    SDL_DestroyTexture(SDLRunningGame::playersLayer);
-    SDL_DestroyRenderer(SDLRunningGame::mainRenderer);
-//____________________________________________________________________________________________
-    SDL_DestroyWindow(SDLRunningGame::mainWindow);
+    SDL_DestroyTexture(backgroundLayer1);
+    SDL_DestroyTexture(backgroundLayer2);
+    SDL_DestroyTexture(playersLayer);
+
+    SDL_DestroyRenderer(mainRenderer);
+    SDL_DestroyWindow(mainWindow);
     SDL_Quit();
 }
