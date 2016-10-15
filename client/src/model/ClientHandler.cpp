@@ -28,20 +28,21 @@ void connectionReader(ClientHandler *handler) {
 //		}
 		isComplete = sockutils.readSocket(handler->getClientSocket(),
 				eventBuffer);
-		if (isComplete) {
-			struct event incommingEvent = (*(struct event*) eventBuffer);
-			if (incommingEvent.data.code == EventCode::MSG_OK) {
-				continue;
-			}
-			handler->receiveEvent(incommingEvent);
-		} else {
-			is_server_alive = recv(handler->getClientSocket(), &buffer, MSGSIZE,
-					MSG_PEEK);
-			if (is_server_alive == -1) {
-				LOGGER_WRITE(Logger::ERROR, "Conexion con el servidor perdida",
-						"ClientHandler.class")
-				handler->stop();
-			}
+    if (isComplete) {
+        struct event incommingEvent = (*(struct event*) eventBuffer);
+        if (incommingEvent.data.code == EventCode::MSG_OK) {
+            continue;
+        }
+        handler->receiveEvent(incommingEvent);
+    } else {
+        cout << "Mal paquete..." << endl;
+        is_server_alive = recv(handler->getClientSocket(), &buffer, MSGSIZE,
+                               MSG_PEEK);
+        if (is_server_alive == -1) {
+            LOGGER_WRITE(Logger::ERROR, "Conexion con el servidor perdida",
+                         "ClientHandler.class")
+                handler->stop();
+        }
 		}
 	}
 }

@@ -2,6 +2,7 @@
 #include <unistd.h>
 
 #include "model/client.h"
+#include <time.h>
 #include "utils/Logger.h"
 #include "view/SDL/InitialWindow.h"
 #include "view/SDL/SDLRunningGame.h"
@@ -72,11 +73,28 @@ if (cliente->is_connected()){
 
     // Ciclo que recive constantemente el estado del escenario, y se lo manda al sdlRunningGame para que lo dibuje
     vector<struct event> modelStateToRender;
+
+    int count = 0;
+    double time_counter = 0;
+
+    clock_t now = clock();
+    clock_t last = now;
+
     while(cliente->is_connected()){
-    	modelStateToRender = (cliente->getHandler())->getModelState();
-    	if (not modelStateToRender.empty()){
-    		sdlRunningGame->handleModelState(modelStateToRender);
-    	}
+        now = clock();
+
+        time_counter += double(now - last);
+        last = now;
+
+        modelStateToRender = (cliente->getHandler())->getModelState();
+        if (not modelStateToRender.empty()){
+            count++;
+            if (time_counter > (double)CLOCKS_PER_SEC) {
+                cout << count << endl;
+                time_counter -= (double)CLOCKS_PER_SEC;
+            }
+            sdlRunningGame->handleModelState(modelStateToRender);
+        }
     }
     enviarTeclasAlServerEnThread.join();
 }
