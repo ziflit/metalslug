@@ -197,22 +197,18 @@ void BackgroundSprite::setUpImage(string imageSpritePath) {
 
 void BackgroundSprite::setFramePosition(int x) {
 
-    if (((x - (this->spriteImageWidthPanned*Sprite::spriteImageWidth)) + frameWidth) >= Sprite::spriteImageWidth){
+    if ((x + frameWidth) == 8000){
         //Recorrio toda la imagen
         //TODO: esto es solo para el demo, sacar para la proxima entrega
         printf("llego al limite del background");
-        Sprite::sourceRect.x = 0;
-        this->spriteImageWidthPanned += 1;
-    }
-    else if(spriteImageWidthPanned>0){
-        Sprite::sourceRect.x = x - (this->spriteImageWidthPanned*Sprite::spriteImageWidth);
+        Sprite::sourceRect.x = x-(8000-frameWidth);
     }
     else{
         Sprite::sourceRect.x = x;
     }
 
     //TODO: para la entrega N3 el codigo sera:
-    //Sprite::sourceRect.x = x;
+//    Sprite::sourceRect.x = x;
 }
 
 void BackgroundSprite::handle(struct event nuevoEvento) {
