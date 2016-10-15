@@ -15,15 +15,14 @@ class Player {
 private:
 	string username;
 	Entity entity;
-    unsigned int x;
-    unsigned int y;
-    int direccion;
+    int x;
+    int y;
+    int direccionX;
+	int direccionY;
 	int speed;
+	int gravity;
 	Postura postura;
-    unsigned int actualPhotogramOfTheSprite;
-    unsigned int anchoDelFotograma;
-	unsigned int anchoDelSprite; // Ancho de la imagen total, del sprite, se usa para calcular cuantos fotogramas tiene el sprite
-	unsigned int windowWidth;
+	int windowWidth;
 
 
 public:
@@ -48,15 +47,21 @@ public:
 	// El parametro type, indica con '1' (para presionada)  o '0' (para soltada) si lo que paso fue que se solto o se presiono la tecla (keypressed o keyreleased)
 	void updateState(EventCode nuevoEvento);
 
+	bool isJumping();
+
 	bool isMoving();
 
-    void avanzar();
+	void jump();
+	
+	void jumpGoingUp();
+
+	void jumpGoingDown();
+	
+	void avanzar();
 
     void retroceder();
 
 	void updatePosition();
-
-	void setNextSpriteFrame();
 
 	bool isInHalfWindow();
 
@@ -74,8 +79,8 @@ public:
 		return speed;
 	}
 
-    unsigned int getDireccion() const{
-        return direccion;
+    unsigned int getDireccionX() const{
+        return direccionX;
     }
 
 	void setSpeed(unsigned int speed) {

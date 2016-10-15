@@ -58,7 +58,7 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
 
 bool Scenery::todosJugadoresAvanzando(){
     for(auto player : players){
-        if(player->getDireccion()<1){
+        if(player->getDireccionX()<1){
             return false;
         }
     }
