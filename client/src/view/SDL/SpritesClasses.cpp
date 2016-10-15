@@ -1,6 +1,6 @@
 #include "SpritesClasses.h"
 
-Sprite::Sprite(SDL_Texture *layer, SDL_Renderer *mainRenderer) {
+Sprite::Sprite(SDL_Texture* layer, SDL_Renderer* mainRenderer, int window_width, int window_height) {
 
     Sprite::layer = layer;
     Sprite::renderer = mainRenderer;
@@ -8,8 +8,8 @@ Sprite::Sprite(SDL_Texture *layer, SDL_Renderer *mainRenderer) {
     Sprite::sourceRect.x = Sprite::sourceRect.y = 0; //FRAME INICIAL
     Sprite::destRect.x = Sprite::destRect.y = 0; //POSICION INICIAL
 
-    Sprite::window_width = 800;
-    Sprite::window_height = 206;
+    Sprite::window_width = window_width;
+    Sprite::window_height = window_height;
 }
 
 void Sprite::setUpImage(string imageSpritePath) {
@@ -187,14 +187,6 @@ void BackgroundSprite::setUpImage(string imageSpritePath) {
 
     Sprite::setUpImage(imageSpritePath);
 
-    frameWidth = BackgroundSprite::window_width;
-    frameHeight = BackgroundSprite::window_height;
-
-    BackgroundSprite::setWidth(window_width);
-    BackgroundSprite::setHeight(window_height);
-
-    BackgroundSprite::sourceRect.w = BackgroundSprite::frameWidth;
-    BackgroundSprite::sourceRect.h = BackgroundSprite::frameHeight;
 }
 
 void BackgroundSprite::setFramePosition(int x) {

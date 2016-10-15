@@ -58,7 +58,7 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
 
 bool Scenery::todosJugadoresAvanzando(){
     for(auto player : players){
-        if(player->getSpeed()<1){ //quieto (speed = 0) o retrocediendo (speed<0)
+        if(player->getDireccion()<1){
             return false;
         }
     }
@@ -98,8 +98,10 @@ void Scenery::updateBackgroudsState(){
         for(auto background : backgrounds){
 
             background->avanzar();
-            //como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
-            //el asociado a los players debe avanzar exactamente igual que ellos.
+            /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
+             * el asociado a los players debe avanzar exactamente igual que ellos.
+             * Es por eso que tiene seteada igual velocidad.
+             */
         }
         for(auto player : players){
             player->retroceder();

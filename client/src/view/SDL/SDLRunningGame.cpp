@@ -63,10 +63,10 @@ SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRender
     holdLeftKey = holdRightKey = holdUpKey = holdDownKey = holdAKey= holdSKey = 0;
 }
 
-void SDLRunningGame::initializeMarco() { this->marcoSprite = new Marco(playersLayer,mainRenderer); }
-void SDLRunningGame::initializeTarma() { this->tarmaSprite = new Tarma(playersLayer,mainRenderer); }
-void SDLRunningGame::initializeFio() {this->fioSprite = new Fio(playersLayer,mainRenderer);}
-void SDLRunningGame::initializeEri() {this->eriSprite = new Eri(playersLayer,mainRenderer);}
+void SDLRunningGame::initializeMarco() { this->marcoSprite = new Marco(playersLayer,mainRenderer,window_width,window_height); }
+void SDLRunningGame::initializeTarma() { this->tarmaSprite = new Tarma(playersLayer,mainRenderer,window_width,window_height); }
+void SDLRunningGame::initializeFio() {this->fioSprite = new Fio(playersLayer,mainRenderer,window_width,window_height);}
+void SDLRunningGame::initializeEri() {this->eriSprite = new Eri(playersLayer,mainRenderer,window_width,window_height);}
 
 struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     struct event nuevoEvento;
