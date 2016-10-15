@@ -115,6 +115,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                     holdDownKey = 1;
                 }
                 return nuevoEvento;
+
             case SDLK_a:  //salto
                 printf("aprieto a");
                 if(holdAKey>0){
@@ -122,8 +123,10 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 }
                 else{
                     nuevoEvento.data.code = EventCode ::SDL_KEY_A_PRESSED;
+                    holdAKey = 1;
                 }
                 return nuevoEvento;
+
             case SDLK_s: //tiros
                 printf("aprieto s");
                 if(holdSKey>0){
@@ -131,6 +134,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 }
                 else{
                     nuevoEvento.data.code = EventCode ::SDL_KEY_S_PRESSED;
+                    holdSKey = 1;
                 }
                 return nuevoEvento;
             default:
