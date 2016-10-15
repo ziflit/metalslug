@@ -5,6 +5,7 @@
  *      Author: fpirra
  */
 
+#include <iostream>
 #include "Player.h"
 
 Player::Player(string user, Entity entitySelected) {
@@ -22,6 +23,7 @@ Player::Player(string user, Entity entitySelected) {
 	y = 400;
     direccionY = 0;
 	direccionX = 0;
+    posAtJump = 0;
     gravity = 10;
 	speed = 10;
     postura = Postura::MIRANDO_DERECHA_QUIETO;
@@ -30,7 +32,7 @@ Player::Player(string user, Entity entitySelected) {
 Player::~Player() {
 }
 
-void Player::set_position(unsigned int posx, unsigned int posy) {
+void Player::set_position( int posx,  int posy) {
     x = posx;
     y = posy;
 }
@@ -69,9 +71,6 @@ bool Player::isKeyRealeased(EventCode nuevoEvento) {
 void Player::handleRealeasedKey(EventCode nuevoEvento) {
     switch (nuevoEvento) {
         //REALEASED____________________________________________________________________________________________________________
-        case EventCode::SDL_KEY_A_RELEASED:
-            direccionY = 0;
-            break;
 
         case EventCode::SDL_KEYLEFT_RELEASED:
             if(direccionX == -1){
@@ -138,6 +137,10 @@ void Player::handleRealeasedKey(EventCode nuevoEvento) {
 void Player::handlePressedKey(EventCode nuevoEvento){
     switch (nuevoEvento){
         //PRESSED____________________________________________________________________________________________________________
+        case EventCode::SDL_KEY_A_PRESSED:
+            direccionY = 1;
+            break;
+
         case EventCode::SDL_KEYUP_PRESSED:
             if(direccionX == 1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
             else if(direccionX == -1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
@@ -178,13 +181,6 @@ void Player::handlePressedKey(EventCode nuevoEvento){
                 postura = Postura::MIRANDO_IZQUIERDA_QUIETO;}
             break;
 
-        case EventCode::SDL_KEY_A_PRESSED:
-            direccionY = -1;
-//            if (not isJumping){
-//                jump();
-//            }
-            break;
-
         default:
             break;
     }
@@ -210,17 +206,26 @@ bool Player::isMoving() {
 }
 
 bool Player::isJumping() {
-    return (Player::direccionY != 0); // en -1 y 1 esta saltando
+    return direccionY == 1;
 }
 
 void Player::updatePosition() {
-	if(Player::isMoving()) {
+	if(this->isMoving()) {
 		if ((!((direccionX == -1) and (x <= speed))) or (!((direccionX == 1) and (x == windowWidth)))) {
 			x += direccionX*speed;
 		}
 	}
-    if(Player::isJumping()) {
-        y += direccionY*gravity;
+    if(this->isJumping()) {
+        cout << posAtJump << endl;
+        cout << direccionY << endl;
+        if (posAtJump < 201){
+            posAtJump += 1;
+            y = 400 - jumpPos[posAtJump];
+        } else {
+            direccionY = 0;
+            posAtJump = 0;
+            cout << direccionY << endl;
+        }
     }
 }
 
@@ -231,7 +236,6 @@ void Player::avanzar(){
 void Player::retroceder(){
     x -= speed;
 }
-
 
 struct event Player::getNewState(){
 	struct event estado;
