@@ -53,6 +53,7 @@ public:
 
 	vector<struct event> obtenerEstadoEscenario();
 
+    int findPlayerByUsername(string user);
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */

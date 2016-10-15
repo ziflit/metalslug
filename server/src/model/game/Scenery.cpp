@@ -17,6 +17,10 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
 //PROCESAMIENTO DE EVENTOS:
 
 Entity Scenery::buildPlayer(string user) {
+    int position = this->findPlayerByUsername(user);
+    if (position != -1) {
+        return players[position]->getEntity();
+    }
     Player* newPlayer;
     cout<<"PLAYERS LIST SIZE: "<<players.size()<<endl;
     if(players.size() == 0){
@@ -37,6 +41,15 @@ Entity Scenery::buildPlayer(string user) {
     }
     else if(players.size() > 3){ return NOPLAYER; }
     return newPlayer->getEntity();
+}
+
+int Scenery::findPlayerByUsername(string user) {
+    for (unsigned int i = 0; i < players.size(); ++i) {
+        if (players[i]->getUsername() == user) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 void Scenery::process_key(EventCode keycode, Entity entity) {
