@@ -28,6 +28,7 @@ private:
 
 public:
 	Background(int zindex,int speed);
+
 	virtual ~Background();
 
 	struct event getState();

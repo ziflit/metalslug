@@ -17,7 +17,7 @@ void Background::avanzar() {
     this->x+=speed;
 }
 
-void setEntity(int zindex){
+void Background::setEntity(int zindex){
     switch (zindex){
         case 0:
             this->entity = Entity::BACKGROUND_Z0;
@@ -26,7 +26,7 @@ void setEntity(int zindex){
             this->entity = Entity::BACKGROUND_Z1;
             break;
         case 2:
-            this->entiry = Entity::BACKGROUND_Z2;
+            this->entity = Entity::BACKGROUND_Z2;
             break;
         case 3:
             this->entity = Entity::BACKGROUND_Z3;
