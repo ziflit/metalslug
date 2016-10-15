@@ -185,7 +185,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
 void SDLRunningGame::handleModelState(vector <event> model_state) {
     if ( not model_state.empty() ){
         for (auto event : model_state) {
-            cout << "X: " << event.data.x << endl << "Y: " << event.data.y << endl;
+            // cout << "X: " << event.data.x << endl << "Y: " << event.data.y << endl;
         }
 
         //TODO: manejar la actualizacion todos los sprites existentes.
