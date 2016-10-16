@@ -67,6 +67,10 @@ void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFram
     PlayerSprite::sourceRect.h = PlayerSprite::frameHeight;
 }
 
+void PlayerSprite::colorear() {}
+void PlayerSprite::grisar() {}
+
+
 /**  MOVIMIENTOS
 *_________________________________________________________________________________________________________
 * _________________
@@ -138,7 +142,12 @@ void PlayerSprite::handle(struct event nuevoEvento) {
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
     //TODO: FALTA MANEJAR ACA EL CAMBIO DE FRAMES, PARA ESTA ENTREGA POR SER DEMO LO MANEJA SDL, PARA REINICIAR EL ARRANQUE DEL BACKGROUND
+
+    if ( nuevoEvento.data.postura != Postura::DESCONECTADO) {
+        this->colorear();
+    }
     switch (nuevoEvento.data.postura){
+
         case Postura::CAMINANDO_IZQUIERDA:
             caminandoIzquierda();
             break;
@@ -176,18 +185,8 @@ void PlayerSprite::handle(struct event nuevoEvento) {
             mirandoIzquierdaQuieto();
             break;
         case Postura::DESCONECTADO:
-            if (nuevoEvento.data.id == MARCO) {
-                setUpImage("sprites/player/marcoGrisado.png",wFramesCant,hFramesCant);
-            }
-            else if (nuevoEvento.data.id == TARMA) {
-                setUpImage("sprites/player/tarmaGrisado.png",wFramesCant,hFramesCant);
-            }
-            else if (nuevoEvento.data.id == FIO) {
-                setUpImage("sprites/player/fioGrisado.png",wFramesCant,hFramesCant);
-            }
-            else if (nuevoEvento.data.id == ERI) {
-                setUpImage("sprites/player/eriGrisado.png",wFramesCant,hFramesCant);
-            }
+            grisado = true;
+            this->grisar();
             break;
         default:
             break;
@@ -222,5 +221,34 @@ void BackgroundSprite::handle(struct event nuevoEvento) {
     BackgroundSprite::setFramePosition(nuevoEvento.data.x);
 }
 
+void Marco::colorear() {
+    setUpImage("sprites/player/marco.png",12,12);
+}
 
+void Marco::grisar() {
+    setUpImage("sprites/player/marcoGrisadp.png",12,12);
+}
 
+void Tarma::colorear() {
+    setUpImage("sprites/player/tarma.png",15,10);
+}
+
+void Tarma::grisar() {
+    setUpImage("sprites/player/tarmaGrisado.png",15,10);
+}
+
+void Fio::colorear() {
+    setUpImage("sprites/player/fio.png",15,15);
+}
+
+void Fio::grisar() {
+    setUpImage("sprites/player/fioGrisar.png",15,15);
+}
+
+void Eri::colorear() {
+    setUpImage("sprites/player/eri.png",15,3);
+}
+
+void Eri::grisar() {
+    setUpImage("sprites/player/eri.png",15,3);
+}

@@ -52,6 +52,7 @@ class PlayerSprite : public Sprite{
 
 private:
     int wFramesCant,wActualPosFrame,hFramesCant;
+    bool grisado;
 public:
 //_______________________________________________________________________________________________
     //Constructor:
@@ -63,8 +64,8 @@ public:
         PlayerSprite::setWidth(100);
         //DEFAULT POSITION
         PlayerSprite::set_position(10,550);
-        caminandoDerecha(); //TODO: CUANDO ESTEN LOS SPRITES DE MARCO COMPLETO BORRAR ESTA LINEA Y DESCOMENTAR LA SIGUIENTE
-//        mirandoDerechaQuieto();
+        mirandoDerechaQuieto();
+        grisado = true;
     }
 
 //________________________________________________________________
@@ -76,6 +77,9 @@ public:
 //__________________________________________________________________
 
     void handle(struct event nuevoEvento);
+
+    void grisar();
+    void colorear();
 
     void setNextSpriteFrame();
     void caminandoIzquierda();
@@ -130,7 +134,8 @@ public:
     Marco(SDL_Texture *texture,SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height) {
         setUpImage("sprites/player/marco.png",12,12);
     }
-    void setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant){PlayerSprite::setUpImage(imageSpritePath,wFramesCant,hFramesCant);}
+    void grisar();
+    void colorear();
 };
 //_______________________________________________________________________________________________
 //TARMA
@@ -139,14 +144,18 @@ public:
     Tarma(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
         setUpImage("sprites/player/tarma.png",15,10);
     }
+    void grisar();
+    void colorear();
 };
 //_______________________________________________________________________________________________
 //FIO
 class Fio : public PlayerSprite{
 public:
     Fio(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/player/tarma.png",15,15);
+        setUpImage("sprites/player/fio.png",15,15);
     }
+    void grisar();
+    void colorear();
 };
 //_______________________________________________________________________________________________
 //ERI
@@ -155,6 +164,8 @@ public:
     Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
         setUpImage("sprites/player/eri.png",15,3); //TODO: cuando este el png listo, setearlo
     }
+    void grisar();
+    void colorear();
 };
 
 

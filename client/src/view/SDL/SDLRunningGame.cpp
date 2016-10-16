@@ -28,10 +28,7 @@ SDL_Texture* SDLRunningGame::createTransparentTexture(SDL_Renderer *renderer){
 
 void SDLRunningGame::layersBuilding (){
     //Layers Building
-    SDLRunningGame::backgroundLayer0 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
-    SDLRunningGame::backgroundLayer1 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
-    SDLRunningGame::backgroundLayer2 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
-    SDLRunningGame::playersLayer = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
+//    SDLRunningGame::backgroundLayer0 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
 }
 
 void SDLRunningGame::spritesBuilding () {
