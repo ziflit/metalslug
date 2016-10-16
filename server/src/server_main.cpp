@@ -5,6 +5,7 @@
 
 #include "model/server.h"
 #include "utils/Logger.h"
+#include "utils/xml/XmlLoader.h"
 
 const int FPS = 30;
 bool onlinethread = true;
@@ -104,6 +105,9 @@ int main(int argc, char* argv[]) {
 
     thread corredor_de_modelo = std::thread(correr_modelo, server);
     corredor_de_modelo.detach();
+
+    XmlLoader* xml = new XmlLoader();
+    xml->loadXML();
 
     bool online = true;
     while (online) {
