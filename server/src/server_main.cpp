@@ -54,14 +54,11 @@ void correr_modelo(Server* server) {
             time_counter -= (double)CLOCKS_PER_SEC;
         }
         count++;
-        delete eventos;
         double lalala = (double)start + (double)ms_per_frame - (double)clock();
         last = clock();
         if ((lalala) > 0) {
             usleep (lalala);
         }
-        if (not eventos->empty())
-        clearQueue(*eventos); //borra la cola de forma eficiente
         model_state.clear();
     }
 
@@ -115,7 +112,7 @@ int main(int argc, char* argv[]) {
         if (keypressed == "q") {
             LOGGER_WRITE(Logger::INFO, "Apagando el servidor...", "ClientMain")
             online = false;
-            server->shouldCloseFunc(true);            
+            server->shouldCloseFunc(true);
         }
         sleep(2);
     }

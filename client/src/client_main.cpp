@@ -95,7 +95,7 @@ if (cliente->is_connected()){
             }
             sdlRunningGame->handleModelState(modelStateToRender);
         }
-        double lalala = (double)now + 32000 - (double)clock();
+        double lalala = (double)now + 25000 - (double)clock();
         if ((lalala) > 0) {
             usleep (lalala);
         }
