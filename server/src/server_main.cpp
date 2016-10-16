@@ -54,10 +54,10 @@ void correr_modelo(Server* server) {
             time_counter -= (double)CLOCKS_PER_SEC;
         }
         count++;
-        double lalala = (double)start + (double)ms_per_frame - (double)clock();
+        double tiempo_a_dormir = (double)start + (double)ms_per_frame - (double)clock();
         last = clock();
-        if ((lalala) > 0) {
-            usleep (lalala);
+        if ((tiempo_a_dormir) > 0) {
+            usleep (tiempo_a_dormir);
         }
         model_state.clear();
     }

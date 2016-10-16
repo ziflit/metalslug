@@ -95,9 +95,9 @@ if (cliente->is_connected()){
             }
             sdlRunningGame->handleModelState(modelStateToRender);
         }
-        double lalala = (double)now + 25000 - (double)clock();
-        if ((lalala) > 0) {
-            usleep (lalala);
+        double tiempo_a_dormir = (double)now + 25000 - (double)clock();
+        if ((tiempo_a_dormir) > 0) {
+            usleep (tiempo_a_dormir);
         }
     }
     enviarTeclasAlServerEnThread.join();
