@@ -24,7 +24,7 @@ public:
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
 		 */
-		bool connect_to_server(string ip, int port);
+		bool connect_to_server(string ip, int port, string user);
 
 		/* Pre: cliente conectado a un servidor
 		 * Post: cliente desconectado del servidor
