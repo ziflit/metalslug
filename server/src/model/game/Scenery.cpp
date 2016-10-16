@@ -28,11 +28,11 @@ Entity Scenery::buildPlayer(string user) {
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() == 1){
-        newPlayer = new Player(user, TARMA);
+        newPlayer = new Player(user, FIO);
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() == 2){
-        newPlayer = new Player(user, FIO);
+        newPlayer = new Player(user, TARMA);
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() == 3){
