@@ -13,13 +13,15 @@ class Music{
 private:
     Mix_Music* piece;
 public:
+
+    void initializeMixer();
     Music(std::string musicPath);
     void play();
     void changeTrack(std::string file);
     void stop();
     void pause();
     void pauseAllSounds(){Mix_Pause(-1);}
-    void resumePlayindAllSounds(){Mix_Resume(-1);}
+    void resumePlayingAllSounds(){Mix_Resume(-1);}
     ~Music();
 };
 

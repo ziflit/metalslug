@@ -26,7 +26,7 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, char *usern
 
 
     struct timeval timeout;
-    timeout.tv_sec = 10;
+    timeout.tv_sec = 100;
     timeout.tv_usec = 0;
 
     if (setsockopt(this->clientSocket, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout))) {
@@ -40,8 +40,8 @@ ClientConnection::ClientConnection(int clientSocket, Server *server, char *usern
 }
 
 void connectionControl(ClientConnection* handler) {
-    struct msg_request_t alive;
-    alive.code = MessageCode::MSG_OK;
+    struct event alive;
+    alive.data.code = EventCode::MSG_OK;
     while (!handler->shouldClose) { // while está vivo
         sleep(5);
         handler->queuemutex.lock();
@@ -53,22 +53,31 @@ void connectionControl(ClientConnection* handler) {
 int connectionReader(ClientConnection *handler) {
     bool isComplete;
     SocketUtils sockutils;
-    vector<struct msg_request_t> mensajes;
-    char buffer[BUFSIZE];
+    vector<struct event> mensajes;
+    char buffer[MSGSIZE];
 
     do {
         isComplete = sockutils.readSocket(handler->getClientSocket(), buffer);
-        if (((*(struct msg_request_t*)buffer)).code == MessageCode::MSG_OK) { continue; }
+        if (((*(struct event*)buffer)).data.code == EventCode::MSG_OK) { cout<<"esta vivo"<<endl;continue; }
         else {
             if (!isComplete) {
                 //LOGGER_WRITE(Logger::ERROR, "Error de recepcion de mensaje. \n " + strerror(errno), CLASSNAME);
                 handler->stop();
                 //LOGGER_WRITE(Logger::ERROR, "Conexion cerrada.", CLASSNAME);
             } else {
-                mensajes.push_back(*(struct msg_request_t *)buffer);
-                if ((*(struct msg_request_t*)buffer).completion == MessageCompletion::FINAL_MSG) {
+                // TODO reveer si realmente todavía usamos un vector<struct event> mensajes, porque todos los eventos
+                // de tecla son FINAL_MSG
+                mensajes.push_back(*(struct event *)buffer);
+                if ((*(struct event*)buffer).completion == EventCompletion::FINAL_MSG) {
                     LOGGER_WRITE(Logger::INFO, "Se recibio mensaje de " + string(handler->getUsername()) ,"ClientConnection.class")
-                        handler->handle_message(mensajes, mensajes.front().code);
+                    cout << "Se recibio mensaje de " + string(handler->getUsername()) << endl;
+                    if (mensajes.front().data.code == EventCode::SDL_KEYRIGHT_PRESSED) {
+                        cout << "Llegó mensaje de tecla derecha apretada" << endl;
+                    }
+                    if (mensajes.front().data.code == EventCode::SDL_KEYLEFT_PRESSED) {
+                        cout << "Llegó mensaje de tecla derecha apretada" << endl;
+                    }
+                    handler->handle_message(mensajes, mensajes.front().data.code);
                     mensajes.clear();
                 }
             }
@@ -84,7 +93,7 @@ int connectionWriter(ClientConnection *data) {
     while (!data->shouldClose) {
         data->queuemutex.lock();
         if (data->has_events()) {
-            msg_request_t event = data->event_queue.front();
+            event event = data->event_queue.front();
             data->event_queue.pop_front();
             data->queuemutex.unlock();
             result = sockutils.writeSocket(data->getClientSocket(), event);
@@ -113,16 +122,21 @@ void ClientConnection::stop() {
     close(this->clientSocket);
 }
 
-void ClientConnection::push_event(struct msg_request_t event) {
+void ClientConnection::push_event(struct event event) {
     this->queuemutex.lock();
+    if (this->event_queue.size() >= 50) {
+        event_queue.pop_front();
+    }
     event_queue.push_back(event);
     this->queuemutex.unlock();
 }
 
-void ClientConnection::handle_message(vector<struct msg_request_t> mensajes, MessageCode code) {
-    MessageUtils messageutils;
-    Message* message = messageutils.buildMessage(mensajes);
-    server->handle_message(message, code);
+void ClientConnection::handle_message(vector<struct event> mensajes, EventCode code) {
+    // MessageUtils messageutils;
+    // Message* message = messageutils.buildMessage(mensajes);
+    for (auto event : mensajes) {
+        server->handle_message(event, code, this->getUsername());
+    }
 }
 
 ClientConnection::ClientConnection() {}

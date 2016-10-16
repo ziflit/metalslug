@@ -14,6 +14,7 @@ using namespace std;
 
 Server::Server(string path) {
     this->userloader = new UserLoader(path);
+    this->scenery = new Scenery(800,600);
 }
 
 Server::~Server() {
@@ -24,41 +25,30 @@ Server::~Server() {
  * Manda los mensajes que se ingresen por cin()
  */
 void client_comm(Server *srv, int client) {
-    /* Mensaje de bienvenida. Se manda una vez fijo */
-
     SocketUtils sockutils;
     /* Recibo user y pass del cliente */
     char user[20];
-    char pass[20];
-    recv(client, user, 20, 0);
-    recv(client, pass, 20, 0);
-    if (srv->auth_user(user, pass)) {
-        struct msg_request_t resp;
-        resp.code = MessageCode::LOGIN_OK;
+    recv(client, user, 20, 0); /* Nombre de usuario */
+    Entity assignedPlayer = srv->connect_user(user);
 
+    if (assignedPlayer != Entity::NOPLAYER) {
+        /* Le informo al cliente que se logueo ok */
+        struct event resp;
+        resp.data.code = EventCode::LOGIN_OK;
+        resp.data.id = assignedPlayer;
         sockutils.writeSocket(client, resp);
-
-        /* Envio de lista de usuarios */
-        Message* usersListMsg = new Message();
-        usersListMsg->setContent((srv->getUserLoader())->getUsersList());
-        MessageUtils messageUtils;
-        vector<struct msg_request_t> requests =  messageUtils.buildRequests(usersListMsg, MessageCode:: USERS_LIST_MSG);
 
         ClientConnection* handler = new ClientConnection(client, srv, user);
-
+        srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
         handler->start();
-        srv->add_connection(handler);
-        for (auto req : requests) {
-            handler->push_event(req);
-        }
-
+        /* Le mando el estado actual del modelo al cliente */
+        /* Tenemos forma de asegurar que el modelo haya empezado a correr cuando se llega a este punto? */
+        srv->send_model_snapshot(handler);
     } else {
-        struct msg_request_t resp;
-        resp.code = MessageCode::LOGIN_FAIL;
+        struct event resp;
+        resp.data.code = EventCode::LOGIN_FAIL;
         sockutils.writeSocket(client, resp);
     }
-    /* Esto crea un nuevo objeto ClientConnection que
-     * se comunicará con el cliente en cuestión. Le paso el fd */
 }
 
 bool Server::auth_user(char *user, char *pass) {
@@ -183,50 +173,25 @@ vector<shared_ptr<ClientConnection> > Server::get_connections() {
     return connections;
 }
 
-void filter_and_send(Server *server, const char *requester, shared_ptr<ClientConnection> handler) {
-    LOGGER_WRITE(Logger::INFO, "Filtrando mensajes de cliente " + string(requester), "Server.class")
-    auto realmessages = server->get_messages_of(requester);
-    MessageUtils messageutils;
-    for (auto message : realmessages) {
-        vector<struct msg_request_t> requests = messageutils.buildRequests(message, MessageCode::CLIENT_RECEIVE_MSGS);
-        for (auto req : requests) {
-            handler->push_event(req);
-        }
-    }
-    Message *lastmsgmsg = new Message("server", "user", "Ud. no tiene mas mensajes");
-    struct msg_request_t lastMsg = messageutils.buildRequests(lastmsgmsg, MessageCode::LAST_MESSAGE).front();
-    handler->push_event(lastMsg);
-}
-
-void Server::handle_message(Message *message, MessageCode code) {
+void Server::handle_message(struct event event, EventCode code, char* username) {
     shared_ptr<ClientConnection> handler;
-    thread writer_thread;
+    /* Me llega un Evento y me tengo que fijar de quién viene */
+    /* Tengo que pasarle al escenario el evento y el nombre de usuario que lo mandó */
+
     switch(code) {
-    case MessageCode::CLIENT_SEND_MSG:
+    case EventCode::CLIENT_SEND_MSG:
         cout << "CLIENT_SEND_MSG" << endl;
-        store_message(message);
+        // store_message(message);
         break;
 
-    case MessageCode::CLIENT_DISCONNECT:
+    case EventCode::CLIENT_DISCONNECT:
         cout << "CLIENT_DISCONNECT" << endl;
-        handler = this->get_user_handler(message->getFrom().data());
+        handler = this->get_user_handler(username);
         close_connection(handler->getUsername());
         break;
 
-    case MessageCode::CLIENT_RECEIVE_MSGS:
-        cout << "CLIENT_RECEIVE_MSGS" << endl;
-        /* Aca hay que hacer la parte de enviar todos los
-         * mensajes que hay en la lista al usuario en cuestion
-         * deberia estar en un thread aparte */
-        handler = this->get_user_handler(message->getFrom().data());
-        writer_thread = thread(filter_and_send, this, message->getFrom().data(), handler);
-        writer_thread.detach();
-        break;
-
     default:
-        string content;
-        content = message->getContent();
-        cout << "El mensaje entrante es: " << content << endl;
+        this->incoming_events.push_back(event);
         break;
     }
 }
@@ -240,37 +205,48 @@ shared_ptr<ClientConnection> Server::get_user_handler(const char *username) {
     return nullptr;
 }
 
-void Server::store_message(Message *message) {
-    LOGGER_WRITE(Logger::INFO, "Guardando mensaje de " + message->getFrom() + " para " + message->getTo(),
-                 "Server.class")
-    cout << "Guardando el mensaje: " << message->getContent() << endl;
-    msglist_mutex.lock();
-    messagesList.push_back(message);
-    msglist_mutex.unlock();
-}
-
 void Server::shouldCloseFunc(bool should) {
     shouldClose = should;
 }
 
-list<Message *> Server::get_messages_of(const char *user) {
-    std::list<Message *> messagesFiltered;
-    msglist_mutex.lock();
-    for (auto it = messagesList.begin(); it != messagesList.cend();) {
-        if (strcmp((*it)->getTo().data(), user) == 0) {
-            messagesFiltered.push_back(*it);
-            it = messagesFiltered.erase(it); // ...
-        } else {
-            it++;
-        }
-    }
-    msglist_mutex.unlock();
-    return messagesFiltered;
-}
-/* Si  necesito acceso aleatorio, uso vector
-pero si necesito recorrer de principio a fin o voy borrando/insertando
-elementos en el medio, uso list */
-
 UserLoader* Server::getUserLoader() {
     return this->userloader;
 }
+
+queue<struct event>* Server::getIncomingEvents() {
+    // TODO lento! estas creando uan cola dentro de un while true por cada ciclo
+    this->incoming_mutex.lock();
+    queue<struct event>* ret = new queue<struct event>;
+    for (auto event : incoming_events) {
+        ret->emplace(event);
+    }
+    this->incoming_events.empty();
+    this->incoming_mutex.unlock();
+    return ret;
+}
+
+void Server::broadcast_event(struct event event) {
+    for (auto client : connections) {
+        client->queuemutex.lock();
+        client->event_queue.push_back(event);
+        client->queuemutex.unlock();
+    }
+}
+
+Entity Server::connect_user(char* user) {
+    string nombre_elegido;
+    nombre_elegido.assign(user);
+    return this->scenery->buildPlayer(nombre_elegido);
+}
+
+void Server::send_model_snapshot(ClientConnection* handler) {
+    /* Aca tengo que usar lo que me devolvió process_keys_queue en su última
+       corrida */
+    handler->queuemutex.lock();
+    for (auto event : last_model_snapshot) {
+        handler->event_queue.push_back(event);
+    }
+    handler->queuemutex.unlock();
+}
+
+void Server::set_model_snapshot(vector<struct event> model_state) { this->last_model_snapshot = model_state;}

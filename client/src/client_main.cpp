@@ -1,57 +1,117 @@
 #include <iostream>
+#include <unistd.h>
 
 #include "model/client.h"
-#include "services/loremIpsum.h"
+#include <time.h>
 #include "utils/Logger.h"
+#include "view/SDL/InitialWindow.h"
 #include "view/SDL/SDLRunningGame.h"
+#include "model/ClientHandler.h"
+#include <thread>
 
 using namespace std;
 
+void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
+    // Ciclo que envia teclas al server, cuando hay una tecla presionada o soltada.(nuevo keyevent)
+    SDL_Event sdlEvent;
+    while( cliente->is_connected()){
+        while (SDL_PollEvent( &sdlEvent )) {
+            if ( sdlEvent.type == SDL_QUIT) {
+                cliente->disconnect();
+                break;
+            }
+            struct event nuevoEvento = sdlRunningGame->eventsHandler(&sdlEvent); //El eventsHandler envia los mensajes al Server
+            if(not (nuevoEvento.data.code == EventCode::TODO_SIGUE_IGUAL)){
+                cliente->getHandler()->sendEvent(nuevoEvento);
+
+            }
+        }
+        usleep(100);
+    }
+}
+
+
 int main(int argc, char *argv[]) {
-    /* Seteo puerto e ip del server*/
-    LOGGER_START(Logger::INFO, "client.log")
-    int port = 0;
-    string ip = "127.0.0.1";
+/* Seteo puerto e ip del server*/
+LOGGER_START(Logger::INFO, "client.log")
+int port = 0;
+string ip = "127.0.0.1";
 
 
-    /* Creo al cliente */
-    Client *cliente1 = new Client();
+/* Creo al cliente */
+Client *cliente = new Client();
 
-    /* Configuracion del puerto
-     * atoi() devuelve 0 si el parametro es invalido*/
-    if (argc > 1) port = atoi(argv[1]);
-    if (port == 0) port = 1500;
-
-    if (argc > 2) ip = argv[2];
-
-    /* Menu de cliente */
-
-    bool endloop = false;
-    char keypressed;
-
-//
-//    cout << "\033[2J\033[1;1H"; /* clear screen */
-//    if (!cliente1->is_connected()) {
-//        LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
-//        cout << "Estableciendo la conexion con el servidor..." << endl << endl;
-//        if (cliente1->connect_to_server(ip, port)) {
-//
-//            cliente1->set_connection_status(true);
-//            cout << "\033[2J\033[1;1H"; /* clear screen */
-//            LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
-//            cout << " Conexion establecida con exito " << endl << endl;
-//            break;
-//        } else {
-//            cliente1->set_connection_status(false);
-//            break;
-//        }
-//    }
-
-    SDLRunningGame sdlRunningGame = SDLRunningGame();
-    sdlRunningGame.updateWindowSprites();
+/* Configuracion del puerto
+ * atoi() devuelve 0 si el parametro es invalido*/
+if (argc > 1) port = atoi(argv[1]);
+if (port == 0) port = 1500;
+if (argc > 2) ip = argv[2];
 
 
+// Conexion con el server
+if (not cliente->is_connected()) {
+    LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
+    cout << "Estableciendo la conexion con el servidor..." << endl << endl;
+    cout << "Ingrese su nombre de usuario: ";
+    if (cliente->connect_to_server(ip, port)) {
+        cliente->set_connection_status(true);
+        LOGGER_WRITE(Logger::INFO, "Conexion con el servidor establecida con exito.", "ClientMain")
+        cout << " Conexion establecida con exito " << endl << endl;
+    } else {
+        cliente->set_connection_status(false);
+    }
+}
+//____________________________________________________________________________________________
 
+if (cliente->is_connected()){
+
+    InitialWindow* initialWindow = new InitialWindow(800, 600);
+    SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer());
+
+    thread enviarTeclasAlServerEnThread;
+    enviarTeclasAlServerEnThread = thread(enviarTeclasAlServer, cliente, sdlRunningGame);
+
+    // Ciclo que recive constantemente el estado del escenario, y se lo manda al sdlRunningGame para que lo dibuje
+    vector<struct event> modelStateToRender;
+
+    int count = 0;
+    double time_counter = 0;
+
+    clock_t now = clock();
+    clock_t last = now;
+
+    while(cliente->is_connected()){
+        now = clock();
+
+        time_counter += double(now - last);
+        last = now;
+
+        modelStateToRender = (cliente->getHandler())->getModelState();
+        if (not modelStateToRender.empty()){
+            count++;
+            if (time_counter > (double)CLOCKS_PER_SEC) {
+                cout << count << endl;
+                time_counter -= (double)CLOCKS_PER_SEC;
+            }
+            sdlRunningGame->handleModelState(modelStateToRender);
+        }
+        double lalala = (double)now + 32000 - (double)clock();
+        if ((lalala) > 0) {
+            usleep (lalala);
+        }
+    }
+    enviarTeclasAlServerEnThread.join();
+}
+
+delete cliente;
+return 0;
+}
+
+
+
+
+
+    
 
 
 
@@ -216,7 +276,3 @@ int main(int argc, char *argv[]) {
 
 
 //    sdlRunningGame.~SDLRunningGame();
-
-    delete cliente1;
-    return 0;
-}

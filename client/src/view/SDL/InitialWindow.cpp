@@ -1,14 +1,14 @@
 #include "InitialWindow.h"
 
 void InitialWindow::initializeSDL() {
-    if (SDL_Init(SDL_INIT_EVERYTHING) ==
-        -1) { //inicializa TIMER, VIDEO, AUDIO, JOISTICK, HAPTIC,GAMECONTROLLER, EVENTS...
+    if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
+        //inicializa TIMER, VIDEO, AUDIO, JOISTICK, HAPTIC,GAMECONTROLLER, EVENTS...
         cout<<"There was error initializing SDL: "<< endl
             <<SDL_GetError() << endl;
     }
 }
 
-SDL_Window* InitialWindow::createWindow(const char* windowName){
+SDL_Window* InitialWindow::createWindow(const char *windowName, unsigned int window_width, unsigned int window_height) {
     SDL_Window *window = SDL_CreateWindow(windowName,
                                           SDL_WINDOWPOS_UNDEFINED,
                                           SDL_WINDOWPOS_UNDEFINED,
@@ -36,16 +36,8 @@ SDL_Renderer* InitialWindow::createRenderer(SDL_Window* window){
 
 }
 
-void InitialWindow::initializeMixer() {
-    if( ( Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096 ) ) == -1 ){
-        //2-> set for stereo or 1 for mono, 4096->magia negra
-        printf("Mix_OpenAudio: %s\n", Mix_GetError());
-    };
-}
-
-InitialWindow::InitialWindow () {
-    InitialWindow::initializeMixer();
+InitialWindow::InitialWindow(unsigned int window_width, unsigned int window_height) {
     InitialWindow::initializeSDL();
-    InitialWindow::mainWindow = createWindow("METAL SLUG");
+    InitialWindow::mainWindow = createWindow("METAL SLUG",window_width,window_height);
     InitialWindow::mainRender = createRenderer(InitialWindow::mainWindow);
 }

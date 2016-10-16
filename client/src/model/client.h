@@ -7,7 +7,6 @@
 #include <memory>
 #include "message.h"
 #include "../utils/SocketUtils.h"
-#include "../utils/MessageUtils.h"
 
 using namespace std;
 
@@ -20,6 +19,7 @@ private:
     ClientHandler* handler;
     char userName[20];
     std::vector<string> usersList;
+    Entity my_character;
 public:
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
@@ -34,7 +34,7 @@ public:
 		/* Pre: 
 		 * Post: 
 		 */
-    int send_message(int to, string content);
+    int send_message(struct event evenToSend);
 
 		/* Pre: 
 		 * Post: 
@@ -62,15 +62,23 @@ public:
 
     string searchUser(int user);
 
-    std::vector<string> makeUsersList(Message *msg);
+    std::vector<string> makeUsersList(Event *msg);
 
     void send_disconnect_to_server();
 
-    void handle_message(Message *message, MessageCode code);
+    void handle_message(Event *message, EventCode code);
 
     bool is_connected() { return connected; }
 
     void set_connection_status(bool status) { this->connected = status; }
+
+    ClientHandler* getHandler() {
+        return handler;
+    }
+
+    Entity getEntity() {
+        return my_character;
+    }
 };
 
 

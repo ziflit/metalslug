@@ -1,12 +1,9 @@
 #ifndef SDLBASE_INITIALWINDOW_H
 #define SDLBASE_INITIALWINDOW_H
 
-#define window_width 1200
-#define window_height 700
 #define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
 
 #include "SDL2/SDL.h"
-#include "SDL2/SDL_mixer.h"
 #include <iostream>
 
 
@@ -20,13 +17,11 @@ private:
 public:
     void initializeSDL();
 
-    void initializeMixer();
-
-    SDL_Window* createWindow(const char* windowName);
+    SDL_Window* createWindow(const char* windowName, unsigned int window_width, unsigned int window_height);
 
     SDL_Renderer* createRenderer(SDL_Window* window);
 
-    InitialWindow ();
+    InitialWindow (unsigned int window_width, unsigned int window_height);
 
     SDL_Window* getMainWindow(){return InitialWindow::mainWindow;}
 

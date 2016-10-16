@@ -1,0 +1,32 @@
+<ventana>
+	<ancho>800</ancho>
+	<alto>600</alto>
+</ventana>
+<sprites>
+	<sprite>
+		<id>personaje</id>
+		<path>path/a/avion.png</path>
+		<ancho>10</ancho>
+		<alto>100</alto>
+		<zindex>1</zindex>
+	</sprite>
+	<sprite>
+		<id>disparo</id>
+		<path>path/a/disparo.png</path>
+		<ancho>5</ancho>
+		<alto>5</alto>
+		<zindex>1</zindex>
+	</sprite>
+</sprites>
+<capas>
+	<capa>
+		<imagen_fondo>fondo1.png</imagen_fondo>
+		<ancho>500</ancho>
+		<zindex>1</zindex>
+	</capa>
+	<capa>
+		<imagen_fondo>fondo2.png</imagen_fondo>
+		<ancho>500</ancho>
+		<zindex>2</zindex>
+	</capa>
+</capas>

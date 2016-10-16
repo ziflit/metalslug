@@ -1,31 +1,23 @@
 #ifndef SDLBASE_SDLRUNNINGGAME_H
 #define SDLBASE_SDLRUNNINGGAME_H
 
-#define window_width 1200
-#define window_height 700
-#define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
-#define fps  30 //tasa de refrescamiento, fotogramas por segundo
-#define speedSprite 10
 #define gameMusicPath "audios/circuit.wav"
-
-//TODO: INCLUIR EN EL MAKEFILE LOS .cpp PARA QUE AQUI SE INCLUYAN UNICAMENTE LOS .h
-#include "Music.cpp"
-#include "Sprite.cpp"
-#include "PlayerSprite.cpp"
-#include "BackgroundSprite.cpp"
+#include "Music.h"
+#include <vector>
+#include "SpritesClasses.h"
 #include <SDL2/SDL_events.h>
 
 class SDLRunningGame {
 private:
+    int window_width, window_height;
     SDL_Window* mainWindow;
     SDL_Renderer* mainRenderer;
     Music* music;
-    SDL_Texture *backgroundLayer0, *backgroundLayer1, *playersLayer, *cloudLayer;
-    BackgroundSprite *backgroundSprite0, *backgroundPlayersSprite, *cloudSprite;
-    PlayerSprite *player0Sprite, *player1Sprite, *player2Sprite, *player3Sprite;
-    //TODO: EN EL DESTRUCTOR ELIMINAR LOS PUNTEROS UTILIZADOS
-    int handleLeftKey, handleRightKey;
-
+    SDL_Texture *backgroundLayer0, *backgroundLayer1, *backgroundLayer2, *playersLayer;
+    BackgroundSprite *backgroundSprite0, *backgroundSprite1, *backgroundSprite2;
+    PlayerSprite *marcoSprite, *tarmaSprite, *fioSprite, *eriSprite;
+    //TODO: en el destructor eliminar todos los punteros utilizados.
+    int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
 
 public:
     SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer);
@@ -40,16 +32,21 @@ public:
 
     void updateWindowSprites();
 
-    PlayerSprite* getPlayerSprite(){ return SDLRunningGame::player0Sprite;}
+    void initializeMarco();
 
-    BackgroundSprite* getBackgroundPlayerSprite(){ return SDLRunningGame::backgroundPlayersSprite;}
+    void initializeTarma();
 
-    void eventsHandler(SDL_Event* event);
+    void initializeFio();
 
+    void initializeEri();
 
+    PlayerSprite* getMarcoSprite(){ return SDLRunningGame::marcoSprite;}
 
+    struct event eventsHandler(SDL_Event* sdlEvent);
 
-    ~SDLRunningGame();
+    virtual~SDLRunningGame();
+
+    void handleModelState(vector<struct event> model_state);
 
 };
 
