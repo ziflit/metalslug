@@ -69,27 +69,20 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
     return obtenerEstadoEscenario();
 }
 
-bool Scenery::todosJugadoresAvanzando(){
-    for(auto player : players){
-        if(player->getDireccionX()<1){
-            return false;
-        }
-    }
-    return true;
-}
 
 bool Scenery::hayJugadorEnBordeIzq(){
     for (auto player: players){
-        if(player->getX() == 0) {
+        if(player->getX() <= 10) {
                 return true;
         }
     }
     return false;
 }
 
-bool Scenery::jugadorPasoMitadPantalla(){
+bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando(){
+
     for (auto player : players) {
-        if (player->getX() > (windowWidth/2)) {
+        if ((player->getX() > (windowWidth/2)) and (player->getDireccionX() == 1)) {
             return true;
         }
     }
@@ -107,7 +100,7 @@ void Scenery::updateBackgroudsState(){
      *  Post el avance del background se debe restar a todos los jugadores una posicion
      */
 
-    if( (todosJugadoresAvanzando()) and (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantalla()) ){
+    if(  (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando()) ){
         for(auto background : backgrounds){
 
             background->avanzar();

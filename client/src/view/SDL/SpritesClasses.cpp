@@ -250,5 +250,5 @@ void Eri::colorear() {
 }
 
 void Eri::grisar() {
-    setUpImage("sprites/player/eri.png",15,3);
+    setUpImage("sprites/player/eriGrisado.png",15,3);
 }
