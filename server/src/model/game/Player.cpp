@@ -193,9 +193,8 @@ void Player::handlePressedKey(EventCode nuevoEvento){
 
 void Player::updateState(EventCode nuevoEvento){
 
-		if (nuevoEvento == EventCode::CLIENT_DISCONNECT){
-			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
-			// arrastarlo por la pantalla
+    if (nuevoEvento == EventCode::CLIENT_DISCONNECT){
+        postura = Postura::DESCONECTADO;
     }
     else if (isKeyPressed(nuevoEvento)) {
         handlePressedKey(nuevoEvento);

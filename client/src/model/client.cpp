@@ -74,7 +74,8 @@ void Client::disconnect() {
 
 void Client::send_disconnect_to_server() {
 	struct event disconnectEvent;
-	disconnectEvent.data.code = EventCode::CLIENT_DISCONNECT;
+  disconnectEvent.data.code = EventCode::CLIENT_DISCONNECT;
+  disconnectEvent.completion = EventCompletion::FINAL_MSG;
 	this->handler->sendEvent(disconnectEvent);
 }
 
