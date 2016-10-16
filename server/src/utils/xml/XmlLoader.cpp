@@ -13,7 +13,7 @@ void XmlLoader::loadXML(){
 	doc.parse<0>(xmlFile.data()); //parse the contents of file
 
 	//Cargo la configuracion
-	xml_node<>* configuracion = doc.first_node("ventana");
+	xml_node<>* configuracion = doc.first_node("config");
 		xml_node<>* ancho = configuracion->first_node("ancho");
 		xml_node<>* alto = configuracion->first_node("alto");
 		xml_node<>* cant_players = configuracion->first_node("cant_players");
