@@ -187,6 +187,7 @@ void Server::handle_message(struct event event, EventCode code, char* username) 
     case EventCode::CLIENT_DISCONNECT:
         cout << "CLIENT_DISCONNECT" << endl;
         handler = this->get_user_handler(username);
+        this->incoming_events.push_back(event);
         close_connection(handler->getUsername());
         break;
 
