@@ -79,7 +79,8 @@ void Player::handleRealeasedKey(EventCode nuevoEvento) {
                 else if(postura == Postura::AGACHADO_AVANZANDO_IZQUIERDA){postura = Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO;}
                 direccionX = 0;
             }
-            if(direccionX = 0){
+            /* Puede estar tocando ambas teclas a la vez, y suelta una de ellas */
+            else if(direccionX == 0){
                 if(postura == Postura::MIRANDO_DERECHA_QUIETO){postura = CAMINANDO_DERECHA;}
                 else if(postura == Postura::AGACHADO_MIRANDO_DERECHA_QUIETO){postura = Postura::AGACHADO_AVANZANDO_DERECHA;}
                 else if(postura == Postura::MIRANDO_ARRIBA_DERECHA_QUIETO){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
@@ -93,7 +94,8 @@ void Player::handleRealeasedKey(EventCode nuevoEvento) {
                 else if(postura == Postura::AGACHADO_AVANZANDO_DERECHA){postura = Postura::AGACHADO_MIRANDO_DERECHA_QUIETO;}
                 direccionX = 0;
             }
-            if(direccionX = 0){
+            /* Puede estar tocando ambas teclas a la vez, y suelta una de ellas. */
+            else if(direccionX == 0){
                 if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO){postura = CAMINANDO_IZQUIERDA;}
                 else if(postura == Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
                 else if(postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
@@ -163,6 +165,7 @@ void Player::handlePressedKey(EventCode nuevoEvento){
                 else{postura = Postura::CAMINANDO_IZQUIERDA;}
                 direccionX = -1;
             }
+            /* Si está caminando hacia la derecha y presiona LEFT entonces queda quieto */
             else if(direccionX == 1){
                 direccionX = 0;
                 postura = Postura::MIRANDO_DERECHA_QUIETO;}
@@ -176,6 +179,7 @@ void Player::handlePressedKey(EventCode nuevoEvento){
                 else{postura = Postura::CAMINANDO_DERECHA;}
                 direccionX = 1;
             }
+            /* Si está caminando hacia la izquierda y presiona RIGHT entonces queda quieto */
             else if(direccionX == -1){
                 direccionX = 0;
                 postura = Postura::MIRANDO_IZQUIERDA_QUIETO;}
@@ -193,12 +197,12 @@ void Player::updateState(EventCode nuevoEvento){
 			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
 			// arrastarlo por la pantalla
     }
-        else if (isKeyPressed(nuevoEvento)) {
+    else if (isKeyPressed(nuevoEvento)) {
         handlePressedKey(nuevoEvento);
     }
-        else if (isKeyRealeased(nuevoEvento)) {
-            handleRealeasedKey(nuevoEvento);
-	}
+    else if (isKeyRealeased(nuevoEvento)) {
+        handleRealeasedKey(nuevoEvento);
+    }
 }
 
 bool Player::isMoving() {
@@ -206,25 +210,22 @@ bool Player::isMoving() {
 }
 
 bool Player::isJumping() {
-    return direccionY == 1;
+    return (direccionY == 1);
 }
 
 void Player::updatePosition() {
-	if(this->isMoving()) {
-		if ((!((direccionX == -1) and (x <= speed))) or (!((direccionX == 1) and (x == windowWidth)))) {
-			x += direccionX*speed;
-		}
-	}
+    if(this->isMoving()) {
+        if ((!((direccionX == -1) and (x <= speed))) or (!((direccionX == 1) and (x == windowWidth)))) {
+            x += direccionX*speed;
+        }
+    }
     if(this->isJumping()) {
-        cout << posAtJump << endl;
-        cout << direccionY << endl;
-        if (posAtJump < 201){
-            posAtJump += 1;
+        if (posAtJump < 25){
+            posAtJump++;
             y = 400 - jumpPos[posAtJump];
         } else {
             direccionY = 0;
             posAtJump = 0;
-            cout << direccionY << endl;
         }
     }
 }
