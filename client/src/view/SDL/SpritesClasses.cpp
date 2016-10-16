@@ -58,6 +58,7 @@ void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFram
     PlayerSprite::wActualPosFrame = 0;
 
     PlayerSprite::wFramesCant = wFramesCant;
+    PlayerSprite::hFramesCant = hFramesCant;
 
     PlayerSprite::frameWidth = spriteImageWidth / wFramesCant;
     PlayerSprite::frameHeight = spriteImageHeight / hFramesCant;
@@ -169,12 +170,24 @@ void PlayerSprite::handle(struct event nuevoEvento) {
             agachadoAvanzandoADerecha();
             break;
         case Postura::MIRANDO_DERECHA_QUIETO:
-//            mirandoDerechaQuieto(); //TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
-            caminandoDerecha();
+            mirandoDerechaQuieto();
             break;
         case Postura::MIRANDO_IZQUIERDA_QUIETO :
-//            mirandoIzquierdaQuieto();//TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
-            caminandoIzquierda();
+            mirandoIzquierdaQuieto();
+            break;
+        case Postura::DESCONECTADO:
+            if (nuevoEvento.data.id == MARCO) {
+                setUpImage("sprites/player/marcoGrisado.png",wFramesCant,hFramesCant);
+            }
+            else if (nuevoEvento.data.id == TARMA) {
+                setUpImage("sprites/player/tarmaGrisado.png",wFramesCant,hFramesCant);
+            }
+            else if (nuevoEvento.data.id == FIO) {
+                setUpImage("sprites/player/fioGrisado.png",wFramesCant,hFramesCant);
+            }
+            else if (nuevoEvento.data.id == ERI) {
+                setUpImage("sprites/player/eriGrisado.png",wFramesCant,hFramesCant);
+            }
             break;
         default:
             break;

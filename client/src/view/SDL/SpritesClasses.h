@@ -51,7 +51,7 @@ public:
 class PlayerSprite : public Sprite{
 
 private:
-    int wFramesCant,wActualPosFrame;
+    int wFramesCant,wActualPosFrame,hFramesCant;
 public:
 //_______________________________________________________________________________________________
     //Constructor:
@@ -128,8 +128,7 @@ public:
 class Marco : public PlayerSprite {
 public:
     Marco(SDL_Texture *texture,SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height) {
-//        setUpImage("sprites/marco.png",12,12);//TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
-        setUpImage("sprites/marco.png",12,10);
+        setUpImage("sprites/player/marco.png",12,12);
     }
     void setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant){PlayerSprite::setUpImage(imageSpritePath,wFramesCant,hFramesCant);}
 };
@@ -138,7 +137,7 @@ public:
 class Tarma : public PlayerSprite{
 public:
     Tarma(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/tarma.png",12,12);
+        setUpImage("sprites/player/tarma.png",15,10);
     }
 };
 //_______________________________________________________________________________________________
@@ -146,7 +145,7 @@ public:
 class Fio : public PlayerSprite{
 public:
     Fio(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/tarma.png",12,12); //TODO: cuando este el png listo, setearlo
+        setUpImage("sprites/player/tarma.png",15,15);
     }
 };
 //_______________________________________________________________________________________________
@@ -154,7 +153,7 @@ public:
 class Eri : public PlayerSprite{
 public:
     Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/tarma.png",12,12); //TODO: cuando este el png listo, setearlo
+        setUpImage("sprites/player/eri.png",15,3); //TODO: cuando este el png listo, setearlo
     }
 };
 
