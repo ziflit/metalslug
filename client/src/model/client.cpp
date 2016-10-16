@@ -12,7 +12,7 @@
 
 using namespace std;
 
-bool Client::connect_to_server(string ip, int port) {
+bool Client::connect_to_server(string ip, int port, string user) {
 	struct sockaddr_in server_addr;
 	socklen_t server_sock_size;
 
@@ -38,19 +38,8 @@ bool Client::connect_to_server(string ip, int port) {
 		return false;
 	}
 
-//TODO: esto va a tener que cambiar para que solo se envie el player name
-  string user = "lean";
-  cin >> user;
-  string pass = "asd";
-
-//    cout << "Ingrese nombre de usuario: " << endl;
-//    cin >> user;
-//    cout << "Ingrese contrasenia: " << endl;
-//    cin >> pass;
-
 	/*Envio mje al servidor*/
 	cout << send(socket_number, user.data(), 20, 0) << endl;
-//	cout << send(socket_number, pass.data(), 20, 0) << endl;
 	char response[MSGSIZE];
 
 	//respuesta de login OK/FAIL
