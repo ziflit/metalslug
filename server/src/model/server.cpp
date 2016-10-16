@@ -220,7 +220,7 @@ queue<struct event>* Server::getIncomingEvents() {
     for (auto event : incoming_events) {
         ret->emplace(event);
     }
-    this->incoming_events.empty();
+    this->incoming_events.clear();
     this->incoming_mutex.unlock();
     return ret;
 }
