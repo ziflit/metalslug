@@ -12,6 +12,8 @@
 #include "../utils/Protocol.h"
 #include "../utils/SocketUtils.h"
 #include "../utils/xml/XmlLoader.h"
+#include "../utils/Logger.h"
+#include "Configs.h"
 
 #define MAX_CONN 6
 
@@ -33,6 +35,7 @@ private:
     vector<shared_ptr<ClientConnection> > connections;
     bool shouldClose;
     string xmlConfigPath;
+    Configs configs;
 
 public:
     Server(string path, string xmlConfigPath);
@@ -108,6 +111,10 @@ public:
     void send_model_snapshot(ClientConnection* handler);
 
     void set_model_snapshot(vector<struct event> model_state);
+
+    Configs& getConfigs();
+
+    void loadConfigs();
 };
 
 #endif //METALSLUG_SERVER_H
