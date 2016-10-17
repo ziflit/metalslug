@@ -93,19 +93,27 @@ struct event {
 	event_ext data;
 };
 
+// Structs para el envio de la configuracion inicial, en base al XML
 
-//aca pongo todo lo que tiene cada uno-------------------------------
 struct xmlConfig {
-	string username;
-	string password;
+	int ancho;
+	int alto;
+	int cant_players;
 };
+
 struct xmlPlayer {
-	string username;
-	string password;
+	string id;
+	string path;
+	int ancho;
+	int alto;
+	int speed;
 };
 struct xmlBackground {
-	string username;
-	string password;
+	string id;
+	string path;
+	int ancho;
+	int alto;
+	int zindex;
 };
 //---------------------------------------------------
 
