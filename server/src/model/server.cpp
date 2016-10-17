@@ -14,15 +14,9 @@ using namespace std;
 Server::Server(string path, string xmlConfigPath) {
     this->userloader = new UserLoader(path);
 
-    // Inicializo en base al xml, y guardo todos los datos en server
-    this->xmlConfigPath = xmlConfigPath;
-    XmlLoader* xmlLoader = new XmlLoader(xmlConfigPath);
-    this->globalConfig = xmlLoader->obtainGlobalConfig();
-    this->spritesConfig = xmlLoader->getSpritesConfig();
-    this->backgroundsConfig = xmlLoader->obtainBackgroundsConfig();
-    delete xmlLoader;
-
-    this->scenery = new Scenery(this->globalConfig.ancho, this->globalConfig.alto);
+    loadConfigs();
+    struct xmlConfig globalConf = configs.getGlobalConf();
+    this->scenery = new Scenery(globalConf.ancho, globalConf.alto);
 }
 
 Server::~Server() {
