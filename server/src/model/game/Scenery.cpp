@@ -72,8 +72,10 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
 
 bool Scenery::hayJugadorEnBordeIzq(){
     for (auto player: players){
-        if(player->getX() <= 10) {
+        if(player->getPostura() != Postura::DESCONECTADO){  //ESTO LO ARRASTRA A TODO AQUE DESCONECTADO
+            if(player->getX() <= 10) {
                 return true;
+            }
         }
     }
     return false;

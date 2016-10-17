@@ -60,9 +60,8 @@ public:
 
     PlayerSprite(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : Sprite(texture, renderer,window_width,window_height) {
 //        TODO: este seteo se hace a partir del XML
-        //DEFAULT SIZE
-        PlayerSprite::setHeight(150);
-        PlayerSprite::setWidth(150);
+        PlayerSprite::setHeight(100);
+        PlayerSprite::setWidth(100);
         //DEFAULT POSITION
         PlayerSprite::set_position(10,550);
         mirandoDerechaQuieto();

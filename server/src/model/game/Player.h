@@ -36,6 +36,8 @@ class Player {
         return entity;
     }
 
+    Postura getPostura(){ return this->postura;}
+
     struct event getNewState();
 
     void handleRealeasedKey(EventCode nuevoEvento);

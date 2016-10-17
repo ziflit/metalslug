@@ -17,7 +17,7 @@ Player::Player(string user, Entity entitySelected) {
 	 * 			(0,0)___________________(0,800)
 	 * 			    |					|
 	 * 	   			|					|
-	 *      (600,800)___________________(600,800)
+	 *        (0,600)___________________(600,800)
 	 */
 	x = 0;
 	y = 400;
@@ -37,23 +37,6 @@ void Player::set_position( int posx,  int posy) {
     y = posy;
 }
 
-void Player::moveRight() {
-/** mueve el sprite en eje X hacia la derecha.
- * Si el sprite tiene coordenadas (mitad de pantalla, y)
- * entonces no sigue avanzando hacia la derecha
- * Solo va a poder avanzar mas de la mitad de pantalla si
- * el BackgroundSprite llego a su ultimo frame.
-*/
-//  Player::set_position(Player::destRect.x + speed, Player::destRect.y);}
-	unsigned int newPos = (x + speed);
-	if(newPos < (windowWidth/2)){
-		set_position(newPos, y);}
-}
-
-void Player::stopMoving(){
-	direccionX = 0;
-	//TODO: Aca habria que cambiar algo de frames? para que quede quieto y muestre la animacion de quieto
-}
 bool Player::isKeyPressed(EventCode nuevoEvento) {
     return ( (nuevoEvento == SDL_KEY_A_PRESSED) or (nuevoEvento == SDL_KEY_S_PRESSED) or (nuevoEvento == SDL_KEYUP_PRESSED) or (nuevoEvento == SDL_KEYDOWN_PRESSED) or (nuevoEvento == SDL_KEYLEFT_PRESSED) or (nuevoEvento == SDL_KEYRIGHT_PRESSED));
 }
@@ -185,7 +168,7 @@ void Player::handlePressedKey(EventCode nuevoEvento){
 
 void Player::updateState(EventCode nuevoEvento){
     if (nuevoEvento == EventCode::CLIENT_DISCONNECT){
-        postura = Postura::DESCONECTADO;
+        this->postura = Postura::DESCONECTADO;
     }
     else if (isKeyPressed(nuevoEvento)) {
         handlePressedKey(nuevoEvento);
