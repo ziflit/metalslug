@@ -22,7 +22,7 @@ Entity Scenery::buildPlayer(string user) {
         return players[position]->getEntity();
     }
     Player* newPlayer;
-    cout<<"PLAYERS LIST SIZE: "<<players.size()<<endl;
+
     if(players.size() == 0){
         newPlayer = new Player(user, MARCO);
         this->addElementToScenery(newPlayer);
@@ -91,7 +91,7 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando(){
 
 void Scenery::updateBackgroudsState(){
 
-     /* Si un jugador esta en la mitad de pantalla y hay otro en posicion = 0:
+     /** Si un jugador esta en la mitad de pantalla y hay otro en posicion = 0:
      *  entonces se le habilita al jugador a moverse hasta el final de la pantalla y el background no debe avanzar.
      *  Si hay un jugador  retrocediendo o quieto no debe avanzar el background.
      *  Conclusion:
@@ -109,6 +109,8 @@ void Scenery::updateBackgroudsState(){
              * Es por eso que tiene seteada igual velocidad.
              */
         }
+
+        //TODO QUE ARRASTRE AL GRISADO
         for(auto player : players){
             player->retroceder();
         }
