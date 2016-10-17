@@ -132,7 +132,6 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     eventsToReturn.back().completion = EventCompletion::FINAL_MSG;
     return eventsToReturn;
 }
-//______________________________________________________________________________________________________________________
 
 void Scenery::addElementToScenery(Player* player) {
 	players.push_back(player);
@@ -141,7 +140,6 @@ void Scenery::addElementToScenery(Player* player) {
 void Scenery::addElementToScenery(Background* background) {
 	backgrounds.push_back(background);
 }
-//______________________________________________________________________________________________________________________
 
 Scenery::~Scenery() {
 }

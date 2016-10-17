@@ -26,11 +26,6 @@ SDL_Texture* SDLRunningGame::createTransparentTexture(SDL_Renderer *renderer){
     return backgroundTexture;
 }
 
-void SDLRunningGame::layersBuilding (){
-    //Layers Building
-//    SDLRunningGame::backgroundLayer0 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
-}
-
 void SDLRunningGame::spritesBuilding () {
     //Sprites Building
     SDLRunningGame::backgroundSprite0 = new BackgroundSprite(backgroundLayer0, mainRenderer,window_width,window_height);
@@ -51,13 +46,11 @@ SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRender
     SDL_GetWindowSize(mainWindow, &window_width, &window_height);
 
     SDLRunningGame::mainRenderer = mainRenderer;
-//_______________________________________________________________________________________
-   SDLRunningGame::layersBuilding();
-//_______________________________________________________________________________________
+
     SDLRunningGame::spritesBuilding();
-//_______________________________________________________________________________________
+
     SDLRunningGame::audioInitialization();
-//____________________________________________________________________________________________
+
     holdLeftKey = holdRightKey = holdUpKey = holdDownKey = holdAKey= holdSKey = 0;
 }
 

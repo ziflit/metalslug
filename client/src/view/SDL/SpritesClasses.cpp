@@ -230,25 +230,25 @@ void Marco::grisar() {
 }
 
 void Tarma::colorear() {
-    setUpImage("sprites/player/tarma.png",15,10);
+    setUpImage("sprites/player/tarma.png",15,12);
 }
 
 void Tarma::grisar() {
-    setUpImage("sprites/player/tarmaGrisado.png",15,10);
+    setUpImage("sprites/player/tarmaGrisado.png",15,12);
 }
 
 void Fio::colorear() {
-    setUpImage("sprites/player/fio.png",15,15);
+    setUpImage("sprites/player/fio.png",15,12);
 }
 
 void Fio::grisar() {
-    setUpImage("sprites/player/fioGrisar.png",15,15);
+    setUpImage("sprites/player/fioGrisar.png",15,12);
 }
 
 void Eri::colorear() {
-    setUpImage("sprites/player/eri.png",15,3);
+    setUpImage("sprites/player/eri.png",15,12);
 }
 
 void Eri::grisar() {
-    setUpImage("sprites/player/eriGrisado.png",15,3);
+    setUpImage("sprites/player/eriGrisado.png",15,12);
 }

@@ -70,7 +70,6 @@ bool Player::isKeyRealeased(EventCode nuevoEvento) {
 
 void Player::handleRealeasedKey(EventCode nuevoEvento) {
     switch (nuevoEvento) {
-        //REALEASED____________________________________________________________________________________________________________
 
         case EventCode::SDL_KEYLEFT_RELEASED:
             if(direccionX == -1){
@@ -138,7 +137,6 @@ void Player::handleRealeasedKey(EventCode nuevoEvento) {
 }
 void Player::handlePressedKey(EventCode nuevoEvento){
     switch (nuevoEvento){
-        //PRESSED____________________________________________________________________________________________________________
         case EventCode::SDL_KEY_A_PRESSED:
             direccionY = 1;
             break;
