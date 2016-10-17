@@ -7,7 +7,7 @@ XmlLoader::XmlLoader(string path) {
 XmlLoader::~XmlLoader() {
 }
 
-vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
+vector<struct xmlBackground>& XmlLoader::obtainBackgroundsConfig() {
     xml_document<> doc;
     file<> xmlFile("config.xml");
     doc.parse<0>(xmlFile.data());
@@ -23,6 +23,7 @@ vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
         xml_node<> *zindex = background->first_node("zindex");
 
         struct xmlBackground backgroundConfig;
+        backgroundConfig.completion = EventCompletion::PARTIAL_MSG;
         strcpy(backgroundConfig.id, id->value());
         backgroundConfig.ancho = atoi(ancho->value());
         backgroundConfig.alto = atoi(alto->value());
@@ -31,10 +32,11 @@ vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
 
         configs.push_back(backgroundConfig);
     }
+    configs.back().completion = EventCompletion::FINAL_MSG;
     return configs;
 }
 
-vector<struct xmlPlayer> XmlLoader::getSpritesConfig() {
+vector<struct xmlPlayer>& XmlLoader::obtainSpritesConfig() {
 //Cargo los sprites
     xml_document<> doc;
     file<> xmlFile("config.xml"); //open file
@@ -50,6 +52,7 @@ vector<struct xmlPlayer> XmlLoader::getSpritesConfig() {
         xml_node<> *speed = sprite->first_node("speed");
 
         struct xmlPlayer playerConfig;
+        playerConfig.completion = EventCompletion::PARTIAL_MSG;
         strcpy(playerConfig.id, id->value());
         strcpy(playerConfig.path, path->value());
         playerConfig.ancho = atoi(ancho->value());
@@ -58,10 +61,11 @@ vector<struct xmlPlayer> XmlLoader::getSpritesConfig() {
 
         configs.push_back(playerConfig);
     }
+    configs.back().completion = EventCompletion::FINAL_MSG;
     return configs;
 }
 
-struct xmlConfig XmlLoader::obtainGlobalConfig() {
+struct xmlConfig& XmlLoader::obtainGlobalConfig() {
 //Cargo la configuracion
     xml_document<> doc;
     file<> xmlFile("config.xml"); //open file

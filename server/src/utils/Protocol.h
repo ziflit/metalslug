@@ -102,6 +102,7 @@ struct xmlConfig {
 };
 
 struct xmlPlayer {
+    EventCompletion completion;
 	char id[15];
 	char path[40];
 	int ancho;
@@ -110,6 +111,7 @@ struct xmlPlayer {
 };
 
 struct xmlBackground {
+    EventCompletion completion;
 	char id[15];
 	char path[40];
 	int ancho;

@@ -8,7 +8,6 @@
 #include <thread>
 
 #include "ClientConnection.h"
-#include "../utils/Logger.h"
 
 using namespace std;
 
@@ -62,16 +61,16 @@ void client_comm(Server *srv, int client) {
     }
 }
 
-void sendConfigsToClient(int clientSocket, string xmlConfigPath) {
+void sendConfigsToClient(int clientSocket, Server* server) {
     //------------------------------------------------
     // TODO: Aca tengo que pasar el xml, armando los structus que estan en protocol, tanto para player config y background
     // El cliente tiene que tener los mismos receive que coincidan con los sends del server...
     // Si hay que mandar varios backgrounds por ejemplo se puede usar lo de completion y final message
     //------------------------------------------------
-    XmlLoader loader(xmlConfigPath);
-    struct xmlConfig globalConf = loader.obtainGlobalConfig();
-    vector<struct xmlBackground> backgroundsConfig = loader.obtainBackgroundsConfig();
-    vector<struct xmlPlayer> spritesConfig = loader.getSpritesConfig();
+    Configs configs = server->getConfigs();
+    struct xmlConfig globalConf = configs.getGlobalConf();
+    vector<struct xmlPlayer> sprites = configs.getSpritesConfig();
+    vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
 
     
 
@@ -278,3 +277,14 @@ void Server::send_model_snapshot(ClientConnection* handler) {
 }
 
 void Server::set_model_snapshot(vector<struct event> model_state) { this->last_model_snapshot = model_state;}
+
+Configs& Server::getConfigs(){
+    return configs;
+}
+
+void Server::loadConfigs(){
+    XmlLoader loader(xmlConfigPath);
+    configs.setGlobalConf(loader.obtainGlobalConfig());
+    configs.setBackgroundsConfig(loader.obtainBackgroundsConfig());
+    configs.setSpritesConfig(loader.obtainSpritesConfig());
+}
