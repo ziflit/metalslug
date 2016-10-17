@@ -22,8 +22,6 @@ class XmlLoader {
 public:
     XmlLoader();
 
-    xml_document<> &loadXML();
-
     virtual ~XmlLoader();
 
     /* Para los path de los sprites, notar que se toma como directorio de inicio

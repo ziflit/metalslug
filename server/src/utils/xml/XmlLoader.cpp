@@ -5,15 +5,11 @@ XmlLoader::XmlLoader() {}
 
 XmlLoader::~XmlLoader() {}
 
-xml_document<> &XmlLoader::loadXML() {
-    xml_document<> doc;
-    file<> xmlFile("config.xml"); //open file
-    doc.parse<0>(xmlFile.data()); //parse the contents of file
-    return doc;
-}
 
 vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
-    xml_document<> doc = loadXML();
+    xml_document<> doc;
+    file<> xmlFile("config.xml"); //open file
+    doc.parse<0>(xmlFile.data());
     vector<struct xmlBackground> configs;
     xml_node<> *backgrounds = doc.first_node("backgrounds");
 
@@ -39,7 +35,9 @@ vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
 
 vector<struct xmlPlayer> XmlLoader::getSpritesConfig() {
 //Cargo los sprites
-    xml_document<> doc = loadXML();
+    xml_document<> doc;
+    file<> xmlFile("config.xml"); //open file
+    doc.parse<0>(xmlFile.data());
     vector<struct xmlPlayer> configs;
     xml_node<> *sprites = doc.first_node("sprites");
     for (xml_node<> *sprite = sprites->first_node("sprite"); sprite; sprite = sprite->next_sibling()) {
@@ -63,7 +61,9 @@ vector<struct xmlPlayer> XmlLoader::getSpritesConfig() {
 
 struct xmlConfig XmlLoader::obtainGlobalConfig() {
 //Cargo la configuracion
-    xml_document<> doc = loadXML();
+    xml_document<> doc;
+    file<> xmlFile("config.xml"); //open file
+    doc.parse<0>(xmlFile.data());
     xml_node<> *configuracion = doc.first_node("config");
     xml_node<> *ancho = configuracion->first_node("ancho");
     xml_node<> *alto = configuracion->first_node("alto");
