@@ -35,7 +35,7 @@ void SDLRunningGame::spritesBuilding () {
     backgroundSprite1->setUpImage("sprites/backgrounds/final.bmp");
 
     SDLRunningGame::backgroundSprite2 = new BackgroundSprite(backgroundLayer2,mainRenderer,window_width,window_height);
-    backgroundSprite2->setUpImage("sprites/backgrounds/front.png");
+    backgroundSprite2->setUpImage("sprites/backgrounds/front.bmp");
 
     marcoSprite = eriSprite = fioSprite = tarmaSprite = nullptr;
 
@@ -146,12 +146,12 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
             case SDLK_UP:
                 cout<<"solte la flecha arriba"<<endl;
                 nuevoEvento.data.code = EventCode::SDL_KEYUP_RELEASED;
-                holdRightKey = 0;
+                holdUpKey = 0;
                 return nuevoEvento;
             case SDLK_DOWN:
                 cout<<"solte la flecha abajo"<<endl;
                 nuevoEvento.data.code = EventCode::SDL_KEYDOWN_RELEASED;
-                holdRightKey = 0;
+                holdDownKey = 0;
                 return nuevoEvento;
             case SDLK_a:
                 cout<<"solte a"<<endl;
