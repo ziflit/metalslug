@@ -102,15 +102,16 @@ struct xmlConfig {
 };
 
 struct xmlPlayer {
-	string id;
-	string path;
+	char id[15];
+	char path[40];
 	int ancho;
 	int alto;
 	int speed;
 };
+
 struct xmlBackground {
-	string id;
-	string path;
+	char id[15];
+	char path[40];
 	int ancho;
 	int alto;
 	int zindex;

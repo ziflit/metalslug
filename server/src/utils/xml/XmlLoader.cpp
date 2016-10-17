@@ -1,20 +1,21 @@
 #include "XmlLoader.h"
 
+XmlLoader::XmlLoader(string path) {
+    this->path = path;
+}
 
-XmlLoader::XmlLoader() {}
-
-XmlLoader::~XmlLoader() {}
-
+XmlLoader::~XmlLoader() {
+}
 
 vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
     xml_document<> doc;
-    file<> xmlFile("config.xml"); //open file
+    file<> xmlFile("config.xml");
     doc.parse<0>(xmlFile.data());
     vector<struct xmlBackground> configs;
     xml_node<> *backgrounds = doc.first_node("backgrounds");
 
-    for (xml_node<> *background = backgrounds->first_node(
-            "background"); background; background = background->next_sibling()) {
+    for (xml_node<> *background = backgrounds->first_node("background");
+            background; background = background->next_sibling()) {
         xml_node<> *id = background->first_node("id");
         xml_node<> *imagen_fondo = background->first_node("imagen_fondo");
         xml_node<> *ancho = background->first_node("ancho");
@@ -22,10 +23,10 @@ vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
         xml_node<> *zindex = background->first_node("zindex");
 
         struct xmlBackground backgroundConfig;
-        backgroundConfig.id = id->value();
+        strcpy(backgroundConfig.id, id->value());
         backgroundConfig.ancho = atoi(ancho->value());
         backgroundConfig.alto = atoi(alto->value());
-        backgroundConfig.path = imagen_fondo->value();
+        strcpy(backgroundConfig.path, imagen_fondo->value());
         backgroundConfig.zindex = atoi(zindex->value());
 
         configs.push_back(backgroundConfig);
@@ -40,7 +41,8 @@ vector<struct xmlPlayer> XmlLoader::getSpritesConfig() {
     doc.parse<0>(xmlFile.data());
     vector<struct xmlPlayer> configs;
     xml_node<> *sprites = doc.first_node("sprites");
-    for (xml_node<> *sprite = sprites->first_node("sprite"); sprite; sprite = sprite->next_sibling()) {
+    for (xml_node<> *sprite = sprites->first_node("sprite"); sprite; sprite =
+            sprite->next_sibling()) {
         xml_node<> *id = sprite->first_node("id");
         xml_node<> *path = sprite->first_node("path");
         xml_node<> *ancho = sprite->first_node("ancho");
@@ -48,8 +50,8 @@ vector<struct xmlPlayer> XmlLoader::getSpritesConfig() {
         xml_node<> *speed = sprite->first_node("speed");
 
         struct xmlPlayer playerConfig;
-        playerConfig.id = id->value();
-        playerConfig.path = path->value();
+        strcpy(playerConfig.id, id->value());
+        strcpy(playerConfig.path, path->value());
         playerConfig.ancho = atoi(ancho->value());
         playerConfig.alto = atoi(alto->value());
         playerConfig.speed = atoi(speed->value());
@@ -76,5 +78,4 @@ struct xmlConfig XmlLoader::obtainGlobalConfig() {
 
     return config;
 }
-
 

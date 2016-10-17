@@ -12,9 +12,10 @@
 
 using namespace std;
 
-Server::Server(string path) {
+Server::Server(string path, string xmlConfigPath) {
     this->userloader = new UserLoader(path);
-    this->scenery = new Scenery(800,600);
+    this->scenery = new Scenery(800, 600);
+    this->xmlConfigPath = xmlConfigPath;
 }
 
 Server::~Server() {
@@ -38,11 +39,7 @@ void client_comm(Server *srv, int client) {
         resp.data.id = assignedPlayer;
         sockutils.writeSocket(client, resp);
 
-        //------------------------------------------------
-        // TODO: Aca tengo que pasar el xml, armando los structus que estan en protocol, tanto para player config y background
-        // El cliente tiene que tener los mismos receive que coincidan con los sends del server...
-        // Si hay que mandar varios backgrounds por ejemplo se puede usar lo de completion y final message
-        //------------------------------------------------
+
 
         ClientConnection* handler = new ClientConnection(client, srv, user);
         srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
@@ -55,6 +52,21 @@ void client_comm(Server *srv, int client) {
         resp.data.code = EventCode::LOGIN_FAIL;
         sockutils.writeSocket(client, resp);
     }
+}
+
+void sendConfigsToClient(int clientSocket, string xmlConfigPath) {
+    //------------------------------------------------
+    // TODO: Aca tengo que pasar el xml, armando los structus que estan en protocol, tanto para player config y background
+    // El cliente tiene que tener los mismos receive que coincidan con los sends del server...
+    // Si hay que mandar varios backgrounds por ejemplo se puede usar lo de completion y final message
+    //------------------------------------------------
+    XmlLoader loader(xmlConfigPath);
+    struct xmlConfig globalConf = loader.obtainGlobalConfig();
+    vector<struct xmlBackground> backgroundsConfig = loader.obtainBackgroundsConfig();
+    vector<struct xmlPlayer> spritesConfig = loader.getSpritesConfig();
+
+    //falta ver como hacer para enviarlos. los vamos a enviar en orden? (para que el cliente sepa como castear)
+    //si vamos a mandarlos con eso de partial y final hay armar un struct que contenga a cada uno de los structs de conf
 }
 
 bool Server::auth_user(char *user, char *pass) {

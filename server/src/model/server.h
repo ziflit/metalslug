@@ -1,15 +1,17 @@
 #ifndef METALSLUG_SERVER_H
 #define METALSLUG_SERVER_H
 
+#include <list>
 #include <memory>
 #include <mutex>
 #include <queue>
-#include "../utils/SocketUtils.h"
-#include <list>
-
+#include <string>
+#include <vector>
 #include "UserLoader.h"
-#include "../utils/Protocol.h"
 #include "game/Scenery.h"
+#include "../utils/Protocol.h"
+#include "../utils/SocketUtils.h"
+#include "../utils/xml/XmlLoader.h"
 
 #define MAX_CONN 6
 
@@ -30,9 +32,10 @@ private:
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
     bool shouldClose;
+    string xmlConfigPath;
 
 public:
-    Server(string path);
+    Server(string path, string xmlConfigPath);
 
     ~Server();
 
