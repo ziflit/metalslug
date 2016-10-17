@@ -82,50 +82,44 @@ bool Scenery::hayJugadorEnBordeIzq(){
 bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando(){
 
     for (auto player : players) {
-        if ((player->getX() > (windowWidth/2)) and (player->getDireccionX() == 1)) {
+        if ((player->getX() >= ((windowWidth/2) - 100)) and (player->getDireccionX() == 1)) {
             return true;
         }
     }
     return false;
 }
 
-void Scenery::updateBackgroudsState(){
+void Scenery::updateBackgroudsState() {
 
-     /** Si un jugador esta en la mitad de pantalla y hay otro en posicion = 0:
-     *  entonces se le habilita al jugador a moverse hasta el final de la pantalla y el background no debe avanzar.
-     *  Si hay un jugador  retrocediendo o quieto no debe avanzar el background.
-     *  Conclusion:
-     *  El background avanza unicamente cuando todos estan avanzando, no hay ningun jugador en pos = 0,
-     *  y alguno paso la mitad de pantalla
-     *  Post el avance del background se debe restar a todos los jugadores una posicion
-     */
+    if ((not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
 
-    if(  (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando()) ){
-        for(auto background : backgrounds){
+        for (auto background : backgrounds) {
 
             background->avanzar();
+
             /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
              * el asociado a los players debe avanzar exactamente igual que ellos.
              * Es por eso que tiene seteada igual velocidad.
              */
+
+            //TODO QUE ARRASTRE AL GRISADO
+            for (auto player : players) {
+                player->retroceder();
+            }
         }
 
-        //TODO QUE ARRASTRE AL GRISADO
-        for(auto player : players){
-            player->retroceder();
-        }
     }
-
 }
-
 vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
+
+    updateBackgroudsState();
+
     for (auto player : players) {
         player->updatePosition();
         eventsToReturn.push_back(player->getNewState());
     }
 
-    updateBackgroudsState();
 
     for (auto background : backgrounds) {
         eventsToReturn.push_back(background->getState());

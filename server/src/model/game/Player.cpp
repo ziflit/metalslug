@@ -211,7 +211,7 @@ bool Player::isJumping() {
 
 void Player::updatePosition() {
     if(this->isMoving()) {
-        if ((!((direccionX == -1) and (x <= speed))) or (!((direccionX == 1) and (x == windowWidth)))) {
+        if ((!((direccionX == -1) and (x <= 100))) or (!((direccionX == 1) and (x == (windowWidth - 100))))) {
             x += direccionX*speed;
         }
     }
