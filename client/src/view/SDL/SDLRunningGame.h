@@ -1,7 +1,7 @@
 #ifndef SDLBASE_SDLRUNNINGGAME_H
 #define SDLBASE_SDLRUNNINGGAME_H
 
-#define gameMusicPath "audios/circuit.wav"
+#define gameMusicPath "audios/musicGame.mp3"
 #include "Music.h"
 #include <vector>
 #include "SpritesClasses.h"
