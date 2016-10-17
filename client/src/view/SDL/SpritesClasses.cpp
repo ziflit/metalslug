@@ -51,9 +51,12 @@ SDL_Texture* Sprite::loadTexture(SDL_Renderer* renderer,string imageTexturePath)
 
 //________________________________________________________________________________________________________
 //PLAYER SPRITE
-void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant) {
+void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, int wFramesCant, int hFramesCant) {
 
-    Sprite::setUpImage(imageSpritePath);
+    Sprite::setUpImage(imageColorPath);
+
+    this->imgaceColorPath = imageColorPath;
+    this->imageGrisadoPath = imageGrisadoPath;
 
     PlayerSprite::wActualPosFrame = 0;
 
@@ -63,12 +66,13 @@ void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFram
     PlayerSprite::frameWidth = spriteImageWidth / wFramesCant;
     PlayerSprite::frameHeight = spriteImageHeight / hFramesCant;
 
+
     PlayerSprite::sourceRect.w = PlayerSprite::frameWidth;
     PlayerSprite::sourceRect.h = PlayerSprite::frameHeight;
 }
 
-void PlayerSprite::colorear() {}
-void PlayerSprite::grisar() {}
+void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
+void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
 
 
 /**  MOVIMIENTOS
@@ -141,11 +145,12 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
 void PlayerSprite::handle(struct event nuevoEvento) {
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
-    //TODO: FALTA MANEJAR ACA EL CAMBIO DE FRAMES, PARA ESTA ENTREGA POR SER DEMO LO MANEJA SDL, PARA REINICIAR EL ARRANQUE DEL BACKGROUND
 
-    if ( nuevoEvento.data.postura != Postura::DESCONECTADO) {
+    if ((grisado == true) and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) {
         this->colorear();
+        grisado = false;
     }
+
     switch (nuevoEvento.data.postura){
 
         case Postura::CAMINANDO_IZQUIERDA:
@@ -185,7 +190,8 @@ void PlayerSprite::handle(struct event nuevoEvento) {
             mirandoIzquierdaQuieto();
             break;
         case Postura::DESCONECTADO:
-            grisado = true;
+            this->grisado = true;
+            cout<<" LO VOY A GRISAR AL GIL"<<endl;
             this->grisar();
             break;
         default:
@@ -219,36 +225,4 @@ void BackgroundSprite::setFramePosition(int x) {
 
 void BackgroundSprite::handle(struct event nuevoEvento) {
     BackgroundSprite::setFramePosition(nuevoEvento.data.x);
-}
-
-void Marco::colorear() {
-    setUpImage("sprites/player/marco.png",12,12);
-}
-
-void Marco::grisar() {
-    setUpImage("sprites/player/marcoGrisadp.png",12,12);
-}
-
-void Tarma::colorear() {
-    setUpImage("sprites/player/tarma.png",15,12);
-}
-
-void Tarma::grisar() {
-    setUpImage("sprites/player/tarmaGrisado.png",15,12);
-}
-
-void Fio::colorear() {
-    setUpImage("sprites/player/fio.png",15,12);
-}
-
-void Fio::grisar() {
-    setUpImage("sprites/player/fioGrisar.png",15,12);
-}
-
-void Eri::colorear() {
-    setUpImage("sprites/player/eri.png",15,12);
-}
-
-void Eri::grisar() {
-    setUpImage("sprites/player/eriGrisado.png",15,12);
 }

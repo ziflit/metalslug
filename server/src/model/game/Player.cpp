@@ -190,8 +190,8 @@ void Player::handlePressedKey(EventCode nuevoEvento){
 
 
 void Player::updateState(EventCode nuevoEvento){
-
     if (nuevoEvento == EventCode::CLIENT_DISCONNECT){
+        cout<<"se desconecto el cliente correctamente"<<endl;
         postura = Postura::DESCONECTADO;
     }
     else if (isKeyPressed(nuevoEvento)) {

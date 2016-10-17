@@ -52,6 +52,7 @@ class PlayerSprite : public Sprite{
 
 private:
     int wFramesCant,wActualPosFrame,hFramesCant;
+    string imgaceColorPath,imageGrisadoPath;
     bool grisado;
 public:
 //_______________________________________________________________________________________________
@@ -65,14 +66,13 @@ public:
         //DEFAULT POSITION
         PlayerSprite::set_position(10,550);
         mirandoDerechaQuieto();
-        grisado = true;
+        grisado = false;
     }
 
 //________________________________________________________________
     //OVERRIDE FUNCTIONS:
 
-    void setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant);
-
+    void setUpImage(string imageSpritePath,string imageGrisadoPath, int wFramesCant, int hFramesCant);
 
 //__________________________________________________________________
 
@@ -96,8 +96,7 @@ public:
     void mirandoIzquierdaQuieto();
 
 };
-//______________________________________________________________________________________________
-//BACKGROUNDSPRITE
+
 class BackgroundSprite : public Sprite{
 private:
     int spriteImageWidthPanned; //es la posicion horizontal que se va a a ir actualizando
@@ -127,45 +126,35 @@ public:
 
     void setFramePosition(int x);
 };
-//_______________________________________________________________________________________________
-//MARCO
+
 class Marco : public PlayerSprite {
 public:
     Marco(SDL_Texture *texture,SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height) {
-        setUpImage("sprites/player/marco.png",12,12);
+        PlayerSprite::setUpImage("sprites/player/marco.png","sprites/player/marcoGrisado.png",12,12);
+        destRect.h = destRect.h + 50;
+        destRect.w = destRect.w + 50;
     }
-    void grisar();
-    void colorear();
 };
-//_______________________________________________________________________________________________
-//TARMA
+
 class Tarma : public PlayerSprite{
 public:
     Tarma(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/player/tarma.png",15,10);
+        PlayerSprite::setUpImage("sprites/player/tarma.png","sprites/player/tarmaGrisado.png",15,12);
     }
-    void grisar();
-    void colorear();
 };
-//_______________________________________________________________________________________________
-//FIO
+
 class Fio : public PlayerSprite{
 public:
     Fio(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/player/fio.png",15,15);
+        PlayerSprite::setUpImage("sprites/player/fio.png","sprites/player/fioGrisado.png",15,12);
     }
-    void grisar();
-    void colorear();
 };
-//_______________________________________________________________________________________________
-//ERI
+
 class Eri : public PlayerSprite{
 public:
-    Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/player/eri.png",15,3); //TODO: cuando este el png listo, setearlo
+    Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture, renderer,window_width, window_height){
+        setUpImage("sprites/player/eri.png","sprites/player/eriGrisado.png",15,12);
     }
-    void grisar();
-    void colorear();
 };
 
 
