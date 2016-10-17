@@ -50,12 +50,6 @@ void Player::moveRight() {
 		set_position(newPos, y);}
 }
 
-// ver como hacer para que salte
-void Player::jump(){}
-void Player::jumpGoingUp(){y -= 3;}
-void Player::jumpGoingDown(){y += 3;}
-// -------------------------------------
-
 void Player::stopMoving(){
 	direccionX = 0;
 	//TODO: Aca habria que cambiar algo de frames? para que quede quieto y muestre la animacion de quieto
@@ -226,10 +220,6 @@ void Player::updatePosition() {
     }
 }
 
-void Player::avanzar(){
-    x += speed;
-}
-
 void Player::retroceder(){
     x -= speed;
 }
@@ -252,12 +242,6 @@ struct event Player::getNewState(){
 	return estado;
 }
 
-
-//_________________________________________
-
-bool Player::isInHalfWindow() {
-	return (x >= ((windowWidth/2)-speed));
-}
 
 
 

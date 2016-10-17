@@ -190,9 +190,11 @@ void PlayerSprite::handle(struct event nuevoEvento) {
             mirandoIzquierdaQuieto();
             break;
         case Postura::DESCONECTADO:
-            this->grisado = true;
-            cout<<" LO VOY A GRISAR AL GIL"<<endl;
-            this->grisar();
+            if (this->grisado == false){
+                this->grisado = true;
+                cout<<" LO VOY A GRISAR AL GIL"<<endl;
+                this->grisar();
+            }
             break;
         default:
             break;
@@ -208,19 +210,7 @@ void BackgroundSprite::setUpImage(string imageSpritePath) {
 }
 
 void BackgroundSprite::setFramePosition(int x) {
-    int pos = (x + this->frameWidth);
-    if (pos == spriteImageWidth){
-        //Recorrio toda la imagen
-        //TODO: esto es solo para el demo, sacar para la proxima entrega
-        printf("llego al limite del background");
-        Sprite::sourceRect.x = x-(spriteImageWidth - this->frameWidth);
-    }
-    else{
         Sprite::sourceRect.x = x;
-    }
-
-    //TODO: para la entrega N3 el codigo sera:
-//    Sprite::sourceRect.x = x;
 }
 
 void BackgroundSprite::handle(struct event nuevoEvento) {
