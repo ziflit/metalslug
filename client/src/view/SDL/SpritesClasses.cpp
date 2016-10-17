@@ -85,11 +85,19 @@ void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
 */
 
 void PlayerSprite::setNextSpriteFrame() {
-    if (PlayerSprite::wActualPosFrame == (PlayerSprite::wFramesCant - 1)) {
-        PlayerSprite::wActualPosFrame = 0;
+    if(cambioFrame == 5){
+
+        if (PlayerSprite::wActualPosFrame == (PlayerSprite::wFramesCant - 1)) {
+            PlayerSprite::wActualPosFrame = 0;
+        }
+        PlayerSprite::sourceRect.x = (PlayerSprite::frameWidth * PlayerSprite::wActualPosFrame);
+        PlayerSprite::wActualPosFrame++;
+
+        cambioFrame = 0;
+    } else {
+        cambioFrame++;
     }
-    PlayerSprite::sourceRect.x = (PlayerSprite::frameWidth * PlayerSprite::wActualPosFrame);
-    PlayerSprite::wActualPosFrame++;
+
 }
 
 void PlayerSprite::caminandoIzquierda() {

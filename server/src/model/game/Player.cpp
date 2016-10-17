@@ -188,7 +188,9 @@ bool Player::isJumping() {
 
 void Player::updatePosition() {
     if(this->isMoving()) {
-        if (!(((direccionX == -1) and (x <= 0)) and ((direccionX == 1) and (x <= (windowWidth - 200))))) {
+        if (((direccionX == 1) and (x <= (windowWidth - 10))) and ((direccionX == -1) and (x >= 0))) {
+//        if ((((direccionX == -1) and (x <= 10)) and ((direccionX == 1) and (x <= (windowWidth - 200))))) {
+//            cout<<"posicopn: "<< x<<endl;
             x += direccionX*speed;
         }
     }

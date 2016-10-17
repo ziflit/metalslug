@@ -51,7 +51,7 @@ public:
 class PlayerSprite : public Sprite{
 
 private:
-    int wFramesCant,wActualPosFrame,hFramesCant;
+    int wFramesCant,wActualPosFrame,hFramesCant,cambioFrame;
     string imgaceColorPath,imageGrisadoPath;
     bool grisado;
 public:
@@ -66,6 +66,7 @@ public:
         PlayerSprite::set_position(10,550);
         mirandoDerechaQuieto();
         grisado = false;
+        cambioFrame = 0;
     }
 
 //________________________________________________________________
