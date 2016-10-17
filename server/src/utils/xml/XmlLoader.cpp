@@ -7,7 +7,7 @@ XmlLoader::XmlLoader(string path) {
 XmlLoader::~XmlLoader() {
 }
 
-vector<struct xmlBackground>& XmlLoader::obtainBackgroundsConfig() {
+vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
     xml_document<> doc;
     file<> xmlFile("config.xml");
     doc.parse<0>(xmlFile.data());
@@ -36,7 +36,7 @@ vector<struct xmlBackground>& XmlLoader::obtainBackgroundsConfig() {
     return configs;
 }
 
-vector<struct xmlPlayer>& XmlLoader::obtainSpritesConfig() {
+vector<struct xmlPlayer> XmlLoader::obtainSpritesConfig() {
 //Cargo los sprites
     xml_document<> doc;
     file<> xmlFile("config.xml"); //open file
@@ -65,7 +65,7 @@ vector<struct xmlPlayer>& XmlLoader::obtainSpritesConfig() {
     return configs;
 }
 
-struct xmlConfig& XmlLoader::obtainGlobalConfig() {
+struct xmlConfig XmlLoader::obtainGlobalConfig() {
 //Cargo la configuracion
     xml_document<> doc;
     file<> xmlFile("config.xml"); //open file

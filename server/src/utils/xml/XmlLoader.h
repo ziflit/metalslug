@@ -30,11 +30,11 @@ public:
      * la carpeta sprite, entonces por ejemplo, para el sprite ubicado en la carpeta
      * sprites/player/marco.gif la ruta que sera dada por el xml sera player/marco.gif  */
 
-    struct xmlConfig& obtainGlobalConfig();
+    struct xmlConfig obtainGlobalConfig();
 
-    vector<struct xmlPlayer>& obtainSpritesConfig();
+    vector<struct xmlPlayer> obtainSpritesConfig();
 
-    vector<struct xmlBackground>& obtainBackgroundsConfig();
+    vector<struct xmlBackground> obtainBackgroundsConfig();
 
 };
 

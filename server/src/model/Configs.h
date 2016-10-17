@@ -21,27 +21,27 @@ public:
     Configs(){};
     virtual ~Configs(){};
 
-    vector<struct xmlBackground>& getBackgroundsConfig() {
+    vector<struct xmlBackground> getBackgroundsConfig() {
         return backgroundsConfig;
     }
 
-    void setBackgroundsConfig(vector<struct xmlBackground>& backgroundsConfig) {
+    void setBackgroundsConfig(vector<struct xmlBackground> backgroundsConfig) {
         this->backgroundsConfig = backgroundsConfig;
     }
 
-    struct xmlConfig& getGlobalConf() {
+    struct xmlConfig getGlobalConf() {
         return globalConf;
     }
 
-    void setGlobalConf(struct xmlConfig& globalConf) {
+    void setGlobalConf(struct xmlConfig globalConf) {
         this->globalConf = globalConf;
     }
 
-    vector<struct xmlPlayer>& getSpritesConfig() {
+    vector<struct xmlPlayer> getSpritesConfig() {
         return spritesConfig;
     }
 
-    void setSpritesConfig(vector<struct xmlPlayer>& spritesConfig) {
+    void setSpritesConfig(vector<struct xmlPlayer> spritesConfig) {
         this->spritesConfig = spritesConfig;
     }
 };
