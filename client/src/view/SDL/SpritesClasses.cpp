@@ -85,7 +85,7 @@ void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
 */
 
 void PlayerSprite::setNextSpriteFrame() {
-    if(cambioFrame == 5){
+    if(cambioFrame == 3){
 
         if (PlayerSprite::wActualPosFrame == (PlayerSprite::wFramesCant - 1)) {
             PlayerSprite::wActualPosFrame = 0;

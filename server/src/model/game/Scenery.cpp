@@ -24,19 +24,19 @@ Entity Scenery::buildPlayer(string user) {
     Player* newPlayer;
 
     if(players.size() == 0){
-        newPlayer = new Player(user, MARCO);
+        newPlayer = new Player(user, MARCO, windowWidth);
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() == 1){
-        newPlayer = new Player(user, FIO);
+        newPlayer = new Player(user, FIO,windowWidth);
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() == 2){
-        newPlayer = new Player(user, TARMA);
+        newPlayer = new Player(user, TARMA,windowWidth);
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() == 3){
-        newPlayer = (new Player(user, ERI));
+        newPlayer = (new Player(user, ERI,windowWidth));
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() > 3){ return NOPLAYER; }
@@ -73,7 +73,7 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
 bool Scenery::hayJugadorEnBordeIzq(){
     for (auto player: players){
         if(player->getPostura() != Postura::DESCONECTADO){  //ESTO LO ARRASTRA A TODO AQUE DESCONECTADO
-            if(player->getX() <= 10) {
+            if(player->getX() <= 0) {
                 return true;
             }
         }
@@ -105,9 +105,10 @@ void Scenery::updateBackgroudsState() {
              */
 
             //TODO QUE ARRASTRE AL GRISADO
-            for (auto player : players) {
-                player->retroceder();
-            }
+
+        }
+        for (auto player : players) {
+            player->retroceder();
         }
 
     }
@@ -115,13 +116,14 @@ void Scenery::updateBackgroudsState() {
 vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
 
-    updateBackgroudsState();
+
 
     for (auto player : players) {
         player->updatePosition();
         eventsToReturn.push_back(player->getNewState());
     }
 
+    updateBackgroudsState();
 
     for (auto background : backgrounds) {
         eventsToReturn.push_back(background->getState());

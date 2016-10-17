@@ -8,9 +8,10 @@
 #include <iostream>
 #include "Player.h"
 
-Player::Player(string user, Entity entitySelected) {
+Player::Player(string user, Entity entitySelected, int windowWidth) {
 	username = user;
 	entity = entitySelected;
+    this->windowWidth = windowWidth;
 	/**Para que no arranque pegado al borde izq: | o      | x = 100
 	 * El sistema de coordenadas que vamos a usar es el de SDL
 	 * (0,0) en la esquina superior izquierda
@@ -19,7 +20,7 @@ Player::Player(string user, Entity entitySelected) {
 	 * 	   			|					|
 	 *        (0,600)___________________(600,800)
 	 */
-	x = 0;
+	x = 10;
 	y = 400;
     direccionY = 0;
 	direccionX = 0;
@@ -188,9 +189,11 @@ bool Player::isJumping() {
 
 void Player::updatePosition() {
     if(this->isMoving()) {
-        if (((direccionX == 1) and (x <= (windowWidth - 10))) and ((direccionX == -1) and (x >= 0))) {
+        cout<<"direccion: "<<direccionX<<endl;
+        cout<<"posicopn: "<< x<<endl;
+
+        if (((direccionX == 1) and (x < (windowWidth-100))) or ((direccionX == -1) and (x > 0))) {
 //        if ((((direccionX == -1) and (x <= 10)) and ((direccionX == 1) and (x <= (windowWidth - 200))))) {
-//            cout<<"posicopn: "<< x<<endl;
             x += direccionX*speed;
         }
     }
