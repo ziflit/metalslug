@@ -132,7 +132,7 @@ public:
     Marco(SDL_Texture *texture,SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height) {
         PlayerSprite::setUpImage("sprites/player/marco.png","sprites/player/marcoGrisado.png",12,12);
         destRect.h = destRect.h + 50;
-        destRect.w = destRect.w + 50;
+        destRect.w = destRect.w;
     }
 };
 

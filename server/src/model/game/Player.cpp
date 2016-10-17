@@ -189,14 +189,16 @@ bool Player::isJumping() {
 
 void Player::updatePosition() {
     if(this->isMoving()) {
-        cout<<"direccion: "<<direccionX<<endl;
-        cout<<"posicopn: "<< x<<endl;
 
         if (((direccionX == 1) and (x < (windowWidth-100))) or ((direccionX == -1) and (x > 0))) {
-//        if ((((direccionX == -1) and (x <= 10)) and ((direccionX == 1) and (x <= (windowWidth - 200))))) {
             x += direccionX*speed;
         }
     }
+
+    if (postura == Postura::DESCONECTADO) {
+        x += speed;
+    }
+
     if(this->isJumping()) {
         if (posAtJump < 25){
             posAtJump++;
