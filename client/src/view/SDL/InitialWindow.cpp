@@ -14,7 +14,7 @@ SDL_Window* InitialWindow::createWindow(const char *windowName, unsigned int win
                                           SDL_WINDOWPOS_UNDEFINED,
                                           window_width,
                                           window_height,
-                                          0);
+                                          0);  //Este 0 = Not Resizable, para Resizable = SDL_WINDOW_RESIZABLE
 
 
     if(window == NULL){
