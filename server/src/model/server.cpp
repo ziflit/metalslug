@@ -14,8 +14,16 @@ using namespace std;
 
 Server::Server(string path, string xmlConfigPath) {
     this->userloader = new UserLoader(path);
-    this->scenery = new Scenery(800, 600);
+
+    // Inicializo en base al xml, y guardo todos los datos en server
     this->xmlConfigPath = xmlConfigPath;
+    XmlLoader* xmlLoader = new XmlLoader(xmlConfigPath);
+    this->globalConfig = xmlLoader->obtainGlobalConfig();
+    this->spritesConfig = xmlLoader->getSpritesConfig();
+    this->backgroundsConfig = xmlLoader->obtainBackgroundsConfig();
+    delete xmlLoader;
+
+    this->scenery = new Scenery(this->globalConfig.ancho, this->globalConfig.alto);
 }
 
 Server::~Server() {
@@ -64,6 +72,8 @@ void sendConfigsToClient(int clientSocket, string xmlConfigPath) {
     struct xmlConfig globalConf = loader.obtainGlobalConfig();
     vector<struct xmlBackground> backgroundsConfig = loader.obtainBackgroundsConfig();
     vector<struct xmlPlayer> spritesConfig = loader.getSpritesConfig();
+
+    
 
     //falta ver como hacer para enviarlos. los vamos a enviar en orden? (para que el cliente sepa como castear)
     //si vamos a mandarlos con eso de partial y final hay armar un struct que contenga a cada uno de los structs de conf
