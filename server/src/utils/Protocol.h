@@ -94,10 +94,19 @@ struct event {
 };
 
 
-struct msg_login {
+//aca pongo todo lo que tiene cada uno-------------------------------
+struct xmlConfig {
 	string username;
 	string password;
 };
-
+struct xmlPlayer {
+	string username;
+	string password;
+};
+struct xmlBackground {
+	string username;
+	string password;
+};
+//---------------------------------------------------
 
 #endif //METALSLUG_PROTOCOL_H

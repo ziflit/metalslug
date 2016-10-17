@@ -38,6 +38,12 @@ void client_comm(Server *srv, int client) {
         resp.data.id = assignedPlayer;
         sockutils.writeSocket(client, resp);
 
+        //------------------------------------------------
+        // TODO: Aca tengo que pasar el xml, armando los structus que estan en protocol, tanto para player config y background
+        // El cliente tiene que tener los mismos receive que coincidan con los sends del server...
+        // Si hay que mandar varios backgrounds por ejemplo se puede usar lo de completion y final message
+        //------------------------------------------------
+
         ClientConnection* handler = new ClientConnection(client, srv, user);
         srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
         handler->start();

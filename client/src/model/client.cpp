@@ -53,9 +53,13 @@ bool Client::connect_to_server(string ip, int port, string user) {
 		return false;
 	} else {
 		strcpy(userName, user.data());
-//		this->store_users_list();
+
+		//----------------------------------------------
+		// TODO: Aca recibo los paquetes del xml que mando desde el server, primero config, despues players, despues backgrounds
+		// Una vez recibido, tengo que ver como pasarle todo esto a SDL para que lo pueda usar en vez de lo que esta harcodeado
+		//---------------------------------------------
+
     /* Lanzo el handler del cliente */
-    cout << "Me logee bien con el server puto jaja " << endl;
     this->handler = new ClientHandler(socket_number, this, user.data());
     this->my_character = ((struct event*) response)->data.id;
 		this->handler->start();
