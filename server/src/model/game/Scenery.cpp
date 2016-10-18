@@ -5,9 +5,8 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
     windowWidth = width;
     windowHeight = height;
 
-    this->backgrounds.push_back(new Background(0,5,4000));
-    this->backgrounds.push_back(new Background(1,10,8192));
-    this->backgrounds.push_back(new Background(2,10,8192));
+    this->inizializarBackgrounds();
+
     //TODO: setear la velocidad de avance de cada background, el asociado a los players debe tener igual velocidad que ellos.
     //TODO: definir si del XML tambien se setea la cantidad de jugadores.
     //TODO: el seteo de cada jugador.
@@ -41,6 +40,14 @@ Entity Scenery::buildPlayer(string user) {
     }
     else if(players.size() > 3){ return NOPLAYER; }
     return newPlayer->getEntity();
+}
+
+void Scenery::inizializarBackgrounds(){
+    Background* background0 = new Background(0,1,4000);
+    background0->calculateSpeed(8192,5);
+    this->backgrounds.push_back(background0);  //esos numeros son el largo de la imagen para que autocalcule la velocidad
+    this->backgrounds.push_back(new Background(1,5,8192));
+    this->backgrounds.push_back(new Background(2,5,8192));
 }
 
 int Scenery::findPlayerByUsername(string user) {

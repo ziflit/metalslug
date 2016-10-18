@@ -41,6 +41,8 @@ public:
 
 	Entity buildPlayer(string user);
 
+	void inizializarBackgrounds();
+
     bool jugadorPasoMitadPantallaYEstaAvanzando();
 
     bool hayJugadorEnBordeIzq();

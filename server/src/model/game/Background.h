@@ -33,6 +33,8 @@ public:
 
 	struct event getState();
 
+    void calculateSpeed(int largeMainBackground, int speedMainBackground);
+
 	void setEntity(int zindex);
 
 	void avanzar();

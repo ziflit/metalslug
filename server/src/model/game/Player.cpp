@@ -20,7 +20,7 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
 	 * 	   			|					|
 	 *        (0,600)___________________(600,800)
 	 */
-	x = 10;
+	x = 5;
 	y = 400;
     direccionY = 0;
 	direccionX = 0;

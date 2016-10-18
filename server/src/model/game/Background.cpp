@@ -14,6 +14,9 @@ Background::Background(int zindex, int speed, double large) {
     this->speed = speed;
 }
 
+void Background::calculateSpeed(int largeMainBackground, int speedMainBackground) {
+    this->speed = (largeMainBackground/speedMainBackground)/this->large;
+}
 void Background::avanzar() {
     if (x + 800 >= large) {
         x = 0;
