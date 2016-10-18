@@ -63,6 +63,9 @@ void Scenery::process_key(EventCode keycode, Entity entity) {
 vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
     while (not keys->empty()) {
         struct event key = keys->front();
+        if (key.data.code == CLIENT_DISCONNECT){
+            cout<<"se recibio un evento de Client Disconnect"<<endl;
+        }
         process_key( key.data.code, key.data.id );
         keys->pop();
     }
@@ -84,10 +87,11 @@ bool Scenery::hayJugadorEnBordeIzq(){
 bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando(){
 
     for (auto player : players) {
-        if ((player->getX() >= ((windowWidth/2) - 100)) and (player->getDireccionX() == 1)) {
-            return true;
-        }
+        if((player->getPostura() != Postura::DESCONECTADO) and ((player->getX() >= ((windowWidth/2) - 100)) and (player->getDireccionX() == 1))) {
+                return true;
+            }
     }
+
     return false;
 }
 
@@ -108,7 +112,12 @@ void Scenery::updateBackgroudsState() {
 
         }
         for (auto player : players) {
-            player->retroceder();
+            if(player->getPostura() == Postura::DESCONECTADO){  //ARRASTRA LOS GRISADOS
+                player->avanzar();
+            }
+            else {
+                player->retroceder();
+            }
         }
 
     }

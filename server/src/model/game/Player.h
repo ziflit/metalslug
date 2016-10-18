@@ -61,7 +61,7 @@ class Player {
 
     void jumpGoingDown();
 
-    void avanzar();
+    void avanzar() {x += speed;};
 
     void retroceder();
 

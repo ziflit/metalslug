@@ -195,10 +195,6 @@ void Player::updatePosition() {
         }
     }
 
-    if (postura == Postura::DESCONECTADO) {
-        x += speed;
-    }
-
     if(this->isJumping()) {
         if (posAtJump < 25){
             posAtJump++;
