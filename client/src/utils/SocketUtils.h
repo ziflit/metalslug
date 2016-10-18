@@ -12,5 +12,6 @@ class SocketUtils {
     int writeSocket(int fd, struct event msg);
     bool peek(int fd, char* buffer);
     bool readSocket(int socket, char *buffer);
+    bool readSocket(int socket, char* buffer, size_t sizeBuffer);
 };
 #endif

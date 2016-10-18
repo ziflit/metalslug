@@ -10,6 +10,20 @@ void sendHeartbeat(ClientHandler* handler) {
 	}
 }
 
+void readConfigs(ClientHandler* handler, SocketUtils& sockutils){
+    int sizeGlobalConfig = sizeof(struct xmlConfig);
+    cout << "tamaño struct" << sizeGlobalConfig << endl;
+    char globalConfigBuffer[sizeGlobalConfig];
+    bool isComplete;
+    isComplete = sockutils.readSocket(handler->getClientSocket(), globalConfigBuffer, sizeGlobalConfig);
+    cout << "rompio?" << isComplete <<endl;
+    if(isComplete){
+        struct xmlConfig xmlConf = (*(struct xmlConfig*) globalConfigBuffer);
+        cout << "alto de ventana "<< xmlConf.alto << endl;
+    }
+
+}
+
 void connectionReader(ClientHandler *handler) {
 	int is_server_alive;
 	bool isComplete;
@@ -31,6 +45,7 @@ void connectionReader(ClientHandler *handler) {
     if (isComplete) {
         struct event incommingEvent = (*(struct event*) eventBuffer);
         if (incommingEvent.data.code == EventCode::MSG_OK) {
+//            readConfigs(handler, sockutils);
             continue;
         }
         handler->receiveEvent(incommingEvent);

@@ -23,6 +23,30 @@ Server::~Server() {
     this->shutdownServer();
 }
 
+void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutils) {
+    //------------------------------------------------
+    // TODO: Aca tengo que pasar el xml, armando los structus que estan en protocol, tanto para player config y background
+    // El cliente tiene que tener los mismos receive que coincidan con los sends del server...
+    // Si hay que mandar varios backgrounds por ejemplo se puede usar lo de completion y final message
+    //------------------------------------------------
+    Configs configs = server->getConfigs();
+    struct xmlConfig globalConf = configs.getGlobalConf();
+    vector<struct xmlPlayer> sprites = configs.getSpritesConfig();
+    vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
+
+//    sockutils.writeSocket(clientSocket, &globalConf, sizeof(struct xmlConfig));
+
+/*
+    for (auto xml : sprites) {
+        sockutils.writeSocket(clientSocket, &xml, sizeof(struct xmlPlayer));
+    }
+
+    for (auto xml : backgrounds) {
+        sockutils.writeSocket(clientSocket, &xml, sizeof(struct xmlBackground));
+    }
+*/
+}
+
 /* Función para el thread de comunicación con el cliente
  * Manda los mensajes que se ingresen por cin()
  */
@@ -40,7 +64,7 @@ void client_comm(Server *srv, int client) {
         resp.data.id = assignedPlayer;
         sockutils.writeSocket(client, resp);
 
-
+        sendConfigsToClient(client, srv, sockutils);
 
         ClientConnection* handler = new ClientConnection(client, srv, user);
         srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
@@ -55,22 +79,7 @@ void client_comm(Server *srv, int client) {
     }
 }
 
-void sendConfigsToClient(int clientSocket, Server* server) {
-    //------------------------------------------------
-    // TODO: Aca tengo que pasar el xml, armando los structus que estan en protocol, tanto para player config y background
-    // El cliente tiene que tener los mismos receive que coincidan con los sends del server...
-    // Si hay que mandar varios backgrounds por ejemplo se puede usar lo de completion y final message
-    //------------------------------------------------
-    Configs configs = server->getConfigs();
-    struct xmlConfig globalConf = configs.getGlobalConf();
-    vector<struct xmlPlayer> sprites = configs.getSpritesConfig();
-    vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
 
-    
-
-    //falta ver como hacer para enviarlos. los vamos a enviar en orden? (para que el cliente sepa como castear)
-    //si vamos a mandarlos con eso de partial y final hay armar un struct que contenga a cada uno de los structs de conf
-}
 
 bool Server::auth_user(char *user, char *pass) {
     userloader->isPasswordOk(user, pass);
