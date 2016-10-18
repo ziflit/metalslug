@@ -22,9 +22,9 @@ class Background {
 
 private:
 	Entity entity;
-	unsigned int x,y;
+	float x,y;
 	double large;
-	unsigned int speed;
+    float speed;
 
 public:
 	Background(int zindex,int speed, double large);
@@ -39,27 +39,27 @@ public:
 
 	void avanzar();
 
-	unsigned int getSpeed() const {
+    float getSpeed() const {
 		return speed;
 	}
 
-	void setSpeed(unsigned int speed) {
+	void setSpeed(float speed) {
 		this->speed = speed;
 	}
 
-	unsigned int getX() const {
+    float getX() const {
 		return x;
 	}
 
-	void setX(unsigned int x) {
+	void setX(float x) {
 		this->x = x;
 	}
 
-	unsigned int getY() const {
+    int getY() const {
 		return y;
 	}
 
-	void setY(unsigned int y) {
+	void setY(int y) {
 		this->y = y;
 	}
 
