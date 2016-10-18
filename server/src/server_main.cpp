@@ -5,7 +5,8 @@
 
 #include "model/server.h"
 #include "utils/Logger.h"
-
+#include "utils/xml/XmlLoader.h"
+#define DEFAULT_CONFIG_XML_PATH "config.xml"
 const int FPS = 30;
 bool onlinethread = true;
 
@@ -96,7 +97,7 @@ int main(int argc, char* argv[]) {
     string path = "userslist.csv";
     if (argc > 2) string path = argv[2];
 
-    Server* server = new Server(path);
+    Server* server = new Server(path, DEFAULT_CONFIG_XML_PATH);
     server->shouldCloseFunc(false);
 
     std::thread server_online_in_thread;

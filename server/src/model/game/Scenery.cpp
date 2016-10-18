@@ -5,9 +5,9 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
     windowWidth = width;
     windowHeight = height;
 
-    this->backgrounds.push_back(new Background(0,5));
-    this->backgrounds.push_back(new Background(1,10));
-    this->backgrounds.push_back(new Background(2,10));
+    this->backgrounds.push_back(new Background(0,5,4000));
+    this->backgrounds.push_back(new Background(1,10,8192));
+    this->backgrounds.push_back(new Background(2,10,8192));
     //TODO: setear la velocidad de avance de cada background, el asociado a los players debe tener igual velocidad que ellos.
     //TODO: definir si del XML tambien se setea la cantidad de jugadores.
     //TODO: el seteo de cada jugador.
@@ -22,21 +22,21 @@ Entity Scenery::buildPlayer(string user) {
         return players[position]->getEntity();
     }
     Player* newPlayer;
-    cout<<"PLAYERS LIST SIZE: "<<players.size()<<endl;
+
     if(players.size() == 0){
-        newPlayer = new Player(user, MARCO);
+        newPlayer = new Player(user, MARCO, windowWidth);
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() == 1){
-        newPlayer = new Player(user, TARMA);
+        newPlayer = new Player(user, FIO,windowWidth);
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() == 2){
-        newPlayer = new Player(user, FIO);
+        newPlayer = new Player(user, TARMA,windowWidth);
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() == 3){
-        newPlayer = (new Player(user, ERI));
+        newPlayer = (new Player(user, ERI,windowWidth));
         this->addElementToScenery(newPlayer);
     }
     else if(players.size() > 3){ return NOPLAYER; }
@@ -63,68 +63,70 @@ void Scenery::process_key(EventCode keycode, Entity entity) {
 vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
     while (not keys->empty()) {
         struct event key = keys->front();
+        if (key.data.code == CLIENT_DISCONNECT){
+            cout<<"se recibio un evento de Client Disconnect"<<endl;
+        }
         process_key( key.data.code, key.data.id );
         keys->pop();
     }
     return obtenerEstadoEscenario();
 }
 
-bool Scenery::todosJugadoresAvanzando(){
-    for(auto player : players){
-        if(player->getDireccionX()<1){
-            return false;
-        }
-    }
-    return true;
-}
 
 bool Scenery::hayJugadorEnBordeIzq(){
     for (auto player: players){
-        if(player->getX() == 0) {
+        if(player->getPostura() != Postura::DESCONECTADO){  //ESTO LO ARRASTRA A TODO AQUE DESCONECTADO
+            if(player->getX() <= 0) {
                 return true;
+            }
         }
     }
     return false;
 }
 
-bool Scenery::jugadorPasoMitadPantalla(){
+bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando(){
+
     for (auto player : players) {
-        if (player->getX() > (windowWidth/2)) {
-            return true;
-        }
+        if((player->getPostura() != Postura::DESCONECTADO) and ((player->getX() >= ((windowWidth/2) - 100)) and (player->getDireccionX() == 1))) {
+                return true;
+            }
     }
+
     return false;
 }
 
-void Scenery::updateBackgroudsState(){
+void Scenery::updateBackgroudsState() {
 
-     /* Si un jugador esta en la mitad de pantalla y hay otro en posicion = 0:
-     *  entonces se le habilita al jugador a moverse hasta el final de la pantalla y el background no debe avanzar.
-     *  Si hay un jugador  retrocediendo o quieto no debe avanzar el background.
-     *  Conclusion:
-     *  El background avanza unicamente cuando todos estan avanzando, no hay ningun jugador en pos = 0,
-     *  y alguno paso la mitad de pantalla
-     *  Post el avance del background se debe restar a todos los jugadores una posicion
-     */
+    if ((not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
 
-    if( (todosJugadoresAvanzando()) and (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantalla()) ){
-        for(auto background : backgrounds){
+        for (auto background : backgrounds) {
 
             background->avanzar();
+
             /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
              * el asociado a los players debe avanzar exactamente igual que ellos.
              * Es por eso que tiene seteada igual velocidad.
              */
+
+            //TODO QUE ARRASTRE AL GRISADO
+
         }
-        for(auto player : players){
-            player->retroceder();
+        for (auto player : players) {
+            if(player->getPostura() == Postura::DESCONECTADO){  //ARRASTRA LOS GRISADOS
+                player->avanzar();
+            }
+            else {
+                player->retroceder();
+            }
         }
+
     }
-
 }
-
 vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
+
+
+
     for (auto player : players) {
         player->updatePosition();
         eventsToReturn.push_back(player->getNewState());
@@ -139,7 +141,6 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     eventsToReturn.back().completion = EventCompletion::FINAL_MSG;
     return eventsToReturn;
 }
-//______________________________________________________________________________________________________________________
 
 void Scenery::addElementToScenery(Player* player) {
 	players.push_back(player);
@@ -148,7 +149,6 @@ void Scenery::addElementToScenery(Player* player) {
 void Scenery::addElementToScenery(Background* background) {
 	backgrounds.push_back(background);
 }
-//______________________________________________________________________________________________________________________
 
 Scenery::~Scenery() {
 }

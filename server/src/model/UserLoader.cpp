@@ -24,12 +24,12 @@ bool UserLoader::processCSV(string path){
         // and put it into the vector or strings
         User* newUser = new User();
         std::getline(csvStream, csvCol, ',');
-        cout << csvCol <<endl;
+        // cout << csvCol <<endl;
         
         newUser->setUsername(csvCol.data());
         
         std::getline(csvStream, csvCol, ',');
-        cout << csvCol <<endl;
+        // cout << csvCol <<endl;
         newUser->setPassword(csvCol.data());
 
 

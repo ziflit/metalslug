@@ -14,6 +14,18 @@ int SocketUtils::writeSocket(int fd, struct event msg) {
     return bytesSent;
 }
 
+
+int SocketUtils::writeSocket(int fd, void* msg, size_t size) {
+    cout << "tamaño struct " << size << endl;
+    signal(SIGPIPE, SIG_IGN);
+    int bytesSent = send(fd, &msg, size, 0);
+    if (bytesSent < 0) {
+        cout << "Hubo un error y fue: " << strerror(bytesSent) << endl;
+    }
+    return bytesSent;
+}
+
+
 bool SocketUtils::readSocket(int socket, char* buffer) {
     int bytesRecv = 0;
 

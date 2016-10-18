@@ -30,6 +30,22 @@ bool SocketUtils::readSocket(int socket, char* buffer) {
     return bytesRecv == MSGSIZE;
 }
 
+bool SocketUtils::readSocket(int socket, char* buffer, size_t sizeBuffer) {
+    int bytesRecv = 0;
+
+    while (bytesRecv < sizeBuffer && bytesRecv != -1) {
+        bytesRecv += recv(socket, buffer, sizeBuffer, 0);
+    }
+    if (bytesRecv == -1) {
+        /* Loggeo un error */
+        int interror = errno;
+        cout << "Hubo un error en la lectura del socket: " << strerror(interror) << endl;
+        return false;
+    }
+
+    return bytesRecv == sizeBuffer;
+}
+
 bool SocketUtils::peek(int fd, char* buffer) {
     int bytesRecv = 0;
 

@@ -28,13 +28,15 @@ class Player {
 
 
     public:
-    Player(string user, Entity entitySelected);
+    Player(string user, Entity entitySelected, int windowWidth);
 
     virtual ~Player();
 
     Entity getEntity() {
         return entity;
     }
+
+    Postura getPostura(){ return this->postura;}
 
     struct event getNewState();
 
@@ -59,7 +61,7 @@ class Player {
 
     void jumpGoingDown();
 
-    void avanzar();
+    void avanzar() {x += speed;};
 
     void retroceder();
 
@@ -77,15 +79,15 @@ class Player {
 
 
     //getters y setters -----------------------------------------------------------------------------------------
-    unsigned int getSpeed() const {
+    int getSpeed() const {
         return speed;
     }
 
-    unsigned int getDireccionX() const{
+    int getDireccionX() const{
         return direccionX;
     }
 
-    void setSpeed(unsigned int speed) {
+    void setSpeed(int speed) {
         this->speed = speed;
     }
 
@@ -93,19 +95,19 @@ class Player {
         return username;
     }
 
-    unsigned int getX() const {
+    int getX() const {
         return x;
     }
 
-    void setX(unsigned int x) {
+    void setX(int x) {
         this->x = x;
     }
 
-    unsigned int getY() const {
+    int getY() const {
         return y;
     }
 
-    void setY(unsigned int y) {
+    void setY(int y) {
         this->y = y;
     }
 

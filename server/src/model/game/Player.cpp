@@ -8,18 +8,19 @@
 #include <iostream>
 #include "Player.h"
 
-Player::Player(string user, Entity entitySelected) {
+Player::Player(string user, Entity entitySelected, int windowWidth) {
 	username = user;
 	entity = entitySelected;
+    this->windowWidth = windowWidth;
 	/**Para que no arranque pegado al borde izq: | o      | x = 100
 	 * El sistema de coordenadas que vamos a usar es el de SDL
 	 * (0,0) en la esquina superior izquierda
 	 * 			(0,0)___________________(0,800)
 	 * 			    |					|
 	 * 	   			|					|
-	 *      (600,800)___________________(600,800)
+	 *        (0,600)___________________(600,800)
 	 */
-	x = 0;
+	x = 10;
 	y = 400;
     direccionY = 0;
 	direccionX = 0;
@@ -37,29 +38,6 @@ void Player::set_position( int posx,  int posy) {
     y = posy;
 }
 
-void Player::moveRight() {
-/** mueve el sprite en eje X hacia la derecha.
- * Si el sprite tiene coordenadas (mitad de pantalla, y)
- * entonces no sigue avanzando hacia la derecha
- * Solo va a poder avanzar mas de la mitad de pantalla si
- * el BackgroundSprite llego a su ultimo frame.
-*/
-//  Player::set_position(Player::destRect.x + speed, Player::destRect.y);}
-	unsigned int newPos = (x + speed);
-	if(newPos < (windowWidth/2)){
-		set_position(newPos, y);}
-}
-
-// ver como hacer para que salte
-void Player::jump(){}
-void Player::jumpGoingUp(){y -= 3;}
-void Player::jumpGoingDown(){y += 3;}
-// -------------------------------------
-
-void Player::stopMoving(){
-	direccionX = 0;
-	//TODO: Aca habria que cambiar algo de frames? para que quede quieto y muestre la animacion de quieto
-}
 bool Player::isKeyPressed(EventCode nuevoEvento) {
     return ( (nuevoEvento == SDL_KEY_A_PRESSED) or (nuevoEvento == SDL_KEY_S_PRESSED) or (nuevoEvento == SDL_KEYUP_PRESSED) or (nuevoEvento == SDL_KEYDOWN_PRESSED) or (nuevoEvento == SDL_KEYLEFT_PRESSED) or (nuevoEvento == SDL_KEYRIGHT_PRESSED));
 }
@@ -70,7 +48,6 @@ bool Player::isKeyRealeased(EventCode nuevoEvento) {
 
 void Player::handleRealeasedKey(EventCode nuevoEvento) {
     switch (nuevoEvento) {
-        //REALEASED____________________________________________________________________________________________________________
 
         case EventCode::SDL_KEYLEFT_RELEASED:
             if(direccionX == -1){
@@ -138,7 +115,6 @@ void Player::handleRealeasedKey(EventCode nuevoEvento) {
 }
 void Player::handlePressedKey(EventCode nuevoEvento){
     switch (nuevoEvento){
-        //PRESSED____________________________________________________________________________________________________________
         case EventCode::SDL_KEY_A_PRESSED:
             direccionY = 1;
             break;
@@ -192,10 +168,8 @@ void Player::handlePressedKey(EventCode nuevoEvento){
 
 
 void Player::updateState(EventCode nuevoEvento){
-
-		if (nuevoEvento == EventCode::CLIENT_DISCONNECT){
-			// TODO: aca hay que hacer que el personaje aparezca grisado, y se permita
-			// arrastarlo por la pantalla
+    if (nuevoEvento == EventCode::CLIENT_DISCONNECT){
+        this->postura = Postura::DESCONECTADO;
     }
     else if (isKeyPressed(nuevoEvento)) {
         handlePressedKey(nuevoEvento);
@@ -215,10 +189,12 @@ bool Player::isJumping() {
 
 void Player::updatePosition() {
     if(this->isMoving()) {
-        if ((!((direccionX == -1) and (x <= speed))) or (!((direccionX == 1) and (x == windowWidth)))) {
+
+        if (((direccionX == 1) and (x < (windowWidth-100))) or ((direccionX == -1) and (x > 0))) {
             x += direccionX*speed;
         }
     }
+
     if(this->isJumping()) {
         if (posAtJump < 25){
             posAtJump++;
@@ -228,10 +204,6 @@ void Player::updatePosition() {
             posAtJump = 0;
         }
     }
-}
-
-void Player::avanzar(){
-    x += speed;
 }
 
 void Player::retroceder(){
@@ -256,12 +228,6 @@ struct event Player::getNewState(){
 	return estado;
 }
 
-
-//_________________________________________
-
-bool Player::isInHalfWindow() {
-	return (x >= ((windowWidth/2)-speed));
-}
 
 
 

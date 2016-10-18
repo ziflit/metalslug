@@ -41,9 +41,7 @@ public:
 
 	Entity buildPlayer(string user);
 
-    bool jugadorPasoMitadPantalla();
-
-    bool todosJugadoresAvanzando();
+    bool jugadorPasoMitadPantallaYEstaAvanzando();
 
     bool hayJugadorEnBordeIzq();
 

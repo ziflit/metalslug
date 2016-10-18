@@ -8,17 +8,43 @@
 #include <thread>
 
 #include "ClientConnection.h"
-#include "../utils/Logger.h"
 
 using namespace std;
 
-Server::Server(string path) {
+Server::Server(string path, string xmlConfigPath) {
     this->userloader = new UserLoader(path);
-    this->scenery = new Scenery(800,600);
+
+    loadConfigs();
+    struct xmlConfig globalConf = configs.getGlobalConf();
+    this->scenery = new Scenery(globalConf.ancho, globalConf.alto);
 }
 
 Server::~Server() {
     this->shutdownServer();
+}
+
+void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutils) {
+    //------------------------------------------------
+    // TODO: Aca tengo que pasar el xml, armando los structus que estan en protocol, tanto para player config y background
+    // El cliente tiene que tener los mismos receive que coincidan con los sends del server...
+    // Si hay que mandar varios backgrounds por ejemplo se puede usar lo de completion y final message
+    //------------------------------------------------
+    Configs configs = server->getConfigs();
+    struct xmlConfig globalConf = configs.getGlobalConf();
+    vector<struct xmlPlayer> sprites = configs.getSpritesConfig();
+    vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
+
+//    sockutils.writeSocket(clientSocket, &globalConf, sizeof(struct xmlConfig));
+
+/*
+    for (auto xml : sprites) {
+        sockutils.writeSocket(clientSocket, &xml, sizeof(struct xmlPlayer));
+    }
+
+    for (auto xml : backgrounds) {
+        sockutils.writeSocket(clientSocket, &xml, sizeof(struct xmlBackground));
+    }
+*/
 }
 
 /* Función para el thread de comunicación con el cliente
@@ -38,6 +64,8 @@ void client_comm(Server *srv, int client) {
         resp.data.id = assignedPlayer;
         sockutils.writeSocket(client, resp);
 
+        sendConfigsToClient(client, srv, sockutils);
+
         ClientConnection* handler = new ClientConnection(client, srv, user);
         srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
         handler->start();
@@ -50,6 +78,8 @@ void client_comm(Server *srv, int client) {
         sockutils.writeSocket(client, resp);
     }
 }
+
+
 
 bool Server::auth_user(char *user, char *pass) {
     userloader->isPasswordOk(user, pass);
@@ -187,6 +217,7 @@ void Server::handle_message(struct event event, EventCode code, char* username) 
     case EventCode::CLIENT_DISCONNECT:
         cout << "CLIENT_DISCONNECT" << endl;
         handler = this->get_user_handler(username);
+        this->incoming_events.push_back(event);
         close_connection(handler->getUsername());
         break;
 
@@ -250,3 +281,14 @@ void Server::send_model_snapshot(ClientConnection* handler) {
 }
 
 void Server::set_model_snapshot(vector<struct event> model_state) { this->last_model_snapshot = model_state;}
+
+Configs& Server::getConfigs(){
+    return configs;
+}
+
+void Server::loadConfigs(){
+    XmlLoader loader(xmlConfigPath);
+    configs.setGlobalConf(loader.obtainGlobalConfig());
+    configs.setBackgroundsConfig(loader.obtainBackgroundsConfig());
+    configs.setSpritesConfig(loader.obtainSpritesConfig());
+}
