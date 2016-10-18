@@ -12,7 +12,7 @@ SRV_SRC_FILES = src/model/server.cpp src/model/ClientConnection.cpp src/model/Ev
 src/utils/SocketUtils.cpp src/server_main.cpp src/model/game/*.cpp src/utils/xml/XmlLoader.cpp
 #SRV_SRC_FILES = src/model/server.cpp src/server_main.cpp
 # SRV_INC = src/model/server.h $(filter-out src/utils/loremIpsum.cpp, $(wildcard src/utils/*.cpp)) $(filter-out src/utils/User.cpp, $(wildcard src/utils/*.cpp))
-SRV_INC = src/model/server.h src/utils/xml/XmlLoader.h # src/model/ClientConnection.h src/model/UserLoader.h src/utils/SocketUtils.h src/utils/Protocol.h src/model/User.h
+SRV_INC = src/model/server.h src/utils/xml/XmlLoader.h src/model/Configs.h # src/model/ClientConnection.h src/model/UserLoader.h src/utils/SocketUtils.h src/utils/Protocol.h src/model/User.h
 SRV_DEP = -pthread
 SRV_OBJ_NAME = server
 
