@@ -5,7 +5,6 @@
  *      Author: fpirra
  */
 
-#include <iostream>
 #include "Background.h"
 
 Background::Background(int zindex, int speed, double large) {
@@ -17,14 +16,12 @@ Background::Background(int zindex, int speed, double large) {
 
 void Background::calculateSpeed(int largeMainBackground, int speedMainBackground) {
     this->speed = ((this->large-800) * speedMainBackground)/(largeMainBackground-800); //800= windowWidth
-    std::cout<<"speed: "<<this->speed<<endl;
 }
 void Background::avanzar() {
     if (x + 800 >= large) {  //todo: ojo con el framewidth
         x = 0;
     }
     this->x += speed;
-    std::cout<<"back x: "<<x<<endl;
 }
 
 void Background::setEntity(int zindex) {
