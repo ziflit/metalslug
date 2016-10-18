@@ -7,6 +7,7 @@
 #include <memory>
 #include "message.h"
 #include "../utils/SocketUtils.h"
+#include "Configs.h"
 
 using namespace std;
 
@@ -20,6 +21,10 @@ private:
     char userName[20];
     std::vector<string> usersList;
     Entity my_character;
+    Configs configs;
+    // Configs esta compuesto por globalConf, backgroundsConfig y spritesConfig. Cada uno de ellos dentro
+    // tiene un struct o vector de structs... que se pueden ver en config.h
+
 public:
 		/* Pre: ip y puerto validos
 		 * Post: cliente conectado al servidor 
@@ -47,6 +52,8 @@ public:
 		 *       contenido de los mensajes desde un archivo de texto. 
 		 */
     void lorem_ipsum(int frec, int max_envios);
+
+    void loadConfigsFromServer(struct xmlConfig globalConf, vector<struct xmlPlayer> spritesConfig, vector<struct xmlBackground> backgroundsConfig);
 
     int get_socket();
 
