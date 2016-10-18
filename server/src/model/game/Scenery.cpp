@@ -107,9 +107,6 @@ void Scenery::updateBackgroudsState() {
              * el asociado a los players debe avanzar exactamente igual que ellos.
              * Es por eso que tiene seteada igual velocidad.
              */
-
-            //TODO QUE ARRASTRE AL GRISADO
-
         }
         for (auto player : players) {
             if(player->getPostura() == Postura::DESCONECTADO){  //ARRASTRA LOS GRISADOS
@@ -122,6 +119,7 @@ void Scenery::updateBackgroudsState() {
 
     }
 }
+
 vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
 
