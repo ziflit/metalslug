@@ -34,37 +34,48 @@ SDL_Texture* Sprite::loadTexture(SDL_Renderer* renderer,string imageTexturePath)
     SDL_Texture* backgroundTexture = NULL;
     SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
 
-    if(loadingSurface == NULL)
+    if(loadingSurface == NULL){
         cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
+        loadingSurface = IMG_Load("sprites/defaultImage.png"); //TODO: ESTO DEBERIA CARGARSE DEL XML, PEROOO...
+    }
 
-    else {
-        backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
-        if(backgroundTexture == NULL){
-            cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
+    backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
 
-        }
+    if(backgroundTexture == NULL){
+        cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
+
+    }
 
         SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
         return backgroundTexture;
-    }
 }
+
 
 //________________________________________________________________________________________________________
 //PLAYER SPRITE
-void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant) {
+void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, int wFramesCant, int hFramesCant) {
 
-    Sprite::setUpImage(imageSpritePath);
+    Sprite::setUpImage(imageColorPath);
+
+    this->imgaceColorPath = imageColorPath;
+    this->imageGrisadoPath = imageGrisadoPath;
 
     PlayerSprite::wActualPosFrame = 0;
 
     PlayerSprite::wFramesCant = wFramesCant;
+    PlayerSprite::hFramesCant = hFramesCant;
 
     PlayerSprite::frameWidth = spriteImageWidth / wFramesCant;
     PlayerSprite::frameHeight = spriteImageHeight / hFramesCant;
 
+
     PlayerSprite::sourceRect.w = PlayerSprite::frameWidth;
     PlayerSprite::sourceRect.h = PlayerSprite::frameHeight;
 }
+
+void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
+void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
+
 
 /**  MOVIMIENTOS
 *_________________________________________________________________________________________________________
@@ -76,11 +87,19 @@ void PlayerSprite::setUpImage(string imageSpritePath, int wFramesCant, int hFram
 */
 
 void PlayerSprite::setNextSpriteFrame() {
-    if (PlayerSprite::wActualPosFrame == (PlayerSprite::wFramesCant - 1)) {
-        PlayerSprite::wActualPosFrame = 0;
+    if(cambioFrame == 0){
+
+        if (PlayerSprite::wActualPosFrame == (PlayerSprite::wFramesCant - 1)) {
+            PlayerSprite::wActualPosFrame = 0;
+        }
+        PlayerSprite::sourceRect.x = (PlayerSprite::frameWidth * PlayerSprite::wActualPosFrame);
+        PlayerSprite::wActualPosFrame++;
+
+        cambioFrame = 0;
+    } else {
+        cambioFrame++;
     }
-    PlayerSprite::sourceRect.x = (PlayerSprite::frameWidth * PlayerSprite::wActualPosFrame);
-    PlayerSprite::wActualPosFrame++;
+
 }
 
 void PlayerSprite::caminandoIzquierda() {
@@ -136,8 +155,14 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
 void PlayerSprite::handle(struct event nuevoEvento) {
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
-    //TODO: FALTA MANEJAR ACA EL CAMBIO DE FRAMES, PARA ESTA ENTREGA POR SER DEMO LO MANEJA SDL, PARA REINICIAR EL ARRANQUE DEL BACKGROUND
+
+    if ((grisado == true) and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) {
+        this->colorear();
+        grisado = false;
+    }
+
     switch (nuevoEvento.data.postura){
+
         case Postura::CAMINANDO_IZQUIERDA:
             caminandoIzquierda();
             break;
@@ -169,12 +194,17 @@ void PlayerSprite::handle(struct event nuevoEvento) {
             agachadoAvanzandoADerecha();
             break;
         case Postura::MIRANDO_DERECHA_QUIETO:
-//            mirandoDerechaQuieto(); //TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
-            caminandoDerecha();
+            mirandoDerechaQuieto();
             break;
         case Postura::MIRANDO_IZQUIERDA_QUIETO :
-//            mirandoIzquierdaQuieto();//TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
-            caminandoIzquierda();
+            mirandoIzquierdaQuieto();
+            break;
+        case Postura::DESCONECTADO:
+            if (this->grisado == false){
+                this->grisado = true;
+                cout<<" LO VOY A GRISAR AL GIL"<<endl;
+                this->grisar();
+            }
             break;
         default:
             break;
@@ -190,24 +220,9 @@ void BackgroundSprite::setUpImage(string imageSpritePath) {
 }
 
 void BackgroundSprite::setFramePosition(int x) {
-    int pos = (x + this->frameWidth);
-    if (pos == spriteImageWidth){
-        //Recorrio toda la imagen
-        //TODO: esto es solo para el demo, sacar para la proxima entrega
-        printf("llego al limite del background");
-        Sprite::sourceRect.x = x-(spriteImageWidth - this->frameWidth);
-    }
-    else{
         Sprite::sourceRect.x = x;
-    }
-
-    //TODO: para la entrega N3 el codigo sera:
-//    Sprite::sourceRect.x = x;
 }
 
 void BackgroundSprite::handle(struct event nuevoEvento) {
     BackgroundSprite::setFramePosition(nuevoEvento.data.x);
 }
-
-
-
