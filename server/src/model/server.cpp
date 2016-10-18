@@ -34,7 +34,7 @@ void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutil
     vector<struct xmlPlayer> sprites = configs.getSpritesConfig();
     vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
 
-//    sockutils.writeSocket(clientSocket, &globalConf, sizeof(struct xmlConfig));
+   sockutils.writeSocket(clientSocket, &globalConf, sizeof(struct xmlConfig));
 
 /*
     for (auto xml : sprites) {

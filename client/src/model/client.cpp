@@ -53,38 +53,39 @@ bool Client::connect_to_server(string ip, int port, string user) {
 		return false;
 	} else {
 		strcpy(userName, user.data());
-
-
-
-		//----------------------------------------------
+    //----------------------------------------------
 		// TODO: Aca recibo los paquetes del xml que mando desde el server, primero config, despues players, despues backgrounds
 		// Una vez recibido, tengo que ver como pasarle todo esto a SDL para que lo pueda usar en vez de lo que esta harcodeado
 		//---------------------------------------------
 
-		struct xmlConfig globalConf;
-//		recv(socket_number, globalConf, MSGSIZE, 0); Hayque ver como recibir, no lo pude hacer
-			globalConf.alto = 600;
-			globalConf.ancho = 800;
-			globalConf.cant_players = 4;
+    struct xmlConfig globalConf;
+    recv(socket_number, &globalConf, MSGSIZE, 0);
+    // TODO DEBUG:
+    cout << "Global config datos:" << endl << globalConf.alto << endl << globalConf.ancho << endl << globalConf.cant_players << endl;
+    cout << "Fin datos config" << endl;
 
-		vector<struct xmlPlayer> spritesConfig;
-		struct xmlPlayer spriteSetup;
-//	    recv(socket_number, response, MSGSIZE, 0); Hayque ver como recibir, no lo pude hacer
-			strcpy(spriteSetup.id, "MARCO");
-			strcpy(spriteSetup.path, "player/marco.png");
-	    	spriteSetup.alto = 100;
-			spriteSetup.ancho = 100;
-			spriteSetup.speed = 10;
-		spritesConfig.emplace_back(spriteSetup);
+    globalConf.alto = 600;
+    globalConf.ancho = 800;
+    globalConf.cant_players = 4;
 
-		vector<struct xmlBackground> backgroundsConfig;
-		struct xmlBackground backSetup;
-			strcpy(backSetup.id, "BACKGROUND_Z0");
-			strcpy(backSetup.path, "/backgrounds/final.bmp");
-			backSetup.zindex = 0;
-			backSetup.alto = 8192;
-			backSetup.ancho = 600;
-		backgroundsConfig.emplace_back(backSetup);
+    vector<struct xmlPlayer> spritesConfig;
+    struct xmlPlayer spriteSetup;
+    // recv(socket_number, &spriteSetup, MSGSIZE, 0); //Hayque ver como recibir, no lo pude hacer
+    strcpy(spriteSetup.id, "MARCO");
+    strcpy(spriteSetup.path, "player/marco.png");
+    spriteSetup.alto = 100;
+    spriteSetup.ancho = 100;
+    spriteSetup.speed = 10;
+    spritesConfig.emplace_back(spriteSetup);
+
+    vector<struct xmlBackground> backgroundsConfig;
+    struct xmlBackground backSetup;
+    strcpy(backSetup.id, "BACKGROUND_Z0");
+    strcpy(backSetup.path, "/backgrounds/final.bmp");
+    backSetup.zindex = 0;
+    backSetup.alto = 8192;
+    backSetup.ancho = 600;
+    backgroundsConfig.emplace_back(backSetup);
 //
 		loadConfigsFromServer(globalConf, spritesConfig, backgroundsConfig );
 
