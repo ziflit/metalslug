@@ -51,31 +51,35 @@ public:
 class PlayerSprite : public Sprite{
 
 private:
-    int wFramesCant,wActualPosFrame;
+    int wFramesCant,wActualPosFrame,hFramesCant,cambioFrame;
+    string imgaceColorPath,imageGrisadoPath;
+    bool grisado;
 public:
 //_______________________________________________________________________________________________
     //Constructor:
 
     PlayerSprite(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : Sprite(texture, renderer,window_width,window_height) {
 //        TODO: este seteo se hace a partir del XML
-        //DEFAULT SIZE
         PlayerSprite::setHeight(100);
         PlayerSprite::setWidth(100);
         //DEFAULT POSITION
         PlayerSprite::set_position(10,550);
-        caminandoDerecha(); //TODO: CUANDO ESTEN LOS SPRITES DE MARCO COMPLETO BORRAR ESTA LINEA Y DESCOMENTAR LA SIGUIENTE
-//        mirandoDerechaQuieto();
+        mirandoDerechaQuieto();
+        grisado = false;
+        cambioFrame = 0;
     }
 
 //________________________________________________________________
     //OVERRIDE FUNCTIONS:
 
-    void setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant);
-
+    void setUpImage(string imageSpritePath,string imageGrisadoPath, int wFramesCant, int hFramesCant);
 
 //__________________________________________________________________
 
     void handle(struct event nuevoEvento);
+
+    void grisar();
+    void colorear();
 
     void setNextSpriteFrame();
     void caminandoIzquierda();
@@ -92,8 +96,7 @@ public:
     void mirandoIzquierdaQuieto();
 
 };
-//______________________________________________________________________________________________
-//BACKGROUNDSPRITE
+
 class BackgroundSprite : public Sprite{
 private:
     int spriteImageWidthPanned; //es la posicion horizontal que se va a a ir actualizando
@@ -123,38 +126,34 @@ public:
 
     void setFramePosition(int x);
 };
-//_______________________________________________________________________________________________
-//MARCO
+
 class Marco : public PlayerSprite {
 public:
     Marco(SDL_Texture *texture,SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height) {
-//        setUpImage("sprites/marco.png",12,12);//TODO: CUANDO SANTIAGO TERMINE SPRITES DESCOMENTAR Y BORRAR LA SIGUIENTE LINEA
-        setUpImage("sprites/marco.png",12,10);
+        PlayerSprite::setUpImage("sprites/player/marco.png","sprites/player/marcoGrisado.png",15,12);
+        destRect.h = destRect.h + 50;
+        destRect.w = destRect.w;
     }
-    void setUpImage(string imageSpritePath, int wFramesCant, int hFramesCant){PlayerSprite::setUpImage(imageSpritePath,wFramesCant,hFramesCant);}
 };
-//_______________________________________________________________________________________________
-//TARMA
+
 class Tarma : public PlayerSprite{
 public:
     Tarma(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/tarma.png",12,12);
+        PlayerSprite::setUpImage("sprites/player/tarma.png","sprites/player/tarmaGrisado.png",15,12);
     }
 };
-//_______________________________________________________________________________________________
-//FIO
+
 class Fio : public PlayerSprite{
 public:
     Fio(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/tarma.png",12,12); //TODO: cuando este el png listo, setearlo
+        PlayerSprite::setUpImage("sprites/player/fio.png","sprites/player/fioGrisado.png",15,12);
     }
 };
-//_______________________________________________________________________________________________
-//ERI
+
 class Eri : public PlayerSprite{
 public:
-    Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        setUpImage("sprites/tarma.png",12,12); //TODO: cuando este el png listo, setearlo
+    Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture, renderer,window_width, window_height){
+        PlayerSprite::setUpImage("sprites/player/eri.png","sprites/player/eriGrisado.png",15,12);
     }
 };
 

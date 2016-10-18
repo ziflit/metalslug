@@ -26,26 +26,19 @@ SDL_Texture* SDLRunningGame::createTransparentTexture(SDL_Renderer *renderer){
     return backgroundTexture;
 }
 
-void SDLRunningGame::layersBuilding (){
-    //Layers Building
-    SDLRunningGame::backgroundLayer0 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
-    SDLRunningGame::backgroundLayer1 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
-    SDLRunningGame::backgroundLayer2 = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
-    SDLRunningGame::playersLayer = SDLRunningGame::createTransparentTexture(SDLRunningGame::mainRenderer);
-}
-
 void SDLRunningGame::spritesBuilding () {
     //Sprites Building
     SDLRunningGame::backgroundSprite0 = new BackgroundSprite(backgroundLayer0, mainRenderer,window_width,window_height);
-    SDLRunningGame::backgroundSprite0->setUpImage("sprites/backgrounds/backgroundMetal1.png");
+    SDLRunningGame::backgroundSprite0->setUpImage("sprites/backgrounds/nub.png");
 
     SDLRunningGame::backgroundSprite1 = new BackgroundSprite(backgroundLayer1, mainRenderer,window_width,window_height);
-    backgroundSprite1->setUpImage("sprites/backgrounds/demo.bmp");
+    backgroundSprite1->setUpImage("sprites/backgrounds/final.bmp");
 
     SDLRunningGame::backgroundSprite2 = new BackgroundSprite(backgroundLayer2,mainRenderer,window_width,window_height);
-    backgroundSprite2->setUpImage("sprites/backgrounds/front.png");
+    backgroundSprite2->setUpImage("sprites/backgrounds/front.bmp");
 
-    SDLRunningGame::initializeMarco();
+    marcoSprite = eriSprite = fioSprite = tarmaSprite = nullptr;
+
 }
 
 SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRenderer) {
@@ -53,13 +46,11 @@ SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRender
     SDL_GetWindowSize(mainWindow, &window_width, &window_height);
 
     SDLRunningGame::mainRenderer = mainRenderer;
-//_______________________________________________________________________________________
-   SDLRunningGame::layersBuilding();
-//_______________________________________________________________________________________
+
     SDLRunningGame::spritesBuilding();
-//_______________________________________________________________________________________
+
     SDLRunningGame::audioInitialization();
-//____________________________________________________________________________________________
+
     holdLeftKey = holdRightKey = holdUpKey = holdDownKey = holdAKey= holdSKey = 0;
 }
 
@@ -155,12 +146,12 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
             case SDLK_UP:
                 cout<<"solte la flecha arriba"<<endl;
                 nuevoEvento.data.code = EventCode::SDL_KEYUP_RELEASED;
-                holdRightKey = 0;
+                holdUpKey = 0;
                 return nuevoEvento;
             case SDLK_DOWN:
                 cout<<"solte la flecha abajo"<<endl;
                 nuevoEvento.data.code = EventCode::SDL_KEYDOWN_RELEASED;
-                holdRightKey = 0;
+                holdDownKey = 0;
                 return nuevoEvento;
             case SDLK_a:
                 cout<<"solte a"<<endl;
@@ -181,28 +172,34 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
     return nuevoEvento;
 
-//    SDL_Delay(100); //antes de procesar otro evento esta pausando 2 milisegundos
 }
 
 void SDLRunningGame::handleModelState(vector <event> model_state) {
-    if ( not model_state.empty() ){
-        for (auto event : model_state) {
-            // cout << "X: " << event.data.x << endl << "Y: " << event.data.y << endl;
-        }
 
-        //TODO: manejar la actualizacion todos los sprites existentes.
         for (auto nuevoEvento : model_state){
             switch(nuevoEvento.data.id){
                 case Entity::MARCO:
+                    if (marcoSprite == nullptr) {
+                        initializeMarco();
+                    }
                     this->marcoSprite->handle(nuevoEvento);
                     break;
                 case Entity::TARMA:
+                    if (tarmaSprite == nullptr) {
+                        initializeTarma();
+                    }
                     this->tarmaSprite->handle(nuevoEvento);
                     break;
                 case FIO:
+                    if (fioSprite == nullptr) {
+                        initializeFio();
+                    }
                     this->fioSprite->handle(nuevoEvento);
                     break;
                 case ERI:
+                    if (eriSprite == nullptr) {
+                        initializeEri();
+                    }
                     this->eriSprite->handle(nuevoEvento);
                     break;
                 //case ENEMY_NORMAL:
@@ -219,18 +216,26 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
         }
 
         this->updateWindowSprites();
-    }
 }
+
 
 void SDLRunningGame::updateWindowSprites () {
     SDL_RenderClear(SDLRunningGame::mainRenderer);
 
     SDLRunningGame::backgroundSprite0->actualizarDibujo();  //nubes, arboles, fondo
     SDLRunningGame::backgroundSprite1->actualizarDibujo();  //vendrian a ser los edificios
-    SDLRunningGame::marcoSprite->actualizarDibujo();        //se dibujan los personajes
-//    SDLRunningGame::tarmaSprite->actualizarDibujo();      //todo descomentar para multicliente cuando funcione
-//    SDLRunningGame::fioSprite->actualizarDibujo();
-//    SDLRunningGame::eriSprite->actualizarDibujo();
+    if (marcoSprite != nullptr) {
+        SDLRunningGame::marcoSprite->actualizarDibujo();        //se dibujan los personajes
+    }
+    if (tarmaSprite != nullptr) {
+        SDLRunningGame::tarmaSprite->actualizarDibujo();
+    }
+    if (fioSprite != nullptr) {
+        SDLRunningGame::fioSprite->actualizarDibujo();
+    }
+    if (eriSprite != nullptr) {
+        SDLRunningGame::eriSprite->actualizarDibujo();
+    }
     SDLRunningGame::backgroundSprite2->actualizarDibujo();  //la capa de las cajas o garra.
 
     SDL_RenderPresent(SDLRunningGame::mainRenderer);

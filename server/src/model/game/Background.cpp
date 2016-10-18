@@ -7,17 +7,21 @@
 
 #include "Background.h"
 
-Background::Background(int zindex, int speed) {
+Background::Background(int zindex, int speed, double large) {
     x=y=0;
+    this->large = large;
     this->setEntity(zindex);
     this->speed = speed;
 }
 
 void Background::avanzar() {
+    if (x + 800 >= large) {
+        x = 0;
+    }
     this->x+=speed;
 }
 
-void Background::setEntity(int zindex){
+void Background::setEntity(int zindex) {
     switch (zindex){
         case 0:
             this->entity = Entity::BACKGROUND_Z0;

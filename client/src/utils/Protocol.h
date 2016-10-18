@@ -77,7 +77,8 @@ enum Postura{
 	AGACHADO_AVANZANDO_IZQUIERDA,
 	AGACHADO_AVANZANDO_DERECHA,
 	MIRANDO_DERECHA_QUIETO,
-	MIRANDO_IZQUIERDA_QUIETO
+	MIRANDO_IZQUIERDA_QUIETO,
+	DESCONECTADO
 };
 
 struct event_ext {
@@ -93,11 +94,31 @@ struct event {
 	event_ext data;
 };
 
-
-struct msg_login {
-	string username;
-	string password;
+//aca pongo todo lo que tiene cada uno-------------------------------
+struct xmlConfig {
+    int ancho;
+    int alto;
+    int cant_players;
 };
+
+struct xmlPlayer {
+    EventCompletion completion;
+    char id[15];
+    char path[40];
+    int ancho;
+    int alto;
+    int speed;
+};
+
+struct xmlBackground {
+    EventCompletion completion;
+    char id[15];
+    char path[40];
+    int ancho;
+    int alto;
+    int zindex;
+};
+//---------------------------------------------------
 
 
 #endif //METALSLUG_PROTOCOL_H

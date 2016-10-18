@@ -22,12 +22,12 @@ class Background {
 
 private:
 	Entity entity;
-	unsigned int x;
-	unsigned int y;
+	unsigned int x,y;
+	double large;
 	unsigned int speed;
 
 public:
-	Background(int zindex,int speed);
+	Background(int zindex,int speed, double large);
 
 	virtual ~Background();
 

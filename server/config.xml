@@ -1,32 +1,68 @@
-<ventana>
-	<ancho>800</ancho>
-	<alto>600</alto>
-</ventana>
-<sprites>
-	<sprite>
-		<id>personaje</id>
-		<path>path/a/avion.png</path>
-		<ancho>10</ancho>
-		<alto>100</alto>
-		<zindex>1</zindex>
-	</sprite>
-	<sprite>
-		<id>disparo</id>
-		<path>path/a/disparo.png</path>
-		<ancho>5</ancho>
-		<alto>5</alto>
-		<zindex>1</zindex>
-	</sprite>
-</sprites>
-<capas>
-	<capa>
-		<imagen_fondo>fondo1.png</imagen_fondo>
-		<ancho>500</ancho>
-		<zindex>1</zindex>
-	</capa>
-	<capa>
-		<imagen_fondo>fondo2.png</imagen_fondo>
-		<ancho>500</ancho>
-		<zindex>2</zindex>
-	</capa>
-</capas>
+	<config>
+		<ancho>800</ancho>
+		<alto>600</alto>
+		<cant_players>2</cant_players>
+	</config>
+	
+	<sprites>
+		<sprite>
+			<id>MARCO</id>
+			<path>player/marco.png</path>
+			<ancho>100</ancho>
+			<alto>100</alto>
+			<speed>10</speed>
+		</sprite>
+		<sprite>
+			<id>TARMA</id>
+			<path>player/tarma.png</path>
+			<ancho>100</ancho>
+			<alto>100</alto>
+			<speed>10</speed>
+		</sprite>
+		<sprite>
+			<id>FIO</id>
+			<path>player/fio.png</path>
+			<ancho>100</ancho>
+			<alto>100</alto>
+			<speed>10</speed>
+		</sprite>
+		<sprite>
+			<id>ERI</id>
+			<path>player/eri.png</path>
+			<ancho>100</ancho>
+			<alto>100</alto>
+			<speed>10</speed>
+		</sprite>
+	</sprites>
+	
+	<backgrounds>
+		<background>
+			<id>BACKGROUND_Z0</id>
+			<imagen_fondo>/backgrounds/fondo1.png</imagen_fondo>
+			<ancho>500</ancho>
+			<alto>500</alto>
+			<zindex>0</zindex>
+		</background>
+		<background>
+			<id>BACKGROUND_Z1</id>
+			<imagen_fondo>/backgrounds/fondo2.png</imagen_fondo>
+			<ancho>500</ancho>
+			<alto>500</alto>
+			<zindex>1</zindex>
+		</background>
+		<background>
+			<id>BACKGROUND_Z2</id>
+			<imagen_fondo>/backgrounds/fondo2.png</imagen_fondo>
+			<ancho>500</ancho>
+			<alto>500</alto>
+			<zindex>2</zindex>
+		</background>
+		<background>
+			<id>BACKGROUND_Z3</id>
+			<imagen_fondo>/backgrounds/fondo2.png</imagen_fondo>
+			<ancho>500</ancho>
+			<alto>500</alto>
+			<zindex>3</zindex>
+		</background>
+	</backgrounds>
+
