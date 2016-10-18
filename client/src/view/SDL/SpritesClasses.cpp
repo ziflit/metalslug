@@ -34,20 +34,22 @@ SDL_Texture* Sprite::loadTexture(SDL_Renderer* renderer,string imageTexturePath)
     SDL_Texture* backgroundTexture = NULL;
     SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
 
-    if(loadingSurface == NULL)
+    if(loadingSurface == NULL){
         cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
+        loadingSurface = IMG_Load("sprites/defaultImage.png"); //TODO: ESTO DEBERIA CARGARSE DEL XML, PEROOO...
+    }
 
-    else {
-        backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
-        if(backgroundTexture == NULL){
-            cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
+    backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
 
-        }
+    if(backgroundTexture == NULL){
+        cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
+
+    }
 
         SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
         return backgroundTexture;
-    }
 }
+
 
 //________________________________________________________________________________________________________
 //PLAYER SPRITE
@@ -85,7 +87,7 @@ void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
 */
 
 void PlayerSprite::setNextSpriteFrame() {
-    if(cambioFrame == 3){
+    if(cambioFrame == 0){
 
         if (PlayerSprite::wActualPosFrame == (PlayerSprite::wFramesCant - 1)) {
             PlayerSprite::wActualPosFrame = 0;

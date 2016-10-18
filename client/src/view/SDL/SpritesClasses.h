@@ -153,7 +153,7 @@ public:
 class Eri : public PlayerSprite{
 public:
     Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture, renderer,window_width, window_height){
-        setUpImage("sprites/player/eri.png","sprites/player/eriGrisado.png",15,12);
+        PlayerSprite::setUpImage("sprites/player/eri.png","sprites/player/eriGrisado.png",15,12);
     }
 };
 
