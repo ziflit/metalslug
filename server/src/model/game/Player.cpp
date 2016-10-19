@@ -207,7 +207,7 @@ void Player::updatePosition() {
         }
     }
     else{
-        x = 0;
+        x = 0; //pone al grisado en el borde izquierdo
     }
 }
 
