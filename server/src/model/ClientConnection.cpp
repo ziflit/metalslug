@@ -98,6 +98,7 @@ int connectionWriter(ClientConnection *data) {
             data->queuemutex.unlock();
             result = sockutils.writeSocket(data->getClientSocket(), event);
             if (result == -1) {
+                if (!data->shouldClose)
                 data->stop();
             }
 
@@ -114,13 +115,15 @@ void ClientConnection::start() {
 }
 
 void ClientConnection::stop() {
-    LOGGER_WRITE(Logger::INFO, "Matando el client connection de " + string(username), "ClientConnection.class")
-    cout << "Matando el client connection de " << username << endl;
-    shouldClose = true;
-    this->reader.detach();
-    this->writer.detach(); /* Guarda que tiene un while true, no es join */
-    this->control.detach();
-    close(this->clientSocket);
+    if (not shouldClose) {
+        LOGGER_WRITE(Logger::INFO, "Matando el client connection de " + string(username), "ClientConnection.class")
+        cout << "Matando el client connection de " << username << endl;
+        shouldClose = true;
+        this->reader.detach();
+        this->writer.detach(); /* Guarda que tiene un while true, no es join */
+        this->control.detach();
+        close(this->clientSocket);
+    }
 }
 
 void ClientConnection::push_event(struct event event) {
