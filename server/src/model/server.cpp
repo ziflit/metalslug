@@ -34,17 +34,28 @@ void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutil
     vector<struct xmlPlayer> sprites = configs.getSpritesConfig();
     vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
 
-//    sockutils.writeSocket(clientSocket, &globalConf, sizeof(struct xmlConfig));
+    sockutils.writeSocket(clientSocket, &globalConf, sizeof(struct xmlConfig));
 
-/*
-    for (auto xml : sprites) {
-        sockutils.writeSocket(clientSocket, &xml, sizeof(struct xmlPlayer));
+    auto sprites_it = sprites.begin();
+    while (sprites_it < sprites.end() - 1) {
+        sprites_it->completion = EventCompletion::PARTIAL_MSG;
+        sockutils.writeSocket(clientSocket, &(*sprites_it), sizeof(struct xmlPlayer));
+        ++sprites_it;
     }
+    /* Mando el último mensaje como FINAL */
+    sprites_it->completion = EventCompletion::FINAL_MSG;
+    sockutils.writeSocket(clientSocket, &(*sprites_it), sizeof(struct xmlPlayer));
 
-    for (auto xml : backgrounds) {
-        sockutils.writeSocket(clientSocket, &xml, sizeof(struct xmlBackground));
+    auto back_it = backgrounds.begin();
+    while (back_it < backgrounds.end() - 1) {
+        back_it->completion = EventCompletion::PARTIAL_MSG;
+        sockutils.writeSocket(clientSocket, &(*back_it), sizeof(struct xmlBackground));
+        ++back_it;
     }
-*/
+    /* Mando el último mensaje como FINAL */
+    back_it->completion = EventCompletion::FINAL_MSG;
+    sockutils.writeSocket(clientSocket, &(*back_it), sizeof(struct xmlBackground));
+
 }
 
 /* Función para el thread de comunicación con el cliente
