@@ -121,7 +121,8 @@ void ClientConnection::stop() {
         shouldClose = true;
         this->reader.detach();
         this->writer.detach(); /* Guarda que tiene un while true, no es join */
-        this->control.detach();
+        this->control.join(); // Aca joineo porque sino queda flotando, y despues quiere seguir escribiendo
+        					  // a un socket que fue borrado, viteh.
         close(this->clientSocket);
     }
 }
