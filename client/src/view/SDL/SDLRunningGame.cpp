@@ -42,7 +42,7 @@ void SDLRunningGame::spritesBuilding () {
 
 }
 
-SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, Configs configs)  {
+SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
     this->configs = configs;
     SDLRunningGame::mainWindow = mainWindow;
     this->window_width = configs.getGlobalConf().ancho;

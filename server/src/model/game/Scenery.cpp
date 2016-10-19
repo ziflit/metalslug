@@ -1,9 +1,10 @@
 #include "Scenery.h"
 
-Scenery::Scenery(unsigned int width, unsigned int height) {
+Scenery::Scenery(ConfigsXML configs) {
     //TODO: Esto se va a cargar en base al XML para inicializar el escenario, o algo asi
-    windowWidth = width;
-    windowHeight = height;
+    this->configs = configs;
+    windowWidth = configs.getGlobalConf().ancho;
+    windowHeight = configs.getGlobalConf().alto;
 
     this->inizializarBackgrounds();
 
@@ -43,7 +44,8 @@ Entity Scenery::buildPlayer(string user) {
 }
 
 void Scenery::inizializarBackgrounds(){
-    Background* background0 = new Background(0,1,4000);
+
+    Background* background0 = new Background(configs.getBackgroundsConfig()[0].zindex,configs.getBackgroundsConfig()[0].speed,4000);
     background0->calculateSpeed(8192,10);
     this->backgrounds.push_back(background0);  //esos numeros son el largo de la imagen para que autocalcule la velocidad
     this->backgrounds.push_back(new Background(1,10,8192));

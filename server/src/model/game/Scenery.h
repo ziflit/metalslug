@@ -15,6 +15,7 @@
 #include "../../utils/Protocol.h"
 #include <queue>
 #include "../Event.h"
+#include "Configs.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ private:
 	vector<Player*> players;
 	vector<Background*> backgrounds;
 	unsigned int windowWidth, windowHeight;
+	ConfigsXML configs;
 
 	// *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
 	void addElementToScenery(Player* player);
@@ -32,7 +34,7 @@ private:
 
 
 public:
-	Scenery(unsigned int width, unsigned int height);
+	Scenery(ConfigsXML configs);
 	virtual ~Scenery();
 
 	void process_key(EventCode keycode, Entity entity);

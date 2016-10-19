@@ -6,11 +6,11 @@
 #include <vector>
 #include "SpritesClasses.h"
 #include <SDL2/SDL_events.h>
-#include "../../model/Configs.h"
+#include "../../model/ConfigsXML.h"
 
 class SDLRunningGame {
 private:
-    Configs configs;
+    ConfigsXML configs;
     int window_width, window_height;
     SDL_Window* mainWindow;
     SDL_Renderer* mainRenderer;
@@ -22,7 +22,7 @@ private:
     int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
 
 public:
-    SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer, Configs configs );
+    SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer, ConfigsXML configs );
 
     SDL_Texture* createTransparentTexture(SDL_Renderer *renderer);
 

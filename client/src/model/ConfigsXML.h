@@ -1,5 +1,5 @@
 /*
- * Configs.h
+ * ConfigsXML.h
  *
  *  Created on: Oct 17, 2016
  *      Author: leandro
@@ -11,15 +11,15 @@
 #include "../utils/Protocol.h"
 #include <vector>
 
-class Configs {
+class ConfigsXML {
 private:
     struct xmlConfig globalConf;
     vector<struct xmlBackground> backgroundsConfig;
     vector<struct xmlPlayer> spritesConfig;
 public:
 
-    Configs(){};
-    virtual ~Configs(){};
+    ConfigsXML(){};
+    virtual ~ConfigsXML(){};
 
     vector<struct xmlBackground> getBackgroundsConfig() {
         return backgroundsConfig;

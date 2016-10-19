@@ -7,7 +7,7 @@
 #include <memory>
 #include "message.h"
 #include "../utils/SocketUtils.h"
-#include "Configs.h"
+#include "ConfigsXML.h"
 
 using namespace std;
 
@@ -21,7 +21,7 @@ private:
     char userName[20];
     std::vector<string> usersList;
     Entity my_character;
-    Configs configs;
+    ConfigsXML configs;
     // Configs esta compuesto por globalConf, backgroundsConfig y spritesConfig. Cada uno de ellos dentro
     // tiene un struct o vector de structs... que se pueden ver en config.h
 
@@ -86,7 +86,7 @@ public:
     Entity getEntity() {
         return my_character;
     }
-	Configs getConfigs(){ return (configs);}
+	ConfigsXML getConfigs(){ return (configs);}
 };
 
 

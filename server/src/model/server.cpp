@@ -15,8 +15,7 @@ Server::Server(string path, string xmlConfigPath) {
     this->userloader = new UserLoader(path);
 
     loadConfigs();
-    struct xmlConfig globalConf = configs.getGlobalConf();
-    this->scenery = new Scenery(globalConf.ancho, globalConf.alto);
+    this->scenery = new Scenery(configs);
 }
 
 Server::~Server() {
