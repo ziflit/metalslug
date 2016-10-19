@@ -27,6 +27,8 @@ public:
 
     SDL_Renderer* getMainRenderer(){ return InitialWindow::mainRender;}
 
+    void showStartScreen();
+
 };
 
 

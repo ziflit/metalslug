@@ -16,7 +16,7 @@ void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
     SDL_Event sdlEvent;
     while( cliente->is_connected()){
         while (SDL_PollEvent( &sdlEvent )) {
-            if ( sdlEvent.type == SDL_QUIT) {
+            if ( sdlEvent.type == SDL_QUIT ) {
                 cliente->disconnect();
                 break;
             }
@@ -80,6 +80,7 @@ if (not cliente->is_connected()) {
 if (cliente->is_connected()){
 
     InitialWindow* initialWindow = new InitialWindow(800, 600);
+//    initialWindow->showStartScreen();
     SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer());
 
     thread enviarTeclasAlServerEnThread;
