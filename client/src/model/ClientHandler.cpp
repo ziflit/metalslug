@@ -152,6 +152,10 @@ void ClientHandler::receiveEvent(struct event event) {
 void ClientHandler::sendEvent(struct event event) {
     event.data.id = client->getEntity();
     this->outgoingMutex.lock();
+    if (event.data.code == CLIENT_DISCONNECT) {
+        cout << "Estoy mandando un disconnect!" << endl;
+        outgoingEvents.push_front(event);
+    }
     outgoingEvents.push_back(event);
     this->outgoingMutex.unlock();
 }
