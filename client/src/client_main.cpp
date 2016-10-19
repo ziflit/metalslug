@@ -71,7 +71,7 @@ if (not cliente->is_connected()) {
 
 if (cliente->is_connected()){
 
-    SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer());
+    SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer(),cliente->getConfigs());
 
     thread enviarTeclasAlServerEnThread;
     enviarTeclasAlServerEnThread = thread(enviarTeclasAlServer, cliente, sdlRunningGame);

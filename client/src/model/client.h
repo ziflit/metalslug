@@ -86,6 +86,7 @@ public:
     Entity getEntity() {
         return my_character;
     }
+	Configs getConfigs(){ return (configs);}
 };
 
 

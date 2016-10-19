@@ -27,22 +27,27 @@ SDL_Texture* SDLRunningGame::createTransparentTexture(SDL_Renderer *renderer){
 }
 
 void SDLRunningGame::spritesBuilding () {
-    //Sprites Building
+
+
     SDLRunningGame::backgroundSprite0 = new BackgroundSprite(backgroundLayer0, mainRenderer,window_width,window_height);
-    SDLRunningGame::backgroundSprite0->setUpImage("sprites/backgrounds/nub.png");
+    SDLRunningGame::backgroundSprite0->setUpImage(configs.getBackgroundsConfig()[0].path);
 
     SDLRunningGame::backgroundSprite1 = new BackgroundSprite(backgroundLayer1, mainRenderer,window_width,window_height);
-    backgroundSprite1->setUpImage("sprites/backgrounds/final.bmp");
+    backgroundSprite1->setUpImage(configs.getBackgroundsConfig()[1].path);
 
     SDLRunningGame::backgroundSprite2 = new BackgroundSprite(backgroundLayer2,mainRenderer,window_width,window_height);
-    backgroundSprite2->setUpImage("sprites/backgrounds/front.bmp");
+    backgroundSprite2->setUpImage(configs.getBackgroundsConfig()[2].path);
 
     marcoSprite = eriSprite = fioSprite = tarmaSprite = nullptr;
 
 }
 
-SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRenderer) {
+SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, Configs configs)  {
+    this->configs = configs;
     SDLRunningGame::mainWindow = mainWindow;
+    this->window_width = configs.getGlobalConf().ancho;
+    this->window_height = configs.getGlobalConf().alto;
+
     SDL_GetWindowSize(mainWindow, &window_width, &window_height);
 
     SDLRunningGame::mainRenderer = mainRenderer;
@@ -52,12 +57,13 @@ SDLRunningGame::SDLRunningGame (SDL_Window *mainWindow, SDL_Renderer *mainRender
     SDLRunningGame::audioInitialization();
 
     holdLeftKey = holdRightKey = holdUpKey = holdDownKey = holdAKey= holdSKey = 0;
+
 }
 
-void SDLRunningGame::initializeMarco() { this->marcoSprite = new Marco(playersLayer,mainRenderer,window_width,window_height); }
-void SDLRunningGame::initializeTarma() { this->tarmaSprite = new Tarma(playersLayer,mainRenderer,window_width,window_height); }
-void SDLRunningGame::initializeFio() {this->fioSprite = new Fio(playersLayer,mainRenderer,window_width,window_height);}
-void SDLRunningGame::initializeEri() {this->eriSprite = new Eri(playersLayer,mainRenderer,window_width,window_height);}
+void SDLRunningGame::initializeMarco() { this->marcoSprite = new Marco(playersLayer,mainRenderer,window_width,window_height,configs.getSpritesConfig()[0].path); }
+void SDLRunningGame::initializeTarma() { this->tarmaSprite = new Tarma(playersLayer,mainRenderer,window_width,window_height,configs.getSpritesConfig()[1].path); }
+void SDLRunningGame::initializeFio() {this->fioSprite = new Fio(playersLayer,mainRenderer,window_width,window_height,configs.getSpritesConfig()[2].path);}
+void SDLRunningGame::initializeEri() {this->eriSprite = new Eri(playersLayer,mainRenderer,window_width,window_height,configs.getSpritesConfig()[3].path);}
 
 struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     struct event nuevoEvento;
