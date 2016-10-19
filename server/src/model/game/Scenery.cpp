@@ -82,7 +82,7 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
 
 bool Scenery::hayJugadorEnBordeIzq(){
     for (auto player: players){
-        if(player->getPostura() != Postura::DESCONECTADO){  //ESTO LO ARRASTRA A TODO AQUE DESCONECTADO
+        if(player->getPostura() != Postura::DESCONECTADO){
             if(player->getX() <= 0) {
                 return true;
             }
@@ -116,10 +116,7 @@ void Scenery::updateBackgroudsState() {
              */
         }
         for (auto player : players) {
-            if(player->getPostura() == Postura::DESCONECTADO){  //ARRASTRA LOS GRISADOS
-                player->avanzar();
-            }
-            else {
+            if(player->getPostura() != DESCONECTADO){
                 player->retroceder();
             }
         }

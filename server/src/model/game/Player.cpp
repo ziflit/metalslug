@@ -188,21 +188,26 @@ bool Player::isJumping() {
 }
 
 void Player::updatePosition() {
-    if(this->isMoving()) {
+    if (this->postura != DESCONECTADO){
+        if(this->isMoving()) {
 
-        if (((direccionX == 1) and (x < (windowWidth-100))) or ((direccionX == -1) and (x > 0))) {
-            x += direccionX*speed;
+            if (((direccionX == 1) and (x < (windowWidth-100))) or ((direccionX == -1) and (x > 0))) {
+                x += direccionX*speed;
+            }
+        }
+
+        if(this->isJumping()) {
+            if (posAtJump < 25){
+                posAtJump++;
+                y = 400 - jumpPos[posAtJump];
+            } else {
+                direccionY = 0;
+                posAtJump = 0;
+            }
         }
     }
-
-    if(this->isJumping()) {
-        if (posAtJump < 25){
-            posAtJump++;
-            y = 400 - jumpPos[posAtJump];
-        } else {
-            direccionY = 0;
-            posAtJump = 0;
-        }
+    else{
+        x = 0;
     }
 }
 
