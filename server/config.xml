@@ -53,8 +53,8 @@
 		<background>
 			<id>BACKGROUND_Z2</id>
 			<imagen_fondo>sprites/backgrounds/front.bmp</imagen_fondo>
-			<ancho>8192</ancho>
-			<alto>500</alto>
+			<ancho>5000</ancho>
+			<alto>600</alto>
 			<zindex>2</zindex>
 		</background>
 		<background>

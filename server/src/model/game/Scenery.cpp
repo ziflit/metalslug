@@ -47,7 +47,10 @@ void Scenery::inizializarBackgrounds(){
     background0->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, configs.getSpritesConfig()[0].speed);
     this->backgrounds.push_back(background0);  //esos numeros son el largo de la imagen para que autocalcule la velocidad
     this->backgrounds.push_back(new Background(1,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[1].ancho));
-    this->backgrounds.push_back(new Background(2,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[2].ancho));
+
+    Background* background2 = new Background(2,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[2].ancho);
+    background2->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, configs.getSpritesConfig()[0].speed);
+    this->backgrounds.push_back(background2);
 }
 
 int Scenery::findPlayerByUsername(string user) {
