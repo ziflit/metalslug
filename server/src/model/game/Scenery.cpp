@@ -49,7 +49,7 @@ void Scenery::inizializarBackgrounds(){
     this->backgrounds.push_back(new Background(1,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[1].ancho));
 
     Background* background2 = new Background(2,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[2].ancho);
-    background2->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, configs.getSpritesConfig()[0].speed);
+    // background2->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, configs.getSpritesConfig()[0].speed);
     this->backgrounds.push_back(background2);
 }
 
