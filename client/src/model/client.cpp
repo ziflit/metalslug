@@ -101,8 +101,9 @@ bool Client::connect_to_server(string ip, int port, string user) {
 }
 
 void Client::disconnect() {
-	send_disconnect_to_server();
-	this->handler->stop();
+  send_disconnect_to_server();
+  sleep(1);
+  this->handler->stop();
 	delete this->handler;
 	this->set_connection_status(false);
 	usersList.clear();
