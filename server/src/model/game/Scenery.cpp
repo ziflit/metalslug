@@ -44,10 +44,10 @@ Entity Scenery::buildPlayer(string user) {
 
 void Scenery::inizializarBackgrounds(){
     Background* background0 = new Background(0,1,4000);
-    background0->calculateSpeed(8192,5);
+    background0->calculateSpeed(8192,10);
     this->backgrounds.push_back(background0);  //esos numeros son el largo de la imagen para que autocalcule la velocidad
-    this->backgrounds.push_back(new Background(1,5,8192));
-    this->backgrounds.push_back(new Background(2,5,8192));
+    this->backgrounds.push_back(new Background(1,10,8192));
+    this->backgrounds.push_back(new Background(2,10,8192));
 }
 
 int Scenery::findPlayerByUsername(string user) {
