@@ -7,7 +7,7 @@ using namespace std;
 
 int SocketUtils::writeSocket(int fd, struct event msg) {
     signal(SIGPIPE, SIG_IGN);
-    int bytesSent = send(fd, &msg, MSGSIZE, 0);
+    int bytesSent = send(fd, &msg, MSGSIZE, MSG_NOSIGNAL);
     if (bytesSent < 0) {
         cout << "Hubo un error y fue: " << strerror(bytesSent) << endl;
     }
