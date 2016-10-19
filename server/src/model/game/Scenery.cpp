@@ -12,7 +12,6 @@ Scenery::Scenery(ConfigsXML configs) {
     //TODO: definir si del XML tambien se setea la cantidad de jugadores.
     //TODO: el seteo de cada jugador.
 }
-
 //______________________________________________________________________________________________________________________
 //PROCESAMIENTO DE EVENTOS:
 
@@ -44,12 +43,11 @@ Entity Scenery::buildPlayer(string user) {
 }
 
 void Scenery::inizializarBackgrounds(){
-
-    Background* background0 = new Background(configs.getBackgroundsConfig()[0].zindex,configs.getBackgroundsConfig()[0].speed,4000);
+    Background* background0 = new Background(0,1,configs.getBackgroundsConfig()[0].ancho);
     background0->calculateSpeed(8192,10);
     this->backgrounds.push_back(background0);  //esos numeros son el largo de la imagen para que autocalcule la velocidad
-    this->backgrounds.push_back(new Background(1,10,8192));
-    this->backgrounds.push_back(new Background(2,10,8192));
+    this->backgrounds.push_back(new Background(1,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[1].ancho));
+    this->backgrounds.push_back(new Background(2,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[2].ancho));
 }
 
 int Scenery::findPlayerByUsername(string user) {

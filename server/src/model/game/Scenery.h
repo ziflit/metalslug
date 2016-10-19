@@ -15,7 +15,7 @@
 #include "../../utils/Protocol.h"
 #include <queue>
 #include "../Event.h"
-#include "Configs.h"
+#include "../ConfigsXML.h"
 
 using namespace std;
 

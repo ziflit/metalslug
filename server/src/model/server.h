@@ -29,7 +29,7 @@ private:
     std::mutex incoming_mutex;
     std::mutex outgoing_mutex;
     vector<struct event> last_model_snapshot;
-    Configs configs;
+    ConfigsXML configs;
     Scenery* scenery;
     UserLoader *userloader; // TODO borrar
     int listen_socket_fd;
@@ -117,7 +117,7 @@ public:
 
     void set_model_snapshot(vector<struct event> model_state);
 
-    Configs& getConfigs();
+    ConfigsXML& getConfigs();
 
     void loadConfigs();
 };

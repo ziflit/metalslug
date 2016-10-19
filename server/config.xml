@@ -39,21 +39,21 @@
 		<background>
 			<id>BACKGROUND_Z0</id>
 			<imagen_fondo>sprites/backgrounds/nub.png</imagen_fondo>
-			<ancho>500</ancho>
+			<ancho>4000</ancho>
 			<alto>500</alto>
 			<zindex>0</zindex>
 		</background>
 		<background>
 			<id>BACKGROUND_Z1</id>
 			<imagen_fondo>sprites/backgrounds/final.bmp</imagen_fondo>
-			<ancho>500</ancho>
+			<ancho>8192</ancho>
 			<alto>500</alto>
 			<zindex>1</zindex>
 		</background>
 		<background>
 			<id>BACKGROUND_Z2</id>
 			<imagen_fondo>sprites/backgrounds/front.bmp</imagen_fondo>
-			<ancho>500</ancho>
+			<ancho>8192</ancho>
 			<alto>500</alto>
 			<zindex>2</zindex>
 		</background>
