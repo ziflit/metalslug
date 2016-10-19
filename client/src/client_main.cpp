@@ -26,7 +26,7 @@ void enviarTeclasAlServer(Client* cliente, SDLRunningGame* sdlRunningGame){
 
             }
         }
-        usleep(100);
+        usleep(1000);
     }
 }
 

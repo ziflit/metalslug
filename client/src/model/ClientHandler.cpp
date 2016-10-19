@@ -59,7 +59,7 @@ void connectionReader(ClientHandler *handler) {
                 handler->stop();
         }
 		}
-    usleep(5000);
+    usleep(2500);
 	}
 }
 
@@ -85,7 +85,7 @@ int connectionWriter(ClientHandler *data) {
 		} else {
 			data->outgoingMutex.unlock();
 		}
-		usleep(5000);
+		usleep(2500);
 	}
 	return 1;
 }

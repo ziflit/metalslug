@@ -1,0 +1,3 @@
+INFO (ClientMain): Estableciendo la conexion con el servidor...
+INFO (ClientMain): Conexion con el servidor establecida con exito.
+ERROR (ClientHandler.class): Conexion con el servidor perdida
