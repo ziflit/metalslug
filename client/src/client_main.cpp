@@ -52,18 +52,10 @@ cout << "Ingrese nombre de usuario: " << endl;
 cin >> user;
 
 
-//-------Esto va comentado, es para cuando se cargue la pantalla de inicio, esto sabe tomar el enter
-//
-//bool enterPressed = false;
-//while (not enterPressed){
-//	//TODO: Aca mostrar la imagen de Start Game titilando, mientras espera que que apriete el enter
-//    if (cin.get() == '\n'){
-//    	enterPressed = true;
-//    }
-//    usleep (300000);
-//}
 
-// Conexion con el server
+    InitialWindow* initialWindow = new InitialWindow(800, 600);
+    initialWindow->showStartScreen();
+
 if (not cliente->is_connected()) {
     LOGGER_WRITE(Logger::INFO, "Estableciendo la conexion con el servidor...", "ClientMain")
     cout << "Estableciendo la conexion con el servidor..." << endl << endl;
@@ -79,8 +71,6 @@ if (not cliente->is_connected()) {
 
 if (cliente->is_connected()){
 
-    InitialWindow* initialWindow = new InitialWindow(800, 600);
-//    initialWindow->showStartScreen();
     SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer());
 
     thread enviarTeclasAlServerEnThread;
