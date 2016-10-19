@@ -91,19 +91,23 @@ int connectionWriter(ClientConnection *data) {
     int result;
     SocketUtils sockutils;
     while (!data->shouldClose) {
-        data->queuemutex.lock();
+    	//TODO: Guarda, sacamos esto para la entrega, ahora anda con los 4 players fluido,
+    	// pero habria que revisarlo
+//        data->queuemutex.lock();
         if (data->has_events()) {
             event event = data->event_queue.front();
             data->event_queue.pop_front();
-            data->queuemutex.unlock();
+//            data->queuemutex.unlock();
             result = sockutils.writeSocket(data->getClientSocket(), event);
             if (result == -1) {
                 if (!data->shouldClose)
                 data->stop();
             }
 
-        } else { data->queuemutex.unlock(); }
-        usleep(5000);
+        } else { //data->queuemutex.unlock();
+
+        }
+        usleep(2500);
     }
     return 1;
 }
