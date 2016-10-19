@@ -202,7 +202,8 @@ void PlayerSprite::handle(struct event nuevoEvento) {
         case Postura::DESCONECTADO:
             if (this->grisado == false){
                 this->grisado = true;
-                cout<<" LO VOY A GRISAR AL GIL"<<endl;
+                mirandoDerechaQuieto();
+                cout<<" LO VOY A GRISAR"<<endl;
                 this->grisar();
             }
             break;
@@ -225,4 +226,13 @@ void BackgroundSprite::setFramePosition(int x) {
 
 void BackgroundSprite::handle(struct event nuevoEvento) {
     BackgroundSprite::setFramePosition(nuevoEvento.data.x);
+}
+
+void BackgroundSprite::setNextStartBackFrame(){
+    if(Sprite::sourceRect.x == 0){
+        Sprite::sourceRect.x = spriteImageWidth/2;
+    }
+    else{
+        Sprite::sourceRect.x = 0;
+    }
 }

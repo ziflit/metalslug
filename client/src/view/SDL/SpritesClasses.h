@@ -34,6 +34,8 @@ public:
     //TAMANO DEL SPRITE:
     void setWidth(int w){ Sprite::destRect.w = w;}
     void setHeight(int h){ Sprite::destRect.h = h;}
+    int getSpriteImageWidth(){ return spriteImageWidth;}
+    int getSpriteImageHeight(){return spriteImageHeight;}
 //_________________________________________________________________________________________________________
     //POSICION DEL SPRITE:
     void set_position(int x, int y);
@@ -99,15 +101,12 @@ public:
 
 class BackgroundSprite : public Sprite{
 private:
-    int spriteImageWidthPanned; //es la posicion horizontal que se va a a ir actualizando
 
 public:
     BackgroundSprite(SDL_Texture* texture, SDL_Renderer* renderer, int window_width,int window_height) :
             Sprite(texture, renderer,window_width,window_height) {
 
         BackgroundSprite::set_position(0,0);
-        BackgroundSprite::spriteImageWidthPanned=0;
-
         BackgroundSprite::frameWidth = window_width;
         BackgroundSprite::frameHeight = window_height;
 
@@ -118,14 +117,19 @@ public:
         BackgroundSprite::sourceRect.h = window_height;
     }
 
-//_______________________________________________________________________________________________
-
     void setUpImage(string imageSpritePath);
 
     void handle(struct event nuevoEvento);
 
     void setFramePosition(int x);
+
+    void setNextStartBackFrame();
+
+    void setSourceRectWidth(int w){sourceRect.w = w;}
+    void setSourceRectHeight(int h){sourceRect.h = h;}
 };
+
+//_______________________________________________________________________________________________
 
 class Marco : public PlayerSprite {
 public:
