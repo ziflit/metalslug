@@ -1,34 +1,34 @@
 	<config>
 		<ancho>800</ancho>
 		<alto>600</alto>
-		<cant_players>2</cant_players>
+		<cant_players>4</cant_players>
 	</config>
 	
 	<sprites>
 		<sprite>
 			<id>MARCO</id>
-			<path>player/marco.png</path>
+			<path>sprites/player/marco.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<speed>10</speed>
 		</sprite>
 		<sprite>
 			<id>TARMA</id>
-			<path>player/tarma.png</path>
+			<path>sprites/player/tarma.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<speed>10</speed>
 		</sprite>
 		<sprite>
 			<id>FIO</id>
-			<path>player/fio.png</path>
+			<path>sprites/player/fio.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<speed>10</speed>
 		</sprite>
 		<sprite>
 			<id>ERI</id>
-			<path>player/eri.png</path>
+			<path>sprites/player/eri.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<speed>10</speed>
