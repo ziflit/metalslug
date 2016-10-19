@@ -54,42 +54,28 @@ bool Client::connect_to_server(string ip, int port, string user) {
 	} else {
 		strcpy(userName, user.data());
 
+    struct xmlConfig globalConf;
+    recv(socket_number, &globalConf, sizeof(struct xmlConfig), 0);
 
+    /* Recepción de configuraciones de sprites de jugadores */
+    vector<struct xmlPlayer> spritesConfig;
+    struct xmlPlayer spriteSetup;
+    do {
+        recv(socket_number, &spriteSetup, sizeof(struct xmlPlayer), 0);
+        spritesConfig.emplace_back(spriteSetup);
+    } while (spriteSetup.completion != EventCompletion::FINAL_MSG);
 
-		//----------------------------------------------
-		// TODO: Aca recibo los paquetes del xml que mando desde el server, primero config, despues players, despues backgrounds
-		// Una vez recibido, tengo que ver como pasarle todo esto a SDL para que lo pueda usar en vez de lo que esta harcodeado
-		//---------------------------------------------
+    /* Recepción de configuraciones de backgrounds */
+    vector<struct xmlBackground> backgroundsConfig;
+    struct xmlBackground backSetup;
+    do {
+        recv(socket_number, &backSetup, sizeof(struct xmlBackground), 0);
+        backgroundsConfig.emplace_back(backSetup);
+    } while (backSetup.completion != EventCompletion::FINAL_MSG);
 
-		struct xmlConfig globalConf;
-//		recv(socket_number, globalConf, MSGSIZE, 0); Hayque ver como recibir, no lo pude hacer
-			globalConf.alto = 600;
-			globalConf.ancho = 800;
-			globalConf.cant_players = 4;
-
-		vector<struct xmlPlayer> spritesConfig;
-		struct xmlPlayer spriteSetup;
-//	    recv(socket_number, response, MSGSIZE, 0); Hayque ver como recibir, no lo pude hacer
-			strcpy(spriteSetup.id, "MARCO");
-			strcpy(spriteSetup.path, "player/marco.png");
-	    	spriteSetup.alto = 100;
-			spriteSetup.ancho = 100;
-			spriteSetup.speed = 10;
-		spritesConfig.emplace_back(spriteSetup);
-
-		vector<struct xmlBackground> backgroundsConfig;
-		struct xmlBackground backSetup;
-			strcpy(backSetup.id, "BACKGROUND_Z0");
-			strcpy(backSetup.path, "/backgrounds/final.bmp");
-			backSetup.zindex = 0;
-			backSetup.alto = 8192;
-			backSetup.ancho = 600;
-		backgroundsConfig.emplace_back(backSetup);
-//
-		loadConfigsFromServer(globalConf, spritesConfig, backgroundsConfig );
-
-		//-----------------------------------------------------------------------------------------------------------
-
+    /* Una vez recibidas las configuraciones las aplico en el cliente */
+    loadConfigsFromServer(globalConf, spritesConfig, backgroundsConfig );
+    // TODO Enviar a SDL las configuraciones
 
     /* Lanzo el handler del cliente */
     this->handler = new ClientHandler(socket_number, this, user.data());

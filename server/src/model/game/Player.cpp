@@ -27,7 +27,7 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     posAtJump = 0;
     gravity = 10;
 	speed = 10;
-    postura = Postura::MIRANDO_DERECHA_QUIETO;
+    postura =  MIRANDO_DERECHA_QUIETO;
 }
 
 Player::~Player() {
@@ -51,61 +51,61 @@ void Player::handleRealeasedKey(EventCode nuevoEvento) {
 
         case EventCode::SDL_KEYLEFT_RELEASED:
             if(direccionX == -1){
-                if(postura == Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA){postura = Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO;}
-                else if(postura == Postura::CAMINANDO_IZQUIERDA){postura = Postura::MIRANDO_IZQUIERDA_QUIETO;}
-                else if(postura == Postura::AGACHADO_AVANZANDO_IZQUIERDA){postura = Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO;}
+                if(postura ==  MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA){postura =  MIRANDO_ARRIBA_IZQUIERDA_QUIETO;}
+                else if(postura ==  CAMINANDO_IZQUIERDA){postura =  MIRANDO_IZQUIERDA_QUIETO;}
+                else if(postura ==  AGACHADO_AVANZANDO_IZQUIERDA){postura =  AGACHADO_MIRANDO_IZQUIERDA_QUIETO;}
                 direccionX = 0;
             }
             /* Puede estar tocando ambas teclas a la vez, y suelta una de ellas */
             else if(direccionX == 0){
-                if(postura == Postura::MIRANDO_DERECHA_QUIETO){postura = CAMINANDO_DERECHA;}
-                else if(postura == Postura::AGACHADO_MIRANDO_DERECHA_QUIETO){postura = Postura::AGACHADO_AVANZANDO_DERECHA;}
-                else if(postura == Postura::MIRANDO_ARRIBA_DERECHA_QUIETO){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
+                if(postura ==  MIRANDO_DERECHA_QUIETO){postura = CAMINANDO_DERECHA;}
+                else if(postura ==  AGACHADO_MIRANDO_DERECHA_QUIETO){postura =  AGACHADO_AVANZANDO_DERECHA;}
+                else if(postura ==  MIRANDO_ARRIBA_DERECHA_QUIETO){postura =  MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
                 direccionX = 1;
             }
             break;
         case EventCode::SDL_KEYRIGHT_RELEASED:
             if(direccionX == 1){
-                if(postura == Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA){postura = Postura::MIRANDO_ARRIBA_DERECHA_QUIETO;}
-                else if(postura == Postura::CAMINANDO_DERECHA){postura = Postura::MIRANDO_DERECHA_QUIETO;}
-                else if(postura == Postura::AGACHADO_AVANZANDO_DERECHA){postura = Postura::AGACHADO_MIRANDO_DERECHA_QUIETO;}
+                if(postura ==  MIRANDO_ARRIBA_CAMINANDO_DERECHA){postura =  MIRANDO_ARRIBA_DERECHA_QUIETO;}
+                else if(postura ==  CAMINANDO_DERECHA){postura =  MIRANDO_DERECHA_QUIETO;}
+                else if(postura ==  AGACHADO_AVANZANDO_DERECHA){postura =  AGACHADO_MIRANDO_DERECHA_QUIETO;}
                 direccionX = 0;
             }
             /* Puede estar tocando ambas teclas a la vez, y suelta una de ellas. */
             else if(direccionX == 0){
-                if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO){postura = CAMINANDO_IZQUIERDA;}
-                else if(postura == Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
-                else if(postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
+                if(postura ==  MIRANDO_IZQUIERDA_QUIETO){postura = CAMINANDO_IZQUIERDA;}
+                else if(postura ==  AGACHADO_MIRANDO_IZQUIERDA_QUIETO){postura =  AGACHADO_AVANZANDO_IZQUIERDA;}
+                else if(postura ==  MIRANDO_ARRIBA_IZQUIERDA_QUIETO){postura =  MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
                 direccionX = -1;
             }
             break;
         case EventCode::SDL_KEYUP_RELEASED:
             switch (postura){
-                case Postura::MIRANDO_ARRIBA_DERECHA_QUIETO: postura = Postura::MIRANDO_DERECHA_QUIETO;
+                case  MIRANDO_ARRIBA_DERECHA_QUIETO: postura =  MIRANDO_DERECHA_QUIETO;
                     break;
-                case Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO: postura = Postura::MIRANDO_IZQUIERDA_QUIETO;
+                case  MIRANDO_ARRIBA_IZQUIERDA_QUIETO: postura =  MIRANDO_IZQUIERDA_QUIETO;
                     break;
-                case Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA: postura = Postura::CAMINANDO_DERECHA;
+                case  MIRANDO_ARRIBA_CAMINANDO_DERECHA: postura =  CAMINANDO_DERECHA;
                     break;
-                case Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA: postura = Postura::CAMINANDO_IZQUIERDA;
+                case  MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA: postura =  CAMINANDO_IZQUIERDA;
                     break;
                 default:
-                    postura = Postura::MIRANDO_DERECHA_QUIETO;
+                    postura =  MIRANDO_DERECHA_QUIETO;
                     break;
             }
 
         case EventCode::SDL_KEYDOWN_RELEASED:
             switch (postura){
-                case Postura::AGACHADO_MIRANDO_DERECHA_QUIETO: postura = Postura::MIRANDO_DERECHA_QUIETO;
+                case  AGACHADO_MIRANDO_DERECHA_QUIETO: postura =  MIRANDO_DERECHA_QUIETO;
                     break;
-                case Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO: postura = Postura::MIRANDO_IZQUIERDA_QUIETO;
+                case  AGACHADO_MIRANDO_IZQUIERDA_QUIETO: postura =  MIRANDO_IZQUIERDA_QUIETO;
                     break;
-                case Postura::AGACHADO_AVANZANDO_DERECHA: postura = Postura::CAMINANDO_DERECHA;
+                case  AGACHADO_AVANZANDO_DERECHA: postura =  CAMINANDO_DERECHA;
                     break;
-                case Postura::AGACHADO_AVANZANDO_IZQUIERDA: postura = Postura::CAMINANDO_IZQUIERDA;
+                case  AGACHADO_AVANZANDO_IZQUIERDA: postura =  CAMINANDO_IZQUIERDA;
                     break;
                 default:
-                    postura = Postura::MIRANDO_DERECHA_QUIETO;
+                    postura =  MIRANDO_DERECHA_QUIETO;
                     break;
             }
         default:
@@ -116,49 +116,51 @@ void Player::handleRealeasedKey(EventCode nuevoEvento) {
 void Player::handlePressedKey(EventCode nuevoEvento){
     switch (nuevoEvento){
         case EventCode::SDL_KEY_A_PRESSED:
-            direccionY = 1;
+            if (!((postura == AGACHADO_MIRANDO_DERECHA_QUIETO) or (postura == AGACHADO_AVANZANDO_DERECHA) or (postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == AGACHADO_AVANZANDO_IZQUIERDA) )){
+                direccionY = 1;
+            }
             break;
 
         case EventCode::SDL_KEYUP_PRESSED:
-            if(direccionX == 1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
-            else if(direccionX == -1){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
-            else if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO and direccionX == 0){postura = Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO;}
-            else {postura = Postura::MIRANDO_ARRIBA_DERECHA_QUIETO;}
+            if(direccionX == 1){postura =  MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
+            else if(direccionX == -1){postura =  MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
+            else if(postura ==  MIRANDO_IZQUIERDA_QUIETO and direccionX == 0){postura =  MIRANDO_ARRIBA_IZQUIERDA_QUIETO;}
+            else {postura =  MIRANDO_ARRIBA_DERECHA_QUIETO;}
             break;
 
         case EventCode::SDL_KEYDOWN_PRESSED:
-            if(direccionX == 1){postura = Postura::AGACHADO_AVANZANDO_DERECHA;}
-            else if(direccionX == -1){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
-            else if(postura == Postura::MIRANDO_IZQUIERDA_QUIETO and direccionX == 0){postura = Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO;}
-            else {postura = Postura::AGACHADO_MIRANDO_DERECHA_QUIETO;}
+            if(direccionX == 1){postura =  AGACHADO_AVANZANDO_DERECHA;}
+            else if(direccionX == -1){postura =  AGACHADO_AVANZANDO_IZQUIERDA;}
+            else if(postura ==  MIRANDO_IZQUIERDA_QUIETO and direccionX == 0){postura =  AGACHADO_MIRANDO_IZQUIERDA_QUIETO;}
+            else {postura =  AGACHADO_MIRANDO_DERECHA_QUIETO;}
             break;
 
         case EventCode::SDL_KEYLEFT_PRESSED:
             if(direccionX == 0){
-                if((postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_ARRIBA_DERECHA_QUIETO)){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
-                else if((postura == Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::AGACHADO_MIRANDO_DERECHA_QUIETO)){postura = Postura::AGACHADO_AVANZANDO_IZQUIERDA;}
-                else if((postura == Postura::MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_DERECHA_QUIETO)){postura = Postura::CAMINANDO_IZQUIERDA; }
-                else{postura = Postura::CAMINANDO_IZQUIERDA;}
+                if((postura ==  MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or (postura ==  MIRANDO_ARRIBA_DERECHA_QUIETO)){postura =  MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA;}
+                else if((postura ==  AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura ==  AGACHADO_MIRANDO_DERECHA_QUIETO)){postura =  AGACHADO_AVANZANDO_IZQUIERDA;}
+                else if((postura ==  MIRANDO_IZQUIERDA_QUIETO) or (postura ==  MIRANDO_DERECHA_QUIETO)){postura =  CAMINANDO_IZQUIERDA; }
+                else{postura =  CAMINANDO_IZQUIERDA;}
                 direccionX = -1;
             }
             /* Si está caminando hacia la derecha y presiona LEFT entonces queda quieto */
             else if(direccionX == 1){
-                direccionX = 0;
-                postura = Postura::MIRANDO_DERECHA_QUIETO;}
+                direccionX = -1;
+                postura =  CAMINANDO_IZQUIERDA;}
             break;
 
         case EventCode::SDL_KEYRIGHT_PRESSED:
             if(direccionX == 0){
-                if((postura == Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_ARRIBA_DERECHA_QUIETO)){postura = Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
-                else if((postura == Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::AGACHADO_MIRANDO_DERECHA_QUIETO)){postura = Postura::AGACHADO_AVANZANDO_DERECHA;}
-                else if((postura == Postura::MIRANDO_IZQUIERDA_QUIETO) or (postura == Postura::MIRANDO_DERECHA_QUIETO)){postura = Postura::CAMINANDO_DERECHA; }
-                else{postura = Postura::CAMINANDO_DERECHA;}
+                if((postura ==  MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or (postura ==  MIRANDO_ARRIBA_DERECHA_QUIETO)){postura =  MIRANDO_ARRIBA_CAMINANDO_DERECHA;}
+                else if((postura ==  AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura ==  AGACHADO_MIRANDO_DERECHA_QUIETO)){postura =  AGACHADO_AVANZANDO_DERECHA;}
+                else if((postura ==  MIRANDO_IZQUIERDA_QUIETO) or (postura ==  MIRANDO_DERECHA_QUIETO)){postura =  CAMINANDO_DERECHA; }
+                else{postura =  CAMINANDO_DERECHA;}
                 direccionX = 1;
             }
             /* Si está caminando hacia la izquierda y presiona RIGHT entonces queda quieto */
             else if(direccionX == -1){
-                direccionX = 0;
-                postura = Postura::MIRANDO_IZQUIERDA_QUIETO;}
+                direccionX = 1;
+                postura =  CAMINANDO_DERECHA;}
             break;
 
         default:
@@ -169,7 +171,7 @@ void Player::handlePressedKey(EventCode nuevoEvento){
 
 void Player::updateState(EventCode nuevoEvento){
     if (nuevoEvento == EventCode::CLIENT_DISCONNECT){
-        this->postura = Postura::DESCONECTADO;
+        this->postura =  DESCONECTADO;
     }
     else if (isKeyPressed(nuevoEvento)) {
         handlePressedKey(nuevoEvento);
@@ -188,21 +190,26 @@ bool Player::isJumping() {
 }
 
 void Player::updatePosition() {
-    if(this->isMoving()) {
+    if (this->postura != DESCONECTADO){
+        if(this->isMoving()) {
 
-        if (((direccionX == 1) and (x < (windowWidth-100))) or ((direccionX == -1) and (x > 0))) {
-            x += direccionX*speed;
+            if (((direccionX == 1) and (x < (windowWidth-100))) or ((direccionX == -1) and (x > 0))) {
+                x += direccionX*speed;
+            }
+        }
+
+        if(this->isJumping()) {
+            if (posAtJump < 25){
+                posAtJump++;
+                y = 400 - jumpPos[posAtJump];
+            } else {
+                direccionY = 0;
+                posAtJump = 0;
+            }
         }
     }
-
-    if(this->isJumping()) {
-        if (posAtJump < 25){
-            posAtJump++;
-            y = 400 - jumpPos[posAtJump];
-        } else {
-            direccionY = 0;
-            posAtJump = 0;
-        }
+    else{
+        x = 0; //pone al grisado en el borde izquierdo
     }
 }
 
@@ -220,7 +227,6 @@ struct event Player::getNewState(){
 	eventExt.x = x;  //Actualizo la posicion del player
 	eventExt.y = y;
     eventExt.postura = this->postura;
-
 
     estado.completion = EventCompletion::PARTIAL_MSG;
 	estado.data = eventExt;
