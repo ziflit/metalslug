@@ -11,9 +11,8 @@
 
 using namespace std;
 
-Server::Server(string path, string xmlConfigPath) {
-    this->userloader = new UserLoader(path);
-
+Server::Server(string xmlConfigPath) {
+    this->xmlConfigPath = xmlConfigPath;
     loadConfigs();
     this->scenery = new Scenery(configs);
 }
@@ -90,11 +89,6 @@ void client_comm(Server *srv, int client) {
 }
 
 
-
-bool Server::auth_user(char *user, char *pass) {
-    userloader->isPasswordOk(user, pass);
-}
-
 void Server::add_connection(ClientConnection *handler) {
     /* No usar nunca más el puntero pelado luego de esta
        llamada a emplace_back */
@@ -151,7 +145,6 @@ void Server::start_listening() {
 
 void Server::shutdownServer() {
     LOGGER_WRITE(Logger::INFO, "Apagando Server", "Server.class")
-    delete userloader;
     close_all_connections();
     shutdown(listen_socket_fd, 2);
     LOGGER_WRITE(Logger::INFO, "El server se a apagado", "Server.class")
@@ -248,10 +241,6 @@ shared_ptr<ClientConnection> Server::get_user_handler(const char *username) {
 
 void Server::shouldCloseFunc(bool should) {
     shouldClose = should;
-}
-
-UserLoader* Server::getUserLoader() {
-    return this->userloader;
 }
 
 queue<struct event>* Server::getIncomingEvents() {
