@@ -15,8 +15,7 @@ Server::Server(string path, string xmlConfigPath) {
     this->userloader = new UserLoader(path);
 
     loadConfigs();
-    struct xmlConfig globalConf = configs.getGlobalConf();
-    this->scenery = new Scenery(globalConf.ancho, globalConf.alto);
+    this->scenery = new Scenery(configs);
 }
 
 Server::~Server() {
@@ -29,7 +28,7 @@ void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutil
     // El cliente tiene que tener los mismos receive que coincidan con los sends del server...
     // Si hay que mandar varios backgrounds por ejemplo se puede usar lo de completion y final message
     //------------------------------------------------
-    Configs configs = server->getConfigs();
+    ConfigsXML configs = server->getConfigs();
     struct xmlConfig globalConf = configs.getGlobalConf();
     vector<struct xmlPlayer> sprites = configs.getSpritesConfig();
     vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
@@ -293,7 +292,7 @@ void Server::send_model_snapshot(ClientConnection* handler) {
 
 void Server::set_model_snapshot(vector<struct event> model_state) { this->last_model_snapshot = model_state;}
 
-Configs& Server::getConfigs(){
+ConfigsXML& Server::getConfigs(){
     return configs;
 }
 

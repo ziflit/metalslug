@@ -1,34 +1,34 @@
 	<config>
 		<ancho>800</ancho>
 		<alto>600</alto>
-		<cant_players>2</cant_players>
+		<cant_players>4</cant_players>
 	</config>
 	
 	<sprites>
 		<sprite>
 			<id>MARCO</id>
-			<path>player/marco.png</path>
+			<path>sprites/player/marco.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<speed>10</speed>
 		</sprite>
 		<sprite>
 			<id>TARMA</id>
-			<path>player/tarma.png</path>
+			<path>sprites/player/tarma.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<speed>10</speed>
 		</sprite>
 		<sprite>
 			<id>FIO</id>
-			<path>player/fio.png</path>
+			<path>sprites/player/fio.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<speed>10</speed>
 		</sprite>
 		<sprite>
 			<id>ERI</id>
-			<path>player/eri.png</path>
+			<path>sprites/player/eri.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<speed>10</speed>
@@ -38,28 +38,28 @@
 	<backgrounds>
 		<background>
 			<id>BACKGROUND_Z0</id>
-			<imagen_fondo>/backgrounds/fondo1.png</imagen_fondo>
-			<ancho>500</ancho>
+			<imagen_fondo>sprites/backgrounds/nub.png</imagen_fondo>
+			<ancho>4000</ancho>
 			<alto>500</alto>
 			<zindex>0</zindex>
 		</background>
 		<background>
 			<id>BACKGROUND_Z1</id>
-			<imagen_fondo>/backgrounds/fondo2.png</imagen_fondo>
-			<ancho>500</ancho>
+			<imagen_fondo>sprites/backgrounds/final.bmp</imagen_fondo>
+			<ancho>8192</ancho>
 			<alto>500</alto>
 			<zindex>1</zindex>
 		</background>
 		<background>
 			<id>BACKGROUND_Z2</id>
-			<imagen_fondo>/backgrounds/fondo2.png</imagen_fondo>
-			<ancho>500</ancho>
-			<alto>500</alto>
+			<imagen_fondo>sprites/backgrounds/front.bmp</imagen_fondo>
+			<ancho>5000</ancho>
+			<alto>600</alto>
 			<zindex>2</zindex>
 		</background>
 		<background>
 			<id>BACKGROUND_Z3</id>
-			<imagen_fondo>/backgrounds/fondo2.png</imagen_fondo>
+			<imagen_fondo>sprites/backgrounds/fondo2.png</imagen_fondo>
 			<ancho>500</ancho>
 			<alto>500</alto>
 			<zindex>3</zindex>

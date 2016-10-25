@@ -1,9 +1,10 @@
 #include "Scenery.h"
 
-Scenery::Scenery(unsigned int width, unsigned int height) {
+Scenery::Scenery(ConfigsXML configs) {
     //TODO: Esto se va a cargar en base al XML para inicializar el escenario, o algo asi
-    windowWidth = width;
-    windowHeight = height;
+    this->configs = configs;
+    windowWidth = configs.getGlobalConf().ancho;
+    windowHeight = configs.getGlobalConf().alto;
 
     this->inizializarBackgrounds();
 
@@ -11,7 +12,6 @@ Scenery::Scenery(unsigned int width, unsigned int height) {
     //TODO: definir si del XML tambien se setea la cantidad de jugadores.
     //TODO: el seteo de cada jugador.
 }
-
 //______________________________________________________________________________________________________________________
 //PROCESAMIENTO DE EVENTOS:
 
@@ -43,11 +43,14 @@ Entity Scenery::buildPlayer(string user) {
 }
 
 void Scenery::inizializarBackgrounds(){
-    Background* background0 = new Background(0,1,4000);
-    background0->calculateSpeed(8192,10);
+    Background* background0 = new Background(0,1,configs.getBackgroundsConfig()[0].ancho);
+    background0->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, configs.getSpritesConfig()[0].speed);
     this->backgrounds.push_back(background0);  //esos numeros son el largo de la imagen para que autocalcule la velocidad
-    this->backgrounds.push_back(new Background(1,10,8192));
-    this->backgrounds.push_back(new Background(2,10,8192));
+    this->backgrounds.push_back(new Background(1,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[1].ancho));
+
+    Background* background2 = new Background(2,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[2].ancho);
+    // background2->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, configs.getSpritesConfig()[0].speed);
+    this->backgrounds.push_back(background2);
 }
 
 int Scenery::findPlayerByUsername(string user) {

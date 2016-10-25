@@ -13,7 +13,7 @@
 #include "../utils/SocketUtils.h"
 #include "../utils/xml/XmlLoader.h"
 #include "../utils/Logger.h"
-#include "Configs.h"
+#include "ConfigsXML.h"
 
 #define MAX_CONN 6
 
@@ -29,13 +29,13 @@ private:
     std::mutex incoming_mutex;
     std::mutex outgoing_mutex;
     vector<struct event> last_model_snapshot;
+    ConfigsXML configs;
     Scenery* scenery;
     UserLoader *userloader; // TODO borrar
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
     bool shouldClose;
     string xmlConfigPath;
-    Configs configs;
 
     // guardo los structs de lo que se cargo por XML, despues ver como refactorizar
     struct xmlConfig globalConfig;
@@ -117,7 +117,7 @@ public:
 
     void set_model_snapshot(vector<struct event> model_state);
 
-    Configs& getConfigs();
+    ConfigsXML& getConfigs();
 
     void loadConfigs();
 };

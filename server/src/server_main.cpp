@@ -97,7 +97,13 @@ int main(int argc, char* argv[]) {
     string path = "userslist.csv";
     if (argc > 2) string path = argv[2];
 
-    Server* server = new Server(path, DEFAULT_CONFIG_XML_PATH);
+    Server* server;
+    if (argc > 3) {
+        string pathxml = argv[3];
+        server = new Server(path, pathxml);
+    } else {
+        server = new Server(path, DEFAULT_CONFIG_XML_PATH);
+    }
     server->shouldCloseFunc(false);
 
     std::thread server_online_in_thread;

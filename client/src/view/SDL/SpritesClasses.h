@@ -133,29 +133,29 @@ public:
 
 class Marco : public PlayerSprite {
 public:
-    Marco(SDL_Texture *texture,SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height) {
-        PlayerSprite::setUpImage("sprites/player/marco.png","sprites/player/marcoGrisado.png",15,12);
+    Marco(SDL_Texture *texture,SDL_Renderer *renderer, int window_width, int window_height, string pathColor) : PlayerSprite(texture,renderer,window_width,window_height) {
+        PlayerSprite::setUpImage(pathColor,"sprites/player/marcoGrisado.png",15,12);
     }
 };
 
 class Tarma : public PlayerSprite{
 public:
-    Tarma(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        PlayerSprite::setUpImage("sprites/player/tarma.png","sprites/player/tarmaGrisado.png",15,12);
+    Tarma(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height, string pathColor) : PlayerSprite(texture,renderer,window_width,window_height){
+        PlayerSprite::setUpImage(pathColor,"sprites/player/tarmaGrisado.png",15,12);
     }
 };
 
 class Fio : public PlayerSprite{
 public:
-    Fio(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture,renderer,window_width,window_height){
-        PlayerSprite::setUpImage("sprites/player/fio.png","sprites/player/fioGrisado.png",15,12);
+    Fio(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height, string pathColor) : PlayerSprite(texture,renderer,window_width,window_height){
+        PlayerSprite::setUpImage(pathColor,"sprites/player/fioGrisado.png",15,12);
     }
 };
 
 class Eri : public PlayerSprite{
 public:
-    Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : PlayerSprite(texture, renderer,window_width, window_height){
-        PlayerSprite::setUpImage("sprites/player/eri.png","sprites/player/eriGrisado.png",15,12);
+    Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height, string pathColor) : PlayerSprite(texture, renderer,window_width, window_height){
+        PlayerSprite::setUpImage(pathColor,"sprites/player/eriGrisado.png",15,12);
     }
 };
 
