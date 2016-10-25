@@ -10,10 +10,17 @@ Integrantes del grupo:	-Santiago Acuña 	    95313
 
 Sistema Operativo en el cual fue probado el proyecto: Linux
 
-Bibliotecas utilizadas para desarrollar el proyecto:	-
-							-
-							-
+
+Bibliotecas utilizadas para desarrollar el proyecto:
+* RapidXML
+* SDL2 (SDL2, SDL2_image, SDL2_mixer)
 
 
 Instrucciones adicionales: (que sean necesarias para compilar el proyecto)
-			
+``` bash
+metalslug/server $ make
+metlalusg/server $ ./server <puerto> <archivo de usuarios> <archivo xml>
+
+metalslug/client $ make
+metalslug/client/src/view $ ../../client <puerto> <ip servidor>  # workaround por paths relativos
+```
