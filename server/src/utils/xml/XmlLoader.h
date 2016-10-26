@@ -19,8 +19,9 @@ using namespace std;
 using namespace rapidxml;
 
 class XmlLoader {
-public:
+private:
     string path;
+public:
 
     XmlLoader(string path);
 

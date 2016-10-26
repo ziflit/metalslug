@@ -7,7 +7,6 @@
 #include <queue>
 #include <string>
 #include <vector>
-#include "UserLoader.h"
 #include "game/Scenery.h"
 #include "../utils/Protocol.h"
 #include "../utils/SocketUtils.h"
@@ -31,7 +30,6 @@ private:
     vector<struct event> last_model_snapshot;
     ConfigsXML configs;
     Scenery* scenery;
-    UserLoader *userloader; // TODO borrar
     int listen_socket_fd;
     vector<shared_ptr<ClientConnection> > connections;
     bool shouldClose;
@@ -43,7 +41,7 @@ private:
     vector<struct xmlBackground> backgroundsConfig;
 
 public:
-    Server(string path, string xmlConfigPath);
+    Server(string xmlConfigPath);
 
     ~Server();
 
@@ -93,8 +91,6 @@ public:
 
     void add_connection(ClientConnection *handler);
 
-    bool auth_user(char *user, char *pass);
-
     void handle_message(struct event event, EventCode code, char* username);
 
     void removeClient(char *username);
@@ -102,8 +98,6 @@ public:
     void shouldCloseFunc(bool should);
 
     std::shared_ptr<ClientConnection> get_user_handler(const char* username);
-
-    UserLoader* getUserLoader();
 
     Scenery* getScenery() { return this->scenery; }
 

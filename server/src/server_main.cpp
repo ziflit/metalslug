@@ -94,15 +94,12 @@ int main(int argc, char* argv[]) {
     /* Si no se pasa un puerto o es invalido uso 1500 */
     if (port == 0) port = 1500;
 
-    string path = "userslist.csv";
-    if (argc > 2) string path = argv[2];
-
     Server* server;
-    if (argc > 3) {
-        string pathxml = argv[3];
-        server = new Server(path, pathxml);
+    if (argc > 2) {
+        string pathxml = argv[2];
+        server = new Server(pathxml);
     } else {
-        server = new Server(path, DEFAULT_CONFIG_XML_PATH);
+        server = new Server(DEFAULT_CONFIG_XML_PATH);
     }
     server->shouldCloseFunc(false);
 
