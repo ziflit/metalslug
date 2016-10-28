@@ -97,6 +97,18 @@ public:
     void mirandoDerechaQuieto();
     void mirandoIzquierdaQuieto();
 
+    void disparandoDerechaQuieto();
+    void disparandoIzquierdaQuieto();
+    void disparandoCaminandoDerecha();
+    void disparandoCaminandoIzquierda();
+    void disparandoAgachadoQuietoDerecha();
+    void disparandoAgachadoQuietoIzquierda();
+    void disparandoAgachadoAvanzandoDerecha();
+    void disparandoAgachadoAvanzandoIzquierda();
+    void disparandoMirandoArribaDerechaQuieto();
+    void disparandoMirandoParaArribaIzquierdaQuieto();
+    void disparandoAvanzandoMirandoArribaDerecha();
+    void disparandoAvanzandoMirandoArribaIzquierda();
 };
 
 class BackgroundSprite : public Sprite{

@@ -60,9 +60,9 @@ enum Entity {
 	ENEMY_NORMAL,
 	BACKGROUND_Z0,    // fondo con Z-index 1
 	BACKGROUND_Z1,
-  	BACKGROUND_Z2,
+    BACKGROUND_Z2,
 	BACKGROUND_Z3,
-	NOPLAYER
+    NOPLAYER
 };
 
 enum Postura{
@@ -77,16 +77,38 @@ enum Postura{
 	AGACHADO_AVANZANDO_IZQUIERDA,
 	AGACHADO_AVANZANDO_DERECHA,
 	MIRANDO_DERECHA_QUIETO,
-	MIRANDO_IZQUIERDA_QUIETO,
-	DESCONECTADO
+    MIRANDO_IZQUIERDA_QUIETO,
+    DESCONECTADO,
+	DISPARANDO_DERECHA_QUIETO,
+	DISPARANDO_IZQUIERDA_QUIETA,
+	DISPARANDO_CAMINANDO_DERECHA,
+	DISPARANDO_CAMINANDO_IZQUIERDA,
+	DISPARANDO_AGACHADO_QUIETO_DERECHA,
+	DISPARANDO_AGACHADO_QUIETO_IZQUIERDA,
+	DISPARANDO_AGACHADO_AVANZANDO_DERECHA,
+	DISPARANDO_AGACHADO_AVANZANDO_IZQUIERDA,
+	DISPARANDO_MIRANDO_ARRIBA_DERECHA_QUIETO,
+	DISPARANDO_MIRANDO_ARRIBA_IZQUIERDA_QUIETO,
+	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_DERECHA,
+	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA
+};
+
+enum Arma{
+    PISTOLA,
+    HEAVY_MACHINEGUN,
+    ROCKET_LAUNCHER,
+    BOMBA,
+    LASER,
+    SHOTGUN
 };
 
 struct event_ext {
 	EventCode code;
 	Entity id;
-    int x;
+	int x;
 	int y;
 	Postura postura;
+    Arma arma;
 };
 
 struct event {
@@ -94,31 +116,31 @@ struct event {
 	event_ext data;
 };
 
-//aca pongo todo lo que tiene cada uno-------------------------------
+// Structs para el envio de la configuracion inicial, en base al XML
+
 struct xmlConfig {
-    int ancho;
-    int alto;
-    int cant_players;
+	int ancho;
+	int alto;
+	int cant_players;
 };
 
 struct xmlPlayer {
     EventCompletion completion;
-    char id[15];
-    char path[40];
-    int ancho;
-    int alto;
-    int speed;
+	char id[15];
+	char path[40];
+	int ancho;
+	int alto;
+	int speed;
 };
 
 struct xmlBackground {
     EventCompletion completion;
-    char id[15];
-    char path[40];
-    int ancho;
-    int alto;
-    int zindex;
+	char id[15];
+	char path[40];
+	int ancho;
+	int alto;
+	int zindex;
 };
 //---------------------------------------------------
-
 
 #endif //METALSLUG_PROTOCOL_H
