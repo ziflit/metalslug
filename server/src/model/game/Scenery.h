@@ -22,7 +22,7 @@ using namespace std;
 class Scenery {
 private:
 	vector<Player*> players;
-	vector<Background*> backgrounds;
+	vector<GameObject*> backgrounds;
 	unsigned int windowWidth, windowHeight;
 	ConfigsXML configs;
 
