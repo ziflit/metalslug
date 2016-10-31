@@ -10,46 +10,35 @@
 
 #include <string>
 #include "../../utils/Protocol.h"
+#include "GameObject.h"
 
-class Player {
-    private:
+class Player : public GameObject{
+private:
     string username;
-    Entity entity;
-    int x;
-    int y;
     int direccionX;
     int direccionY;
     int posAtJump;
-    int jumpPos[25] = {0, 23, 44, 63, 80, 95, 108, 119, 128, 135, 140, 143, 144, 143, 140, 135, 128, 119, 108, 95, 80, 63, 44, 23, 0};
-    int speed;
     int gravity;
+    int jumpPos[25] = {0, 23, 44, 63, 80, 95, 108, 119, 128, 135, 140, 143, 144, 143, 140, 135, 128, 119, 108, 95, 80,
+                       63, 44, 23, 0};
     Postura postura;
     int windowWidth;
 
 
-    public:
+public:
     Player(string user, Entity entitySelected, int windowWidth);
 
     virtual ~Player();
 
-    Entity getEntity() {
-        return entity;
+    Postura getPostura() { return this->postura; }
+
+    void setPostura(Postura postura) {
+        Player::postura = postura;
     }
 
-    Postura getPostura(){ return this->postura;}
-
-    struct event getNewState();
-
-    void handleRealeasedKey(EventCode nuevoEvento);
-
-    void handlePressedKey(EventCode nuevoEvento);
-
-    bool isKeyPressed(EventCode nuevoEvento);
-
-    bool isKeyRealeased(EventCode nuevoEvento);
+    struct event getState() override ;
 
     // El parametro type, indica con '1' (para presionada)  o '0' (para soltada) si lo que paso fue que se solto o se presiono la tecla (keypressed o keyreleased)
-    void updateState(EventCode nuevoEvento);
 
     bool isJumping();
 
@@ -61,7 +50,7 @@ class Player {
 
     void jumpGoingDown();
 
-    void avanzar() {x += speed;};
+    void avanzar() override { x += speed; };
 
     void retroceder();
 
@@ -73,53 +62,33 @@ class Player {
 
     void moveRight();
 
-    void set_position( int posx,  int posy);
+    void set_position(int posx, int posy);
 
     void stopMoving();
 
 
     //getters y setters -----------------------------------------------------------------------------------------
-    int getSpeed() const {
-        return speed;
+
+    void setDireccionX(int direccionX) {
+        Player::direccionX = direccionX;
     }
 
-    int getDireccionX() const{
+    void setDireccionY(int direccionY) {
+        Player::direccionY = direccionY;
+    }
+
+    int getDireccionX() const {
         return direccionX;
     }
 
-    void setSpeed(int speed) {
-        this->speed = speed;
+    int getDireccionY() const {
+        return direccionY;
     }
 
     string getUsername() const {
         return username;
     }
-
-    int getX() const {
-        return x;
-    }
-
-    void setX(int x) {
-        this->x = x;
-    }
-
-    int getY() const {
-        return y;
-    }
-
-    void setY(int y) {
-        this->y = y;
-    }
-
-    Entity getEntity() const {
-        return entity;
-    }
-
-    void setEntity(Entity entity) {
-        this->entity = entity;
-    }
 };
-
 
 
 #endif /* SRC_MODEL_GAME_PLAYER_H_ */

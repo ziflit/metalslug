@@ -11,8 +11,6 @@ protected:
     float speed;
 
 public:
-    virtual void calculateSpeed(int largeMainBackground,
-            int speedMainBackground) = 0;
 
     virtual struct event getState()= 0;
 

@@ -1,4 +1,7 @@
 #include "Scenery.h"
+#include "../EventHandler.h"
+#include "../PlayerEventHandler.h"
+#include "PlayerBuilder.h"
 
 Scenery::Scenery(ConfigsXML configs) {
     //TODO: Esto se va a cargar en base al XML para inicializar el escenario, o algo asi
@@ -20,37 +23,35 @@ Entity Scenery::buildPlayer(string user) {
     if (position != -1) {
         return players[position]->getEntity();
     }
-    Player* newPlayer;
 
-    if(players.size() == 0){
-        newPlayer = new Player(user, MARCO, windowWidth);
+    PlayerBuilder playerBuilder;
+    Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth);
+    if (newPlayer != nullptr) {
         this->addElementToScenery(newPlayer);
+    } else {
+        return NOPLAYER;
     }
-    else if(players.size() == 1){
-        newPlayer = new Player(user, FIO,windowWidth);
-        this->addElementToScenery(newPlayer);
-    }
-    else if(players.size() == 2){
-        newPlayer = new Player(user, TARMA,windowWidth);
-        this->addElementToScenery(newPlayer);
-    }
-    else if(players.size() == 3){
-        newPlayer = (new Player(user, ERI,windowWidth));
-        this->addElementToScenery(newPlayer);
-    }
-    else if(players.size() > 3){ return NOPLAYER; }
     return newPlayer->getEntity();
 }
 
-void Scenery::inizializarBackgrounds(){
-    Background* background0 = new Background(0,1,configs.getBackgroundsConfig()[0].ancho);
-    background0->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, configs.getSpritesConfig()[0].speed);
-    this->backgrounds.push_back(background0);  //esos numeros son el largo de la imagen para que autocalcule la velocidad
-    this->backgrounds.push_back(new Background(1,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[1].ancho));
+void Scenery::inizializarBackgrounds() {
+    Background *background0 = new Background(0, 1, configs.getBackgroundsConfig()[0].ancho);
+    float background0Speed = calculateBackgroundSpeed(configs.getBackgroundsConfig()[1].ancho, background0->getLarge(),
+                                                      configs.getSpritesConfig()[0].speed);
+    background0->setSpeed(background0Speed);
+    this->backgrounds.push_back(
+            background0);  //esos numeros son el largo de la imagen para que autocalcule la velocidad
+    this->backgrounds.push_back(
+            new Background(1, configs.getSpritesConfig()[0].speed, configs.getBackgroundsConfig()[1].ancho));
 
-    Background* background2 = new Background(2,configs.getSpritesConfig()[0].speed,configs.getBackgroundsConfig()[2].ancho);
+    Background *background2 = new Background(2, configs.getSpritesConfig()[0].speed,
+                                             configs.getBackgroundsConfig()[2].ancho);
     // background2->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, configs.getSpritesConfig()[0].speed);
     this->backgrounds.push_back(background2);
+}
+
+int Scenery::calculateBackgroundSpeed(int largeMainBackground, int largeBackground, int speedMainBackground) {
+    return ((largeBackground - 800) * speedMainBackground) / (largeMainBackground - 800);
 }
 
 int Scenery::findPlayerByUsername(string user) {
@@ -63,42 +64,44 @@ int Scenery::findPlayerByUsername(string user) {
 }
 
 void Scenery::process_key(EventCode keycode, Entity entity) {
+    PlayerEventHandler playerEventHandler;
     for (auto player : players) {
-        if (player->getEntity() == entity){
-                player->updateState(keycode);
+        if (player->getEntity() == entity) {
+            playerEventHandler.handle(keycode, player);
         }
     }
 }
 
-vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys){
+vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys) {
     while (not keys->empty()) {
         struct event key = keys->front();
-        if (key.data.code == CLIENT_DISCONNECT){
-            cout<<"se recibio un evento de Client Disconnect"<<endl;
+        if (key.data.code == CLIENT_DISCONNECT) {
+            cout << "se recibio un evento de Client Disconnect" << endl;
         }
-        process_key( key.data.code, key.data.id );
+        process_key(key.data.code, key.data.id);
         keys->pop();
     }
     return obtenerEstadoEscenario();
 }
 
 
-bool Scenery::hayJugadorEnBordeIzq(){
-    for (auto player: players){
-        if((player->getPostura() != Postura::DESCONECTADO) and (player->getX() <= 0)) {
-                return true;
-            }
+bool Scenery::hayJugadorEnBordeIzq() {
+    for (auto player: players) {
+        if ((player->getPostura() != Postura::DESCONECTADO) and (player->getX() <= 0)) {
+            return true;
+        }
     }
 
     return false;
 }
 
-bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando(){
+bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
 
     for (auto player : players) {
-        if((player->getPostura() != Postura::DESCONECTADO) and ((player->getX() >= ((windowWidth/2) - 100)) and (player->getDireccionX() == 1))) {
-                return true;
-            }
+        if ((player->getPostura() != Postura::DESCONECTADO) and
+            ((player->getX() >= ((windowWidth / 2) - 100)) and (player->getDireccionX() == 1))) {
+            return true;
+        }
     }
 
     return false;
@@ -118,7 +121,7 @@ void Scenery::updateBackgroudsState() {
              */
         }
         for (auto player : players) {
-            if(player->getPostura() != DESCONECTADO){
+            if (player->getPostura() != DESCONECTADO) {
                 player->retroceder();
             }
         }
@@ -130,10 +133,9 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
 
 
-
     for (auto player : players) {
         player->updatePosition();
-        eventsToReturn.push_back(player->getNewState());
+        eventsToReturn.push_back(player->getState());
     }
 
     updateBackgroudsState();
@@ -146,12 +148,12 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     return eventsToReturn;
 }
 
-void Scenery::addElementToScenery(Player* player) {
-	players.push_back(player);
+void Scenery::addElementToScenery(Player *player) {
+    players.push_back(player);
 }
 
-void Scenery::addElementToScenery(Background* background) {
-	backgrounds.push_back(background);
+void Scenery::addElementToScenery(Background *background) {
+    backgrounds.push_back(background);
 }
 
 Scenery::~Scenery() {
