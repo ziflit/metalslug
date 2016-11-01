@@ -10,13 +10,12 @@
 
 #include <string>
 #include "../../utils/Protocol.h"
-#include "GameObject.h"
+#include "AnimatedObject.h"
 
-class Player : public GameObject{
+class Player : public AnimatedObject{
 private:
     string username;
-    int direccionX;
-    int direccionY;
+
     int posAtJump;
     int gravity;
     int jumpPos[25] = {0, 23, 44, 63, 80, 95, 108, 119, 128, 135, 140, 143, 144, 143, 140, 135, 128, 119, 108, 95, 80,
@@ -68,22 +67,6 @@ public:
 
 
     //getters y setters -----------------------------------------------------------------------------------------
-
-    void setDireccionX(int direccionX) {
-        Player::direccionX = direccionX;
-    }
-
-    void setDireccionY(int direccionY) {
-        Player::direccionY = direccionY;
-    }
-
-    int getDireccionX() const {
-        return direccionX;
-    }
-
-    int getDireccionY() const {
-        return direccionY;
-    }
 
     string getUsername() const {
         return username;
