@@ -15,8 +15,15 @@ protected:
     Weapon *weapon;
     int direccionX;
     int direccionY;
-
+    Postura postura;
 public:
+    Postura getPostura() {
+        return postura;
+    }
+
+    void setPostura(Postura postura) {
+        AnimatedObject::postura = postura;
+    }
 
     int getHealth() {
         return health;

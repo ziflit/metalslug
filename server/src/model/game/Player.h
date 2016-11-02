@@ -20,7 +20,7 @@ private:
     int gravity;
     int jumpPos[25] = {0, 23, 44, 63, 80, 95, 108, 119, 128, 135, 140, 143, 144, 143, 140, 135, 128, 119, 108, 95, 80,
                        63, 44, 23, 0};
-    Postura postura;
+
     int windowWidth;
 
 
@@ -28,12 +28,6 @@ public:
     Player(string user, Entity entitySelected, int windowWidth);
 
     virtual ~Player();
-
-    Postura getPostura() { return this->postura; }
-
-    void setPostura(Postura postura) {
-        Player::postura = postura;
-    }
 
     struct event getState() override ;
 

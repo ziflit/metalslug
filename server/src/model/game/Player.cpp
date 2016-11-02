@@ -43,7 +43,7 @@ bool Player::isMoving() {
 }
 
 bool Player::isJumping() {
-    return (direccionY == 1);
+    return (Player::direccionY == 1);
 }
 
 void Player::updatePosition() {
@@ -56,7 +56,7 @@ void Player::updatePosition() {
         }
 
         if (this->isJumping()) {
-            if (posAtJump < 25) {
+            if (posAtJump < 24) {
                 posAtJump++;
                 y = 400 - jumpPos[posAtJump];
             } else {
