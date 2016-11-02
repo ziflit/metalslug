@@ -22,7 +22,7 @@ using namespace std;
 class Scenery {
 private:
 	vector<Player*> players;
-	vector<Background*> backgrounds;
+	vector<GameObject*> backgrounds;
 	unsigned int windowWidth, windowHeight;
 	ConfigsXML configs;
 
@@ -56,6 +56,8 @@ public:
 	vector<struct event> obtenerEstadoEscenario();
 
     int findPlayerByUsername(string user);
+
+    int calculateBackgroundSpeed(int largeMainBackground, int largeBackground, int speedMainBackground);
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */

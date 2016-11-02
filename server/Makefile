@@ -9,7 +9,7 @@ CLIENT_DEP =
 # Para el server
 #SRV_SRC_FILES = $(filter-out src/model/client.cpp, $(wildcard src/model/*.cpp)) $(filter-out src/model/ClientHandler.cpp, $(wildcard src/model/*.cpp)) src/server_main.cpp
 SRV_SRC_FILES = src/model/server.cpp src/model/ClientConnection.cpp src/model/Event.cpp src/model/UserLoader.cpp src/model/User.cpp src/utils/Logger.cpp \
-src/utils/SocketUtils.cpp src/server_main.cpp src/model/game/*.cpp src/utils/xml/XmlLoader.cpp
+src/utils/SocketUtils.cpp src/server_main.cpp src/model/game/*.cpp src/utils/xml/XmlLoader.cpp src/model/PlayerEventHandler.cpp src/model/game/AnimatedObject.h
 #SRV_SRC_FILES = src/model/server.cpp src/server_main.cpp
 # SRV_INC = src/model/server.h $(filter-out src/utils/loremIpsum.cpp, $(wildcard src/utils/*.cpp)) $(filter-out src/utils/User.cpp, $(wildcard src/utils/*.cpp))
 SRV_INC = src/model/server.h src/utils/xml/XmlLoader.h src/model/ConfigsXML.h # src/model/ClientConnection.h src/model/UserLoader.h src/utils/SocketUtils.h src/utils/Protocol.h src/model/User.h

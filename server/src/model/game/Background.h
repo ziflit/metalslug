@@ -9,8 +9,9 @@
 #define SRC_MODEL_GAME_BACKGROUND_H_
 
 #include "../../utils/Protocol.h"
+#include "GameObject.h"
 
-class Background {
+class Background : public GameObject {
 	/**
 	 *	Esta clase define al fondo directo a los jugadores,
 	 *	debera avanzar con el movimiento de ellos, cuando
@@ -20,12 +21,6 @@ class Background {
 	 *	definido.
 	 */
 
-private:
-	Entity entity;
-	float x,y;
-	double large;
-    float speed;
-
 public:
 	Background(int zindex,int speed, double large);
 
@@ -33,35 +28,9 @@ public:
 
 	struct event getState();
 
-    void calculateSpeed(int largeMainBackground, int speedMainBackground);
-
 	void setEntity(int zindex);
 
 	void avanzar();
-
-    float getSpeed() const {
-		return speed;
-	}
-
-	void setSpeed(float speed) {
-		this->speed = speed;
-	}
-
-    float getX() const {
-		return x;
-	}
-
-	void setX(float x) {
-		this->x = x;
-	}
-
-    int getY() const {
-		return y;
-	}
-
-	void setY(int y) {
-		this->y = y;
-	}
 
 };
 
