@@ -31,17 +31,9 @@ public:
 
     struct event getState() override ;
 
-    // El parametro type, indica con '1' (para presionada)  o '0' (para soltada) si lo que paso fue que se solto o se presiono la tecla (keypressed o keyreleased)
-
     bool isJumping();
 
     bool isMoving();
-
-    void jump();
-
-    void jumpGoingUp();
-
-    void jumpGoingDown();
 
     void avanzar() override { x += speed; };
 
@@ -51,14 +43,7 @@ public:
 
     bool isInHalfWindow();
 
-    void moveLeft();
-
-    void moveRight();
-
     void set_position(int posx, int posy);
-
-    void stopMoving();
-
 
     //getters y setters -----------------------------------------------------------------------------------------
 
