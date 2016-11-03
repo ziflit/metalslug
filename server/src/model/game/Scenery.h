@@ -25,8 +25,10 @@ private:
     vector<Player *> players;
     vector<GameObject *> backgrounds;
     vector<Bullet> bullets; // las vamos a tener que diferencias para que el colisionador pueda usarlas
-    unsigned int windowWidth, windowHeight;
-    ConfigsXML configs;
+    unsigned int windowWidth, windowHeight, playersSpeed;
+
+
+    void initializeFromXML(ConfigsXML configs);
 
     // *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
     void addElementToScenery(Player *player);
@@ -59,8 +61,6 @@ public:
     vector<struct event> obtenerEstadoEscenario();
 
     int findPlayerByUsername(string user);
-
-    int calculateBackgroundSpeed(int largeMainBackground, int largeBackground, int speedMainBackground);
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */

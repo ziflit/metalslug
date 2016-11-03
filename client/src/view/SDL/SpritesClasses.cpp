@@ -1,29 +1,15 @@
 #include "SpritesClasses.h"
 
-Sprite::Sprite(SDL_Texture* layer, SDL_Renderer* mainRenderer, int window_width, int window_height) {
+Sprite::Sprite(SDL_Renderer* mainRenderer, int window_width, int window_height) {
 
-    Sprite::layer = layer;
-    Sprite::renderer = mainRenderer;
+    this->layer = layer;
+    this->renderer = mainRenderer;
 
-    Sprite::sourceRect.x = Sprite::sourceRect.y = 0; //FRAME INICIAL
-    Sprite::destRect.x = Sprite::destRect.y = 0; //POSICION INICIAL
+    this->sourceRect.x = this->sourceRect.y = 0; //FRAME INICIAL
+    this->destRect.x = this->destRect.y = 0; //POSICION INICIAL
 
-    Sprite::window_width = window_width;
-    Sprite::window_height = window_height;
-}
-
-void Sprite::setUpImage(string imageSpritePath) {
-    layer = loadTexture(renderer,imageSpritePath);
-    SDL_QueryTexture(layer,NULL,NULL,&spriteImageWidth,&spriteImageHeight);
-}
-
-void Sprite::actualizarDibujo(){   //COPIA EN LA CAPA DEL PLAYER EL NUEVO ESTADO DEL SPRITE
-    SDL_RenderCopy(renderer,layer,&(Sprite::sourceRect),&(Sprite::destRect));
-}
-
-void Sprite::set_position(int x, int y) {
-    Sprite::destRect.x = x;
-    Sprite::destRect.y = y;
+    this->window_width = window_width;
+    this->window_height = window_height;
 }
 
 SDL_Texture* Sprite::loadTexture(SDL_Renderer* renderer,string imageTexturePath){
@@ -36,7 +22,7 @@ SDL_Texture* Sprite::loadTexture(SDL_Renderer* renderer,string imageTexturePath)
 
     if(loadingSurface == NULL){
         cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
-        loadingSurface = IMG_Load("sprites/defaultImage.png"); //TODO: ESTO DEBERIA CARGARSE DEL XML, PEROOO...
+        loadingSurface = IMG_Load("sprites/defaultImage.png");
     }
 
     backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
@@ -46,14 +32,41 @@ SDL_Texture* Sprite::loadTexture(SDL_Renderer* renderer,string imageTexturePath)
 
     }
 
-        SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
-        return backgroundTexture;
+    SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
+    return backgroundTexture;
 }
 
 
-//________________________________________________________________________________________________________
-//PLAYER SPRITE
+void Sprite::setUpImage(string imageSpritePath) {
+    this->layer = loadTexture(renderer,imageSpritePath);
+    SDL_QueryTexture(layer,NULL,NULL,&spriteImageWidth,&spriteImageHeight);
+}
+
+void Sprite::actualizarDibujo(){
+    SDL_RenderCopy(renderer,layer,&(this->sourceRect),&(this->destRect));
+}
+
+void Sprite::set_position(int x, int y) {
+    this->destRect.x = x;
+    this->destRect.y = y;
+    this->weaponsDestRect.x = x;
+    this->weaponsDestRect.y = y;
+
+}
+
+void PlayerSprite::setWidth(int w) {
+    Sprite::setWidth(w);
+    this->weaponsDestRect.w = w;
+}
+
+void PlayerSprite::setHeight(int h) {
+    Sprite::setHeight(h);
+    this->weaponsDestRect.h = h;
+}
+
 void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, int wFramesCant, int hFramesCant) {
+
+    this->dibujar = false;
 
     Sprite::setUpImage(imageColorPath);
 
@@ -73,9 +86,38 @@ void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, in
     PlayerSprite::sourceRect.h = PlayerSprite::frameHeight;
 }
 
+void PlayerSprite::setUpWeaponsImage(string weaponsPath){
+    this->weaponsLayer = loadTexture(renderer,weaponsPath);
+    int weaponsImageWidth, weaponsImageHeight;
+
+    SDL_QueryTexture(weaponsLayer,NULL,NULL,&weaponsImageWidth,&weaponsImageHeight);
+
+    weaponsSourceRect.w = this->frameWidth;
+    weaponsSourceRect.h = this->frameHeight;
+}
+
+void PlayerSprite::setWeapon(Arma weapon) {
+    this->arma = arma;
+
+//TODO:cuando esten los sprites aqui se setea la fila correspondiente
+    switch (arma) {
+        case PISTOLA:
+            PlayerSprite::weaponsSourceRect.y = 0;
+        case HEAVY_MACHINEGUN:
+            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 1 );
+        case ROCKET_LAUNCHER:
+            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 2 );
+        case BOMBA:
+            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 3 );
+        case LASER:
+            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 4 );
+        case SHOTGUN:
+            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 5 );
+    }
+}
+
 void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
 void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
-
 
 /**  MOVIMIENTOS
 *_________________________________________________________________________________________________________
@@ -101,26 +143,31 @@ void PlayerSprite::setNextSpriteFrame() {
     }
 
 }
-
+//TODO: setear el arma.
 void PlayerSprite::caminandoIzquierda() {
     PlayerSprite::setNextSpriteFrame();
     PlayerSprite::sourceRect.y = 0;
+    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 1;
 }
 void PlayerSprite::mirandoArribaCaminandoIzquierda(){
     PlayerSprite::sourceRect.y = (frameHeight*1);
     PlayerSprite::setNextSpriteFrame();
+//    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 3;
 }
 void PlayerSprite::agachadoMirandoAIzquierdaQuieto(){
     PlayerSprite::sourceRect.y = (frameHeight*2);
     PlayerSprite::setNextSpriteFrame();
+//    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 1;
 }
 void PlayerSprite::mirandoArribaIzquierdaQuieto(){
     PlayerSprite::sourceRect.y = (frameHeight*3);
     PlayerSprite::setNextSpriteFrame();
+//    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 1;
 }
 void PlayerSprite::caminandoDerecha(){
     PlayerSprite::sourceRect.y = (frameHeight*4);
     PlayerSprite::setNextSpriteFrame();
+//    PlayerSprite::weaponsSourceRect.x = 0;
 }
 void PlayerSprite::mirandoArribaCaminandoDerecha(){
     PlayerSprite::sourceRect.y = (frameHeight*5);
@@ -153,12 +200,16 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
 
 
 void PlayerSprite::handle(struct event nuevoEvento) {
+    this->dibujar = true;
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
 
-    if ((grisado == true) and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) {
+    if (grisado and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) {
         this->colorear();
         grisado = false;
+    }
+    if (this->arma != nuevoEvento.data.arma){
+        setWeapon(nuevoEvento.data.arma);
     }
 
     switch (nuevoEvento.data.postura){
@@ -200,10 +251,9 @@ void PlayerSprite::handle(struct event nuevoEvento) {
             mirandoIzquierdaQuieto();
             break;
         case Postura::DESCONECTADO:
-            if (this->grisado == false){
+            if (!this->grisado){
                 this->grisado = true;
                 mirandoDerechaQuieto();
-                cout<<" LO VOY A GRISAR"<<endl;
                 this->grisar();
             }
             break;
@@ -212,8 +262,6 @@ void PlayerSprite::handle(struct event nuevoEvento) {
     }
 }
 
-//_______________________________________________________________________________________________________
-//BACKGROUNDSPRITE
 void BackgroundSprite::setUpImage(string imageSpritePath) {
 
     Sprite::setUpImage(imageSpritePath);
@@ -230,7 +278,7 @@ void BackgroundSprite::handle(struct event nuevoEvento) {
 
 void BackgroundSprite::setNextStartBackFrame(){
     if(Sprite::sourceRect.x == 0){
-        Sprite::sourceRect.x = spriteImageWidth/2;
+        Sprite::sourceRect.x = spriteImageWidth / 2;
     }
     else{
         Sprite::sourceRect.x = 0;

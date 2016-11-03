@@ -6,64 +6,44 @@ void SDLRunningGame::audioInitialization () {
     music->play();
 }
 
-SDL_Texture* SDLRunningGame::createTransparentTexture(SDL_Renderer *renderer){
-    SDL_Texture* backgroundTexture = NULL;
-    SDL_Surface* loadingSurface = IMG_Load("sprites/backgroundTransparent.bmp" );
-
-    if(loadingSurface == NULL)
-        cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
-
-    else {
-        backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
-        if(backgroundTexture == NULL){
-            cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
-
-        }
-
-        SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
-        return backgroundTexture;
-    }
-    return backgroundTexture;
-}
-
-void SDLRunningGame::spritesBuilding () {
-
-
-    SDLRunningGame::backgroundSprite0 = new BackgroundSprite(backgroundLayer0, mainRenderer,window_width,window_height);
-    SDLRunningGame::backgroundSprite0->setUpImage(configs.getBackgroundsConfig()[0].path);
-
-    SDLRunningGame::backgroundSprite1 = new BackgroundSprite(backgroundLayer1, mainRenderer,window_width,window_height);
-    backgroundSprite1->setUpImage(configs.getBackgroundsConfig()[1].path);
-
-    SDLRunningGame::backgroundSprite2 = new BackgroundSprite(backgroundLayer2,mainRenderer,window_width,window_height);
-    backgroundSprite2->setUpImage(configs.getBackgroundsConfig()[2].path);
-
-    marcoSprite = eriSprite = fioSprite = tarmaSprite = nullptr;
-
-}
-
-SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
-    this->configs = configs;
-    SDLRunningGame::mainWindow = mainWindow;
+void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
     this->window_width = configs.getGlobalConf().ancho;
     this->window_height = configs.getGlobalConf().alto;
 
-    SDL_GetWindowSize(mainWindow, &window_width, &window_height);
+    vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
 
+    for (auto backgroundConfig : backgroundConfigs) {
+        BackgroundSprite* newBackground = new BackgroundSprite(this->mainRenderer,
+                                                               window_width,window_height);
+        newBackground->setUpImage(backgroundConfig.path);
+        newBackground->setId(backgroundConfig.id);
+        this->backgroundSprites.push_back(newBackground);
+    }
+
+    for (auto playerConfig : configs.getSpritesConfig()) {
+        PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer,
+                                                   window_width, window_height);
+        newPlayer->setWidth(playerConfig.ancho);
+        newPlayer->setHeight(playerConfig.alto);
+        newPlayer->setId(playerConfig.id);
+        newPlayer->setUpImage(playerConfig.pathColor,playerConfig.pathGrey,
+                              playerConfig.cantWidthFrames,playerConfig.cantHeightFrames);
+//        newPlayer->setUpWeaponsImage(playerConfig.pathWeapons,weaponsWFramesCant,weaponsHFramesCant);
+        this->playersSprites.push_back(newPlayer);
+    }
+}
+
+SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
+    SDLRunningGame::mainWindow = mainWindow;
     SDLRunningGame::mainRenderer = mainRenderer;
-
-    SDLRunningGame::spritesBuilding();
+    initializeFromXML(configs);
+    SDL_GetWindowSize(mainWindow, &window_width, &window_height);
 
     SDLRunningGame::audioInitialization();
 
     holdLeftKey = holdRightKey = holdUpKey = holdDownKey = holdAKey= holdSKey = 0;
 
 }
-
-void SDLRunningGame::initializeMarco() { this->marcoSprite = new Marco(playersLayer,mainRenderer,window_width,window_height,configs.getSpritesConfig()[0].path); }
-void SDLRunningGame::initializeTarma() { this->tarmaSprite = new Tarma(playersLayer,mainRenderer,window_width,window_height,configs.getSpritesConfig()[1].path); }
-void SDLRunningGame::initializeFio() {this->fioSprite = new Fio(playersLayer,mainRenderer,window_width,window_height,configs.getSpritesConfig()[2].path);}
-void SDLRunningGame::initializeEri() {this->eriSprite = new Eri(playersLayer,mainRenderer,window_width,window_height,configs.getSpritesConfig()[3].path);}
 
 struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     struct event nuevoEvento;
@@ -72,7 +52,6 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
     if (sdlEvent->type == SDL_KEYDOWN){  //si aprieto tal tecla:
         switch (sdlEvent->key.keysym.sym){
             case SDLK_LEFT:
-                cout<<"aprieto flecha izquierda"<<endl;
                 //holdLeftKey != 0 no volver a enviarlo al servidor
                 if(holdLeftKey>0){
                     nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
@@ -83,7 +62,6 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 }
                 return nuevoEvento;
             case SDLK_RIGHT:
-                printf("aprieto flecha derecha");
                 if(holdRightKey>0){
                     nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
                 }
@@ -93,7 +71,6 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 }
                 return nuevoEvento;
             case SDLK_UP:
-                printf("aprieto flecha arriba");
                 if(holdUpKey>0){
                     nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
                 }
@@ -103,7 +80,6 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 }
                 return nuevoEvento;
             case SDLK_DOWN:
-                printf("aprieto flecha abajo");
                 if(holdDownKey>0){
                     nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
                 }
@@ -114,7 +90,6 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 return nuevoEvento;
 
             case SDLK_a:  //salto
-                printf("aprieto a");
                 if(holdAKey>0){
                     nuevoEvento.data.code = EventCode ::TODO_SIGUE_IGUAL;
                 }
@@ -124,7 +99,6 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 return nuevoEvento;
 
             case SDLK_s: //tiros
-                printf("aprieto s");
                 if(holdSKey>0){
                     nuevoEvento.data.code = EventCode ::TODO_SIGUE_IGUAL;
                 }
@@ -145,27 +119,22 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 holdLeftKey = 0;
                 return nuevoEvento;
             case SDLK_RIGHT:
-                cout<<"solte la flecha der"<<endl;
                 nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_RELEASED;
                 holdRightKey = 0;
                 return nuevoEvento;
             case SDLK_UP:
-                cout<<"solte la flecha arriba"<<endl;
                 nuevoEvento.data.code = EventCode::SDL_KEYUP_RELEASED;
                 holdUpKey = 0;
                 return nuevoEvento;
             case SDLK_DOWN:
-                cout<<"solte la flecha abajo"<<endl;
                 nuevoEvento.data.code = EventCode::SDL_KEYDOWN_RELEASED;
                 holdDownKey = 0;
                 return nuevoEvento;
             case SDLK_a:
-                cout<<"solte a"<<endl;
                 nuevoEvento.data.code = EventCode::SDL_KEY_A_RELEASED;
                 holdAKey = 0;
                 return nuevoEvento;
             case SDLK_s:
-                cout<<"solte s"<<endl;
                 nuevoEvento.data.code = EventCode::SDL_KEY_S_RELEASED;
                 holdSKey = 0;
                 return nuevoEvento;
@@ -180,45 +149,42 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
 
 }
 
+PlayerSprite* SDLRunningGame::getPlayer(Entity id) {
+    for (auto player : playersSprites) {
+        if ( player->getId() == id ){
+            return player;
+        }
+    }
+    return nullptr;
+}
+
+BackgroundSprite* SDLRunningGame::getBackground(Entity id) {
+    for (auto back : backgroundSprites) {
+        if(back->getId() == id){
+            return back;
+        }
+    }
+    return nullptr;
+}
+
+void SDLRunningGame::getSpriteAndSend(Entity id, event nuevoEvento) {
+    for (auto back : backgroundSprites) {
+        if(back->getId() == id){
+            back->handle(nuevoEvento);
+        }
+    }
+    for (auto player : playersSprites) {
+        if ( player->getId() == id ){
+            player->handle(nuevoEvento);
+        }
+    }
+}
+
 void SDLRunningGame::handleModelState(vector <event> model_state) {
 
         for (auto nuevoEvento : model_state){
-            switch(nuevoEvento.data.id){
-                case Entity::MARCO:
-                    if (marcoSprite == nullptr) {
-                        initializeMarco();
-                    }
-                    this->marcoSprite->handle(nuevoEvento);
-                    break;
-                case Entity::TARMA:
-                    if (tarmaSprite == nullptr) {
-                        initializeTarma();
-                    }
-                    this->tarmaSprite->handle(nuevoEvento);
-                    break;
-                case FIO:
-                    if (fioSprite == nullptr) {
-                        initializeFio();
-                    }
-                    this->fioSprite->handle(nuevoEvento);
-                    break;
-                case ERI:
-                    if (eriSprite == nullptr) {
-                        initializeEri();
-                    }
-                    this->eriSprite->handle(nuevoEvento);
-                    break;
-                //case ENEMY_NORMAL:
-                case Entity::BACKGROUND_Z0:
-                    this->backgroundSprite0->handle(nuevoEvento);
-                    break;
-                case Entity::BACKGROUND_Z1:
-                    this->backgroundSprite1->handle(nuevoEvento);
-                    break;
-                case Entity::BACKGROUND_Z2:
-                    this->backgroundSprite2->handle(nuevoEvento);
-                    break;
-            }
+
+            this->getSpriteAndSend(nuevoEvento.data.id,nuevoEvento);
         }
 
         this->updateWindowSprites();
@@ -226,41 +192,30 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
 
 
 void SDLRunningGame::updateWindowSprites () {
-    SDL_RenderClear(SDLRunningGame::mainRenderer);
+    SDL_RenderClear(this->mainRenderer);
 
-    SDLRunningGame::backgroundSprite0->actualizarDibujo();  //nubes, arboles, fondo
-    SDLRunningGame::backgroundSprite1->actualizarDibujo();  //vendrian a ser los edificios
-    if (marcoSprite != nullptr) {
-        SDLRunningGame::marcoSprite->actualizarDibujo();        //se dibujan los personajes
+    for (int i = 0 ; i < (backgroundSprites.size()-1) ; i++) {
+        backgroundSprites[i]->actualizarDibujo();
     }
-    if (tarmaSprite != nullptr) {
-        SDLRunningGame::tarmaSprite->actualizarDibujo();
-    }
-    if (fioSprite != nullptr) {
-        SDLRunningGame::fioSprite->actualizarDibujo();
-    }
-    if (eriSprite != nullptr) {
-        SDLRunningGame::eriSprite->actualizarDibujo();
-    }
-    SDLRunningGame::backgroundSprite2->actualizarDibujo();  //la capa de las cajas o garra.
 
-    SDL_RenderPresent(SDLRunningGame::mainRenderer);
+    for (int i = 0 ; i< playersSprites.size() ; i++) {  //ojo con el auto, le ponia por defecto tipo Sprite cuando es PlayerSprite
+            playersSprites[i]->actualizarDibujo();
+    }
+
+   backgroundSprites[(backgroundSprites.size() - 1)]->actualizarDibujo();
+
+    SDL_RenderPresent(this->mainRenderer);
 }
 
 //DESTRUCTOR
 SDLRunningGame::~SDLRunningGame () {
 
-    delete marcoSprite;
-    delete tarmaSprite;
-    delete fioSprite;
-    delete eriSprite;
-    delete backgroundSprite0;
-    delete backgroundSprite1;
-    delete backgroundSprite2;
-    SDL_DestroyTexture(backgroundLayer0);
-    SDL_DestroyTexture(backgroundLayer1);
-    SDL_DestroyTexture(backgroundLayer2);
-    SDL_DestroyTexture(playersLayer);
+    for (auto playerSprite : playersSprites){
+        delete playerSprite;
+    }
+    for (auto backSprite : backgroundSprites){
+        delete backSprite;
+    }
 
     SDL_DestroyRenderer(mainRenderer);
     SDL_DestroyWindow(mainWindow);

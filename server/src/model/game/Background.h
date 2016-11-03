@@ -21,16 +21,47 @@ class Background : public GameObject {
 	 *	definido.
 	 */
 
+private:
+    Entity id;
+	float x,y;
+	double largeImage;
+    float speed;
+	int windowWidth;
 public:
-	Background(int zindex,int speed, double large);
+	Background(Entity id,int speed, double largeImage, int windowWidth);
 
 	virtual ~Background();
 
 	struct event getState();
 
-	void setEntity(int zindex);
+    void calculateSpeed(int largeMainBackground, int speedMainBackground);
 
 	void avanzar();
+
+
+    float getSpeed() const {
+		return speed;
+	}
+
+	void setSpeed(float speed) {
+		this->speed = speed;
+	}
+
+    float getX() const {
+		return x;
+	}
+
+	void setX(float x) {
+		this->x = x;
+	}
+
+    int getY() const {
+		return y;
+	}
+
+	void setY(int y) {
+		this->y = y;
+	}
 
 };
 
