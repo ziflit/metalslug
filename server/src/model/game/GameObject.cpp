@@ -43,3 +43,21 @@ float GameObject::getSpeed() const {
 void GameObject::setSpeed(float speed) {
     GameObject::speed = speed;
 }
+
+int GameObject::getBoxAlto() const {
+	return box_alto;
+}
+
+void GameObject::setBoxAlto(int boxAlto) {
+	box_alto = boxAlto;
+}
+
+int GameObject::getBoxAncho() const {
+	return box_ancho;
+}
+
+void GameObject::setBoxAncho(int boxAncho) {
+	box_ancho = boxAncho;
+}
+
+

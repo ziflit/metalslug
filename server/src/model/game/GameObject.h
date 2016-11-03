@@ -9,6 +9,8 @@ protected:
     float x, y;
     double large;
     float speed;
+    int box_alto;
+    int box_ancho;
 
 public:
 
@@ -35,6 +37,14 @@ public:
     float getSpeed() const;
 
     void setSpeed(float speed);
+
+	int getBoxAlto() const;
+
+	void setBoxAlto(int boxAlto);
+
+	int getBoxAncho() const;
+
+	void setBoxAncho(int boxAncho);
 };
 
 #endif //SERVER_GAMEOBJECT_H
