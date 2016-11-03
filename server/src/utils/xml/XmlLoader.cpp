@@ -33,8 +33,8 @@ Entity XmlLoader::convertToEntity(string id) {
         else if ("BACKGROUND_Z3" == id) {
             return BACKGROUND_Z3;
         }
-        else if ("ENEMY_NORMAL" == id) {
-            return ENEMY_NORMAL;
+        else if ("ENEMY_NORMAL_1" == id) {
+            return ENEMY_NORMAL_1;
         } else {
             return NOPLAYER;
         }

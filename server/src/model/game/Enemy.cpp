@@ -6,7 +6,7 @@
 #include "Enemy.h"
 
 Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
-    entity = enemySelected;
+    id = enemySelected;
     x = spawnX;
     y = spawnY;
     direccionY = 0;
@@ -68,7 +68,7 @@ struct event Enemy::getState() {
     struct event_ext eventExt;
 
     eventExt.code = EventCode::ENEMY_STATUS;
-    eventExt.id = entity;
+    eventExt.id = id;
 
     eventExt.x = x;  //Actualizo la posicion del player
     eventExt.y = y;

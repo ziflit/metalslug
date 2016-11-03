@@ -28,7 +28,7 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
         this->backgrounds.push_back(newBackground);
 
     }
-    backgrounds[0]->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, playersSpeed);
+    ((Background*)backgrounds[0])->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, playersSpeed);
 }
 
 Entity Scenery::buildPlayer(string user) {
@@ -39,6 +39,7 @@ Entity Scenery::buildPlayer(string user) {
 
     PlayerBuilder playerBuilder;
     Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth);
+    newPlayer->setSpeed(this->playersSpeed);
     if (newPlayer != nullptr) {
         newPlayer->setSpeed(this->playersSpeed);
         this->addElementToScenery(newPlayer);

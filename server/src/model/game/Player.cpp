@@ -10,7 +10,7 @@
 
 Player::Player(string user, Entity entitySelected, int windowWidth) {
     username = user;
-    entity = entitySelected;
+    id = entitySelected;
     this->windowWidth = windowWidth;
     /**Para que no arranque pegado al borde izq: | o      | x = 100
      * El sistema de coordenadas que vamos a usar es el de SDL
@@ -78,7 +78,7 @@ struct event Player::getState() {
     struct event_ext eventExt;
 
     eventExt.code = EventCode::PLAYER_STATUS;
-    eventExt.id = entity;
+    eventExt.id = this->id;
 
     eventExt.x = x;  //Actualizo la posicion del player
     eventExt.y = y;
