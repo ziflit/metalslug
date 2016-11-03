@@ -22,11 +22,8 @@ class Background : public GameObject {
 	 */
 
 private:
-    Entity id;
-	float x,y;
-	double largeImage;
-    float speed;
 	int windowWidth;
+
 public:
 	Background(Entity id,int speed, double largeImage, int windowWidth);
 
