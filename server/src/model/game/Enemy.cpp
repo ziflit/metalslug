@@ -2,13 +2,81 @@
 // Created by leandro on 31/10/16.
 //
 
+#include <iostream>
 #include "Enemy.h"
 
-event Enemy::getState() {
-    struct event newEvent;
-    return newEvent;
-}
+Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
+    entity = enemySelected;
+    x = spawnX;
+    y = spawnY;
+    direccionY = 0;
+    direccionX = 0;
+    posAtJump = 0;
+    gravity = 10;
+    speed = 10;
+    postura = MIRANDO_IZQUIERDA_QUIETO;
+};
 
-void Enemy::avanzar() {
+Enemy::~Enemy() {
+};
 
-}
+void Enemy::set_position(int posx, int posy) {
+    x = posx;
+    y = posy;
+};
+
+bool Enemy::isJumping() {
+    return (Enemy::direccionY == 1);
+};
+
+void Enemy::avanzar(){
+    postura = CAMINANDO_DERECHA;
+    x += speed;
+};
+
+void Enemy::retroceder(){
+    postura = CAMINANDO_IZQUIERDA;
+    x -= speed;
+};
+
+void Enemy::updatePosition(int posPlayerToFollow) {
+	// Minima logica para seguir a los jugadores
+	if (x < posPlayerToFollow ){
+		avanzar();
+	} else {
+		retroceder();
+	}
+
+	// Logica insolita para saltar cuando pasa por esas posiciones
+	if (x == 20 || x == 50 || x == 100){
+		direccionY = 1;
+	}
+
+    if (this->isJumping()) {
+        if (posAtJump < 24) {
+            posAtJump++;
+            y = 400 - jumpPos[posAtJump];
+        } else {
+            direccionY = 0;
+            posAtJump = 0;
+        }
+    }
+};
+
+struct event Enemy::getState() {
+    struct event estado;
+    struct event_ext eventExt;
+
+    eventExt.code = EventCode::ENEMY_STATUS;
+    eventExt.id = entity;
+
+    eventExt.x = x;  //Actualizo la posicion del player
+    eventExt.y = y;
+    eventExt.postura = this->postura;
+
+    estado.completion = EventCompletion::PARTIAL_MSG;
+    estado.data = eventExt;
+
+    return estado;
+};
+
