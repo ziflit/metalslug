@@ -114,6 +114,12 @@ public:
     ConfigsXML& getConfigs();
 
     void loadConfigs();
+
+    /* checkea la cantidad de conexiones activas
+       y avisa si coincide con la cantidad de jugadores necesaria para
+       empeza la partida
+    */
+    bool enough_players_to_start();
 };
 
 #endif //METALSLUG_SERVER_H

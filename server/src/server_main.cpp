@@ -106,9 +106,19 @@ int main(int argc, char* argv[]) {
     std::thread server_online_in_thread;
     server_online_in_thread = std::thread(start_server_online, server, ip, port);
 
-    thread corredor_de_modelo = std::thread(correr_modelo, server);
-    corredor_de_modelo.detach();
-
+    bool server_running = false;
+    while (not server_running) {
+        /* El juego arranca cuando la cantidad de jugadores conectados
+           coincide con la cantidad de jugadores indicados en el XML */
+        if (server->get_connections().size() == 2 ) { cout << "Hay 2 clientes conectados" << endl;}
+        if (server->enough_players_to_start()) {
+            cout << "Hay suficiente cantidad de jugadores para empezar" << endl;
+            thread corredor_de_modelo = std::thread(correr_modelo, server);
+            corredor_de_modelo.detach();
+            server_running = true;
+        }
+        usleep(5000);
+    }
     bool online = true;
     while (online) {
         std::string keypressed;
