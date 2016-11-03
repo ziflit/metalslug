@@ -9,12 +9,12 @@
 
 class PlayerEventHandler : public EventHandler {
 public:
-    virtual void handle(EventCode eventCode, GameObject *gameObject) override;
+    virtual void handle(EventCode eventCode, AnimatedObject *animatedObject) override;
 
 private:
-    void handleRealeasedKey(EventCode eventCode, Player *player);
+    void handleRealeasedKey(EventCode eventCode, AnimatedObject *animatedObject);
 
-    void handlePressedKey(EventCode eventCode, Player *player);
+    void handlePressedKey(EventCode eventCode, AnimatedObject *animatedObject);
 
     bool isKeyPressed(EventCode eventCode);
 

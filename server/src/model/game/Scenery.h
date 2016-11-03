@@ -16,44 +16,47 @@
 #include <queue>
 #include "../Event.h"
 #include "../ConfigsXML.h"
+#include "Bullet.h"
 
 using namespace std;
 
 class Scenery {
 private:
-	vector<Player*> players;
-	vector<GameObject*> backgrounds;
-	unsigned int windowWidth, windowHeight;
-	ConfigsXML configs;
+    vector<Player *> players;
+    vector<GameObject *> backgrounds;
+    vector<Bullet> bullets; // las vamos a tener que diferencias para que el colisionador pueda usarlas
+    unsigned int windowWidth, windowHeight;
+    ConfigsXML configs;
 
-	// *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
-	void addElementToScenery(Player* player);
+    // *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
+    void addElementToScenery(Player *player);
 
-	// El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
-	void addElementToScenery(Background* background);
+    // El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
+    void addElementToScenery(Background *background);
 
 
 public:
-	Scenery(ConfigsXML configs);
-	virtual ~Scenery();
+    Scenery(ConfigsXML configs);
 
-	void process_key(EventCode keycode, Entity entity);
+    virtual ~Scenery();
 
-	vector<struct event> process_keys_queue(queue<struct event> *keys);
+    void process_key(EventCode keycode, Entity entity);
 
-	Entity buildPlayer(string user);
+    vector<struct event> process_keys_queue(queue<struct event> *keys);
 
-	void inizializarBackgrounds();
+    Entity buildPlayer(string user);
+
+    void inizializarBackgrounds();
 
     bool jugadorPasoMitadPantallaYEstaAvanzando();
 
     bool hayJugadorEnBordeIzq();
 
-    vector<Player*> getPosJugadorMasAdelantado();
+    vector<Player *> getPosJugadorMasAdelantado();
 
     void updateBackgroudsState();
 
-	vector<struct event> obtenerEstadoEscenario();
+    vector<struct event> obtenerEstadoEscenario();
 
     int findPlayerByUsername(string user);
 

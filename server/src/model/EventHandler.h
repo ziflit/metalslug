@@ -7,7 +7,7 @@
 class EventHandler {
 
 public:
-    virtual void handle(EventCode eventCode, GameObject *gameObject)= 0;
+    virtual void handle(EventCode eventCode, AnimatedObject *animatedObject)= 0;
 };
 
 
