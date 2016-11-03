@@ -54,6 +54,16 @@ void Sprite::set_position(int x, int y) {
 
 }
 
+void PlayerSprite::setWidth(int w) {
+    Sprite::setWidth(w);
+    this->weaponsDestRect.w = w;
+}
+
+void PlayerSprite::setHeight(int h) {
+    Sprite::setHeight(h);
+    this->weaponsDestRect.h = h;
+}
+
 void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, int wFramesCant, int hFramesCant) {
 
     this->dibujar = false;
@@ -76,15 +86,15 @@ void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, in
     PlayerSprite::sourceRect.h = PlayerSprite::frameHeight;
 }
 
-//void PlayerSprite::setUpWeaponsImage(string weaponsPath){
-//    this->weaponsLayer = loadTexture(renderer,weaponsPath);
-//    int weaponsImageWidth, weaponsImageHeight;
-//
-//    SDL_QueryTexture(weaponsLayer,NULL,NULL,&weaponsImageWidth,&weaponsImageHeight);
-//
-//    weaponsSourceRect.w = this->frameWidth;
-//    weaponsSourceRect.h = this->frameHeight;
-//}
+void PlayerSprite::setUpWeaponsImage(string weaponsPath){
+    this->weaponsLayer = loadTexture(renderer,weaponsPath);
+    int weaponsImageWidth, weaponsImageHeight;
+
+    SDL_QueryTexture(weaponsLayer,NULL,NULL,&weaponsImageWidth,&weaponsImageHeight);
+
+    weaponsSourceRect.w = this->frameWidth;
+    weaponsSourceRect.h = this->frameHeight;
+}
 
 void PlayerSprite::setWeapon(Arma weapon) {
     this->arma = arma;
@@ -137,7 +147,7 @@ void PlayerSprite::setNextSpriteFrame() {
 void PlayerSprite::caminandoIzquierda() {
     PlayerSprite::setNextSpriteFrame();
     PlayerSprite::sourceRect.y = 0;
-//    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 1;
+    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 1;
 }
 void PlayerSprite::mirandoArribaCaminandoIzquierda(){
     PlayerSprite::sourceRect.y = (frameHeight*1);
@@ -198,9 +208,9 @@ void PlayerSprite::handle(struct event nuevoEvento) {
         this->colorear();
         grisado = false;
     }
-//    if (this->arma != nuevoEvento.data.arma){
-//        setWeapon(nuevoEvento.data.arma);
-//    }
+    if (this->arma != nuevoEvento.data.arma){
+        setWeapon(nuevoEvento.data.arma);
+    }
 
     switch (nuevoEvento.data.postura){
 

@@ -52,8 +52,7 @@ class PlayerSprite : public Sprite{
 
 private:
     int wFramesCant,hFramesCant,wActualPosFrame,cambioFrame;
-
-//    SDL_Texture* weaponsLayer;
+    SDL_Texture* weaponsLayer;
     string imgaceColorPath,imageGrisadoPath;
     bool grisado, dibujar;
     Arma arma;
@@ -63,27 +62,23 @@ public:
 
         PlayerSprite::set_position(5,550);
         mirandoDerechaQuieto();
-//        setArma(PISTOLA);
+        setWeapon(PISTOLA);
         grisado = false;
         cambioFrame = 0;
-//        this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0; //FRAME INICIAL
-//        this->weaponsDestRect.x = this->weaponsDestRect.y = 0; //POSICION INICIAL
+        this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0; //FRAME INICIAL
+        this->weaponsDestRect.x = this->weaponsDestRect.y = 0; //POSICION INICIAL
     }
 
-//    void setWidth(int w) : Sprite::setWidth(w) {
-//        this->weaponsDestRect.w = w;
-//    }
-//
-//    void setHeight(int h) : Sprite::setHeight(h){
-//        this->weaponsDestRect.h = h;
-//    }
+    void setWidth(int w);
+
+    void setHeight(int h);
 
     void setWeapon(Arma weapon);
 
     void setUpImage(string imageSpritePath,string imageGrisadoPath,
                     int wFramesCant, int hFramesCant);
 
-//    void setUpWeaponsImage(string weaponsPath);
+    void setUpWeaponsImage(string weaponsPath);
 
     void handle(struct event nuevoEvento);
 
@@ -91,7 +86,7 @@ public:
     void actualizarDibujo(){
         if (dibujar) {
             SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
-//        SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
+//            SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
     }
 
