@@ -46,9 +46,7 @@ InitialWindow::InitialWindow(unsigned int window_width, unsigned int window_heig
 
 
 void InitialWindow::showStartScreen() {
-    SDL_Texture* backgroundTexture = NULL;
-
-    BackgroundSprite* startBack = new BackgroundSprite(backgroundTexture,mainRender,800,600);
+    BackgroundSprite* startBack = new BackgroundSprite(mainRender,800,600);
     startBack->setUpImage("sprites/backgrounds/startScreen.png");
     startBack->setSourceRectWidth(startBack->getSpriteImageWidth()/2);
     startBack->setSourceRectHeight(startBack->getSpriteImageHeight());
@@ -75,7 +73,5 @@ void InitialWindow::showStartScreen() {
     }
 
     delete startBack;
-    SDL_DestroyTexture(backgroundTexture);
-
 
 }

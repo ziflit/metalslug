@@ -17,7 +17,7 @@ using namespace std;
 
 
 /**
- * EN VARIOS PUSE STRING PERO NO SE SI VA A FUNCAR
+ * EN VARIOS PUS	E STRING PERO NO SE SI VA A FUNCAR
  * SI NO FUNCA CON STRING LO PASAMOS A CHAR[]
  */
 
@@ -132,16 +132,20 @@ struct xmlConfig {
 
 struct xmlPlayer {
     EventCompletion completion;
-	char id[15];
-	char path[40];
+	Entity id;
+	char pathColor[40];
+	char pathGrey[40];
+	char pathWeapons[40];
 	int ancho;
 	int alto;
+    int cantWidthFrames;
+    int cantHeightFrames;
 	int speed;
 };
 
 struct xmlBackground {
     EventCompletion completion;
-	char id[15];
+	Entity id;
 	char path[40];
 	int ancho;
 	int alto;

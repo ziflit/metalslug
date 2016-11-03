@@ -46,8 +46,6 @@ public:
 
     Entity buildPlayer(string user);
 
-    void inizializarBackgrounds();
-
     bool jugadorPasoMitadPantallaYEstaAvanzando();
 
     bool hayJugadorEnBordeIzq();
@@ -59,8 +57,6 @@ public:
     vector<struct event> obtenerEstadoEscenario();
 
     int findPlayerByUsername(string user);
-
-    int calculateBackgroundSpeed(int largeMainBackground, int largeBackground, int speedMainBackground);
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */
