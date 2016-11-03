@@ -11,8 +11,8 @@ using namespace std;
 
 class Sprite {
 protected:
-    SDL_Rect sourceRect; //rect donde se dibuja el sprite
-    SDL_Rect destRect;   //rect donde se hospeda el sprite anterior, este define la pos y tamanio
+    SDL_Rect sourceRect, weaponsSourceRect; //rect donde se dibuja el sprite
+    SDL_Rect destRect, weaponsDestRect;   //rect donde se hospeda el sprite anterior, este define la pos y tamanio
 
     SDL_Texture* layer;
     SDL_Renderer* renderer;
@@ -21,64 +21,79 @@ protected:
 
     int frameWidth, frameHeight, window_height, window_width;
 
+    Entity id;
+
 public:
-    //CONSTRUCTOR
-    Sprite(SDL_Texture *layer, SDL_Renderer *renderer, int window_width, int window_height);
+
+    Sprite(SDL_Renderer *renderer, int window_width, int window_height);
     SDL_Texture* loadTexture(SDL_Renderer* renderer,string imageTexturePath);
     void setUpImage(string imageSpritePath);
-//_________________________________________________________________________________________________________
-    //ACTUALIZACION DEL SPRITE
-    void handle(struct event nuevoEvento);
+
+    void
+    handle(struct event nuevoEvento){}
     void actualizarDibujo();
-//_________________________________________________________________________________________________________
-    //TAMANO DEL SPRITE:
+
+    void setId(Entity id){ this->id = id;}
+    Entity getId(){ return id;}
+
     void setWidth(int w){ Sprite::destRect.w = w;}
     void setHeight(int h){ Sprite::destRect.h = h;}
     int getSpriteImageWidth(){ return spriteImageWidth;}
     int getSpriteImageHeight(){return spriteImageHeight;}
-//_________________________________________________________________________________________________________
-    //POSICION DEL SPRITE:
+
     void set_position(int x, int y);
     int getXPosition(){ return Sprite::destRect.x;}
     int getYPosition(){ return Sprite::destRect.y;}
-//________________________________________________________________________________________________________
 
-    SDL_Texture* getLayer() const { return layer;}
-//_________________________________________________________________________________________________________
 
 };
 
-//______________________________________________________________________________________________
-//PLAYERSPRITE
 class PlayerSprite : public Sprite{
 
 private:
-    int wFramesCant,wActualPosFrame,hFramesCant,cambioFrame;
-    string imgaceColorPath,imageGrisadoPath;
-    bool grisado;
-public:
-//_______________________________________________________________________________________________
-    //Constructor:
+    int wFramesCant,hFramesCant,wActualPosFrame,cambioFrame;
 
-    PlayerSprite(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height) : Sprite(texture, renderer,window_width,window_height) {
-//        TODO: este seteo se hace a partir del XML
-        PlayerSprite::setHeight(100);
-        PlayerSprite::setWidth(100);
-        //DEFAULT POSITION
-        PlayerSprite::set_position(10,550);
+//    SDL_Texture* weaponsLayer;
+    string imgaceColorPath,imageGrisadoPath;
+    bool grisado, dibujar;
+    Arma arma;
+public:
+
+    PlayerSprite(SDL_Renderer *renderer, int window_width, int window_height) : Sprite(renderer,window_width,window_height) {
+
+        PlayerSprite::set_position(5,550);
         mirandoDerechaQuieto();
+//        setArma(PISTOLA);
         grisado = false;
         cambioFrame = 0;
+//        this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0; //FRAME INICIAL
+//        this->weaponsDestRect.x = this->weaponsDestRect.y = 0; //POSICION INICIAL
     }
 
-//________________________________________________________________
-    //OVERRIDE FUNCTIONS:
+//    void setWidth(int w) : Sprite::setWidth(w) {
+//        this->weaponsDestRect.w = w;
+//    }
+//
+//    void setHeight(int h) : Sprite::setHeight(h){
+//        this->weaponsDestRect.h = h;
+//    }
 
-    void setUpImage(string imageSpritePath,string imageGrisadoPath, int wFramesCant, int hFramesCant);
+    void setWeapon(Arma weapon);
 
-//__________________________________________________________________
+    void setUpImage(string imageSpritePath,string imageGrisadoPath,
+                    int wFramesCant, int hFramesCant);
+
+//    void setUpWeaponsImage(string weaponsPath);
 
     void handle(struct event nuevoEvento);
+
+    void clienteConectado(){ this->dibujar = true;}
+    void actualizarDibujo(){
+        if (dibujar) {
+            SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
+//        SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
+        }
+    }
 
     void grisar();
     void colorear();
@@ -115,8 +130,8 @@ class BackgroundSprite : public Sprite{
 private:
 
 public:
-    BackgroundSprite(SDL_Texture* texture, SDL_Renderer* renderer, int window_width,int window_height) :
-            Sprite(texture, renderer,window_width,window_height) {
+    BackgroundSprite(SDL_Renderer* renderer, int window_width,int window_height) :
+            Sprite(renderer,window_width,window_height) {
 
         BackgroundSprite::set_position(0,0);
         BackgroundSprite::frameWidth = window_width;
@@ -143,35 +158,9 @@ public:
 
 //_______________________________________________________________________________________________
 
-class Marco : public PlayerSprite {
-public:
-    Marco(SDL_Texture *texture,SDL_Renderer *renderer, int window_width, int window_height, string pathColor) : PlayerSprite(texture,renderer,window_width,window_height) {
-        PlayerSprite::setUpImage(pathColor,"sprites/player/marcoGrisado.png",15,12);
-    }
+class Enemy : public Sprite{
+
 };
-
-class Tarma : public PlayerSprite{
-public:
-    Tarma(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height, string pathColor) : PlayerSprite(texture,renderer,window_width,window_height){
-        PlayerSprite::setUpImage(pathColor,"sprites/player/tarmaGrisado.png",15,12);
-    }
-};
-
-class Fio : public PlayerSprite{
-public:
-    Fio(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height, string pathColor) : PlayerSprite(texture,renderer,window_width,window_height){
-        PlayerSprite::setUpImage(pathColor,"sprites/player/fioGrisado.png",15,12);
-    }
-};
-
-class Eri : public PlayerSprite{
-public:
-    Eri(SDL_Texture *texture, SDL_Renderer *renderer, int window_width, int window_height, string pathColor) : PlayerSprite(texture, renderer,window_width, window_height){
-        PlayerSprite::setUpImage(pathColor,"sprites/player/eriGrisado.png",15,12);
-    }
-};
-
-
 
 
 #endif //SDLBASE_SPRITE_H

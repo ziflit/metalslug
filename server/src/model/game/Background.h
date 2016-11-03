@@ -21,13 +21,13 @@ class Background {
 	 */
 
 private:
-	Entity entity;
+    Entity id;
 	float x,y;
-	double large;
+	double largeImage;
     float speed;
-
+	int windowWidth;
 public:
-	Background(int zindex,int speed, double large);
+	Background(Entity id,int speed, double largeImage, int windowWidth);
 
 	virtual ~Background();
 
@@ -35,9 +35,8 @@ public:
 
     void calculateSpeed(int largeMainBackground, int speedMainBackground);
 
-	void setEntity(int zindex);
-
 	void avanzar();
+
 
     float getSpeed() const {
 		return speed;
