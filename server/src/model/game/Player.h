@@ -37,27 +37,14 @@ public:
 
     bool isMoving();
 
-    void jump();
-
-    void jumpGoingUp();
-
-    void jumpGoingDown();
-
     void avanzar() override { x += speed; };
 
     void retroceder();
 
     void updatePosition();
 
-    bool isInHalfWindow();
-
-    void moveLeft();
-
-    void moveRight();
-
     void set_position(int posx, int posy);
 
-    void stopMoving();
 
 
     //getters y setters -----------------------------------------------------------------------------------------
