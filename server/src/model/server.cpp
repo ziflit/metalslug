@@ -22,11 +22,6 @@ Server::~Server() {
 }
 
 void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutils) {
-    //------------------------------------------------
-    // TODO: Aca tengo que pasar el xml, armando los structus que estan en protocol, tanto para player config y background
-    // El cliente tiene que tener los mismos receive que coincidan con los sends del server...
-    // Si hay que mandar varios backgrounds por ejemplo se puede usar lo de completion y final message
-    //------------------------------------------------
     ConfigsXML configs = server->getConfigs();
     struct xmlConfig globalConf = configs.getGlobalConf();
     vector<struct xmlPlayer> sprites = configs.getSpritesConfig();
@@ -87,7 +82,6 @@ void client_comm(Server *srv, int client) {
         sockutils.writeSocket(client, resp);
     }
 }
-
 
 void Server::add_connection(ClientConnection *handler) {
     /* No usar nunca más el puntero pelado luego de esta
@@ -290,4 +284,8 @@ void Server::loadConfigs(){
     configs.setGlobalConf(loader.obtainGlobalConfig());
     configs.setBackgroundsConfig(loader.obtainBackgroundsConfig());
     configs.setSpritesConfig(loader.obtainSpritesConfig());
+}
+
+bool Server::enough_players_to_start() {
+    return this->configs.getGlobalConf().cant_players == (int)this->connections.size();
 }

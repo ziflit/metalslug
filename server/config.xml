@@ -1,7 +1,7 @@
 	<config>
 		<ancho>800</ancho>
 		<alto>600</alto>
-		<cant_players>4</cant_players>
+		<cant_players>2</cant_players>
 	</config>
 	
 	<sprites>
