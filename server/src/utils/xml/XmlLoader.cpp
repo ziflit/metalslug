@@ -7,6 +7,40 @@ XmlLoader::XmlLoader(string path) {
 XmlLoader::~XmlLoader() {
 }
 
+Entity XmlLoader::convertToEntity(string id) {
+
+        if ("MARCO" == id) {
+            return MARCO;
+        }
+        else if ("TARMA" == id) {
+            return TARMA;
+        }
+        else if ("FIO" == id) {
+            return FIO;
+        }
+        else if ("ERI" == id) {
+            return ERI;
+        }
+        else if ("BACKGROUND_Z0" == id) {
+            return BACKGROUND_Z0;
+        }
+        else if ("BACKGROUND_Z1" == id) {
+            return BACKGROUND_Z1;
+        }
+        else if ("BACKGROUND_Z2" == id) {
+            return BACKGROUND_Z2;
+        }
+        else if ("BACKGROUND_Z3" == id) {
+            return BACKGROUND_Z3;
+        }
+        else if ("ENEMY_NORMAL_1" == id) {
+            return ENEMY_NORMAL_1;
+        } else {
+            return NOPLAYER;
+        }
+
+}
+
 vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
     xml_document<> doc;
     file<> xmlFile(path.c_str());
@@ -20,15 +54,13 @@ vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
         xml_node<> *imagen_fondo = background->first_node("imagen_fondo");
         xml_node<> *ancho = background->first_node("ancho");
         xml_node<> *alto = background->first_node("alto");
-        xml_node<> *zindex = background->first_node("zindex");
 
         struct xmlBackground backgroundConfig;
         backgroundConfig.completion = EventCompletion::PARTIAL_MSG;
-        strcpy(backgroundConfig.id, id->value());
+        backgroundConfig.id = this->convertToEntity(id->value());
         backgroundConfig.ancho = atoi(ancho->value());
         backgroundConfig.alto = atoi(alto->value());
         strcpy(backgroundConfig.path, imagen_fondo->value());
-        backgroundConfig.zindex = atoi(zindex->value());
 
         configs.push_back(backgroundConfig);
     }
@@ -46,17 +78,23 @@ vector<struct xmlPlayer> XmlLoader::obtainSpritesConfig() {
     for (xml_node<> *sprite = sprites->first_node("sprite"); sprite; sprite =
             sprite->next_sibling()) {
         xml_node<> *id = sprite->first_node("id");
-        xml_node<> *path = sprite->first_node("path");
+        xml_node<> *pathColor = sprite->first_node("pathColor");
+        xml_node<> *pathGrey = sprite->first_node("pathGrey");
         xml_node<> *ancho = sprite->first_node("ancho");
         xml_node<> *alto = sprite->first_node("alto");
+        xml_node<> *cantWidthFrames = sprite->first_node("cantWidthFrames");
+        xml_node<> *cantHeightFrames = sprite->first_node("cantHeightFrames");
         xml_node<> *speed = sprite->first_node("speed");
 
         struct xmlPlayer playerConfig;
         playerConfig.completion = EventCompletion::PARTIAL_MSG;
-        strcpy(playerConfig.id, id->value());
-        strcpy(playerConfig.path, path->value());
+        playerConfig.id = this->convertToEntity(id->value());
+        strcpy(playerConfig.pathColor, pathColor->value());
+        strcpy(playerConfig.pathGrey, pathGrey->value());
         playerConfig.ancho = atoi(ancho->value());
         playerConfig.alto = atoi(alto->value());
+        playerConfig.cantWidthFrames = atoi(cantWidthFrames->value());
+        playerConfig.cantHeightFrames = atoi(cantHeightFrames->value());
         playerConfig.speed = atoi(speed->value());
 
         configs.push_back(playerConfig);

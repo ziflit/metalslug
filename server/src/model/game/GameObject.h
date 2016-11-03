@@ -5,9 +5,9 @@
 
 class GameObject {
 protected:
-    Entity entity;
+    Entity id;
     float x, y;
-    double large;
+    double largeImage;
     float speed;
     int box_alto;
     int box_ancho;
@@ -32,7 +32,7 @@ public:
 
     double getLarge() const;
 
-    void setLarge(double large);
+    void setLarge(double largeImage);
 
     float getSpeed() const;
 

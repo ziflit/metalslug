@@ -17,7 +17,7 @@ using namespace std;
 
 
 /**
- * EN VARIOS PUSE STRING PERO NO SE SI VA A FUNCAR
+ * EN VARIOS PUS	E STRING PERO NO SE SI VA A FUNCAR
  * SI NO FUNCA CON STRING LO PASAMOS A CHAR[]
  */
 
@@ -44,6 +44,7 @@ enum EventCode {
 	SDL_KEY_S_RELEASED,
 	PLAYER_STATUS,
 	BACKGROUND_STATUS,
+	ENEMY_STATUS,
 	TODO_SIGUE_IGUAL
 };
 
@@ -57,7 +58,12 @@ enum Entity {
 	TARMA,
 	FIO,
 	ERI,
-	ENEMY_NORMAL,
+	ENEMY_NORMAL_1,
+	ENEMY_NORMAL_2,
+	ENEMY_NORMAL_3,
+	ENEMY_FINAL_1,
+	ENEMY_FINAL_2,
+	ENEMY_FINAL_3,
 	BACKGROUND_Z0,    // fondo con Z-index 1
 	BACKGROUND_Z1,
     BACKGROUND_Z2,
@@ -126,16 +132,20 @@ struct xmlConfig {
 
 struct xmlPlayer {
     EventCompletion completion;
-	char id[15];
-	char path[40];
+	Entity id;
+	char pathColor[40];
+	char pathGrey[40];
+	char pathWeapons[40];
 	int ancho;
 	int alto;
+    int cantWidthFrames;
+    int cantHeightFrames;
 	int speed;
 };
 
 struct xmlBackground {
     EventCompletion completion;
-	char id[15];
+	Entity id;
 	char path[40];
 	int ancho;
 	int alto;

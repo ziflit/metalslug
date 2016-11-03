@@ -5,11 +5,11 @@
 #include "GameObject.h"
 
 Entity GameObject::getEntity() const {
-    return entity;
+    return id;
 }
 
 void GameObject::setEntity(Entity entity) {
-    GameObject::entity = entity;
+    GameObject::id = entity;
 }
 
 float GameObject::getX() const {
@@ -29,11 +29,11 @@ void GameObject::setY(float y) {
 }
 
 double GameObject::getLarge() const {
-    return large;
+    return largeImage;
 }
 
 void GameObject::setLarge(double large) {
-    GameObject::large = large;
+    GameObject::largeImage = large;
 }
 
 float GameObject::getSpeed() const {

@@ -10,39 +10,29 @@
 
 class SDLRunningGame {
 private:
-    ConfigsXML configs;
     int window_width, window_height;
     SDL_Window* mainWindow;
     SDL_Renderer* mainRenderer;
     Music* music;
-    SDL_Texture *backgroundLayer0, *backgroundLayer1, *backgroundLayer2, *playersLayer;
-    BackgroundSprite *backgroundSprite0, *backgroundSprite1, *backgroundSprite2;
-    PlayerSprite *marcoSprite, *tarmaSprite, *fioSprite, *eriSprite;
-    //TODO: en el destructor eliminar todos los punteros utilizados.
     int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
+    vector<BackgroundSprite*> backgroundSprites;
+    vector<PlayerSprite*> playersSprites;
+
 
 public:
     SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer, ConfigsXML configs );
 
-    SDL_Texture* createTransparentTexture(SDL_Renderer *renderer);
+    void initializeFromXML(ConfigsXML configs);
 
     void audioInitialization();
 
-    void layersBuilding();
+    void getSpriteAndSend(Entity id, event nuevoEvento );
 
-    void spritesBuilding();
+    PlayerSprite* getPlayer(Entity id);
+
+    BackgroundSprite* getBackground(Entity id);
 
     void updateWindowSprites();
-
-    void initializeMarco();
-
-    void initializeTarma();
-
-    void initializeFio();
-
-    void initializeEri();
-
-    PlayerSprite* getMarcoSprite(){ return SDLRunningGame::marcoSprite;}
 
     struct event eventsHandler(SDL_Event* sdlEvent);
 

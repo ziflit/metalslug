@@ -27,16 +27,13 @@ public:
 
     virtual ~XmlLoader();
 
-    /* Para los path de los sprites, notar que se toma como directorio de inicio
-     * la carpeta sprite, entonces por ejemplo, para el sprite ubicado en la carpeta
-     * sprites/player/marco.gif la ruta que sera dada por el xml sera player/marco.gif  */
-
     struct xmlConfig obtainGlobalConfig();
 
     vector<struct xmlPlayer> obtainSpritesConfig();
 
     vector<struct xmlBackground> obtainBackgroundsConfig();
 
+    Entity convertToEntity(string id);
 };
 
 #endif /* SRC_UTILS_XMLLOADER_H_ */
