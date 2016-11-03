@@ -41,7 +41,9 @@ Entity Scenery::buildPlayer(string user) {
     Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth);
     newPlayer->setSpeed(this->playersSpeed);
     if (newPlayer != nullptr) {
+        newPlayer->setSpeed(this->playersSpeed);
         this->addElementToScenery(newPlayer);
+
     } else {
         return NOPLAYER;
     }

@@ -26,8 +26,6 @@ private:
     vector<GameObject *> backgrounds;
     vector<Bullet> bullets; // las vamos a tener que diferencias para que el colisionador pueda usarlas
     unsigned int windowWidth, windowHeight, playersSpeed;
-
-
     void initializeFromXML(ConfigsXML configs);
 
     // *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
@@ -47,8 +45,6 @@ public:
     vector<struct event> process_keys_queue(queue<struct event> *keys);
 
     Entity buildPlayer(string user);
-
-    void inizializarBackgrounds();
 
     bool jugadorPasoMitadPantallaYEstaAvanzando();
 
