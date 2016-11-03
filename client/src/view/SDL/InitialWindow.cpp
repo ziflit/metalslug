@@ -63,14 +63,21 @@ void InitialWindow::showStartScreen() {
         usleep(100000);
 
         while(SDL_PollEvent(&evento)){
-
-            if((evento.type == SDL_KEYDOWN)){
+            if(evento.type == SDL_KEYDOWN and evento.key.keysym.sym == SDLK_RETURN){
                 cout<<"ENTRO AL PRESSED ENTER"<<endl;
                 enterPressed = true;
 
             }
         }
     }
+
+    BackgroundSprite* waitingPlayers = new BackgroundSprite(mainRender,800,600);
+    waitingPlayers->setUpImage("sprites/backgrounds/startScreen.png");
+    waitingPlayers->setSourceRectWidth(startBack->getSpriteImageWidth());
+    waitingPlayers->setSourceRectHeight(startBack->getSpriteImageHeight());
+    SDL_RenderClear(this->mainRender);
+    waitingPlayers->actualizarDibujo();
+    SDL_RenderPresent(mainRender);
 
     delete startBack;
 
