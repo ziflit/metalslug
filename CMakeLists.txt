@@ -32,7 +32,6 @@ set(SOURCE_FILES
     client/src/view/SDL/Sound.h
     client/src/view/SDL/SpritesClasses.cpp
     client/src/view/SDL/SpritesClasses.h
-    client/src/view/audios/musicGame.mp3
     client/src/client_main.cpp
     server/src/model/game/AnimatedObject.h
     server/src/model/game/Background.cpp
@@ -69,7 +68,6 @@ set(SOURCE_FILES
     server/src/utils/xml/rapidxml_utils.hpp
     server/src/utils/xml/XmlLoader.cpp
     server/src/utils/xml/XmlLoader.h
-    server/config.xml
     server/src/utils/File.cpp
     server/src/utils/File.h
     server/src/utils/Logger.cpp
@@ -81,6 +79,7 @@ set(SOURCE_FILES
     server/src/utils/SocketUtils.h
     server/src/utils/StringUtil.cpp
     server/src/utils/StringUtil.h
-    server/src/server_main.cpp)
+    server/src/server_main.cpp
+    server/config.xml)
 
 add_executable(metalslug ${SOURCE_FILES})

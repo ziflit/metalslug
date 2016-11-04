@@ -28,7 +28,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
         newPlayer->setId(playerConfig.id);
         newPlayer->setUpImage(playerConfig.pathColor,playerConfig.pathGrey,
                               playerConfig.cantWidthFrames,playerConfig.cantHeightFrames);
-//        newPlayer->setUpWeaponsImage(playerConfig.pathWeapons,weaponsWFramesCant,weaponsHFramesCant);
+        newPlayer->setUpWeaponsImage(playerConfig.pathWeapons);
         this->playersSprites.push_back(newPlayer);
     }
 }

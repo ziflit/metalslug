@@ -24,7 +24,7 @@ OBJ_NAME_TEST = run-tests
 # General
 CC = g++
 COMPILER_FLAGS = -w -std=c++11 -ggdb -Wall #`pkg-config --cflags --libs sdl2`
-LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2_mixer
+LINKER_FLAGS = -pthread -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
 
 all : client
