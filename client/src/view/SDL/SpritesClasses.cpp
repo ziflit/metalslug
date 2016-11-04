@@ -200,7 +200,10 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
 
 
 void PlayerSprite::handle(struct event nuevoEvento) {
-    this->dibujar = true;
+    if (not dibujar) {
+        this->dibujar = true;
+        stpcpy(this->username , nuevoEvento.data.username);
+    }
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
 

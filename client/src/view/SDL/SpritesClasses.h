@@ -51,6 +51,7 @@ public:
 class PlayerSprite : public Sprite{
 
 private:
+    char username[20];
     int wFramesCant,hFramesCant,wActualPosFrame,cambioFrame;
     SDL_Texture* weaponsLayer;
     string imgaceColorPath,imageGrisadoPath;
@@ -153,7 +154,7 @@ public:
 
 //_______________________________________________________________________________________________
 
-class Enemy : public Sprite{
+class EnemySprite : public Sprite{
 
 };
 

@@ -17,7 +17,7 @@ using namespace std;
 
 
 /**
- * EN VARIOS PUS	E STRING PERO NO SE SI VA A FUNCAR
+ * EN VARIOS PUSE STRING PERO NO SE SI VA A FUNCAR
  * SI NO FUNCA CON STRING LO PASAMOS A CHAR[]
  */
 
@@ -83,8 +83,8 @@ enum Postura{
 	AGACHADO_AVANZANDO_IZQUIERDA,
 	AGACHADO_AVANZANDO_DERECHA,
 	MIRANDO_DERECHA_QUIETO,
-    MIRANDO_IZQUIERDA_QUIETO,
-    DESCONECTADO,
+	MIRANDO_IZQUIERDA_QUIETO,
+	DESCONECTADO,
 	DISPARANDO_DERECHA_QUIETO,
 	DISPARANDO_IZQUIERDA_QUIETA,
 	DISPARANDO_CAMINANDO_DERECHA,
@@ -96,25 +96,27 @@ enum Postura{
 	DISPARANDO_MIRANDO_ARRIBA_DERECHA_QUIETO,
 	DISPARANDO_MIRANDO_ARRIBA_IZQUIERDA_QUIETO,
 	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_DERECHA,
-	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA
+	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA,
+	MUERTO
 };
 
 enum Arma{
-    PISTOLA,
-    HEAVY_MACHINEGUN,
-    ROCKET_LAUNCHER,
-    BOMBA,
-    LASER,
-    SHOTGUN
+	PISTOLA,
+	HEAVY_MACHINEGUN,
+	ROCKET_LAUNCHER,
+	BOMBA,
+	LASER,
+	SHOTGUN
 };
 
 struct event_ext {
 	EventCode code;
 	Entity id;
+	char username[20];
 	int x;
 	int y;
 	Postura postura;
-    Arma arma;
+	Arma arma;
 };
 
 struct event {
@@ -131,25 +133,24 @@ struct xmlConfig {
 };
 
 struct xmlPlayer {
-    EventCompletion completion;
+	EventCompletion completion;
 	Entity id;
 	char pathColor[40];
 	char pathGrey[40];
 	char pathWeapons[40];
 	int ancho;
 	int alto;
-    int cantWidthFrames;
-    int cantHeightFrames;
+	int cantWidthFrames;
+	int cantHeightFrames;
 	int speed;
 };
 
 struct xmlBackground {
-    EventCompletion completion;
+	EventCompletion completion;
 	Entity id;
 	char path[40];
 	int ancho;
 	int alto;
-	int zindex;
 };
 //---------------------------------------------------
 
