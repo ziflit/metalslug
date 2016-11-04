@@ -288,9 +288,7 @@ void PlayerSprite::handle(struct event nuevoEvento) {
 }
 
 void BackgroundSprite::setUpImage(string imageSpritePath) {
-
     Sprite::setUpImage(imageSpritePath);
-
 }
 
 void BackgroundSprite::setFramePosition(int x) {
