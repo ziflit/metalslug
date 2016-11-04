@@ -170,17 +170,8 @@ Scenery::~Scenery() {
 
 vector<GameObject*> Scenery::getVisibleObjects() {
     vector<GameObject*> todos;
-    for (auto &player : players) {
-        todos.push_back(player);
-    }
-    for (auto &gobject : backgrounds) {
-        todos.push_back(gobject);
-    }
     for (auto &enemy : enemies) {
         todos.push_back(enemy);
-    }
-    for (auto &bullet : bullets) {
-        todos.push_back(bullet);
     }
     return todos;
 }

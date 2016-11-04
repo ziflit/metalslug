@@ -22,6 +22,8 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
      */
     x = 5;
     y = 400;
+    box_alto = 100;
+    box_ancho = 50;
     direccionY = 0;
     direccionX = 0;
     posAtJump = 0;
@@ -48,14 +50,13 @@ bool Player::isJumping() {
 
 void Player::updatePosition(vector<GameObject*> game_objects) {
     if (this->postura != DESCONECTADO) {
-        int newX, newY;
+        int newX = x;
+        int newY = y;
         if (this->isMoving()) {
-
             if (((direccionX == 1) and (x < (windowWidth - 100))) or ((direccionX == -1) and (x > 0))) {
                 newX = x + direccionX * speed;
             }
         }
-
         if (this->isJumping()) {
             if (posAtJump < 24) {
                 posAtJump++;
@@ -67,8 +68,8 @@ void Player::updatePosition(vector<GameObject*> game_objects) {
         }
 
         if (this->canIMove(game_objects, newX, newY)) {
-            x += direccionX * speed;
-            y = 400 - jumpPos[posAtJump];
+            x = newX;
+            y = newY;
         }
 
     } else {

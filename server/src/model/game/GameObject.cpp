@@ -62,11 +62,11 @@ void GameObject::setBoxAncho(int boxAncho) {
 
 bool GameObject::checkCollition(int newX, int newY, GameObject* other_object) {
     /* SOLO MIRA SI 2 RECTANGULOS COINCIDEN EN UN PUNTO */
-    if ((newY + this->box_alto) < (other_object->getY() + getBoxAlto())) {
-        if (newY > other_object->getY()) {
-            /* falta checkear x */
+    if     ((newX + box_ancho / 2 ) >= other_object->getX()-other_object->getBoxAncho() / 2 
+        and (newX - box_ancho / 2 ) <= other_object->getX()+other_object->getBoxAncho() / 2 
+        and (newY + box_alto  / 2 ) >= other_object->getY()-other_object->getBoxAlto()  / 2
+        and (newY - box_alto  / 2 ) <= other_object->getY()+other_object->getBoxAlto()  / 2) {
             return true;
-        }
     }
     return false;
 }
