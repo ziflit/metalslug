@@ -39,7 +39,7 @@ SDL_Texture* Sprite::loadTexture(SDL_Renderer* renderer,string imageTexturePath)
 
 void Sprite::setUpImage(string imageSpritePath) {
     this->layer = loadTexture(renderer,imageSpritePath);
-    SDL_QueryTexture(layer,NULL,NULL,&spriteImageWidth,&spriteImageHeight);
+    SDL_QueryTexture(layer,NULL, NULL,&spriteImageWidth,&spriteImageHeight);
 }
 
 void Sprite::actualizarDibujo(){
@@ -73,18 +73,19 @@ void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, in
     this->imgaceColorPath = imageColorPath;
     this->imageGrisadoPath = imageGrisadoPath;
 
-    PlayerSprite::wActualPosFrame = 0;
+    this->wActualPosFrame = 0;
 
-    PlayerSprite::wFramesCant = wFramesCant;
-    PlayerSprite::hFramesCant = hFramesCant;
+    this->wFramesCant = wFramesCant;
+    this->hFramesCant = hFramesCant;
 
-    PlayerSprite::frameWidth = spriteImageWidth / wFramesCant;
-    PlayerSprite::frameHeight = spriteImageHeight / hFramesCant;
+    this->frameWidth = spriteImageWidth / wFramesCant;
+    this->frameHeight = spriteImageHeight / hFramesCant;
 
 
-    PlayerSprite::sourceRect.w = PlayerSprite::frameWidth;
-    PlayerSprite::sourceRect.h = PlayerSprite::frameHeight;
+    this->sourceRect.w = this->frameWidth;
+    this->sourceRect.h = this->frameHeight;
 }
+
 
 void PlayerSprite::setUpWeaponsImage(string weaponsPath){
     this->weaponsLayer = loadTexture(renderer,weaponsPath);
@@ -97,22 +98,22 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
 }
 
 void PlayerSprite::setWeapon(Arma weapon) {
-    this->arma = arma;
+    this->arma = weapon;
 
 //TODO:cuando esten los sprites aqui se setea la fila correspondiente
     switch (arma) {
         case PISTOLA:
-            PlayerSprite::weaponsSourceRect.y = 0;
+            this->weaponsSourceRect.y = 0;
         case HEAVY_MACHINEGUN:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 1 );
+            this->weaponsSourceRect.y = (this->frameHeight * 1 );
         case ROCKET_LAUNCHER:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 2 );
+            this->weaponsSourceRect.y = (this->frameHeight * 2 );
         case BOMBA:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 3 );
+            this->weaponsSourceRect.y = (this->frameHeight * 3 );
         case LASER:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 4 );
+            this->weaponsSourceRect.y = (this->frameHeight * 4 );
         case SHOTGUN:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 5 );
+            this->weaponsSourceRect.y = (this->frameHeight * 5 );
     }
 }
 
@@ -131,11 +132,11 @@ void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
 void PlayerSprite::setNextSpriteFrame() {
     if(cambioFrame == 2){
 
-        if (PlayerSprite::wActualPosFrame == (PlayerSprite::wFramesCant - 1)) {
-            PlayerSprite::wActualPosFrame = 0;
+        if (this->wActualPosFrame == (this->wFramesCant - 1)) {
+            this->wActualPosFrame = 0;
         }
-        PlayerSprite::sourceRect.x = (PlayerSprite::frameWidth * PlayerSprite::wActualPosFrame);
-        PlayerSprite::wActualPosFrame++;
+        this->sourceRect.x = (this->frameWidth * this->wActualPosFrame);
+        this->wActualPosFrame++;
 
         cambioFrame = 0;
     } else {
@@ -145,62 +146,69 @@ void PlayerSprite::setNextSpriteFrame() {
 }
 //TODO: setear el arma.
 void PlayerSprite::caminandoIzquierda() {
-    PlayerSprite::setNextSpriteFrame();
-    PlayerSprite::sourceRect.y = 0;
-    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 1;
+    this->setNextSpriteFrame();
+    this->sourceRect.y = 0;
+    this->weaponsSourceRect.x = this->frameWidth * 1;
 }
 void PlayerSprite::mirandoArribaCaminandoIzquierda(){
-    PlayerSprite::sourceRect.y = (frameHeight*1);
-    PlayerSprite::setNextSpriteFrame();
-//    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 3;
+    this->sourceRect.y = (frameHeight*1);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = this->frameWidth * 3;
 }
 void PlayerSprite::agachadoMirandoAIzquierdaQuieto(){
-    PlayerSprite::sourceRect.y = (frameHeight*2);
-    PlayerSprite::setNextSpriteFrame();
-//    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 1;
+    this->sourceRect.y = (frameHeight*2);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = this->frameWidth * 4;
 }
 void PlayerSprite::mirandoArribaIzquierdaQuieto(){
-    PlayerSprite::sourceRect.y = (frameHeight*3);
-    PlayerSprite::setNextSpriteFrame();
-//    PlayerSprite::weaponsSourceRect.x = PlayerSprite::frameWidth * 1;
+    this->sourceRect.y = (frameHeight*3);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = this->frameWidth * 3;
 }
 void PlayerSprite::caminandoDerecha(){
-    PlayerSprite::sourceRect.y = (frameHeight*4);
-    PlayerSprite::setNextSpriteFrame();
-//    PlayerSprite::weaponsSourceRect.x = 0;
+    this->sourceRect.y = (frameHeight*4);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = 0;
 }
 void PlayerSprite::mirandoArribaCaminandoDerecha(){
-    PlayerSprite::sourceRect.y = (frameHeight*5);
-    PlayerSprite::setNextSpriteFrame();
+    this->sourceRect.y = (frameHeight*5);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = frameWidth*2;
 }
 void PlayerSprite::agachadoMirandoDerechaQuieto(){
-    PlayerSprite::sourceRect.y = (frameHeight*6);
-    PlayerSprite::setNextSpriteFrame();
+    this->sourceRect.y = (frameHeight*6);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = frameWidth*5;
 }
 void PlayerSprite::mirandoArribaDerechaQuieto(){
-    PlayerSprite::sourceRect.y = (frameHeight*7);
-    PlayerSprite::setNextSpriteFrame();
+    this->sourceRect.y = (frameHeight*7);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = (frameWidth*2);
 }
 void PlayerSprite::agachadoAvanzandoAIzquierda(){
-    PlayerSprite::sourceRect.y = (frameHeight*8);
-    PlayerSprite::setNextSpriteFrame();
+    this->sourceRect.y = (frameHeight*8);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = frameWidth*4;
 }
 void PlayerSprite::agachadoAvanzandoADerecha(){
-    PlayerSprite::sourceRect.y = (frameHeight*9);
-    PlayerSprite::setNextSpriteFrame();
+    this->sourceRect.y = (frameHeight*9);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = frameWidth*5;
 }
 void PlayerSprite::mirandoDerechaQuieto(){
-    PlayerSprite::sourceRect.y = (frameHeight*10);
-    PlayerSprite::setNextSpriteFrame();
+    this->sourceRect.y = (frameHeight*10);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = 0;
 }
 void PlayerSprite::mirandoIzquierdaQuieto(){
-    PlayerSprite::sourceRect.y = (frameHeight*11);
-    PlayerSprite::setNextSpriteFrame();
+    this->sourceRect.y = (frameHeight*11);
+    this->setNextSpriteFrame();
+    this->weaponsSourceRect.x = frameWidth * 1;
 }
 
 
 void PlayerSprite::handle(struct event nuevoEvento) {
-    this->dibujar = true;
+    this->clientConected();
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
 

@@ -82,11 +82,12 @@ public:
 
     void handle(struct event nuevoEvento);
 
-    void clienteConectado(){ this->dibujar = true;}
+    void clientConected(){ this->dibujar = true;}
+
     void actualizarDibujo(){
         if (dibujar) {
             SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
-//            SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
+            SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
     }
 
