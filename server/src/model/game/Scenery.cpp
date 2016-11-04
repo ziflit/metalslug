@@ -18,7 +18,7 @@ Scenery::Scenery(ConfigsXML configs) {
 void Scenery::initializeFromXML(ConfigsXML configs) {
     this->windowWidth = configs.getGlobalConf().ancho;
     this->windowHeight = configs.getGlobalConf().alto;
-    this->playersSpeed = configs.getSpritesConfig()[0].speed;
+    this->playersSpeed = configs.getPlayersConfig()[0].speed;
 
     vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
 

@@ -20,7 +20,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
         this->backgroundSprites.push_back(newBackground);
     }
 
-    for (auto playerConfig : configs.getSpritesConfig()) {
+    for (auto playerConfig : configs.getPlayersConfig()) {
         PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer,
                                                    window_width, window_height);
         newPlayer->setWidth(playerConfig.ancho);
