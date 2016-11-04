@@ -83,8 +83,7 @@ public:
 
     void handle(struct event nuevoEvento);
 
-    void clientConected(){ this->dibujar = true;}
-
+    void clienteConectado(){ this->dibujar = true;}
     void actualizarDibujo(){
         if (dibujar) {
             SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));

@@ -98,24 +98,24 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
 }
 
 void PlayerSprite::setWeapon(Arma weapon) {
-    this->arma = arma;
+    this->arma = weapon;
 
-//TODO:cuando esten los sprites aqui se setea la fila correspondiente
     switch (arma) {
         case PISTOLA:
-            PlayerSprite::weaponsSourceRect.y = 0;
+            this->weaponsSourceRect.y = 0;
         case HEAVY_MACHINEGUN:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 1 );
+            this->weaponsSourceRect.y = (this->frameHeight * 1 );
         case ROCKET_LAUNCHER:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 2 );
+            this->weaponsSourceRect.y = (this->frameHeight * 2 );
         case BOMBA:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 3 );
+            this->weaponsSourceRect.y = (this->frameHeight * 3 );
         case LASER:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 4 );
+            this->weaponsSourceRect.y = (this->frameHeight * 4 );
         case SHOTGUN:
-            PlayerSprite::weaponsSourceRect.y = (PlayerSprite::frameHeight * 5 );
+            this->weaponsSourceRect.y = (this->frameHeight * 5 );
     }
 }
+
 
 void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
 void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
@@ -160,26 +160,6 @@ void PlayerSprite::setNextSpriteFrame() {
         cambioFrame++;
     }
 
-}
-
-
-void PlayerSprite::setWeapon(Arma weapon) {
-    this->arma = weapon;
-
-    switch (arma) {
-        case PISTOLA:
-            this->weaponsSourceRect.y = 0;
-        case HEAVY_MACHINEGUN:
-            this->weaponsSourceRect.y = (this->frameHeight * 1 );
-        case ROCKET_LAUNCHER:
-            this->weaponsSourceRect.y = (this->frameHeight * 2 );
-        case BOMBA:
-            this->weaponsSourceRect.y = (this->frameHeight * 3 );
-        case LASER:
-            this->weaponsSourceRect.y = (this->frameHeight * 4 );
-        case SHOTGUN:
-            this->weaponsSourceRect.y = (this->frameHeight * 5 );
-    }
 }
 
 void PlayerSprite::caminandoIzquierda() {
