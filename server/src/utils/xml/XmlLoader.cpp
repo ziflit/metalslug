@@ -81,11 +81,13 @@ vector<struct xmlPlayer> XmlLoader::obtainPlayersConfig() {
     file<> xmlFile(path.c_str()); //open file
     doc.parse<0>(xmlFile.data());
     vector<struct xmlPlayer> configs;
+
     xml_node<> *players = doc.first_node("players");
     for (xml_node<> *player = players->first_node("player"); player; player = player->next_sibling()) {
         xml_node<> *id = player->first_node("id");
         xml_node<> *pathColor = player->first_node("pathColor");
         xml_node<> *pathGrey = player->first_node("pathGrey");
+        xml_node<> *pathWeapons = player->first_node("pathWeapons");
         xml_node<> *ancho = player->first_node("ancho");
         xml_node<> *alto = player->first_node("alto");
         xml_node<> *cantWidthFrames = player->first_node("cantWidthFrames");
@@ -97,6 +99,7 @@ vector<struct xmlPlayer> XmlLoader::obtainPlayersConfig() {
         playerConfig.id = this->convertToEntity(id->value());
         strcpy(playerConfig.pathColor, pathColor->value());
         strcpy(playerConfig.pathGrey, pathGrey->value());
+        strcpy(playerConfig.pathWeapons,pathWeapons->value());
         playerConfig.ancho = atoi(ancho->value());
         playerConfig.alto = atoi(alto->value());
         playerConfig.cantWidthFrames = atoi(cantWidthFrames->value());

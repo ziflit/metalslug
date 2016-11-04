@@ -1,10 +1,3 @@
-/*
- * Background.cpp
- *
- *  Created on: 02/10/2016
- *      Author: fpirra
- */
-
 #include "Background.h"
 
 Background::Background(Entity id, int speed, double largeImage, int windowWidth) {
@@ -30,7 +23,7 @@ struct event Background::getState(){
 	struct event_ext eventExt;
 
     eventExt.code = EventCode::BACKGROUND_STATUS;
-    eventExt.id = this->id; //
+    eventExt.id = this->id;
     eventExt.x = x;
     eventExt.y = y;
 
