@@ -116,7 +116,14 @@ void PlayerSprite::setWeapon(Arma weapon) {
     }
 }
 
+void PlayerSprite::actualizarDibujo() {
+    if (dibujar) {
+        SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
+        SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
+        this->usernameText->renderize(this->destRect.x, (this->destRect.y -10));
+    }
 
+}
 void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
 void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
 
@@ -223,11 +230,16 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
     this->weaponsSourceRect.x = frameWidth * 1;
 }
 
+void PlayerSprite::clientConected(struct event nuevoEvento) {
+    this->dibujar = true;
+    stpcpy(this->username , nuevoEvento.data.username);
+    this->usernameText = new TextBox(this->username, this->renderer, {0, 255, 2, 255});
+}
+
 
 void PlayerSprite::handle(struct event nuevoEvento) {
     if (not dibujar) {
-        this->dibujar = true;
-        stpcpy(this->username , nuevoEvento.data.username);
+        this->clientConected(nuevoEvento);
     }
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
@@ -288,6 +300,11 @@ void PlayerSprite::handle(struct event nuevoEvento) {
         default:
             break;
     }
+}
+
+PlayerSprite::~PlayerSprite() {
+    SDL_DestroyTexture(this->weaponsLayer);
+    this->weaponsLayer = nullptr;
 }
 
 void BackgroundSprite::setUpImage(string imageSpritePath) {
