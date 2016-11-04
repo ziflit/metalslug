@@ -44,6 +44,7 @@ enum EventCode {
 	PLAYER_STATUS,
 	BACKGROUND_STATUS,
 	ENEMY_STATUS,
+	BULLET_STATUS,
 	TODO_SIGUE_IGUAL
 };
 
@@ -67,7 +68,16 @@ enum Entity {
 	BACKGROUND_Z1,
 	BACKGROUND_Z2,
 	BACKGROUND_Z3,
-	NOPLAYER
+	NOPLAYER,
+	BT_BULLET,			// BT = Bullet Type
+	BT_HEAVY_BULLET,
+	BT_MISSILE,
+	BT_TELE_MISSILE,
+	BT_SHOT,
+	BT_BOMB,
+	MSC_WEAPON_BOX, 	// MSC = Miscelanea
+	MSC_POWER_BONUS,
+	MSC_BONUS_KILLALL
 };
 
 enum Postura{
@@ -103,9 +113,9 @@ enum Arma{
 	PISTOLA,
 	HEAVY_MACHINEGUN,
 	ROCKET_LAUNCHER,
-	BOMBA,
-	LASER,
-	SHOTGUN
+	ENEMY_CHASER,
+	SHOTGUN,
+	BOMB
 };
 
 struct event_ext {
@@ -148,6 +158,17 @@ struct xmlEnemy {
 	Entity id;
 	char path[40];
 	char pathWeapons[40];
+	int ancho;
+	int alto;
+	int cantWidthFrames;
+	int cantHeightFrames;
+	int speed;
+};
+
+struct xmlMisc {  
+	EventCompletion completion;
+	Entity id;
+	char path[40];
 	int ancho;
 	int alto;
 	int cantWidthFrames;

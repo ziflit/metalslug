@@ -153,11 +153,11 @@ void PlayerSprite::setWeapon(Arma weapon) {
             this->weaponsSourceRect.y = (this->frameHeight * 1 );
         case ROCKET_LAUNCHER:
             this->weaponsSourceRect.y = (this->frameHeight * 2 );
-        case BOMBA:
+        case ENEMY_CHASER:
             this->weaponsSourceRect.y = (this->frameHeight * 3 );
-        case LASER:
-            this->weaponsSourceRect.y = (this->frameHeight * 4 );
         case SHOTGUN:
+            this->weaponsSourceRect.y = (this->frameHeight * 4 );
+        case BOMB:
             this->weaponsSourceRect.y = (this->frameHeight * 5 );
     }
 }
@@ -344,11 +344,11 @@ void EnemySprite::setWeapon(Arma weapon) {
             EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 1 );
         case ROCKET_LAUNCHER:
             EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 2 );
-        case BOMBA:
+        case ENEMY_CHASER:
             EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 3 );
-        case LASER:
-            EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 4 );
         case SHOTGUN:
+            EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 4 );
+        case BOMB:
             EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 5 );
     }
 }
