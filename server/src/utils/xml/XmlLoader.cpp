@@ -80,6 +80,7 @@ vector<struct xmlPlayer> XmlLoader::obtainSpritesConfig() {
         xml_node<> *id = sprite->first_node("id");
         xml_node<> *pathColor = sprite->first_node("pathColor");
         xml_node<> *pathGrey = sprite->first_node("pathGrey");
+        xml_node<> *pathWeapons = sprite->first_node("pathWeapons");
         xml_node<> *ancho = sprite->first_node("ancho");
         xml_node<> *alto = sprite->first_node("alto");
         xml_node<> *cantWidthFrames = sprite->first_node("cantWidthFrames");
@@ -91,6 +92,7 @@ vector<struct xmlPlayer> XmlLoader::obtainSpritesConfig() {
         playerConfig.id = this->convertToEntity(id->value());
         strcpy(playerConfig.pathColor, pathColor->value());
         strcpy(playerConfig.pathGrey, pathGrey->value());
+        strcpy(playerConfig.pathWeapons,pathWeapons->value());
         playerConfig.ancho = atoi(ancho->value());
         playerConfig.alto = atoi(alto->value());
         playerConfig.cantWidthFrames = atoi(cantWidthFrames->value());
