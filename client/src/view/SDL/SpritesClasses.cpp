@@ -100,7 +100,9 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
 void PlayerSprite::actualizarDibujo() {
     if (dibujar) {
         SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
-        SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
+        if(not grisado){
+            SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
+        }
         this->usernameText->renderize((this->destRect.x + (frameWidth/2)), (this->destRect.y + (frameHeight + 30) ));
     }
 
