@@ -4,8 +4,6 @@
 
 #include <string>
 
-#define BUFSIZE 256
-#define CONTENT_TRANSFER_SIZE 200
 #define MSGSIZE sizeof(struct event)
 
 using namespace std;
@@ -17,7 +15,7 @@ using namespace std;
 
 
 /**
- * EN VARIOS PUS	E STRING PERO NO SE SI VA A FUNCAR
+ * EN VARIOS PUSE STRING PERO NO SE SI VA A FUNCAR
  * SI NO FUNCA CON STRING LO PASAMOS A CHAR[]
  */
 
