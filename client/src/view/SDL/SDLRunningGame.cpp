@@ -31,6 +31,17 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
 //        newPlayer->setUpWeaponsImage(playerConfig.pathWeapons,weaponsWFramesCant,weaponsHFramesCant);
         this->playersSprites.push_back(newPlayer);
     }
+
+    for (auto enemyConfig : configs.getEnemiesConfig()) {
+        EnemySprite* newEnemy = new EnemySprite(this->mainRenderer,
+                                                   window_width, window_height);
+        newEnemy->setWidth(enemyConfig.ancho);
+        newEnemy->setHeight(enemyConfig.alto);
+        newEnemy->setId(enemyConfig.id);
+        newEnemy->setUpImage(enemyConfig.path,enemyConfig.path,
+                              enemyConfig.cantWidthFrames,enemyConfig.cantHeightFrames);
+        this->enemiesSprites.push_back(newEnemy);
+    }
 }
 
 SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
@@ -149,6 +160,15 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
 
 }
 
+EnemySprite* SDLRunningGame::getEnemy(Entity id) {
+    for (auto enemy : enemiesSprites) {
+        if ( enemy->getId() == id ){
+            return enemy;
+        }
+    }
+    return nullptr;
+}
+
 PlayerSprite* SDLRunningGame::getPlayer(Entity id) {
     for (auto player : playersSprites) {
         if ( player->getId() == id ){
@@ -178,6 +198,11 @@ void SDLRunningGame::getSpriteAndSend(Entity id, event nuevoEvento) {
             player->handle(nuevoEvento);
         }
     }
+    for (auto enemy : enemiesSprites) {
+        if ( enemy->getId() == id ){
+            enemy->handle(nuevoEvento);
+        }
+    }
 }
 
 void SDLRunningGame::handleModelState(vector <event> model_state) {
@@ -202,6 +227,11 @@ void SDLRunningGame::updateWindowSprites () {
             playersSprites[i]->actualizarDibujo();
     }
 
+    for (int i = 0 ; i< enemiesSprites.size() ; i++) {  //ojo con el auto, le ponia por defecto tipo Sprite cuando es EnemySprite
+        enemiesSprites[i]->actualizarDibujo();
+    }
+
+
    backgroundSprites[(backgroundSprites.size() - 1)]->actualizarDibujo();
 
     SDL_RenderPresent(this->mainRenderer);
@@ -213,6 +243,11 @@ SDLRunningGame::~SDLRunningGame () {
     for (auto playerSprite : playersSprites){
         delete playerSprite;
     }
+
+    for (auto enemySprite : enemiesSprites){
+        delete enemySprite;
+    }
+
     for (auto backSprite : backgroundSprites){
         delete backSprite;
     }

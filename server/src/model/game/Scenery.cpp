@@ -22,11 +22,19 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
 
     vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
 
+    // Probando para ver si funcionan los enemigos
+    Enemy *enemy = new Enemy(ENEMY_NORMAL_1, 3500, 400);
+    enemies.push_back(enemy);
+    Enemy *enemy2 = new Enemy(ENEMY_NORMAL_2, 5200, 400);
+    enemies.push_back(enemy2);
+    Enemy *enemy3 = new Enemy(ENEMY_NORMAL_3, 1500, 400);
+    enemies.push_back(enemy3);
+    //------------------------------------------------------
+
     for (auto backgroundConfig : backgroundConfigs) {
         Background* newBackground = new Background(backgroundConfig.id,playersSpeed,
                                                 backgroundConfig.ancho,windowWidth);
         this->backgrounds.push_back(newBackground);
-
     }
     ((Background*)backgrounds[0])->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, playersSpeed);
 }
@@ -93,25 +101,19 @@ bool Scenery::hayJugadorEnBordeIzq() {
 }
 
 bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
-
     for (auto player : players) {
         if ((player->getPostura() != Postura::DESCONECTADO) and
             ((player->getX() >= ((windowWidth / 2) - 100)) and (player->getDireccionX() == 1))) {
             return true;
         }
     }
-
     return false;
 }
 
 void Scenery::updateBackgroudsState() {
-
     if ((not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
-
         for (auto background : backgrounds) {
-
             background->avanzar();
-
             /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
              * el asociado a los players debe avanzar exactamente igual que ellos.
              * Es por eso que tiene seteada igual velocidad.
@@ -122,17 +124,20 @@ void Scenery::updateBackgroudsState() {
                 player->retroceder();
             }
         }
-
     }
 }
 
 vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
 
-
     for (auto player : players) {
         player->updatePosition();
         eventsToReturn.push_back(player->getState());
+    }
+
+    for (auto enemy : enemies) {
+        enemy->updatePosition(players[0]->getX()); //Van a seguir siempre al player 1 por ahora
+        eventsToReturn.push_back(enemy->getState());
     }
 
     updateBackgroudsState();
@@ -147,6 +152,10 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
 
 void Scenery::addElementToScenery(Player *player) {
     players.push_back(player);
+}
+
+void Scenery::addElementToScenery(Enemy *enemy) {
+    enemies.push_back(enemy);
 }
 
 void Scenery::addElementToScenery(Background *background) {
