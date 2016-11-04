@@ -97,6 +97,52 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
     weaponsSourceRect.h = this->frameHeight;
 }
 
+void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
+
+void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
+/**  MOVIMIENTOS
+*_________________________________________________________________________________________________________
+* _________________
+*|_____|_____|_____|       - De acuerdo a como este definido el sprite de los player
+*|_____|_____|_____|       - se fijaran los valores del frame correspondiente a cada
+*|_____|_____|_____|       - uno de los siquientes movimientos, lo que dara la coordenada
+*|_____|_____|_____|       - "y" que espera el "PlayerSprite::sourceRect.y".
+*/
+/** WEAPONS
+*_________________________________________________________________________________________________________
+* Primera columna: arma a altuna media mirando a derecha
+* Segunda columna: arma a altura media mirando a izquierda
+* Tercera columna: arma a altura alta mirando a derecha
+* Cuarta columna: arma a altura alta mirando a izquierda
+* Quinta columna: arma a altura baja mirando a izquierda
+* Sexta columna: arma a altura baja mirando a derecha
+*   c0    c1    c2    c3    c4    c5         <- Columnas
+* ___________________________________
+*|_____|_____|_____|_____|_____|_____|       0- PISTOLA
+*|_____|_____|_____|_____|_____|_____|       1- HEAVY MACHINE GUN
+*|_____|_____|_____|_____|_____|_____|       2- ROCKEY LAUNCHER
+*|_____|_____|_____|_____|_____|_____|       3- BOMBA
+*|_____|_____|_____|_____|_____|_____|       4- LASER
+*|_____|_____|_____|_____|_____|_____|       5- SHOTGUN
+*/
+
+void PlayerSprite::setNextSpriteFrame() {
+    if(cambioFrame == 2){
+
+        if (this->wActualPosFrame == (this->wFramesCant - 1)) {
+            this->wActualPosFrame = 0;
+        }
+        this->sourceRect.x = (this->frameWidth * this->wActualPosFrame);
+        this->wActualPosFrame++;
+
+        cambioFrame = 0;
+    } else {
+        cambioFrame++;
+    }
+
+}
+
+
 void PlayerSprite::setWeapon(Arma weapon) {
     this->arma = weapon;
 
@@ -116,34 +162,6 @@ void PlayerSprite::setWeapon(Arma weapon) {
     }
 }
 
-void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
-void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
-
-/**  MOVIMIENTOS
-*_________________________________________________________________________________________________________
-* _________________
-*|_____|_____|_____|       - De acuerdo a como este definido el sprite de los player
-*|_____|_____|_____|       - se fijaran los valores del frame correspondiente a cada
-*|_____|_____|_____|       - uno de los siquientes movimientos, lo que dara la coordenada
-*|_____|_____|_____|       - "y" que espera el "PlayerSprite::sourceRect.y".
-*/
-
-void PlayerSprite::setNextSpriteFrame() {
-    if(cambioFrame == 2){
-
-        if (this->wActualPosFrame == (this->wFramesCant - 1)) {
-            this->wActualPosFrame = 0;
-        }
-        this->sourceRect.x = (this->frameWidth * this->wActualPosFrame);
-        this->wActualPosFrame++;
-
-        cambioFrame = 0;
-    } else {
-        cambioFrame++;
-    }
-
-}
-//TODO: setear el arma.
 void PlayerSprite::caminandoIzquierda() {
     this->setNextSpriteFrame();
     this->sourceRect.y = 0;
