@@ -46,24 +46,31 @@ bool Player::isJumping() {
     return (Player::direccionY == 1);
 }
 
-void Player::updatePosition() {
+void Player::updatePosition(vector<GameObject*> game_objects) {
     if (this->postura != DESCONECTADO) {
+        int newX, newY;
         if (this->isMoving()) {
 
             if (((direccionX == 1) and (x < (windowWidth - 100))) or ((direccionX == -1) and (x > 0))) {
-                x += direccionX * speed;
+                newX = x + direccionX * speed;
             }
         }
 
         if (this->isJumping()) {
             if (posAtJump < 24) {
                 posAtJump++;
-                y = 400 - jumpPos[posAtJump];
+                newY = 400 - jumpPos[posAtJump];
             } else {
                 direccionY = 0;
                 posAtJump = 0;
             }
         }
+
+        if (this->canIMove(game_objects, newX, newY)) {
+            x += direccionX * speed;
+            y = 400 - jumpPos[posAtJump];
+        }
+
     } else {
         x = 0; //pone al grisado en el borde izquierdo
     }
@@ -90,53 +97,18 @@ struct event Player::getState() {
     return estado;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+bool Player::canIMove(vector<GameObject*> game_objects, int newX, int newY) {
+    /* Auto??? que pasa con las cosas abstractas? */
+    bool isColisionanding;
+    for (auto &game_object : game_objects) {
+        // Checkeo de colisiones
+        if (puedenColisionar(this, game_object)) {
+            isColisionanding = this->checkCollition(newX, newY, game_object);
+            if (isColisionanding) {
+                // resolucion de colisiones con el game_object:
+                return false;
+            }
+        }
+    }
+    return true;
+}

@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <vector>
-#include "../Protocol.h"
+#include "../../utils/Protocol.h"
 #include "GameObject.h"
 
 using namespace std;

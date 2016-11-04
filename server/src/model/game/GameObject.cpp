@@ -60,4 +60,22 @@ void GameObject::setBoxAncho(int boxAncho) {
 	box_ancho = boxAncho;
 }
 
+bool GameObject::checkCollition(int newX, int newY, GameObject* other_object) {
+    /* SOLO MIRA SI 2 RECTANGULOS COINCIDEN EN UN PUNTO */
+    if ((newY + this->box_alto) < (other_object->getY() + getBoxAlto())) {
+        if (newY > other_object->getY()) {
+            /* falta checkear x */
+            return true;
+        }
+    }
+    return false;
+}
 
+bool GameObject::puedenColisionar(GameObject *obj1, GameObject *obj2) {
+    /* Checkeo de las 2 entities posta, y devuelvo true según una tabla
+       predefinida de colisiones. Es una suma de ifs gigante */
+    if (obj1->getEntity() == Entity::MARCO and obj2->getEntity() == Entity::FIO) {
+        return false;
+    }
+    return true;
+}

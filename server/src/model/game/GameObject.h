@@ -4,7 +4,7 @@
 #include "../../utils/Protocol.h"
 
 class GameObject {
-protected:
+    protected:
     Entity id;
     float x, y;
     double largeImage;
@@ -12,7 +12,7 @@ protected:
     int box_alto;
     int box_ancho;
 
-public:
+    public:
 
     virtual struct event getState()= 0;
 
@@ -38,13 +38,17 @@ public:
 
     void setSpeed(float speed);
 
-	int getBoxAlto() const;
+    int getBoxAlto() const;
 
-	void setBoxAlto(int boxAlto);
+    void setBoxAlto(int boxAlto);
 
-	int getBoxAncho() const;
+    int getBoxAncho() const;
 
-	void setBoxAncho(int boxAncho);
+    void setBoxAncho(int boxAncho);
+
+    bool checkCollition(int newX, int newY ,GameObject* other_object);
+
+    bool puedenColisionar(GameObject *obj1, GameObject *obj2);
 };
 
 #endif //SERVER_GAMEOBJECT_H

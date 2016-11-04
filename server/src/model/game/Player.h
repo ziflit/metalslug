@@ -9,6 +9,7 @@
 #define SRC_MODEL_GAME_PLAYER_H_
 
 #include <string>
+#include <vector>
 #include "../../utils/Protocol.h"
 #include "AnimatedObject.h"
 
@@ -36,15 +37,18 @@ public:
 
     void retroceder();
 
-    void updatePosition();
+    void updatePosition(vector<GameObject*> game_objects);
 
     void set_position(int posx, int posy);
+
+    bool canIMove(vector<GameObject*> game_objects, int newX, int newY);
 
     //getters y setters -----------------------------------------------------------------------------------------
 
     string getUsername() const {
         return username;
     }
+
 };
 
 

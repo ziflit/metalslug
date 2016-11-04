@@ -129,9 +129,10 @@ void Scenery::updateBackgroudsState() {
 vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
 
+    vector<GameObject*> all_objects_in_window = this->getVisibleObjects();
 
     for (auto player : players) {
-        player->updatePosition();
+        player->updatePosition(all_objects_in_window);
         eventsToReturn.push_back(player->getState());
     }
 
@@ -154,4 +155,13 @@ void Scenery::addElementToScenery(Background *background) {
 }
 
 Scenery::~Scenery() {
+}
+
+vector<GameObject*> Scenery::getVisibleObjects() {
+    vector<GameObject*> todos;
+    for (auto &player : players) {
+        todos.push_back(player);
+    }
+    // TODO Faltan todas las otras cosas!
+    return todos;
 }
