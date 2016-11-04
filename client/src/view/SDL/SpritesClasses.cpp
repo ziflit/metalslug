@@ -100,7 +100,6 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
 void PlayerSprite::setWeapon(Arma weapon) {
     this->arma = weapon;
 
-//TODO:cuando esten los sprites aqui se setea la fila correspondiente
     switch (arma) {
         case PISTOLA:
             this->weaponsSourceRect.y = 0;
