@@ -7,7 +7,9 @@ using namespace std;
 #include <iostream>
 #include "SDL2/SDL.h"
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "../../utils/Protocol.h"
+#include "TextBox.h"
 
 class Sprite {
 protected:
@@ -51,8 +53,10 @@ public:
 class PlayerSprite : public Sprite{
 
 private:
+    char username[20];
     int wFramesCant,hFramesCant,wActualPosFrame,cambioFrame;
     SDL_Texture* weaponsLayer;
+    TextBox* usernameText;
     string imgaceColorPath,imageGrisadoPath;
     bool grisado, dibujar;
     Arma arma;
@@ -82,14 +86,9 @@ public:
 
     void handle(struct event nuevoEvento);
 
-    void clientConected(){ this->dibujar = true;}
+    void clientConected(struct event nuevoEvento);
 
-    void actualizarDibujo(){
-        if (dibujar) {
-            SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
-            SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
-        }
-    }
+    void actualizarDibujo();
 
     void grisar();
     void colorear();
@@ -120,6 +119,9 @@ public:
     void disparandoMirandoParaArribaIzquierdaQuieto();
     void disparandoAvanzandoMirandoArribaDerecha();
     void disparandoAvanzandoMirandoArribaIzquierda();
+
+    virtual ~PlayerSprite();
+
 };
 
 class EnemySprite : public Sprite{
@@ -223,11 +225,7 @@ public:
     void setSourceRectHeight(int h){sourceRect.h = h;}
 };
 
-//_______________________________________________________________________________________________
 
-class Enemy : public Sprite{
-
-};
 
 
 #endif //SDLBASE_SPRITE_H

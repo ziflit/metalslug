@@ -4,7 +4,6 @@
 
 #include <string>
 
-
 #define MSGSIZE sizeof(struct event)
 
 using namespace std;
@@ -65,9 +64,9 @@ enum Entity {
 	ENEMY_FINAL_3,
 	BACKGROUND_Z0,    // fondo con Z-index 1
 	BACKGROUND_Z1,
-	BACKGROUND_Z2,
+    BACKGROUND_Z2,
 	BACKGROUND_Z3,
-	NOPLAYER
+    NOPLAYER
 };
 
 enum Postura{
@@ -82,8 +81,8 @@ enum Postura{
 	AGACHADO_AVANZANDO_IZQUIERDA,
 	AGACHADO_AVANZANDO_DERECHA,
 	MIRANDO_DERECHA_QUIETO,
-	MIRANDO_IZQUIERDA_QUIETO,
-	DESCONECTADO,
+    MIRANDO_IZQUIERDA_QUIETO,
+    DESCONECTADO,
 	DISPARANDO_DERECHA_QUIETO,
 	DISPARANDO_IZQUIERDA_QUIETA,
 	DISPARANDO_CAMINANDO_DERECHA,
@@ -95,26 +94,26 @@ enum Postura{
 	DISPARANDO_MIRANDO_ARRIBA_DERECHA_QUIETO,
 	DISPARANDO_MIRANDO_ARRIBA_IZQUIERDA_QUIETO,
 	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_DERECHA,
-	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA,
-	MUERTO
+	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA
 };
 
 enum Arma{
-	PISTOLA,
-	HEAVY_MACHINEGUN,
-	ROCKET_LAUNCHER,
-	BOMBA,
-	LASER,
-	SHOTGUN
+    PISTOLA,
+    HEAVY_MACHINEGUN,
+    ROCKET_LAUNCHER,
+    BOMBA,
+    LASER,
+    SHOTGUN
 };
 
 struct event_ext {
 	EventCode code;
 	Entity id;
+	char username[20];
 	int x;
 	int y;
 	Postura postura;
-	Arma arma;
+    Arma arma;
 };
 
 struct event {
@@ -131,7 +130,7 @@ struct xmlConfig {
 };
 
 struct xmlPlayer {
-	EventCompletion completion;
+    EventCompletion completion;
 	Entity id;
 	char pathColor[40];
 	char pathGrey[40];
@@ -150,18 +149,17 @@ struct xmlEnemy {
 	char pathWeapons[40];
 	int ancho;
 	int alto;
-	int cantWidthFrames;
-	int cantHeightFrames;
+    int cantWidthFrames;
+    int cantHeightFrames;
 	int speed;
 };
 
 struct xmlBackground {
-	EventCompletion completion;
+    EventCompletion completion;
 	Entity id;
 	char path[40];
 	int ancho;
 	int alto;
-	int zindex;
 };
 //---------------------------------------------------
 

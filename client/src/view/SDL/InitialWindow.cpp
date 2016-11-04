@@ -8,6 +8,9 @@ void InitialWindow::initializeSDL() {
         cout<<"There was error initializing SDL: "<< endl
             <<SDL_GetError() << endl;
     }
+    if(TTF_Init() < 0){
+        cout<<"There was error initializig TTF: "<< TTF_GetError()<<endl;
+    }
 }
 
 SDL_Window* InitialWindow::createWindow(const char *windowName, unsigned int window_width, unsigned int window_height) {

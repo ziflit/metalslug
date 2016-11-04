@@ -97,9 +97,17 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
     weaponsSourceRect.h = this->frameHeight;
 }
 
-void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
+void PlayerSprite::actualizarDibujo() {
+    if (dibujar) {
+        SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
+        SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
+        this->usernameText->renderize((this->destRect.x + (frameWidth/2)), (this->destRect.y + (frameHeight + 30) ));
+    }
 
+}
+void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
 void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
+
 /**  MOVIMIENTOS
 *_________________________________________________________________________________________________________
 * _________________
@@ -141,7 +149,6 @@ void PlayerSprite::setNextSpriteFrame() {
     }
 
 }
-
 
 void PlayerSprite::setWeapon(Arma weapon) {
     this->arma = weapon;
@@ -223,9 +230,17 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
     this->weaponsSourceRect.x = frameWidth * 1;
 }
 
+void PlayerSprite::clientConected(struct event nuevoEvento) {
+    this->dibujar = true;
+    stpcpy(this->username , nuevoEvento.data.username);
+    this->usernameText = new TextBox(this->username, this->renderer, {10, 255, 2, 255});
+}
+
 
 void PlayerSprite::handle(struct event nuevoEvento) {
-    this->clientConected();
+    if (not dibujar) {
+        this->clientConected(nuevoEvento);
+    }
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
 
@@ -286,10 +301,6 @@ void PlayerSprite::handle(struct event nuevoEvento) {
             break;
     }
 }
-
-
-
-
 
 void EnemySprite::setWidth(int w) {
     Sprite::setWidth(w);
@@ -499,10 +510,10 @@ void EnemySprite::handle(struct event nuevoEvento) {
     }
 }
 
-
-
-
-
+PlayerSprite::~PlayerSprite() {
+    SDL_DestroyTexture(this->weaponsLayer);
+    this->weaponsLayer = nullptr;
+}
 
 void BackgroundSprite::setUpImage(string imageSpritePath) {
     Sprite::setUpImage(imageSpritePath);

@@ -4,17 +4,8 @@
 #include "PlayerBuilder.h"
 
 Scenery::Scenery(ConfigsXML configs) {
-    //TODO: Esto se va a cargar en base al XML para inicializar el escenario, o algo asi
     this->initializeFromXML(configs);
-
-
-    //TODO: setear la velocidad de avance de cada background, el asociado a los players debe tener igual velocidad que ellos.
-    //TODO: definir si del XML tambien se setea la cantidad de jugadores.
-    //TODO: el seteo de cada jugador.
 }
-//______________________________________________________________________________________________________________________
-//PROCESAMIENTO DE EVENTOS:
-
 void Scenery::initializeFromXML(ConfigsXML configs) {
     this->windowWidth = configs.getGlobalConf().ancho;
     this->windowHeight = configs.getGlobalConf().alto;
@@ -163,3 +154,4 @@ void Scenery::addElementToScenery(Background *background) {
 
 Scenery::~Scenery() {
 }
+
