@@ -11,11 +11,18 @@ Background::Background(Entity id, int speed, double largeImage, int windowWidth)
 void Background::calculateSpeed(int largeMainBackground, int speedMainBackground) {
     this->speed = ((this->largeImage-windowWidth) * speedMainBackground)/(largeMainBackground-windowWidth);
 }
+
 void Background::avanzar() {
-    if (x + windowWidth >= largeImage) {
-        x = 0;
+    this->avanzarFrame();
+}
+
+bool Background::avanzarFrame() {
+    if (x + windowWidth <= largeImage) {
+        this->x += speed;
+        return false;
     }
-    this->x += speed;
+    return true;
+    //TODO: aqui es cuando debe aparecer el ENEMIGO FINAL
 }
 
 struct event Background::getState(){
