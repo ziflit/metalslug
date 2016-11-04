@@ -1,9 +1,9 @@
 #ifndef SDLBASE_INITIALWINDOW_H
 #define SDLBASE_INITIALWINDOW_H
 
-#define backgroundTransparentPath "sprites/backgroundTransparent.bmp"
 
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 #include <iostream>
 
 

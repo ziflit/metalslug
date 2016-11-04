@@ -84,6 +84,6 @@ set(SOURCE_FILES
     server/src/utils/StringUtil.cpp
     server/src/utils/StringUtil.h
     server/src/server_main.cpp
-    server/config.xml)
+    server/config.xml client/src/view/SDL/TextBox.cpp client/src/view/SDL/TextBox.h)
 
 add_executable(metalslug ${SOURCE_FILES})
