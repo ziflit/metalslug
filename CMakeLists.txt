@@ -38,10 +38,14 @@ set(SOURCE_FILES
     server/src/model/game/Background.h
     server/src/model/game/Bullet.cpp
     server/src/model/game/Bullet.h
+    server/src/model/game/Colisionador.cpp
+    server/src/model/game/Colisionador.h
     server/src/model/game/Enemy.cpp
     server/src/model/game/Enemy.h
     server/src/model/game/GameObject.cpp
     server/src/model/game/GameObject.h
+    server/src/model/game/Plataforma.cpp
+    server/src/model/game/Plataforma.h
     server/src/model/game/Player.cpp
     server/src/model/game/Player.h
     server/src/model/game/PlayerBuilder.cpp

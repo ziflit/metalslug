@@ -24,20 +24,31 @@ Server::~Server() {
 void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutils) {
     ConfigsXML configs = server->getConfigs();
     struct xmlConfig globalConf = configs.getGlobalConf();
-    vector<struct xmlPlayer> sprites = configs.getSpritesConfig();
+    vector<struct xmlPlayer> players_sprites = configs.getPlayersConfig();
+    vector<struct xmlEnemy> enemies_sprites = configs.getEnemiesConfig();
     vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
 
     sockutils.writeSocket(clientSocket, &globalConf, sizeof(struct xmlConfig));
 
-    auto sprites_it = sprites.begin();
-    while (sprites_it < sprites.end() - 1) {
-        sprites_it->completion = EventCompletion::PARTIAL_MSG;
-        sockutils.writeSocket(clientSocket, &(*sprites_it), sizeof(struct xmlPlayer));
-        ++sprites_it;
+    auto players_sprites_it = players_sprites.begin();
+    while (players_sprites_it < players_sprites.end() - 1) {
+        players_sprites_it->completion = EventCompletion::PARTIAL_MSG;
+        sockutils.writeSocket(clientSocket, &(*players_sprites_it), sizeof(struct xmlPlayer));
+        ++players_sprites_it;
     }
     /* Mando el último mensaje como FINAL */
-    sprites_it->completion = EventCompletion::FINAL_MSG;
-    sockutils.writeSocket(clientSocket, &(*sprites_it), sizeof(struct xmlPlayer));
+    players_sprites_it->completion = EventCompletion::FINAL_MSG;
+    sockutils.writeSocket(clientSocket, &(*players_sprites_it), sizeof(struct xmlPlayer));
+
+    auto enemies_sprites_it = enemies_sprites.begin();
+    while (enemies_sprites_it < enemies_sprites.end() - 1) {
+        enemies_sprites_it->completion = EventCompletion::PARTIAL_MSG;
+        sockutils.writeSocket(clientSocket, &(*enemies_sprites_it), sizeof(struct xmlEnemy));
+        ++enemies_sprites_it;
+    }
+    /* Mando el último mensaje como FINAL */
+    enemies_sprites_it->completion = EventCompletion::FINAL_MSG;
+    sockutils.writeSocket(clientSocket, &(*enemies_sprites_it), sizeof(struct xmlEnemy));
 
     auto back_it = backgrounds.begin();
     while (back_it < backgrounds.end() - 1) {
@@ -283,7 +294,8 @@ void Server::loadConfigs(){
     XmlLoader loader(xmlConfigPath);
     configs.setGlobalConf(loader.obtainGlobalConfig());
     configs.setBackgroundsConfig(loader.obtainBackgroundsConfig());
-    configs.setSpritesConfig(loader.obtainSpritesConfig());
+    configs.setPlayersConfig(loader.obtainPlayersConfig());
+    configs.setEnemiesConfig(loader.obtainEnemiesConfig());
 }
 
 bool Server::enough_players_to_start() {

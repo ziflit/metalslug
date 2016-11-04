@@ -29,7 +29,9 @@ public:
 
     struct xmlConfig obtainGlobalConfig();
 
-    vector<struct xmlPlayer> obtainSpritesConfig();
+    vector<struct xmlPlayer> obtainPlayersConfig();
+
+    vector<struct xmlEnemy> obtainEnemiesConfig();
 
     vector<struct xmlBackground> obtainBackgroundsConfig();
 

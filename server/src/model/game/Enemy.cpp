@@ -40,15 +40,15 @@ void Enemy::retroceder(){
 };
 
 void Enemy::updatePosition(int posPlayerToFollow) {
-	// Minima logica para seguir a los jugadores
-	if (x < posPlayerToFollow ){
+	// Minima logica para seguir a los jugadores, mejorarla por favor
+	if (x < posPlayerToFollow - 100 ){
 		avanzar();
-	} else {
-		retroceder();
+	} else if (x > posPlayerToFollow + 100 ){
+        retroceder();
 	}
 
 	// Logica insolita para saltar cuando pasa por esas posiciones
-	if (x == 20 || x == 50 || x == 100){
+	if (x == 50 || x == 350 || x == 600){
 		direccionY = 1;
 	}
 

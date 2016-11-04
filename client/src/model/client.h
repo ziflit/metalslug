@@ -53,7 +53,7 @@ public:
 		 */
     void lorem_ipsum(int frec, int max_envios);
 
-    void loadConfigsFromServer(struct xmlConfig globalConf, vector<struct xmlPlayer> spritesConfig, vector<struct xmlBackground> backgroundsConfig);
+    void loadConfigsFromServer(struct xmlConfig globalConf, vector<struct xmlPlayer> playersConfig, vector<struct xmlEnemy> enemiesConfig, vector<struct xmlBackground> backgroundsConfig);
 
     int get_socket();
 
