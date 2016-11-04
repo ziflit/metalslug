@@ -97,30 +97,11 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
     weaponsSourceRect.h = this->frameHeight;
 }
 
-void PlayerSprite::setWeapon(Arma weapon) {
-    this->arma = weapon;
-
-    switch (arma) {
-        case PISTOLA:
-            this->weaponsSourceRect.y = 0;
-        case HEAVY_MACHINEGUN:
-            this->weaponsSourceRect.y = (this->frameHeight * 1 );
-        case ROCKET_LAUNCHER:
-            this->weaponsSourceRect.y = (this->frameHeight * 2 );
-        case BOMBA:
-            this->weaponsSourceRect.y = (this->frameHeight * 3 );
-        case LASER:
-            this->weaponsSourceRect.y = (this->frameHeight * 4 );
-        case SHOTGUN:
-            this->weaponsSourceRect.y = (this->frameHeight * 5 );
-    }
-}
-
 void PlayerSprite::actualizarDibujo() {
     if (dibujar) {
         SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
         SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
-        this->usernameText->renderize(this->destRect.x, (this->destRect.y + (frameHeight + 30) ));
+        this->usernameText->renderize((this->destRect.x + (frameWidth/2)), (this->destRect.y + (frameHeight + 30) ));
     }
 
 }
@@ -168,7 +149,6 @@ void PlayerSprite::setNextSpriteFrame() {
     }
 
 }
-
 
 void PlayerSprite::setWeapon(Arma weapon) {
     this->arma = weapon;
@@ -321,10 +301,6 @@ void PlayerSprite::handle(struct event nuevoEvento) {
             break;
     }
 }
-
-
-
-
 
 void EnemySprite::setWidth(int w) {
     Sprite::setWidth(w);
@@ -533,11 +509,6 @@ void EnemySprite::handle(struct event nuevoEvento) {
             break;
     }
 }
-
-
-
-
-
 
 PlayerSprite::~PlayerSprite() {
     SDL_DestroyTexture(this->weaponsLayer);

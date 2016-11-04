@@ -225,12 +225,7 @@ public:
     void setSourceRectHeight(int h){sourceRect.h = h;}
 };
 
-//_______________________________________________________________________________________________
 
-class EnemySprite : public Sprite {
-
-
-};
 
 
 #endif //SDLBASE_SPRITE_H
