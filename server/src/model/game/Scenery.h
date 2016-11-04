@@ -17,12 +17,14 @@
 #include "../Event.h"
 #include "../ConfigsXML.h"
 #include "Bullet.h"
+#include "Enemy.h"
 
 using namespace std;
 
 class Scenery {
 private:
     vector<Player *> players;
+    vector<Enemy *> enemies;
     vector<GameObject *> backgrounds;
     vector<Bullet> bullets; // las vamos a tener que diferencias para que el colisionador pueda usarlas
     unsigned int windowWidth, windowHeight, playersSpeed;
@@ -30,6 +32,8 @@ private:
 
     // *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
     void addElementToScenery(Player *player);
+
+    void addElementToScenery(Enemy *enemy);
 
     // El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
     void addElementToScenery(Background *background);

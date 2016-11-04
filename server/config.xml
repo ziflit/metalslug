@@ -3,9 +3,9 @@
 		<alto>600</alto>
 		<cant_players>2</cant_players>
 	</config>
-	
-	<sprites>
-		<sprite>
+
+	<players>
+		<player>
 			<id>MARCO</id>
 			<pathColor>sprites/player/marco.png</pathColor>
             <pathGrey>sprites/player/marcoGrisado.png</pathGrey>
@@ -15,8 +15,8 @@
 			<cantWidthFrames>15</cantWidthFrames>
 			<cantHeightFrames>12</cantHeightFrames>
 			<speed>10</speed>
-		</sprite>
-		<sprite>
+		</player>
+		<player>
 			<id>TARMA</id>
 			<pathColor>sprites/player/tarma.png</pathColor>
             <pathGrey>sprites/player/tarmaGrisado.png</pathGrey>
@@ -26,8 +26,8 @@
 			<cantWidthFrames>15</cantWidthFrames>
 			<cantHeightFrames>12</cantHeightFrames>
 			<speed>10</speed>
-		</sprite>
-		<sprite>
+		</player>
+		<player>
 			<id>FIO</id>
 			<pathColor>sprites/player/fio.png</pathColor>
             <pathGrey>sprites/player/fioGrisado.png</pathGrey>
@@ -37,8 +37,8 @@
 			<cantWidthFrames>15</cantWidthFrames>
 			<cantHeightFrames>12</cantHeightFrames>
 			<speed>10</speed>
-		</sprite>
-		<sprite>
+		</player>
+		<player>
 			<id>ERI</id>
 			<pathColor>sprites/player/eri.png</pathColor>
             <pathGrey>sprites/player/eriGrisado.png</pathGrey>
@@ -48,24 +48,55 @@
 			<cantWidthFrames>15</cantWidthFrames>
 			<cantHeightFrames>12</cantHeightFrames>
 			<speed>10</speed>
-		</sprite>
-	</sprites>
+		</player>
+	</players>
+
+	<enemies>
+		<enemy>
+			<id>ENEMY_NORMAL_1</id>
+			<path>sprites/enemies/enemy_normal_1.png</path>
+			<ancho>100</ancho>
+			<alto>100</alto>
+			<cantWidthFrames>15</cantWidthFrames>
+			<cantHeightFrames>12</cantHeightFrames>
+			<speed>10</speed>
+		</enemy>
+		<enemy>
+			<id>ENEMY_NORMAL_2</id>
+			<path>sprites/enemies/enemy_normal_2.png</path>
+			<ancho>100</ancho>
+			<alto>100</alto>
+			<cantWidthFrames>15</cantWidthFrames>
+			<cantHeightFrames>12</cantHeightFrames>
+			<speed>10</speed>
+		</enemy>
+		<enemy>
+			<id>ENEMY_NORMAL_3</id>
+			<path>sprites/enemies/enemy_normal_3.png</path>
+			<ancho>100</ancho>
+			<alto>100</alto>
+			<cantWidthFrames>15</cantWidthFrames>
+			<cantHeightFrames>12</cantHeightFrames>
+			<speed>10</speed>
+		</enemy>
+	</enemies>
+
 	<backgrounds>
 		<background>
 			<id>BACKGROUND_Z0</id>
-			<imagen_fondo>sprites/backgrounds/nub.png</imagen_fondo>
+			<imagen_fondo>sprites/backgrounds/lvl1/z0.png</imagen_fondo>
 			<ancho>4000</ancho>
 			<alto>500</alto>as
 		</background>
 		<background>
 			<id>BACKGROUND_Z1</id>
-			<imagen_fondo>sprites/backgrounds/final.bmp</imagen_fondo>
+			<imagen_fondo>sprites/backgrounds/lvl1/z1.bmp</imagen_fondo>
 			<ancho>8192</ancho>
 			<alto>500</alto>
 		</background>
 		<background>
 			<id>BACKGROUND_Z2</id>
-			<imagen_fondo>sprites/backgrounds/front.bmp</imagen_fondo>
+			<imagen_fondo>sprites/backgrounds/lvl1/z2.bmp</imagen_fondo>
 			<ancho>5000</ancho>
 			<alto>600</alto>
 		</background>

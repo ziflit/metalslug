@@ -82,11 +82,12 @@ public:
 
     void handle(struct event nuevoEvento);
 
-    void clienteConectado(){ this->dibujar = true;}
+    void clientConected(){ this->dibujar = true;}
+
     void actualizarDibujo(){
         if (dibujar) {
             SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
-//            SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
+            SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
     }
 
@@ -120,6 +121,77 @@ public:
     void disparandoAvanzandoMirandoArribaDerecha();
     void disparandoAvanzandoMirandoArribaIzquierda();
 };
+
+class EnemySprite : public Sprite{
+
+private:
+    int wFramesCant,hFramesCant,wActualPosFrame,cambioFrame;
+    SDL_Texture* weaponsLayer;
+    string imgaceColorPath,imageGrisadoPath;
+    bool grisado, dibujar;
+    Arma arma;
+public:
+
+    EnemySprite(SDL_Renderer *renderer, int window_width, int window_height) : Sprite(renderer,window_width,window_height) {
+
+        EnemySprite::set_position(5,550);
+        mirandoDerechaQuieto();
+        setWeapon(PISTOLA);
+        grisado = false;
+        cambioFrame = 0;
+        this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0; //FRAME INICIAL
+        this->weaponsDestRect.x = this->weaponsDestRect.y = 0; //POSICION INICIAL
+    }
+
+    void setWidth(int w);
+
+    void setHeight(int h);
+
+    void setWeapon(Arma weapon);
+
+    void setUpImage(string imageSpritePath,string imageGrisadoPath,
+                    int wFramesCant, int hFramesCant);
+
+    void setUpWeaponsImage(string weaponsPath);
+
+    void handle(struct event nuevoEvento);
+
+    void actualizarDibujo(){
+            SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
+//            SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
+    }
+
+    void grisar();
+    void colorear();
+
+    void setNextSpriteFrame();
+    void caminandoIzquierda();
+    void mirandoArribaCaminandoIzquierda();
+    void agachadoMirandoAIzquierdaQuieto();
+    void mirandoArribaIzquierdaQuieto();
+    void caminandoDerecha();
+    void mirandoArribaCaminandoDerecha();
+    void agachadoMirandoDerechaQuieto();
+    void mirandoArribaDerechaQuieto();
+    void agachadoAvanzandoAIzquierda();
+    void agachadoAvanzandoADerecha();
+    void mirandoDerechaQuieto();
+    void mirandoIzquierdaQuieto();
+
+    void disparandoDerechaQuieto();
+    void disparandoIzquierdaQuieto();
+    void disparandoCaminandoDerecha();
+    void disparandoCaminandoIzquierda();
+    void disparandoAgachadoQuietoDerecha();
+    void disparandoAgachadoQuietoIzquierda();
+    void disparandoAgachadoAvanzandoDerecha();
+    void disparandoAgachadoAvanzandoIzquierda();
+    void disparandoMirandoArribaDerechaQuieto();
+    void disparandoMirandoParaArribaIzquierdaQuieto();
+    void disparandoAvanzandoMirandoArribaDerecha();
+    void disparandoAvanzandoMirandoArribaIzquierda();
+};
+
 
 class BackgroundSprite : public Sprite{
 private:

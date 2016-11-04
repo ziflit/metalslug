@@ -35,7 +35,14 @@ Entity XmlLoader::convertToEntity(string id) {
         }
         else if ("ENEMY_NORMAL_1" == id) {
             return ENEMY_NORMAL_1;
-        } else {
+        }
+        else if ("ENEMY_NORMAL_2" == id) {
+            return ENEMY_NORMAL_2;
+        }
+        else if ("ENEMY_NORMAL_3" == id) {
+            return ENEMY_NORMAL_3;
+        }
+        else {
             return NOPLAYER;
         }
 
@@ -68,29 +75,31 @@ vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
     return configs;
 }
 
-vector<struct xmlPlayer> XmlLoader::obtainSpritesConfig() {
-//Cargo los sprites
+vector<struct xmlPlayer> XmlLoader::obtainPlayersConfig() {
+//Cargo los players
     xml_document<> doc;
     file<> xmlFile(path.c_str()); //open file
     doc.parse<0>(xmlFile.data());
     vector<struct xmlPlayer> configs;
-    xml_node<> *sprites = doc.first_node("sprites");
-    for (xml_node<> *sprite = sprites->first_node("sprite"); sprite; sprite =
-            sprite->next_sibling()) {
-        xml_node<> *id = sprite->first_node("id");
-        xml_node<> *pathColor = sprite->first_node("pathColor");
-        xml_node<> *pathGrey = sprite->first_node("pathGrey");
-        xml_node<> *ancho = sprite->first_node("ancho");
-        xml_node<> *alto = sprite->first_node("alto");
-        xml_node<> *cantWidthFrames = sprite->first_node("cantWidthFrames");
-        xml_node<> *cantHeightFrames = sprite->first_node("cantHeightFrames");
-        xml_node<> *speed = sprite->first_node("speed");
+
+    xml_node<> *players = doc.first_node("players");
+    for (xml_node<> *player = players->first_node("player"); player; player = player->next_sibling()) {
+        xml_node<> *id = player->first_node("id");
+        xml_node<> *pathColor = player->first_node("pathColor");
+        xml_node<> *pathGrey = player->first_node("pathGrey");
+        xml_node<> *pathWeapons = player->first_node("pathWeapons");
+        xml_node<> *ancho = player->first_node("ancho");
+        xml_node<> *alto = player->first_node("alto");
+        xml_node<> *cantWidthFrames = player->first_node("cantWidthFrames");
+        xml_node<> *cantHeightFrames = player->first_node("cantHeightFrames");
+        xml_node<> *speed = player->first_node("speed");
 
         struct xmlPlayer playerConfig;
         playerConfig.completion = EventCompletion::PARTIAL_MSG;
         playerConfig.id = this->convertToEntity(id->value());
         strcpy(playerConfig.pathColor, pathColor->value());
         strcpy(playerConfig.pathGrey, pathGrey->value());
+        strcpy(playerConfig.pathWeapons,pathWeapons->value());
         playerConfig.ancho = atoi(ancho->value());
         playerConfig.alto = atoi(alto->value());
         playerConfig.cantWidthFrames = atoi(cantWidthFrames->value());
@@ -98,6 +107,38 @@ vector<struct xmlPlayer> XmlLoader::obtainSpritesConfig() {
         playerConfig.speed = atoi(speed->value());
 
         configs.push_back(playerConfig);
+    }
+    configs.back().completion = EventCompletion::FINAL_MSG;
+    return configs;
+}
+
+vector<struct xmlEnemy> XmlLoader::obtainEnemiesConfig() {
+//Cargo los enemies
+    xml_document<> doc;
+    file<> xmlFile(path.c_str()); //open file
+    doc.parse<0>(xmlFile.data());
+    vector<struct xmlEnemy> configs;
+    xml_node<> *enemies = doc.first_node("enemies");
+    for (xml_node<> *enemy = enemies->first_node("enemy"); enemy; enemy = enemy->next_sibling()) {
+        xml_node<> *id = enemy->first_node("id");
+        xml_node<> *path = enemy->first_node("path");
+        xml_node<> *ancho = enemy->first_node("ancho");
+        xml_node<> *alto = enemy->first_node("alto");
+        xml_node<> *cantWidthFrames = enemy->first_node("cantWidthFrames");
+        xml_node<> *cantHeightFrames = enemy->first_node("cantHeightFrames");
+        xml_node<> *speed = enemy->first_node("speed");
+
+        struct xmlEnemy enemyConfig;
+        enemyConfig.completion = EventCompletion::PARTIAL_MSG;
+        enemyConfig.id = this->convertToEntity(id->value());
+        strcpy(enemyConfig.path, path->value());
+        enemyConfig.ancho = atoi(ancho->value());
+        enemyConfig.alto = atoi(alto->value());
+        enemyConfig.cantWidthFrames = atoi(cantWidthFrames->value());
+        enemyConfig.cantHeightFrames = atoi(cantHeightFrames->value());
+        enemyConfig.speed = atoi(speed->value());
+
+        configs.push_back(enemyConfig);
     }
     configs.back().completion = EventCompletion::FINAL_MSG;
     return configs;

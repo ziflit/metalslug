@@ -18,15 +18,23 @@ Scenery::Scenery(ConfigsXML configs) {
 void Scenery::initializeFromXML(ConfigsXML configs) {
     this->windowWidth = configs.getGlobalConf().ancho;
     this->windowHeight = configs.getGlobalConf().alto;
-    this->playersSpeed = configs.getSpritesConfig()[0].speed;
+    this->playersSpeed = configs.getPlayersConfig()[0].speed;
 
     vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
+
+    // Probando para ver si funcionan los enemigos
+    Enemy *enemy = new Enemy(ENEMY_NORMAL_1, 3500, 400);
+    enemies.push_back(enemy);
+    Enemy *enemy2 = new Enemy(ENEMY_NORMAL_2, 5200, 400);
+    enemies.push_back(enemy2);
+    Enemy *enemy3 = new Enemy(ENEMY_NORMAL_3, 1500, 400);
+    enemies.push_back(enemy3);
+    //------------------------------------------------------
 
     for (auto backgroundConfig : backgroundConfigs) {
         Background* newBackground = new Background(backgroundConfig.id,playersSpeed,
                                                 backgroundConfig.ancho,windowWidth);
         this->backgrounds.push_back(newBackground);
-
     }
     ((Background*)backgrounds[0])->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, playersSpeed);
 }
@@ -39,7 +47,6 @@ Entity Scenery::buildPlayer(string user) {
 
     PlayerBuilder playerBuilder;
     Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth);
-    newPlayer->setSpeed(this->playersSpeed);
     if (newPlayer != nullptr) {
         newPlayer->setSpeed(this->playersSpeed);
         this->addElementToScenery(newPlayer);
@@ -93,25 +100,19 @@ bool Scenery::hayJugadorEnBordeIzq() {
 }
 
 bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
-
     for (auto player : players) {
         if ((player->getPostura() != Postura::DESCONECTADO) and
             ((player->getX() >= ((windowWidth / 2) - 100)) and (player->getDireccionX() == 1))) {
             return true;
         }
     }
-
     return false;
 }
 
 void Scenery::updateBackgroudsState() {
-
     if ((not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
-
         for (auto background : backgrounds) {
-
             background->avanzar();
-
             /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
              * el asociado a los players debe avanzar exactamente igual que ellos.
              * Es por eso que tiene seteada igual velocidad.
@@ -122,7 +123,6 @@ void Scenery::updateBackgroudsState() {
                 player->retroceder();
             }
         }
-
     }
 }
 
@@ -134,6 +134,11 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     for (auto player : players) {
         player->updatePosition(all_objects_in_window);
         eventsToReturn.push_back(player->getState());
+    }
+
+    for (auto enemy : enemies) {
+        enemy->updatePosition(players[0]->getX()); //Van a seguir siempre al player 1 por ahora
+        eventsToReturn.push_back(enemy->getState());
     }
 
     updateBackgroudsState();
@@ -150,11 +155,17 @@ void Scenery::addElementToScenery(Player *player) {
     players.push_back(player);
 }
 
+void Scenery::addElementToScenery(Enemy *enemy) {
+    enemies.push_back(enemy);
+}
+
 void Scenery::addElementToScenery(Background *background) {
     backgrounds.push_back(background);
 }
 
 Scenery::~Scenery() {
+    // TODO destruir los putos vectores, tenemos un memory leak
+    // del tamaño de una casa?
 }
 
 vector<GameObject*> Scenery::getVisibleObjects() {
@@ -162,6 +173,14 @@ vector<GameObject*> Scenery::getVisibleObjects() {
     for (auto &player : players) {
         todos.push_back(player);
     }
-    // TODO Faltan todas las otras cosas!
+    for (auto &gobject : backgrounds) {
+        todos.push_back(gobject);
+    }
+    for (auto &enemy : enemies) {
+        todos.push_back(enemy);
+    }
+    for (auto &bullet : bullets) {
+        todos.push_back(bullet);
+    }
     return todos;
 }

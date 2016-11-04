@@ -1,5 +1,5 @@
 /*
- * ConfigsXML.h
+ * Configs.h
  *
  *  Created on: Oct 17, 2016
  *      Author: leandro
@@ -15,7 +15,9 @@ class ConfigsXML {
 private:
     struct xmlConfig globalConf;
     vector<struct xmlBackground> backgroundsConfig;
-    vector<struct xmlPlayer> spritesConfig;
+    vector<struct xmlPlayer> playersConfig;
+    vector<struct xmlEnemy> enemiesConfig;
+    
 public:
 
     ConfigsXML(){};
@@ -37,12 +39,20 @@ public:
         this->globalConf = globalConf;
     }
 
-    vector<struct xmlPlayer> getSpritesConfig() {
-        return spritesConfig;
+    vector<struct xmlPlayer> getPlayersConfig() {
+        return playersConfig;
     }
 
-    void setSpritesConfig(vector<struct xmlPlayer> spritesConfig) {
-        this->spritesConfig = spritesConfig;
+    void setPlayersConfig(vector<struct xmlPlayer> playersConfig) {
+        this->playersConfig = playersConfig;
+    }
+
+    vector<struct xmlEnemy> getEnemiesConfig() {
+        return enemiesConfig;
+    }
+
+    void setEnemiesConfig(vector<struct xmlEnemy> enemiesConfig) {
+        this->enemiesConfig = enemiesConfig;
     }
 };
 

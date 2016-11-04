@@ -17,6 +17,7 @@ private:
     int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
     vector<BackgroundSprite*> backgroundSprites;
     vector<PlayerSprite*> playersSprites;
+    vector<EnemySprite*> enemiesSprites;
 
 
 public:
@@ -27,6 +28,8 @@ public:
     void audioInitialization();
 
     void getSpriteAndSend(Entity id, event nuevoEvento );
+
+    EnemySprite* getEnemy(Entity id);
 
     PlayerSprite* getPlayer(Entity id);
 

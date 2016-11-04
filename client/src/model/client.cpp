@@ -58,12 +58,20 @@ bool Client::connect_to_server(string ip, int port, string user) {
     recv(socket_number, &globalConf, sizeof(struct xmlConfig), 0);
 
     /* Recepción de configuraciones de sprites de jugadores */
-    vector<struct xmlPlayer> spritesConfig;
-    struct xmlPlayer spriteSetup;
+    vector<struct xmlPlayer> playersConfig;
+    struct xmlPlayer playerSetup;
     do {
-        recv(socket_number, &spriteSetup, sizeof(struct xmlPlayer), 0);
-        spritesConfig.emplace_back(spriteSetup);
-    } while (spriteSetup.completion != EventCompletion::FINAL_MSG);
+        recv(socket_number, &playerSetup, sizeof(struct xmlPlayer), 0);
+		playersConfig.emplace_back(playerSetup);
+    } while (playerSetup.completion != EventCompletion::FINAL_MSG);
+
+    /* Recepción de configuraciones de sprites de enemigos */
+    vector<struct xmlEnemy> enemiesConfig;
+    struct xmlEnemy enemySetup;
+    do {
+        recv(socket_number, &enemySetup, sizeof(struct xmlEnemy), 0);
+        enemiesConfig.emplace_back(enemySetup);
+    } while (enemySetup.completion != EventCompletion::FINAL_MSG);
 
     /* Recepción de configuraciones de backgrounds */
     vector<struct xmlBackground> backgroundsConfig;
@@ -74,7 +82,7 @@ bool Client::connect_to_server(string ip, int port, string user) {
     } while (backSetup.completion != EventCompletion::FINAL_MSG);
 
     /* Una vez recibidas las configuraciones las aplico en el cliente */
-    loadConfigsFromServer(globalConf, spritesConfig, backgroundsConfig );
+    loadConfigsFromServer(globalConf, playersConfig, enemiesConfig , backgroundsConfig );
     // TODO Enviar a SDL las configuraciones
 
     /* Lanzo el handler del cliente */
@@ -140,8 +148,9 @@ int Client::get_socket() {
 	return socket_number;
 }
 
-void Client::loadConfigsFromServer(struct xmlConfig globalConf, vector<struct xmlPlayer> spritesConfig, vector<struct xmlBackground> backgroundsConfig){
+void Client::loadConfigsFromServer(struct xmlConfig globalConf, vector<struct xmlPlayer> playersConfig, vector<struct xmlEnemy> enemiesConfig, vector<struct xmlBackground> backgroundsConfig){
     configs.setGlobalConf(globalConf);
-    configs.setSpritesConfig(spritesConfig);
+	configs.setPlayersConfig(playersConfig);
+	configs.setEnemiesConfig(enemiesConfig);
     configs.setBackgroundsConfig(backgroundsConfig);
 }
