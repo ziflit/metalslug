@@ -80,7 +80,7 @@ struct event Player::getState() {
     eventExt.code = EventCode::PLAYER_STATUS;
     eventExt.id = this->id;
 
-    sprintf(eventExt.username, "%.4s", this->username.c_str());
+    sprintf(eventExt.username, "%.20s", this->username.c_str());
 
     eventExt.x = x;  //Actualizo la posicion del player
     eventExt.y = y;

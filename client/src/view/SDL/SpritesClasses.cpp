@@ -120,7 +120,7 @@ void PlayerSprite::actualizarDibujo() {
     if (dibujar) {
         SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
         SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
-        this->usernameText->renderize(this->destRect.x, (this->destRect.y -10));
+        this->usernameText->renderize(this->destRect.x, (this->destRect.y + (frameHeight + 30) ));
     }
 
 }
@@ -233,7 +233,7 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
 void PlayerSprite::clientConected(struct event nuevoEvento) {
     this->dibujar = true;
     stpcpy(this->username , nuevoEvento.data.username);
-    this->usernameText = new TextBox(this->username, this->renderer, {0, 255, 2, 255});
+    this->usernameText = new TextBox(this->username, this->renderer, {10, 255, 2, 255});
 }
 
 

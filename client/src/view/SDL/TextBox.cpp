@@ -33,9 +33,10 @@ void TextBox::renderize() {
     SDL_RenderCopy(mainRenderer, text, NULL, &textRect);
 }
 
-// Loads a font, nothing fancy.
-// Put sensible error handling code in. If you pass the NULL in later on,
-// SDL_ttf dies pretty horribly.
+/** Loads a font, nothing fancy.
+* Put sensible error handling code in. If you pass the NULL in later on,
+* SDL_ttf dies pretty horribly.
+*/
 TTF_Font* TextBox::loadfont(char* file, int ptsize) {
     TTF_Font* tmpfont;
     tmpfont = TTF_OpenFont(file, ptsize);
