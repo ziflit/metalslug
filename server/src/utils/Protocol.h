@@ -111,6 +111,7 @@ enum Arma{
 struct event_ext {
 	EventCode code;
 	Entity id;
+    char username[20];
 	int x;
 	int y;
 	Postura postura;
@@ -161,7 +162,6 @@ struct xmlBackground {
 	char path[40];
 	int ancho;
 	int alto;
-	int zindex;
 };
 //---------------------------------------------------
 
