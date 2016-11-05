@@ -35,6 +35,7 @@ public:
 
 	void avanzar();
 
+    bool avanzarFrame();
 
     float getSpeed() const {
 		return speed;
@@ -59,7 +60,6 @@ public:
 	void setY(int y) {
 		this->y = y;
 	}
-
 };
 
 #endif /* SRC_MODEL_GAME_BACKGROUND_H_ */
