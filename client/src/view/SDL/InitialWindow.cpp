@@ -75,7 +75,7 @@ void InitialWindow::showStartScreen() {
     }
 
     BackgroundSprite* waitingPlayers = new BackgroundSprite(mainRender,800,600);
-    waitingPlayers->setUpImage("sprites/backgrounds/startScreen.png");
+    waitingPlayers->setUpImage("sprites/backgrounds/waitingPlayers.png");
     waitingPlayers->setSourceRectWidth(startBack->getSpriteImageWidth());
     waitingPlayers->setSourceRectHeight(startBack->getSpriteImageHeight());
     SDL_RenderClear(this->mainRender);
