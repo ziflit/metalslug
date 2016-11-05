@@ -5,6 +5,7 @@
 
 Scenery::Scenery(ConfigsXML configs) {
     this->initializeFromXML(configs);
+    cantPlayers = 0;
 }
 void Scenery::initializeFromXML(ConfigsXML configs) {
     this->windowWidth = configs.getGlobalConf().ancho;
@@ -41,10 +42,11 @@ Entity Scenery::buildPlayer(string user) {
     if (newPlayer != nullptr) {
         newPlayer->setSpeed(this->playersSpeed);
         this->addElementToScenery(newPlayer);
-
+        cantPlayers++;
     } else {
         return NOPLAYER;
     }
+
     return newPlayer->getEntity();
 }
 
@@ -119,6 +121,7 @@ void Scenery::updateBackgroudsState() {
 
 vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
+    int i = 0;
 
     for (auto player : players) {
         player->updatePosition();
@@ -126,8 +129,12 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     }
 
     for (auto enemy : enemies) {
-        enemy->updatePosition(players[0]->getX()); //Van a seguir siempre al player 1 por ahora
+        if (i == cantPlayers){
+            i=0;  
+        } 
+        enemy->updatePosition(players[i]->getX()); 
         eventsToReturn.push_back(enemy->getState());
+        i++;
     }
 
     updateBackgroudsState();
