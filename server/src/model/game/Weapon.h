@@ -3,7 +3,8 @@
 
 
 #include "GameObject.h"
-#include "Bullet.h"
+
+class Bullet;
 
 class Weapon : public GameObject {
 private:

@@ -69,6 +69,13 @@ public:
     virtual ~AnimatedObject() {
         //delete this->weapon;
     }
+    bool getShootingState() {
+        return isShooting;
+    }
+
+    void setShootingState(bool shootingState){
+        this->isShooting = shootingState;
+    }
 };
 
 

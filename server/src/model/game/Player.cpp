@@ -47,13 +47,6 @@ bool Player::isJumping() {
     return (Player::direccionY == 1);
 }
 
-bool getShootingState(){
-    return isShooting;
-}
-
-void setShootingState(bool shootingState){
-    this->isShooting = shootingState;
-}
 
 void Player::updatePosition() {
     if (this->postura != DESCONECTADO) {
