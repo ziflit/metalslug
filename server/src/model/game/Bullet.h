@@ -13,14 +13,17 @@ class Bullet : public AnimatedObject{
 private:
     int damage;
 public:
+    Bullet(Entity bulletType, int bulletSpeed, int spawnX, int spawnY, int direccionY, int direccionX);
+
+    virtual ~Bullet();
+    
     int getDamage() const;
 
     void setDamage(int damage);
 
-public:
     virtual event getState() override;
 
-    virtual void avanzar() override;
+    virtual void avanzar(int dirX, int dirY, int some_enemy_posX, int some_enemy_posY);
 };
 
 

@@ -70,7 +70,7 @@ struct event Enemy::getState() {
     eventExt.code = EventCode::ENEMY_STATUS;
     eventExt.id = id;
 
-    eventExt.x = x;  //Actualizo la posicion del player
+    eventExt.x = x;  //Actualizo la posicion del enemy
     eventExt.y = y;
     eventExt.postura = this->postura;
 
