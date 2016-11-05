@@ -16,6 +16,7 @@ protected:
     int direccionX;
     int direccionY;
     Postura postura;
+    bool isShooting;
 public:
     Postura getPostura() {
         return postura;

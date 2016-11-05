@@ -1,16 +1,32 @@
 #include "Bullet.h"
 
-Bullet::Bullet(Entity bulletType, int bulletSpeed, int spawnX, int spawnY, int direccionY, int direccionX) {
+Bullet::Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int direccionX) {
     id = bulletType;
     x = spawnX;
     y = spawnY;
     this->direccionY = direccionY;
     this->direccionX = direccionX;
-    speed = bulletSpeed;
+    switch(bulletType) {
+        case Entity::BT_HEAVY_BULLET:
+            speed = 60;
+            break;
+        case Entity::BT_MISSILE:
+            speed = 30;
+            break;
+        case Entity::BT_TELE_MISSILE:
+            speed = 10;
+            break;
+        case Entity::BT_SHOT:
+            speed = 20;
+            break;
+        default:
+            speed = 50;
+            break;
+    }
 }
 
 Bullet::~Bullet() {
-};
+}
 
 event Bullet::getState() {
     struct event estado;

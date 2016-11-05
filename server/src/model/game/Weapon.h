@@ -3,15 +3,15 @@
 
 
 #include "GameObject.h"
+#include "Bullet.h"
 
 class Weapon : public GameObject {
 private:
+    Entity typeOfWeapon;
+    Entity typeOfBullet;
     int ammo;
 public:
-    void shoot(){
-        ammo--;
-        // esto va a cambiar y va a soltar una proyectil o algo (Hay que decidirlo)
-    };
+    Bullet* shoot();
 
     virtual event getState() override;
 

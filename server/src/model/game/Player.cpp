@@ -28,6 +28,7 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     gravity = 10;
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
+    isShooting = false;
 }
 
 Player::~Player() {
@@ -44,6 +45,14 @@ bool Player::isMoving() {
 
 bool Player::isJumping() {
     return (Player::direccionY == 1);
+}
+
+bool getShootingState(){
+    return isShooting;
+}
+
+void setShootingState(bool shootingState){
+    this->isShooting = shootingState;
 }
 
 void Player::updatePosition() {

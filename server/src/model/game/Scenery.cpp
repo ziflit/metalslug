@@ -124,6 +124,9 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     int i = 0;
 
     for (auto player : players) {
+        if (player->isShooting){
+            bullets.push_back(player->getWeapon()->shoot());
+        }
         player->updatePosition();
         eventsToReturn.push_back(player->getState());
     }
@@ -149,6 +152,10 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
 
 void Scenery::addElementToScenery(Player *player) {
     players.push_back(player);
+}
+
+void Scenery::addElementToScenery(Bullet *bullet) {
+    bullets.push_back(bullet);
 }
 
 void Scenery::addElementToScenery(Enemy *enemy) {
