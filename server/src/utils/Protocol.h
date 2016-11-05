@@ -76,7 +76,8 @@ enum Entity {
 	BT_BOMB,
 	MSC_WEAPON_BOX, 	// MSC = Miscelanea
 	MSC_POWER_BONUS,
-	MSC_BONUS_KILLALL
+	MSC_BONUS_KILLALL,
+	MSC_PLATFORM
 };
 
 enum Postura{

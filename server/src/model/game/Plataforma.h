@@ -2,11 +2,12 @@
 #define SRC_MODEL_GAME_PLATAFORMA_H_
 
 #include "GameObject.h"
+#include "../../utils/Protocol.h"
 
 class Plataforma : public GameObject {
 
 public:
-	Plataforma();
+	Plataforma(int posX, int posY, int ancho, int largo);
 	virtual ~Plataforma();
 };
 
