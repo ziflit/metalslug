@@ -8,6 +8,9 @@ void InitialWindow::initializeSDL() {
         cout<<"There was error initializing SDL: "<< endl
             <<SDL_GetError() << endl;
     }
+    if(TTF_Init() < 0){
+        cout<<"There was error initializig TTF: "<< TTF_GetError()<<endl;
+    }
 }
 
 SDL_Window* InitialWindow::createWindow(const char *windowName, unsigned int window_width, unsigned int window_height) {
@@ -72,7 +75,7 @@ void InitialWindow::showStartScreen() {
     }
 
     BackgroundSprite* waitingPlayers = new BackgroundSprite(mainRender,800,600);
-    waitingPlayers->setUpImage("sprites/backgrounds/startScreen.png");
+    waitingPlayers->setUpImage("sprites/backgrounds/waitingPlayers.png");
     waitingPlayers->setSourceRectWidth(startBack->getSpriteImageWidth());
     waitingPlayers->setSourceRectHeight(startBack->getSpriteImageHeight());
     SDL_RenderClear(this->mainRender);

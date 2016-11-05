@@ -86,18 +86,18 @@
 			<id>BACKGROUND_Z0</id>
 			<imagen_fondo>sprites/backgrounds/lvl1/z0.png</imagen_fondo>
 			<ancho>4000</ancho>
-			<alto>500</alto>as
+			<alto>600</alto>
 		</background>
 		<background>
 			<id>BACKGROUND_Z1</id>
-			<imagen_fondo>sprites/backgrounds/lvl1/z1.bmp</imagen_fondo>
+			<imagen_fondo>sprites/backgrounds/lvl1/z1.png</imagen_fondo>
 			<ancho>8192</ancho>
-			<alto>500</alto>
+			<alto>600</alto>
 		</background>
 		<background>
 			<id>BACKGROUND_Z2</id>
-			<imagen_fondo>sprites/backgrounds/lvl1/z2.bmp</imagen_fondo>
-			<ancho>5000</ancho>
+			<imagen_fondo>sprites/backgrounds/lvl1/z2.png</imagen_fondo>
+			<ancho>8192</ancho>
 			<alto>600</alto>
 		</background>
 	</backgrounds>

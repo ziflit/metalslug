@@ -4,18 +4,11 @@
 #include "PlayerBuilder.h"
 
 Scenery::Scenery(ConfigsXML configs) {
-    //TODO: Esto se va a cargar en base al XML para inicializar el escenario, o algo asi
     this->initializeFromXML(configs);
-
-
-    //TODO: setear la velocidad de avance de cada background, el asociado a los players debe tener igual velocidad que ellos.
-    //TODO: definir si del XML tambien se setea la cantidad de jugadores.
-    //TODO: el seteo de cada jugador.
 }
-//______________________________________________________________________________________________________________________
-//PROCESAMIENTO DE EVENTOS:
-
 void Scenery::initializeFromXML(ConfigsXML configs) {
+    this->nivelEnded = false;
+
     this->windowWidth = configs.getGlobalConf().ancho;
     this->windowHeight = configs.getGlobalConf().alto;
     this->playersSpeed = configs.getPlayersConfig()[0].speed;
@@ -90,6 +83,9 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys) {
 
 
 bool Scenery::hayJugadorEnBordeIzq() {
+    if(this->nivelEnded){
+        return true;
+    }
     for (auto player: players) {
         if ((player->getPostura() != Postura::DESCONECTADO) and (player->getX() <= 0)) {
             return true;
@@ -112,7 +108,7 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
 void Scenery::updateBackgroudsState() {
     if ((not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
         for (auto background : backgrounds) {
-            background->avanzar();
+            this->nivelEnded = ((Background*)background)->avanzarFrame();
             /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
              * el asociado a los players debe avanzar exactamente igual que ellos.
              * Es por eso que tiene seteada igual velocidad.
@@ -175,3 +171,4 @@ vector<GameObject*> Scenery::getVisibleObjects() {
     }
     return todos;
 }
+

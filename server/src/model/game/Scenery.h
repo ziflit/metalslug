@@ -23,6 +23,7 @@ using namespace std;
 
 class Scenery {
 private:
+    bool nivelEnded;
     vector<Player *> players;
     vector<Enemy *> enemies;
     vector<GameObject *> backgrounds;
