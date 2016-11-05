@@ -155,6 +155,10 @@ void Scenery::addElementToScenery(Enemy *enemy) {
     enemies.push_back(enemy);
 }
 
+void Scenery::addElementToScenery(Plataforma *platform) {
+    miscs.push_back(platform);
+}
+
 void Scenery::addElementToScenery(Background *background) {
     backgrounds.push_back(background);
 }

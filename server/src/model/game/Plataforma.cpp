@@ -7,9 +7,12 @@
 
 #include "Plataforma.h"
 
-Plataforma::Plataforma() {
-	// TODO Auto-generated constructor stub
-
+Plataforma::Plataforma(int posX, int posY, int ancho, int largo) {
+    id = MSC_PLATFORM;
+    x = posX;
+    y = posY;
+    box_ancho = ancho;
+    box_alto = largo;
 }
 
 Plataforma::~Plataforma() {
