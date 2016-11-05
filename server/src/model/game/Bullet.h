@@ -20,9 +20,10 @@ public:
 
     void setDamage(int damage);
 
-    virtual event getState();
+    virtual event getState() override;
 
-    virtual void avanzar(int dirX, int dirY, int some_enemy_posX, int some_enemy_posY);
+    void avanzar(int dirX, int dirY, int some_enemy_posX, int some_enemy_posY);
+
 };
 
 

@@ -29,6 +29,8 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
     isShooting = false;
+    isJumping = false;
+    bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
 }
 
 Player::~Player() {
@@ -43,10 +45,18 @@ bool Player::isMoving() {
     return (Player::direccionX != 0); // en -1 y 1 se esta moviendo
 }
 
-bool Player::isJumping() {
-    return (Player::direccionY == 1);
+bool Player::haveBullets(){
+    if (ammo > 0){
+        return true;
+    }
+    return false;
 }
 
+Bullet* Player::shoot(){
+    Bullet* bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY);
+    ammo--;
+    return bullet;
+};
 
 void Player::updatePosition() {
     if (this->postura != DESCONECTADO) {
@@ -57,12 +67,12 @@ void Player::updatePosition() {
             }
         }
 
-        if (this->isJumping()) {
+        if (this->getJumpingState()) {
             if (posAtJump < 24) {
                 posAtJump++;
                 y = 400 - jumpPos[posAtJump];
             } else {
-                direccionY = 0;
+                isJumping = false;
                 posAtJump = 0;
             }
         }

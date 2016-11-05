@@ -22,8 +22,6 @@ public:
 
     virtual event getState() override;
 
-    bool isJumping();
-
     void avanzar();
 
     void retroceder();

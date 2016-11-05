@@ -7,16 +7,18 @@
 
 
 #include "GameObject.h"
-#include "Weapon.h"
 
 class AnimatedObject : public GameObject {
 protected:
     int health;
-    Weapon *weapon;
+    int ammo;
+    Entity bulletType;
     int direccionX;
     int direccionY;
     Postura postura;
     bool isShooting;
+    bool isJumping;
+
 public:
     Postura getPostura() {
         return postura;
@@ -58,14 +60,6 @@ public:
         }
     }
 
-    Weapon *getWeapon() {
-        return weapon;
-    }
-
-    void setWeapon(Weapon *weapon) {
-        AnimatedObject::weapon = weapon;
-    }
-
     virtual ~AnimatedObject() {
         //delete this->weapon;
     }
@@ -75,6 +69,14 @@ public:
 
     void setShootingState(bool shootingState){
         this->isShooting = shootingState;
+    }
+
+    bool getJumpingState() {
+        return isJumping;
+    }
+
+    void setJumpingState(bool jumpingState){
+        this->isJumping = jumpingState;
     }
 };
 

@@ -11,6 +11,7 @@
 #include <string>
 #include "../../utils/Protocol.h"
 #include "AnimatedObject.h"
+#include "Bullet.h"
 
 class Player : public AnimatedObject{
 private:
@@ -28,9 +29,11 @@ public:
 
     struct event getState() override ;
 
-    bool isJumping();
-
     bool isMoving();
+
+    bool haveBullets();
+ 
+    Bullet* shoot();
 
     void avanzar() override { x += speed; };
 
