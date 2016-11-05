@@ -22,7 +22,7 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
      */
     x = 5;
     y = 400;
-    box_alto = 100;
+    box_alto = 100; // TODO inicializar esto desde el XML y no acá
     box_ancho = 50;
     direccionY = 0;
     direccionX = 0;
@@ -30,6 +30,8 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     gravity = 10;
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
+    this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_SHOT, BT_BOMB,
+                           MSC_BONUS_KILLALL, MSC_POWER_BONUS, MSC_BONUS_KILLALL};
 }
 
 Player::~Player() {
@@ -105,7 +107,7 @@ bool Player::canIMove(vector<GameObject*> game_objects, int newX, int newY) {
     bool isColisionanding;
     for (auto &game_object : game_objects) {
         // Checkeo de colisiones
-        if (puedenColisionar(this, game_object)) {
+        if (this->puedenColisionar(game_object)) {
             isColisionanding = this->checkCollition(newX, newY, game_object);
             if (isColisionanding) {
                 // resolucion de colisiones con el game_object:

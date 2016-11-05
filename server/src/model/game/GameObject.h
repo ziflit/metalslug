@@ -2,6 +2,7 @@
 #define SERVER_GAMEOBJECT_H
 
 #include "../../utils/Protocol.h"
+#include <vector>
 
 class GameObject {
     protected:
@@ -11,6 +12,7 @@ class GameObject {
     float speed;
     int box_alto;
     int box_ancho;
+    vector<Entity> colisionables;
 
     public:
 
@@ -48,7 +50,7 @@ class GameObject {
 
     bool checkCollition(int newX, int newY ,GameObject* other_object);
 
-    bool puedenColisionar(GameObject *obj1, GameObject *obj2);
+    bool puedenColisionar(GameObject *otherObj);
 };
 
 #endif //SERVER_GAMEOBJECT_H
