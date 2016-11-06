@@ -18,6 +18,7 @@
 #include "../ConfigsXML.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Plataforma.h"
 
 using namespace std;
 
@@ -27,7 +28,9 @@ private:
     vector<Player *> players;
     vector<Enemy *> enemies;
     vector<GameObject *> backgrounds;
+    vector<GameObject *> miscs;  // Se utiliza para plataformas, cajas y elementos bonus
     vector<Bullet> bullets; // las vamos a tener que diferencias para que el colisionador pueda usarlas
+
     unsigned int windowWidth, windowHeight, playersSpeed;
     void initializeFromXML(ConfigsXML configs);
 
@@ -35,6 +38,8 @@ private:
     void addElementToScenery(Player *player);
 
     void addElementToScenery(Enemy *enemy);
+
+    void addElementToScenery(Plataforma *platform);
 
     // El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
     void addElementToScenery(Background *background);
@@ -63,6 +68,7 @@ public:
 
     int findPlayerByUsername(string user);
 
+    vector<GameObject*> getVisibleObjects();
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */
