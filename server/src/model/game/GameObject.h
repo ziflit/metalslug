@@ -20,6 +20,8 @@ class GameObject {
 
     virtual void avanzar()= 0;
 
+    int retroceder(int cantidad);
+
     Entity getEntity() const;
 
     void setEntity(Entity entity);

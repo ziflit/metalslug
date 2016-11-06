@@ -19,3 +19,19 @@ Plataforma::~Plataforma() {
 	// TODO Auto-generated destructor stub
 }
 
+void Plataforma::avanzar() { return; }
+
+struct event Plataforma::getState() {
+    struct event estado;
+    struct event_ext eventExt;
+    eventExt.code = EventCode::BACKGROUND_STATUS; // TODO No va
+    eventExt.id = this->id;
+
+    eventExt.x = x;
+    eventExt.y = y;
+
+    estado.completion = EventCompletion::PARTIAL_MSG;
+    estado.data = eventExt;
+
+    return estado;
+}
