@@ -393,7 +393,7 @@ void EnemySprite::setNextSpriteFrame() {
     }
 
 }
-//TODO: setear el arma.
+
 void EnemySprite::caminandoIzquierda() {
     EnemySprite::setNextSpriteFrame();
     EnemySprite::sourceRect.y = 0;

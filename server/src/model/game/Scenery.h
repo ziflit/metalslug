@@ -23,6 +23,7 @@ using namespace std;
 
 class Scenery {
 private:
+    bool nivelEnded;
     vector<Player *> players;
     vector<Enemy *> enemies;
     vector<GameObject *> backgrounds;
@@ -66,6 +67,7 @@ public:
     vector<struct event> obtenerEstadoEscenario();
 
     int findPlayerByUsername(string user);
+
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */
