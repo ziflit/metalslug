@@ -31,7 +31,8 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_SHOT, BT_BOMB,
-                           MSC_BONUS_KILLALL, MSC_POWER_BONUS, MSC_BONUS_KILLALL};
+                           MSC_BONUS_KILLALL, MSC_POWER_BONUS, MSC_BONUS_KILLALL,
+                           MSC_PLATFORM};
 }
 
 Player::~Player() {
@@ -70,8 +71,7 @@ void Player::updatePosition(vector<GameObject*> game_objects) {
         }
 
         if (this->canIMove(game_objects, newX, newY)) {
-            x = newX;
-            y = newY;
+            this->set_position(newX, newY);
         }
 
     } else {

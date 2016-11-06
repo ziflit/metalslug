@@ -80,3 +80,8 @@ bool GameObject::puedenColisionar(GameObject* otherObj) {
     }
     return false;
 }
+
+int GameObject::retroceder(int cantidad) {
+    this->x -= cantidad;
+    return x;
+}

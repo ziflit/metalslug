@@ -114,10 +114,14 @@ void Scenery::updateBackgroudsState() {
              * Es por eso que tiene seteada igual velocidad.
              */
         }
+        /* Vuelvo atrás todos los elementos que se movieron */
         for (auto player : players) {
             if (player->getPostura() != DESCONECTADO) {
                 player->retroceder();
             }
+        }
+        for (auto &misc : miscs) {
+            misc->retroceder(playersSpeed);
         }
     }
 }
@@ -172,6 +176,9 @@ vector<GameObject*> Scenery::getVisibleObjects() {
     vector<GameObject*> todos;
     for (auto &enemy : enemies) {
         todos.push_back(enemy);
+    }
+    for (auto &misc : miscs) {
+        todos.push_back(misc);
     }
     return todos;
 }
