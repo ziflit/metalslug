@@ -17,6 +17,17 @@ Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     gravity = 10;
     speed = 10;
     postura = MIRANDO_IZQUIERDA_QUIETO;
+    this->colisionables = {MARCO,       //TODO: SACAR MARCO, TARMA, FIO Y ERI PORQUE NO COLISIONAN CONTRA PLAYERS.
+                           TARMA,
+                           FIO,
+                           ERI,
+                           BT_BULLET,			// BT = Bullet Type
+                           BT_HEAVY_BULLET,
+                           BT_MISSILE,
+                           BT_TELE_MISSILE,
+                           BT_SHOT,
+                           BT_BOMB,
+                           MSC_PLATFORM};
 };
 
 Enemy::~Enemy() {
