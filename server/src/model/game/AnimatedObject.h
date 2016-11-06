@@ -13,13 +13,15 @@ protected:
     int health;
     int ammo;
     Entity bulletType;
-    int direccionX;
-    int direccionY;
+
     Postura postura;
     bool isShooting;
     bool isJumping;
 
 public:
+
+    virtual GameObject *shoot() = 0;
+
     Postura getPostura() {
         return postura;
     }
@@ -34,22 +36,6 @@ public:
 
     void setHealth(int health) {
         AnimatedObject::health = health;
-    }
-
-    int getDireccionX() {
-        return direccionX;
-    }
-
-    void setDireccionX(int direccionX) {
-        AnimatedObject::direccionX = direccionX;
-    }
-
-    int getDireccionY() {
-        return direccionY;
-    }
-
-    void setDireccionY(int direccionY) {
-        AnimatedObject::direccionY = direccionY;
     }
 
     void receiveDamage(int damage) {

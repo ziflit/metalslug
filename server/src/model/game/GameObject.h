@@ -6,7 +6,7 @@
 #include <vector>
 
 class GameObject {
-    protected:
+protected:
     Entity id;
     float x, y;
     double largeImage;
@@ -15,11 +15,15 @@ class GameObject {
     int box_ancho;
     vector<Entity> colisionables;
 
-    public:
+    int direccionX;
+    int direccionY;
+
+
+public:
 
     virtual struct event getState()= 0;
 
-    virtual void avanzar()= 0;
+    virtual void avanzar(vector<GameObject *> gameObjects)= 0;
 
     int retroceder(int cantidad);
 
@@ -51,7 +55,15 @@ class GameObject {
 
     void setBoxAncho(int boxAncho);
 
-    bool checkCollition(int newX, int newY ,GameObject* other_object);
+    int getDireccionX();
+
+    void setDireccionX(int direccionX);
+
+    int getDireccionY();
+
+    void setDireccionY(int direccionY);
+
+    bool checkCollition(int newX, int newY, GameObject *other_object);
 
     bool puedenColisionar(GameObject *otherObj);
 };

@@ -1,22 +1,21 @@
-//
-// Created by leandro on 06/11/16.
-//
-
 #ifndef SERVER_TELEDIRMOVEMENTSTRATEGY_H
 #define SERVER_TELEDIRMOVEMENTSTRATEGY_H
 
 
 #include "BulletMovementStrategy.h"
+#include "GameObject.h"
 
-class TeledirBulletMovementStrategy : BulletMovementStrategy{
-public:
+class TeledirBulletMovementStrategy : BulletMovementStrategy {
 private:
-    virtual void avanzar(vector<GameObject *> collitionables, Bullet &bullet) override;
+
+    GameObject *getCloserObject(const vector<GameObject *> &collisionables, const GameObject *bullet);
+
+    void changeBulletDirection(GameObject *bullet, GameObject *gameObject);
 
 public:
-    TeledirBulletMovementStrategy(Bullet *bullet);
 
-    GameObject *getCloserObject(const vector<GameObject *> &collitionables, const Bullet &bullet);
+
+    virtual void avanzar(vector<GameObject *> collisionables, GameObject *bullet) override;
 };
 
 

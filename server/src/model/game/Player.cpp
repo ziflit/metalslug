@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "Player.h"
+#include "NormalBulletMovementStrategy.h"
 
 Player::Player(string user, Entity entitySelected, int windowWidth) {
     username = user;
@@ -54,15 +55,14 @@ bool Player::isMoving() {
 }
 
 bool Player::haveBullets() {
-    if (ammo > 0) {
-        return true;
-    }
-    return false;
+    return ammo > 0;
 }
 
 
-Bullet *Player::shoot() {
-    Bullet *bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY);
+GameObject *Player::shoot() {
+    // TODO : ver tema cuando no quedan mas balas y la creacion de las estrategias segun el arma
+    Bullet *bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY, shootsTo,
+                                new NormalBulletMovementStrategy());
     ammo--;
     return bullet;
 };

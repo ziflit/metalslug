@@ -1,33 +1,31 @@
-//
-// Created by leandro on 02/11/16.
-//
 
 #ifndef SERVER_BULLET_H
 #define SERVER_BULLET_H
 
-#include "AnimatedObject.h"
+
 #include <vector>
 #include "../../utils/Protocol.h"
+#include "BulletMovementStrategy.h"
+#include "GameObject.h"
 
-class Bullet : public AnimatedObject{ 
+class Bullet : public GameObject {
 private:
     int damage;
+    BulletMovementStrategy *movementStrategy = nullptr;
 public:
-    Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int direccionX);
+    Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int direccionX,
+           vector<Entity> collitionables, BulletMovementStrategy *bulletMovementStrategy);
 
     virtual ~Bullet();
-    
+
     int getDamage() const;
 
     void setDamage(int damage);
 
-    virtual void avanzar() override;
-
     virtual event getState() override;
 
-    void avanzar(int dirX, int dirY, int some_enemy_posX, int some_enemy_posY);
+    void avanzar(vector<GameObject *> collitionables) override;
 
-    void avanzar(vector<GameObject *> collitionables);
 };
 
 

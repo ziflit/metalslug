@@ -7,6 +7,7 @@ Scenery::Scenery(ConfigsXML configs) {
     this->initializeFromXML(configs);
     cantPlayers = 0;
 }
+
 void Scenery::initializeFromXML(ConfigsXML configs) {
     this->nivelEnded = false;
 
@@ -26,11 +27,11 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
     //------------------------------------------------------
 
     for (auto backgroundConfig : backgroundConfigs) {
-        Background* newBackground = new Background(backgroundConfig.id,playersSpeed,
-                                                backgroundConfig.ancho,windowWidth);
+        Background *newBackground = new Background(backgroundConfig.id, playersSpeed,
+                                                   backgroundConfig.ancho, windowWidth);
         this->backgrounds.push_back(newBackground);
     }
-    ((Background*)backgrounds[0])->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, playersSpeed);
+    ((Background *) backgrounds[0])->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, playersSpeed);
 }
 
 Entity Scenery::buildPlayer(string user) {
@@ -85,7 +86,7 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys) {
 
 
 bool Scenery::hayJugadorEnBordeIzq() {
-    if(this->nivelEnded){
+    if (this->nivelEnded) {
         return true;
     }
     for (auto player: players) {
@@ -110,7 +111,7 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
 void Scenery::updateBackgroudsState() {
     if ((not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
         for (auto background : backgrounds) {
-            this->nivelEnded = ((Background*)background)->avanzarFrame();
+            this->nivelEnded = ((Background *) background)->avanzarFrame();
             /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
              * el asociado a los players debe avanzar exactamente igual que ellos.
              * Es por eso que tiene seteada igual velocidad.
@@ -132,19 +133,19 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
     int i = 0;
 
-    vector<GameObject*> all_objects_in_window = this->getVisibleObjects();
+    vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
 
     for (auto player : players) {
-        if (player->getShootingState() and player->haveBullets()){
-            bullets.push_back(player->shoot());
+        if (player->getShootingState() and player->haveBullets()) {
+            bullets.push_back((Bullet *) player->shoot());
         }
         player->updatePosition(all_objects_in_window);
         eventsToReturn.push_back(player->getState());
     }
 
     for (auto enemy : enemies) {
-        if (i == cantPlayers){
-            i=0;
+        if (i == cantPlayers) {
+            i = 0;
         }
         enemy->updatePosition(players[i]->getX());
         eventsToReturn.push_back(enemy->getState());
@@ -186,8 +187,8 @@ Scenery::~Scenery() {
     // del tamaño de una casa?
 }
 
-vector<GameObject*> Scenery::getVisibleObjects() {
-    vector<GameObject*> todos;
+vector<GameObject *> Scenery::getVisibleObjects() {
+    vector<GameObject *> todos;
     for (auto &enemy : enemies) {
         todos.push_back(enemy);
     }

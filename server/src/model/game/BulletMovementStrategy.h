@@ -1,24 +1,17 @@
-//
-// Created by leandro on 06/11/16.
-//
 
 #ifndef SERVER_BULLETMOVEMENTSTRATEGY_H
 #define SERVER_BULLETMOVEMENTSTRATEGY_H
 
 
-#include "Bullet.h"
+#include "GameObject.h"
+
 
 class BulletMovementStrategy {
 protected:
-    Bullet *bullet;
-
-    void makeCollition(vector<GameObject *> collitionables, Bullet &bullet);
+    void makeCollision(vector<GameObject *> collisionables, GameObject *bullet);
 
 public:
-    BulletMovementStrategy(Bullet *bullet);
-
-    virtual void avanzar(vector<GameObject *> collitionables, Bullet &bullet) = 0;
-
+    virtual void avanzar(vector<GameObject *> collisionables, GameObject *bullet) = 0;
 };
 
 

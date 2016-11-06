@@ -13,7 +13,7 @@ public:
 
     struct event getState() override;
 
-    void avanzar() override;
+    void avanzar(vector<GameObject *> gameObjects) override;
 };
 
 

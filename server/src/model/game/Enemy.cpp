@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "Enemy.h"
+#include "Bullet.h"
+#include "NormalBulletMovementStrategy.h"
 
 Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     id = enemySelected;
@@ -30,11 +32,6 @@ void Enemy::set_position(int posx, int posy) {
     y = posy;
 }
 
-void Enemy::avanzar(){
-    postura = CAMINANDO_DERECHA;
-    x += speed;
-}
-
 void Enemy::retroceder(){
     postura = CAMINANDO_IZQUIERDA;
     x -= speed;
@@ -43,7 +40,7 @@ void Enemy::retroceder(){
 void Enemy::updatePosition(int posPlayerToFollow) {
 	// Minima logica para seguir a los jugadores, mejorarla por favor
 	if (x < posPlayerToFollow - 100 ){
-		avanzar();
+		//avanzar();
 	} else if (x > posPlayerToFollow + 100 ){
         retroceder();
 	}
@@ -81,3 +78,13 @@ struct event Enemy::getState() {
     return estado;
 }
 
+void Enemy::avanzar(vector<GameObject *> gameObjects) {
+    postura = CAMINANDO_DERECHA;
+    x += speed;
+}
+
+GameObject *Enemy::shoot() {
+    Bullet *bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY, shootsTo, new NormalBulletMovementStrategy());
+    ammo--;
+    return bullet;
+};
