@@ -125,7 +125,7 @@ void Scenery::updateBackgroudsState() {
         }
 
         for (auto &enemy : enemies){
-            enemy->set_position(enemy->getX() - enemy->getSpeed(), enemy->getY());
+            enemy->retroceder();
         }
     }
 }

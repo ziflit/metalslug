@@ -17,17 +17,7 @@ Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     gravity = 10;
     speed = 10;
     postura = MIRANDO_IZQUIERDA_QUIETO;
-    this->colisionables = {MARCO,       //TODO: SACAR MARCO, TARMA, FIO Y ERI PORQUE NO COLISIONAN CONTRA PLAYERS.
-                           TARMA,
-                           FIO,
-                           ERI,
-                           BT_BULLET,			// BT = Bullet Type
-                           BT_HEAVY_BULLET,
-                           BT_MISSILE,
-                           BT_TELE_MISSILE,
-                           BT_SHOT,
-                           BT_BOMB,
-                           MSC_PLATFORM};
+    this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_TELE_MISSILE, BT_SHOT, BT_BOMB, MSC_PLATFORM};
 };
 
 Enemy::~Enemy() {
@@ -46,8 +36,8 @@ void Enemy::avanzar() {}
 
 
 int Enemy::retroceder(){
-    postura = CAMINANDO_IZQUIERDA;
-    return x - speed;
+    this->x -= speed;
+    return x;
 };
 
 void Enemy::updatePosition(int posPlayerToFollow, vector<GameObject*> game_objects) {
@@ -57,10 +47,11 @@ void Enemy::updatePosition(int posPlayerToFollow, vector<GameObject*> game_objec
 
     // Minima logica para seguir a los jugadores, mejorarla por favor
     if (x < posPlayerToFollow - 100 ){
-        postura = CAMINANDO_DERECHA;  //Esto queda asi de feo porque no se pudo redefinir la funcion avanzar.
+        postura = CAMINANDO_DERECHA;
         newX =  x + speed;
 	} else if (x > posPlayerToFollow + 100 ){
-        newX = this->retroceder();
+        postura = CAMINANDO_IZQUIERDA;
+        newX = x - speed;
 	}
 
 	// Logica insolita para saltar cuando pasa por esas posiciones
