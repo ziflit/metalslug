@@ -26,11 +26,13 @@ public:
 
     void avanzar();
 
-    void retroceder();
+    int retroceder();
     
-    void updatePosition(int posPlayerToFollow);
+    void updatePosition(int posPlayerToFollow, vector<GameObject*> game_objects );
 
     void set_position(int posx, int posy);
+
+    bool canIMove(vector<GameObject*> game_objects, int newX, int newY);
 
 };
 

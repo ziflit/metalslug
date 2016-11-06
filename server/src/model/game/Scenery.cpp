@@ -123,6 +123,10 @@ void Scenery::updateBackgroudsState() {
         for (auto &misc : miscs) {
             misc->retroceder(playersSpeed);
         }
+
+        for (auto &enemy : enemies){
+            enemy->set_position(enemy->getX() - enemy->getSpeed(), enemy->getY());
+        }
     }
 }
 
@@ -137,7 +141,7 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     }
 
     for (auto enemy : enemies) {
-        enemy->updatePosition(players[0]->getX()); //Van a seguir siempre al player 1 por ahora
+        enemy->updatePosition(players[0]->getX(),all_objects_in_window); //Van a seguir siempre al player 1 por ahora
         eventsToReturn.push_back(enemy->getState());
     }
 
@@ -179,6 +183,10 @@ vector<GameObject*> Scenery::getVisibleObjects() {
     }
     for (auto &misc : miscs) {
         todos.push_back(misc);
+    }
+
+    for (auto &player : players) {
+        todos.push_back(player);
     }
     return todos;
 }

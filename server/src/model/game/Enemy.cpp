@@ -42,22 +42,25 @@ bool Enemy::isJumping() {
     return (Enemy::direccionY == 1);
 };
 
-void Enemy::avanzar(){
-    postura = CAMINANDO_DERECHA;
-    x += speed;
-};
+void Enemy::avanzar() {}
 
-void Enemy::retroceder(){
+
+int Enemy::retroceder(){
     postura = CAMINANDO_IZQUIERDA;
-    x -= speed;
+    return x - speed;
 };
 
-void Enemy::updatePosition(int posPlayerToFollow) {
-	// Minima logica para seguir a los jugadores, mejorarla por favor
-	if (x < posPlayerToFollow - 100 ){
-		avanzar();
+void Enemy::updatePosition(int posPlayerToFollow, vector<GameObject*> game_objects) {
+
+    int newX = x;
+    int newY = y;
+
+    // Minima logica para seguir a los jugadores, mejorarla por favor
+    if (x < posPlayerToFollow - 100 ){
+        postura = CAMINANDO_DERECHA;  //Esto queda asi de feo porque no se pudo redefinir la funcion avanzar.
+        newX =  x + speed;
 	} else if (x > posPlayerToFollow + 100 ){
-        retroceder();
+        newX = this->retroceder();
 	}
 
 	// Logica insolita para saltar cuando pasa por esas posiciones
@@ -68,12 +71,17 @@ void Enemy::updatePosition(int posPlayerToFollow) {
     if (this->isJumping()) {
         if (posAtJump < 24) {
             posAtJump++;
-            y = 400 - jumpPos[posAtJump];
+            newY = 400 - jumpPos[posAtJump];
         } else {
             direccionY = 0;
             posAtJump = 0;
         }
     }
+
+    if (this->canIMove(game_objects, newX, newY)){
+        this->set_position(newX,newY);
+    }
+
 };
 
 struct event Enemy::getState() {
@@ -92,4 +100,20 @@ struct event Enemy::getState() {
 
     return estado;
 };
+
+
+bool Enemy::canIMove(vector<GameObject*> game_objects, int newX, int newY) {
+    bool isColisionanding;
+    for (auto &game_object : game_objects) {
+        // Checkeo de colisiones
+        if (this->puedenColisionar(game_object)) {
+            isColisionanding = this->checkCollition(newX, newY, game_object);
+            if (isColisionanding) {
+                // resolucion de colisiones con el game_object:
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
