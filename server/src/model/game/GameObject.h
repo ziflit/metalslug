@@ -1,6 +1,7 @@
 #ifndef SERVER_GAMEOBJECT_H
 #define SERVER_GAMEOBJECT_H
 
+#include <vector>
 #include "../../utils/Protocol.h"
 
 class GameObject {

@@ -6,6 +6,7 @@
 #define SERVER_BULLET_H
 
 #include "AnimatedObject.h"
+#include <vector>
 #include "../../utils/Protocol.h"
 
 class Bullet : public AnimatedObject{ 
@@ -20,10 +21,13 @@ public:
 
     void setDamage(int damage);
 
+    virtual void avanzar() override;
+
     virtual event getState() override;
 
     void avanzar(int dirX, int dirY, int some_enemy_posX, int some_enemy_posY);
 
+    void avanzar(vector<GameObject *> collitionables);
 };
 
 

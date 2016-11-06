@@ -6,7 +6,7 @@ Bullet::Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int di
     y = spawnY;
     this->direccionY = direccionY;
     this->direccionX = direccionX;
-    switch(bulletType) {
+    switch (bulletType) {
         case Entity::BT_HEAVY_BULLET:
             speed = 60;
             damage = 100;
@@ -30,7 +30,7 @@ Bullet::Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int di
     }
 }
 
-Bullet::~Bullet(){
+Bullet::~Bullet() {
 }
 
 event Bullet::getState() {
@@ -46,23 +46,34 @@ event Bullet::getState() {
     return estado;
 }
 
-void Bullet::avanzar(int dirX, int dirY, int some_enemy_posX, int some_enemy_posY) { 
-    if ( id == Entity::BT_TELE_MISSILE){
-        if (x < some_enemy_posX){
+void Bullet::avanzar(int dirX, int dirY, int some_enemy_posX, int some_enemy_posY) {
+    if (id == Entity::BT_TELE_MISSILE) {
+        if (x < some_enemy_posX) {
             dirX = 1;
         } else {
             dirX = -1;
         }
 
-        if (y < some_enemy_posY){
+        if (y < some_enemy_posY) {
             dirY = 1;
         } else {
             dirY = -1;
         }
     }
 
-    x += dirX*speed;
-    y += dirY*speed;
+    x += dirX * speed;
+    y += dirY * speed;
+}
+
+void Bullet::avanzar(vector<GameObject *> collitionables) {
+    if (id == Entity::BT_TELE_MISSILE) {
+        float posX = collitionables.front()->getX();
+        for (auto object : collitionables) {
+            if (object->getX() > posX) {
+                posX = object->getX();
+            }
+        }
+    }
 }
 
 int Bullet::getDamage() const {
@@ -71,4 +82,8 @@ int Bullet::getDamage() const {
 
 void Bullet::setDamage(int damage) {
     this->damage = damage;
+}
+
+void Bullet::avanzar() {
+
 }
