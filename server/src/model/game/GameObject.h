@@ -3,19 +3,25 @@
 
 #include <vector>
 #include "../../utils/Protocol.h"
+#include <vector>
 
 class GameObject {
-protected:
+    protected:
     Entity id;
     float x, y;
     double largeImage;
     float speed;
+    int box_alto;
+    int box_ancho;
+    vector<Entity> colisionables;
 
-public:
+    public:
 
     virtual struct event getState()= 0;
 
     virtual void avanzar()= 0;
+
+    int retroceder(int cantidad);
 
     Entity getEntity() const;
 
@@ -36,6 +42,18 @@ public:
     float getSpeed() const;
 
     void setSpeed(float speed);
+
+    int getBoxAlto() const;
+
+    void setBoxAlto(int boxAlto);
+
+    int getBoxAncho() const;
+
+    void setBoxAncho(int boxAncho);
+
+    bool checkCollition(int newX, int newY ,GameObject* other_object);
+
+    bool puedenColisionar(GameObject *otherObj);
 };
 
 #endif //SERVER_GAMEOBJECT_H

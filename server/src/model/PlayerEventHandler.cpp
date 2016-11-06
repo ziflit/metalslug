@@ -104,6 +104,11 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
             animatedObject->setShootingState(true);
             break;
 
+        // case EventCode::SDL_KEY_S_PRESSED:
+        // // Aca hay que arreglar la postura
+        //         animatedObject->setPostura(DISPARANDO_CAMINANDO_DERECHA);
+        //         animatedObject->getWeapon()->shoot();
+        //     break;
 
         case EventCode::SDL_KEYUP_PRESSED:
             if (direccionX == 1) { animatedObject->setPostura(MIRANDO_ARRIBA_CAMINANDO_DERECHA); }

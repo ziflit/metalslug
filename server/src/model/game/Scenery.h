@@ -18,6 +18,7 @@
 #include "../ConfigsXML.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Plataforma.h"
 
 using namespace std;
 
@@ -29,6 +30,7 @@ private:
     vector<GameObject *> backgrounds;
     vector<Bullet *> bullets; // las vamos a tener que diferencias para que el colisionador pueda usarlas
     int cantPlayers;
+    vector<GameObject *> miscs;  // Se utiliza para plataformas, cajas y elementos bonus
 
     unsigned int windowWidth, windowHeight, playersSpeed;
     
@@ -40,6 +42,8 @@ private:
     void addElementToScenery(Bullet *bullet);
 
     void addElementToScenery(Enemy *enemy);
+
+    void addElementToScenery(Plataforma *platform);
 
     // El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
     void addElementToScenery(Background *background);
@@ -68,6 +72,7 @@ public:
 
     int findPlayerByUsername(string user);
 
+    vector<GameObject*> getVisibleObjects();
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */

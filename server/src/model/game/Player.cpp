@@ -22,15 +22,23 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
      */
     x = 5;
     y = 400;
+    box_alto = 100; // TODO inicializar esto desde el XML y no acá
+    box_ancho = 50;
     direccionY = 0;
     direccionX = 0;
     posAtJump = 0;
     gravity = 10;
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
+
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
+
+    this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_SHOT, BT_BOMB,
+                           MSC_BONUS_KILLALL, MSC_POWER_BONUS, MSC_BONUS_KILLALL,
+                           MSC_PLATFORM};
+
 }
 
 Player::~Player() {
@@ -45,37 +53,45 @@ bool Player::isMoving() {
     return (Player::direccionX != 0); // en -1 y 1 se esta moviendo
 }
 
-bool Player::haveBullets(){
-    if (ammo > 0){
+bool Player::haveBullets() {
+    if (ammo > 0) {
         return true;
     }
     return false;
 }
 
-Bullet* Player::shoot(){
-    Bullet* bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY);
+
+Bullet *Player::shoot() {
+    Bullet *bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY);
     ammo--;
     return bullet;
 };
 
-void Player::updatePosition() {
-    if (this->postura != DESCONECTADO) {
-        if (this->isMoving()) {
 
+void Player::updatePosition(vector<GameObject *> game_objects) {
+    if (this->postura != DESCONECTADO) {
+        int newX = x;
+        int newY = y;
+        if (this->isMoving()) {
             if (((direccionX == 1) and (x < (windowWidth - 100))) or ((direccionX == -1) and (x > 0))) {
-                x += direccionX * speed;
+                newX = x + direccionX * speed;
             }
         }
 
         if (this->getJumpingState()) {
             if (posAtJump < 24) {
                 posAtJump++;
-                y = 400 - jumpPos[posAtJump];
+                newY = 400 - jumpPos[posAtJump];
             } else {
                 isJumping = false;
                 posAtJump = 0;
             }
         }
+
+        if (this->canIMove(game_objects, newX, newY)) {
+            this->set_position(newX, newY);
+        }
+
     } else {
         x = 0; //pone al grisado en el borde izquierdo
     }
@@ -104,53 +120,18 @@ struct event Player::getState() {
     return estado;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+bool Player::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
+    /* Auto??? que pasa con las cosas abstractas? */
+    bool isColisionanding;
+    for (auto &game_object : game_objects) {
+        // Checkeo de colisiones
+        if (this->puedenColisionar(game_object)) {
+            isColisionanding = this->checkCollition(newX, newY, game_object);
+            if (isColisionanding) {
+                // resolucion de colisiones con el game_object:
+                return false;
+            }
+        }
+    }
+    return true;
+}

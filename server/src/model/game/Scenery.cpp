@@ -116,10 +116,14 @@ void Scenery::updateBackgroudsState() {
              * Es por eso que tiene seteada igual velocidad.
              */
         }
+        /* Vuelvo atrás todos los elementos que se movieron */
         for (auto player : players) {
             if (player->getPostura() != DESCONECTADO) {
                 player->retroceder();
             }
+        }
+        for (auto &misc : miscs) {
+            misc->retroceder(playersSpeed);
         }
     }
 }
@@ -128,19 +132,21 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
     int i = 0;
 
+    vector<GameObject*> all_objects_in_window = this->getVisibleObjects();
+
     for (auto player : players) {
         if (player->getShootingState() and player->haveBullets()){
             bullets.push_back(player->shoot());
         }
-        player->updatePosition();
+        player->updatePosition(all_objects_in_window);
         eventsToReturn.push_back(player->getState());
     }
 
     for (auto enemy : enemies) {
         if (i == cantPlayers){
-            i=0;  
-        } 
-        enemy->updatePosition(players[i]->getX()); 
+            i=0;
+        }
+        enemy->updatePosition(players[i]->getX());
         eventsToReturn.push_back(enemy->getState());
         i++;
     }
@@ -167,10 +173,27 @@ void Scenery::addElementToScenery(Enemy *enemy) {
     enemies.push_back(enemy);
 }
 
+void Scenery::addElementToScenery(Plataforma *platform) {
+    miscs.push_back(platform);
+}
+
 void Scenery::addElementToScenery(Background *background) {
     backgrounds.push_back(background);
 }
 
 Scenery::~Scenery() {
+    // TODO destruir los putos vectores, tenemos un memory leak
+    // del tamaño de una casa?
+}
+
+vector<GameObject*> Scenery::getVisibleObjects() {
+    vector<GameObject*> todos;
+    for (auto &enemy : enemies) {
+        todos.push_back(enemy);
+    }
+    for (auto &misc : miscs) {
+        todos.push_back(misc);
+    }
+    return todos;
 }
 

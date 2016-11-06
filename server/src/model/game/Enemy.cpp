@@ -9,6 +9,8 @@ Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     id = enemySelected;
     x = spawnX;
     y = spawnY;
+    box_ancho = 50;
+    box_alto = 100;
     direccionY = 0;
     direccionX = 0;
     posAtJump = 0;
