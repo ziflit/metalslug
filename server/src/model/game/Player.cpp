@@ -122,11 +122,3 @@ bool Player::canIMove(vector<GameObject*> game_objects, int newX, int newY) {
     }
     return true;
 }
-
-void Player::setDireccionY(int direccionY) {
-    if (this->direccionY == direccionY) {
-        return;
-    }
-    this->fsalto = 150;
-    this->direccionY = direccionY;
-}

@@ -15,6 +15,7 @@ protected:
     Weapon *weapon;
     int direccionX;
     int direccionY;
+    int fsalto;
     Postura postura;
 public:
     Postura getPostura() {
@@ -45,8 +46,12 @@ public:
         return direccionY;
     }
 
-    virtual void setDireccionY(int direccionY) {
-        AnimatedObject::direccionY = direccionY;
+    void setDireccionY(int direccionY) {
+        if (this->direccionY == direccionY) {
+            return;
+        }
+        this->fsalto = 150;
+        this->direccionY = direccionY;
     }
 
     void receiveDamage(int damage) {

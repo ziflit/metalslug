@@ -58,22 +58,28 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
         postura = CAMINANDO_IZQUIERDA;
         newX = x - speed;
     }
+    /* Se mueve en X */
+    if (this->canIMove(game_objects, newX, newY)) {
+        this->set_position(newX, newY);
+    }
 
     // Logica insolita para saltar cuando pasa por esas posiciones
     if (x == 50 || x == 350 || x == 600) {
-        direccionY = 1;
+        this->setDireccionY(1);
     }
 
-    if (this->isJumping()) {
-        if (posAtJump < 24) {
-            posAtJump++;
-            newY = 400 - jumpPos[posAtJump];
-        } else {
-            direccionY = 0;
-            posAtJump = 0;
-        }
+    int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
+    if (this->canIMove(game_objects, newX, newYconGravedad)){
+        fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
     }
 
+    newY -= ((this->direccionY * fsalto) + (gravity * -1));
+    if (fsalto > 0) {
+        fsalto -= gravity;
+    }
+    if (fsalto == 0) {
+        this->setDireccionY(0);
+    }
     if (this->canIMove(game_objects, newX, newY)) {
         this->set_position(newX, newY);
     }

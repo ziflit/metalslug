@@ -16,11 +16,11 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
     vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
 
     // Probando para ver si funcionan los enemigos
-    Enemy *enemy = new Enemy(ENEMY_NORMAL_1, 3500, 400);
+    Enemy *enemy = new Enemy(ENEMY_NORMAL_1, 3500, 200);
     enemies.push_back(enemy);
-    Enemy *enemy2 = new Enemy(ENEMY_NORMAL_2, 5200, 400);
+    Enemy *enemy2 = new Enemy(ENEMY_NORMAL_2, 5200, 200);
     enemies.push_back(enemy2);
-    Enemy *enemy3 = new Enemy(ENEMY_NORMAL_3, 1500, 400);
+    Enemy *enemy3 = new Enemy(ENEMY_NORMAL_3, 1500, 200);
     enemies.push_back(enemy3);
     //------------------------------------------------------
 

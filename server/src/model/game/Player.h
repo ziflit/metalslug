@@ -17,7 +17,6 @@ class Player : public AnimatedObject{
 private:
     string username;
     int gravity;
-    int fsalto;
     int windowWidth;
 
 public:
@@ -46,9 +45,6 @@ public:
     string getUsername() const {
         return username;
     }
-
-    void setDireccionY(int direccionY) override;
-
 };
 
 
