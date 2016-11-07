@@ -63,6 +63,12 @@ void Player::updatePosition(vector<GameObject*> game_objects) {
             }
         }
         /* Checkeo de gravedad */
+
+        int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
+        if (this->canIMove(game_objects, newX, newYconGravedad)){
+            fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
+        }
+
         newY -= ((this->direccionY * fsalto) + (gravity * -1));
         if (fsalto > 0) {
             fsalto -= gravity;
@@ -121,6 +127,6 @@ void Player::setDireccionY(int direccionY) {
     if (this->direccionY == direccionY) {
         return;
     }
-    this->fsalto = 70;
+    this->fsalto = 150;
     this->direccionY = direccionY;
 }
