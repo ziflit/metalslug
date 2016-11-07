@@ -108,7 +108,13 @@ void PlayerSprite::actualizarDibujo() {
 
 }
 void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
-void PlayerSprite::grisar() {Sprite::setUpImage(imageGrisadoPath);}
+void PlayerSprite::grisar() {
+    if (!this->grisado){
+        this->grisado = true;
+        mirandoDerechaQuieto();
+        Sprite::setUpImage(imageGrisadoPath);
+    }
+}
 
 /**  MOVIMIENTOS
 *_________________________________________________________________________________________________________
@@ -152,30 +158,12 @@ void PlayerSprite::setNextSpriteFrame() {
 
 }
 
-void PlayerSprite::setWeapon(Arma weapon) {
-    this->arma = weapon;
-
-    switch (arma) {
-        case PISTOLA:
-            this->weaponsSourceRect.y = 0;
-        case HEAVY_MACHINEGUN:
-            this->weaponsSourceRect.y = (this->frameHeight * 1 );
-        case ROCKET_LAUNCHER:
-            this->weaponsSourceRect.y = (this->frameHeight * 2 );
-        case ENEMY_CHASER:
-            this->weaponsSourceRect.y = (this->frameHeight * 3 );
-        case SHOTGUN:
-            this->weaponsSourceRect.y = (this->frameHeight * 4 );
-        case BOMB:
-            this->weaponsSourceRect.y = (this->frameHeight * 5 );
-    }
-}
-
 void PlayerSprite::caminandoIzquierda() {
     this->setNextSpriteFrame();
     this->sourceRect.y = 0;
     this->weaponsSourceRect.x = (frameWidth * 1);
 }
+
 void PlayerSprite::mirandoArribaCaminandoIzquierda(){
     this->sourceRect.y = (frameHeight * 1);
     this->setNextSpriteFrame();
@@ -231,98 +219,82 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
     this->setNextSpriteFrame();
     this->weaponsSourceRect.x = (frameWidth * 1);
 }
-
 void PlayerSprite::disparandoDerechaQuieto() {
     this->sourceRect.y = (frameHeight * 12);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoIzquierdaQuieto() {
     this->sourceRect.y = (frameHeight * 13);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoCaminandoDerecha() {
     this->sourceRect.y = (frameHeight * 14);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoCaminandoIzquierda() {
     this->sourceRect.y = (frameHeight * 15);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoAgachadoQuietoDerecha() {
     this->sourceRect.y = (frameHeight * 16);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoAgachadoQuietoIzquierda() {
     this->sourceRect.y = (frameHeight * 17);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoAgachadoAvanzandoDerecha() {
     this->sourceRect.y = (frameHeight * 18);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoAgachadoAvanzandoIzquierda() {
     this->sourceRect.y = (frameHeight * 19);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoMirandoArribaDerechaQuieto() {
     this->sourceRect.y = (frameHeight * 20);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
-void PlayerSprite::disparandoMirandoParaArribaIzquierdaQuieto() {
+void PlayerSprite::disparandoMirandoArribaIzquierdaQuieto() {
     this->sourceRect.y = (frameHeight * 21);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoAvanzandoMirandoArribaDerecha() {
     this->sourceRect.y = (frameHeight * 22);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::disparandoAvanzandoMirandoArribaIzquierda() {
     this->sourceRect.y = (frameHeight * 23);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::muriendo() {
     this->sourceRect.y = (frameHeight * 24);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-
 void PlayerSprite::muerto() {
     this->sourceRect.y = (frameHeight * 25);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
     this->dibujar = false;
 }
-
 void PlayerSprite::clientConected(struct event nuevoEvento) {
     this->dibujar = true;
     stpcpy(this->username , nuevoEvento.data.username);
     this->usernameText = new TextBox(this->username, this->renderer, {10, 255, 2, 255});
 }
-
 
 void PlayerSprite::handle(struct event nuevoEvento) {
     if (not dibujar) {
@@ -338,9 +310,12 @@ void PlayerSprite::handle(struct event nuevoEvento) {
     if (this->arma != nuevoEvento.data.arma){
         setWeapon(nuevoEvento.data.arma);
     }
+    this->setPostura(nuevoEvento.data.postura);
+}
 
-    switch (nuevoEvento.data.postura){
+void PlayerSprite::setPostura(Postura postura) {
 
+    switch (postura){
         case Postura::CAMINANDO_IZQUIERDA:
             caminandoIzquierda();
             break;
@@ -374,15 +349,80 @@ void PlayerSprite::handle(struct event nuevoEvento) {
         case Postura::MIRANDO_DERECHA_QUIETO:
             mirandoDerechaQuieto();
             break;
-        case Postura::MIRANDO_IZQUIERDA_QUIETO :
+        case Postura::MIRANDO_IZQUIERDA_QUIETO:
             mirandoIzquierdaQuieto();
             break;
+        case Postura::DISPARANDO_DERECHA_QUIETO:
+            disparandoDerechaQuieto();
+            break;
+        case Postura::DISPARANDO_IZQUIERDA_QUIETO:
+            disparandoIzquierdaQuieto();
+            break;
+        case Postura::DISPARANDO_CAMINANDO_DERECHA:
+            disparandoCaminandoDerecha();
+            break;
+        case Postura::DISPARANDO_CAMINANDO_IZQUIERDA:
+            disparandoCaminandoIzquierda();
+            break;
+        case Postura::DISPARANDO_AGACHADO_QUIETO_DERECHA:
+            disparandoAgachadoQuietoDerecha();
+            break;
+        case Postura::DISPARANDO_AGACHADO_QUIETO_IZQUIERDA:
+            disparandoAgachadoQuietoIzquierda();
+            break;
+        case Postura::DISPARANDO_AGACHADO_AVANZANDO_DERECHA:
+            disparandoAgachadoAvanzandoDerecha();
+            break;
+        case Postura::DISPARANDO_AGACHADO_AVANZANDO_IZQUIERDA:
+            disparandoAgachadoAvanzandoIzquierda();
+            break;
+        case Postura::DISPARANDO_MIRANDO_ARRIBA_DERECHA_QUIETO:
+            disparandoMirandoArribaDerechaQuieto();
+            break;
+        case Postura::DISPARANDO_MIRANDO_ARRIBA_IZQUIERDA_QUIETO:
+            disparandoMirandoArribaIzquierdaQuieto();
+            break;
+        case Postura::DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_DERECHA:
+            disparandoAvanzandoMirandoArribaDerecha();
+            break;
+        case Postura::DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA:
+            disparandoAvanzandoMirandoArribaIzquierda();
+            break;
+        case Postura::MURIENDO:
+            muriendo();
+            break;
+        case Postura::MUERTO:
+            muerto();
+            break;
         case Postura::DESCONECTADO:
-            if (!this->grisado){
-                this->grisado = true;
-                mirandoDerechaQuieto();
-                this->grisar();
-            }
+            grisar();
+            break;
+        default:
+            break;
+    }
+}
+
+void PlayerSprite::setWeapon(Arma weapon) {
+    this->arma = weapon;
+
+    switch (arma) {
+        case PISTOLA:
+            this->weaponsSourceRect.y = 0;
+            break;
+        case HEAVY_MACHINEGUN:
+            this->weaponsSourceRect.y = (this->frameHeight * 1 );
+            break;
+        case ROCKET_LAUNCHER:
+            this->weaponsSourceRect.y = (this->frameHeight * 2 );
+            break;
+        case ENEMY_CHASER:
+            this->weaponsSourceRect.y = (this->frameHeight * 3 );
+            break;
+        case SHOTGUN:
+            this->weaponsSourceRect.y = (this->frameHeight * 4 );
+            break;
+        case BOMB:
+            this->weaponsSourceRect.y = (this->frameHeight * 5 );
             break;
         default:
             break;
@@ -453,9 +493,9 @@ void EnemySprite::handle(struct event nuevoEvento) {
         case Postura::DISPARANDO_CAMINANDO_IZQUIERDA:
             disparandoCaminandoIzquierda();
             break;
-//        case Postura::MUERTO:
-//            muerto();
-//            break;
+        case Postura::MUERTO:
+            muerto();
+            break;
         default:
             break;
     }

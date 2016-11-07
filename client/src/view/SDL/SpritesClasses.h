@@ -83,6 +83,7 @@ public:
                     int wFramesCant, int hFramesCant);
 
     void setUpWeaponsImage(string weaponsPath);
+    void setPostura(Postura postura);
 
     void handle(struct event nuevoEvento);
 
@@ -115,7 +116,7 @@ public:
     void disparandoAgachadoAvanzandoDerecha();
     void disparandoAgachadoAvanzandoIzquierda();
     void disparandoMirandoArribaDerechaQuieto();
-    void disparandoMirandoParaArribaIzquierdaQuieto();
+    void disparandoMirandoArribaIzquierdaQuieto();
     void disparandoAvanzandoMirandoArribaDerecha();
     void disparandoAvanzandoMirandoArribaIzquierda();
     void muriendo();
