@@ -24,6 +24,8 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
     enemies.push_back(enemy3);
     //------------------------------------------------------
 
+    this->addElementToScenery(new Plataforma(0, 500, configs.getBackgroundsConfig()[0].ancho, 100));
+
     for (auto backgroundConfig : backgroundConfigs) {
         Background* newBackground = new Background(backgroundConfig.id,playersSpeed,
                                                 backgroundConfig.ancho,windowWidth);
