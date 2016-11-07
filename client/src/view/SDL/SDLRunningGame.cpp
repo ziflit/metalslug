@@ -55,107 +55,122 @@ SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRendere
 
 }
 
-struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
+struct event SDLRunningGame::handleKeyDown(SDL_Event* sdlEvent){
     struct event nuevoEvento;
     nuevoEvento.completion = EventCompletion::FINAL_MSG;
 
-    if (sdlEvent->type == SDL_KEYDOWN){  //si aprieto tal tecla:
-        switch (sdlEvent->key.keysym.sym){
-            case SDLK_LEFT:
-                //holdLeftKey != 0 no volver a enviarlo al servidor
-                if(holdLeftKey>0){
-                    nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode::SDL_KEYLEFT_PRESSED;
-                    holdLeftKey = 1;
-                }
-                return nuevoEvento;
-            case SDLK_RIGHT:
-                if(holdRightKey>0){
-                    nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_PRESSED;
-                    holdRightKey = 1;
-                }
-                return nuevoEvento;
-            case SDLK_UP:
-                if(holdUpKey>0){
-                    nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode::SDL_KEYUP_PRESSED;
-                    holdUpKey = 1;
-                }
-                return nuevoEvento;
-            case SDLK_DOWN:
-                if(holdDownKey>0){
-                    nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode::SDL_KEYDOWN_PRESSED;
-                    holdDownKey = 1;
-                }
-                return nuevoEvento;
-
-            case SDLK_a:  //salto
-                if(holdAKey>0){
-                    nuevoEvento.data.code = EventCode ::TODO_SIGUE_IGUAL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode ::SDL_KEY_A_PRESSED;
-                    holdAKey= 1;
-                }
-                return nuevoEvento;
-
-            case SDLK_s: //tiros
-                if(holdSKey>0){
-                    nuevoEvento.data.code = EventCode ::TODO_SIGUE_IGUAL;
-                }
-                else{
-                    nuevoEvento.data.code = EventCode ::SDL_KEY_S_PRESSED;
-                    holdSKey = 1;
-                }
-                return nuevoEvento;
-            default:
+    switch (sdlEvent->key.keysym.sym){
+        case SDLK_LEFT:
+            //holdLeftKey != 0 no volver a enviarlo al servidor
+            if(holdLeftKey>0){
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                return nuevoEvento;
             }
-    }
-
-    else if(sdlEvent->type == SDL_KEYUP){   //si dejo de apretar una tecla
-        switch (sdlEvent->key.keysym.sym){
-            case SDLK_LEFT:
-                nuevoEvento.data.code = EventCode::SDL_KEYLEFT_RELEASED;
-                holdLeftKey = 0;
-                return nuevoEvento;
-            case SDLK_RIGHT:
-                nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_RELEASED;
-                holdRightKey = 0;
-                return nuevoEvento;
-            case SDLK_UP:
-                nuevoEvento.data.code = EventCode::SDL_KEYUP_RELEASED;
-                holdUpKey = 0;
-                return nuevoEvento;
-            case SDLK_DOWN:
-                nuevoEvento.data.code = EventCode::SDL_KEYDOWN_RELEASED;
-                holdDownKey = 0;
-                return nuevoEvento;
-            case SDLK_a:
-                nuevoEvento.data.code = EventCode::SDL_KEY_A_RELEASED;
-                holdAKey = 0;
-                return nuevoEvento;
-            case SDLK_s:
-                nuevoEvento.data.code = EventCode::SDL_KEY_S_RELEASED;
-                holdSKey = 0;
-                return nuevoEvento;
-            default:
+            else{
+                nuevoEvento.data.code = EventCode::SDL_KEYLEFT_PRESSED;
+                holdLeftKey = 1;
+            }
+            return nuevoEvento;
+        case SDLK_RIGHT:
+            if(holdRightKey>0){
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-                return nuevoEvento;
+            }
+            else{
+                nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_PRESSED;
+                holdRightKey = 1;
+            }
+            return nuevoEvento;
+        case SDLK_UP:
+            if(holdUpKey>0){
+                nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+            }
+            else{
+                nuevoEvento.data.code = EventCode::SDL_KEYUP_PRESSED;
+                holdUpKey = 1;
+            }
+            return nuevoEvento;
+        case SDLK_DOWN:
+            if(holdDownKey>0){
+                nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+            }
+            else{
+                nuevoEvento.data.code = EventCode::SDL_KEYDOWN_PRESSED;
+                holdDownKey = 1;
+            }
+            return nuevoEvento;
 
-        }
+        case SDLK_a:  //salto
+            if(holdAKey>0){
+                nuevoEvento.data.code = EventCode ::TODO_SIGUE_IGUAL;
+            }
+            else{
+                nuevoEvento.data.code = EventCode ::SDL_KEY_A_PRESSED;
+                holdAKey= 1;
+            }
+            return nuevoEvento;
+
+        case SDLK_s: //tiros
+            if(holdSKey>0){
+                nuevoEvento.data.code = EventCode ::TODO_SIGUE_IGUAL;
+            }
+            else{
+                nuevoEvento.data.code = EventCode ::SDL_KEY_S_PRESSED;
+                holdSKey = 1;
+            }
+            return nuevoEvento;
+        default:
+            nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+            return nuevoEvento;
     }
+}
+
+struct event SDLRunningGame::handleKeyUp(SDL_Event *sdlEvent){
+    struct event nuevoEvento;
+    nuevoEvento.completion = EventCompletion::FINAL_MSG;
+
+    switch (sdlEvent->key.keysym.sym){
+        case SDLK_LEFT:
+            nuevoEvento.data.code = EventCode::SDL_KEYLEFT_RELEASED;
+            holdLeftKey = 0;
+            return nuevoEvento;
+        case SDLK_RIGHT:
+            nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_RELEASED;
+            holdRightKey = 0;
+            return nuevoEvento;
+        case SDLK_UP:
+            nuevoEvento.data.code = EventCode::SDL_KEYUP_RELEASED;
+            holdUpKey = 0;
+            return nuevoEvento;
+        case SDLK_DOWN:
+            nuevoEvento.data.code = EventCode::SDL_KEYDOWN_RELEASED;
+            holdDownKey = 0;
+            return nuevoEvento;
+        case SDLK_a:
+            nuevoEvento.data.code = EventCode::SDL_KEY_A_RELEASED;
+            holdAKey = 0;
+            return nuevoEvento;
+        case SDLK_s:
+            nuevoEvento.data.code = EventCode::SDL_KEY_S_RELEASED;
+            holdSKey = 0;
+            return nuevoEvento;
+        default:
+            nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+            return nuevoEvento;
+
+    }
+}
+
+struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
+
+    if (sdlEvent->type == SDL_KEYDOWN) {  //si aprieto tal tecla:
+        return this->handleKeyDown(sdlEvent);
+    }
+
+    else if(sdlEvent->type == SDL_KEYUP){ //si dejo de apretar una tecla
+        return this->handleKeyUp(sdlEvent);
+    }
+
+    struct event nuevoEvento;
+    nuevoEvento.completion = EventCompletion::FINAL_MSG;
     nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
     return nuevoEvento;
 

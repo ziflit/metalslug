@@ -20,14 +20,19 @@ private:
     vector<EnemySprite*> enemiesSprites;
 
 
-public:
-    SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer, ConfigsXML configs );
+    event handleKeyDown(SDL_Event *sdlEvent);
+
+    event handleKeyUp(SDL_Event *sdlEvent);
 
     void initializeFromXML(ConfigsXML configs);
 
     void audioInitialization();
 
     void getSpriteAndSendNewEvent(event nuevoEvento);
+
+public:
+
+    SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer, ConfigsXML configs );
 
     void updateWindowSprites();
 
@@ -36,7 +41,6 @@ public:
     virtual~SDLRunningGame();
 
     void handleModelState(vector<struct event> model_state);
-
 };
 
 
