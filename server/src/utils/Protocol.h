@@ -3,6 +3,7 @@
 #define METALSLUG_PROTOCOL_H
 
 #include <string>
+#include <vector>
 
 #define MSGSIZE sizeof(struct event)
 
@@ -140,12 +141,20 @@ struct xmlConfig {
 	int cant_players;
 };
 
+struct xmlPlatform { 
+	int x;
+	int y;
+	int ancho;
+	int alto;
+};
+
 struct xmlLvl {
     EventCompletion completion;
 	int id; 
 	int cant_enemies;
 	int cant_boxes;
 	int posXtoFinish;
+	vector<struct xmlPlatform> platforms;
 };
 
 struct xmlPlayer {

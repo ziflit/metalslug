@@ -17,15 +17,35 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
 
     vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
 
+    //La idea de este switch es que elija que nivel inicializar, es horrible, seguro se puede cambiar.
+    int selectedLevel = 1;
+    switch (selectedLevel){
+        case 1:
+            selectedLevel = 0;
+            break;
+        case 2:
+            selectedLevel = 1;
+            break;
+        case 3:
+            selectedLevel = 2;
+            break;
+    }
+
     //Seteo de enemigos de forma random, en base a la carga del XML
-    // Uso config 0 para nivel 1, config 1 es nivel 2... etc
     srand (time(NULL));
-    for (int i = 0; i < lvlsConfig[0].cant_enemies; i++) {
+    for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
         int randomSpawnInX = rand() % 3000 + 800;
         Enemy *enemy = new Enemy(ENEMY_NORMAL_1, randomSpawnInX , 400);
         enemies.push_back(enemy);
     }
 
+    //Seteo los pisos y plataformas, en base a la carga del XML
+    for (auto p : lvlsConfig[selectedLevel].platforms) {
+        Plataforma *plataforma = new Plataforma(p.x, p.y, p.ancho, p.alto);
+        miscs.push_back(plataforma);
+    }
+
+    //TODO: Habria que ver de linkear los backgrounds con los level, para cargar los correspondientes
     for (auto backgroundConfig : backgroundConfigs) {
         Background* newBackground = new Background(backgroundConfig.id,playersSpeed,
                                                 backgroundConfig.ancho,windowWidth);
