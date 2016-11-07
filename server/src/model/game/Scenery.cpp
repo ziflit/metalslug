@@ -2,11 +2,13 @@
 #include "../EventHandler.h"
 #include "../PlayerEventHandler.h"
 #include "PlayerBuilder.h"
+#include <time.h>
 
 Scenery::Scenery(ConfigsXML configs) {
     this->initializeFromXML(configs);
 }
 void Scenery::initializeFromXML(ConfigsXML configs) {
+    lvlsConfig = configs.getLvlsConfig();
     this->nivelEnded = false;
 
     this->windowWidth = configs.getGlobalConf().ancho;
@@ -15,14 +17,14 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
 
     vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
 
-    // Probando para ver si funcionan los enemigos
-    Enemy *enemy = new Enemy(ENEMY_NORMAL_1, 3500, 400);
-    enemies.push_back(enemy);
-    Enemy *enemy2 = new Enemy(ENEMY_NORMAL_2, 5200, 400);
-    enemies.push_back(enemy2);
-    Enemy *enemy3 = new Enemy(ENEMY_NORMAL_3, 1500, 400);
-    enemies.push_back(enemy3);
-    //------------------------------------------------------
+    //Seteo de enemigos de forma random, en base a la carga del XML
+    // Uso config 0 para nivel 1, config 1 es nivel 2... etc
+    srand (time(NULL));
+    for (int i = 0; i < lvlsConfig[0].cant_enemies; i++) {
+        int randomSpawnInX = rand() % 3000 + 800;
+        Enemy *enemy = new Enemy(ENEMY_NORMAL_1, randomSpawnInX , 400);
+        enemies.push_back(enemy);
+    }
 
     for (auto backgroundConfig : backgroundConfigs) {
         Background* newBackground = new Background(backgroundConfig.id,playersSpeed,

@@ -1,7 +1,7 @@
 <levels>
 	<lvl>
 		<id>1</id>
-		<cant_enemies>10</cant_enemies>
+		<cant_enemies>4</cant_enemies>
 		<cant_boxes>2</cant_boxes>
 		<posXtoFinish>7000</posXtoFinish>
 	</lvl>
