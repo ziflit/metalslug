@@ -1,7 +1,8 @@
 #include "XmlLoader.h"
 
-XmlLoader::XmlLoader(string path) {
+XmlLoader::XmlLoader(string path, string pathLevelsConfig) {
     this->path = path;
+    this->pathLevelsConfig = pathLevelsConfig;
 }
 
 XmlLoader::~XmlLoader() {
@@ -162,3 +163,27 @@ struct xmlConfig XmlLoader::obtainGlobalConfig() {
     return config;
 }
 
+vector<struct xmlLvl> XmlLoader::obtainLvlsConfig() {
+    xml_document<> doc;
+    file<> xmlFile(pathLevelsConfig.c_str()); //open file
+    doc.parse<0>(xmlFile.data());
+    vector<struct xmlLvl> configs;
+    xml_node<> *lvls = doc.first_node("levels");
+    for (xml_node<> *lvl = lvls->first_node("lvl"); lvl; lvl = lvl->next_sibling()) {
+        xml_node<> *id = lvl->first_node("id");
+        xml_node<> *cant_enemies = lvl->first_node("cant_enemies");
+        xml_node<> *cant_boxes = lvl->first_node("cant_boxes");
+        xml_node<> *posXtoFinish = lvl->first_node("posXtoFinish");
+
+        struct xmlLvl lvlConfig;
+        lvlConfig.completion = EventCompletion::PARTIAL_MSG;
+        lvlConfig.id = atoi(id->value());
+        lvlConfig.cant_enemies = atoi(cant_enemies->value());
+        lvlConfig.cant_boxes = atoi(cant_boxes->value());
+        lvlConfig.posXtoFinish = atoi(posXtoFinish->value());
+
+        configs.push_back(lvlConfig);
+    }
+    configs.back().completion = EventCompletion::FINAL_MSG;
+    return configs;
+}

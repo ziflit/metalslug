@@ -17,6 +17,7 @@ private:
     vector<struct xmlBackground> backgroundsConfig;
     vector<struct xmlPlayer> playersConfig;
     vector<struct xmlEnemy> enemiesConfig;
+    vector<struct xmlLvl> lvlsConfig;
     
 public:
 
@@ -53,6 +54,14 @@ public:
 
     void setEnemiesConfig(vector<struct xmlEnemy> enemiesConfig) {
         this->enemiesConfig = enemiesConfig;
+    }
+
+    vector<struct xmlLvl> getLvlsConfig() {
+        return lvlsConfig;
+    }
+
+    void setLvlsConfig(vector<struct xmlLvl> lvlsConfig) {
+        this->lvlsConfig = lvlsConfig;
     }
 };
 

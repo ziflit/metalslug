@@ -140,6 +140,14 @@ struct xmlConfig {
 	int cant_players;
 };
 
+struct xmlLvl {
+    EventCompletion completion;
+	int id; 
+	int cant_enemies;
+	int cant_boxes;
+	int posXtoFinish;
+};
+
 struct xmlPlayer {
     EventCompletion completion;
 	Entity id;
