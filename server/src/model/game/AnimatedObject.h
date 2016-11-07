@@ -45,7 +45,7 @@ public:
         return direccionY;
     }
 
-    void setDireccionY(int direccionY) {
+    virtual void setDireccionY(int direccionY) {
         AnimatedObject::direccionY = direccionY;
     }
 
