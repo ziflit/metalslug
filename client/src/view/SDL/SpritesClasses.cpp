@@ -304,29 +304,19 @@ void PlayerSprite::handle(struct event nuevoEvento) {
     }
 }
 
-void EnemySprite::setWidth(int w) {
-    Sprite::setWidth(w);
-    this->weaponsDestRect.w = w;
+PlayerSprite::~PlayerSprite() {
+    SDL_DestroyTexture(this->weaponsLayer);
+    this->weaponsLayer = nullptr;
 }
 
-void EnemySprite::setHeight(int h) {
-    Sprite::setHeight(h);
-    this->weaponsDestRect.h = h;
-}
 
-void EnemySprite::setUpImage(string imageColorPath, string imageGrisadoPath, int wFramesCant, int hFramesCant) {
-
-    this->dibujar = false;
+void EnemySprite::setUpImage(string imageColorPath, int wFramesCant, int hFramesCant) {
 
     Sprite::setUpImage(imageColorPath);
-
-    this->imgaceColorPath = imageColorPath;
-    this->imageGrisadoPath = imageGrisadoPath;
 
     EnemySprite::wActualPosFrame = 0;
 
     EnemySprite::wFramesCant = wFramesCant;
-    EnemySprite::hFramesCant = hFramesCant;
 
     EnemySprite::frameWidth = spriteImageWidth / wFramesCant;
     EnemySprite::frameHeight = spriteImageHeight / hFramesCant;
@@ -335,40 +325,6 @@ void EnemySprite::setUpImage(string imageColorPath, string imageGrisadoPath, int
     EnemySprite::sourceRect.w = EnemySprite::frameWidth;
     EnemySprite::sourceRect.h = EnemySprite::frameHeight;
 }
-
-void EnemySprite::setUpWeaponsImage(string weaponsPath){
-    this->weaponsLayer = loadTexture(renderer,weaponsPath);
-    int weaponsImageWidth, weaponsImageHeight;
-
-    SDL_QueryTexture(weaponsLayer,NULL,NULL,&weaponsImageWidth,&weaponsImageHeight);
-
-    weaponsSourceRect.w = this->frameWidth;
-    weaponsSourceRect.h = this->frameHeight;
-}
-
-void EnemySprite::setWeapon(Arma weapon) {
-    this->arma = arma;
-
-//TODO:cuando esten los sprites aqui se setea la fila correspondiente
-    switch (arma) {
-        case PISTOLA:
-            EnemySprite::weaponsSourceRect.y = 0;
-        case HEAVY_MACHINEGUN:
-            EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 1 );
-        case ROCKET_LAUNCHER:
-            EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 2 );
-        case ENEMY_CHASER:
-            EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 3 );
-        case SHOTGUN:
-            EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 4 );
-        case BOMB:
-            EnemySprite::weaponsSourceRect.y = (EnemySprite::frameHeight * 5 );
-    }
-}
-
-void EnemySprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
-void EnemySprite::grisar() {Sprite::setUpImage(imgaceColorPath);}
-
 /**  MOVIMIENTOS
 *_________________________________________________________________________________________________________
 * _________________
@@ -394,127 +350,30 @@ void EnemySprite::setNextSpriteFrame() {
 
 }
 
-void EnemySprite::caminandoIzquierda() {
-    EnemySprite::setNextSpriteFrame();
-    EnemySprite::sourceRect.y = 0;
-    EnemySprite::weaponsSourceRect.x = EnemySprite::frameWidth * 1;
-}
-void EnemySprite::mirandoArribaCaminandoIzquierda(){
-    EnemySprite::sourceRect.y = (frameHeight*1);
-    EnemySprite::setNextSpriteFrame();
-//    EnemySprite::weaponsSourceRect.x = EnemySprite::frameWidth * 3;
-}
-void EnemySprite::agachadoMirandoAIzquierdaQuieto(){
-    EnemySprite::sourceRect.y = (frameHeight*2);
-    EnemySprite::setNextSpriteFrame();
-//    EnemySprite::weaponsSourceRect.x = EnemySprite::frameWidth * 1;
-}
-void EnemySprite::mirandoArribaIzquierdaQuieto(){
-    EnemySprite::sourceRect.y = (frameHeight*3);
-    EnemySprite::setNextSpriteFrame();
-//    EnemySprite::weaponsSourceRect.x = EnemySprite::frameWidth * 1;
-}
-void EnemySprite::caminandoDerecha(){
-    EnemySprite::sourceRect.y = (frameHeight*4);
-    EnemySprite::setNextSpriteFrame();
-//    EnemySprite::weaponsSourceRect.x = 0;
-}
-void EnemySprite::mirandoArribaCaminandoDerecha(){
-    EnemySprite::sourceRect.y = (frameHeight*5);
-    EnemySprite::setNextSpriteFrame();
-}
-void EnemySprite::agachadoMirandoDerechaQuieto(){
-    EnemySprite::sourceRect.y = (frameHeight*6);
-    EnemySprite::setNextSpriteFrame();
-}
-void EnemySprite::mirandoArribaDerechaQuieto(){
-    EnemySprite::sourceRect.y = (frameHeight*7);
-    EnemySprite::setNextSpriteFrame();
-}
-void EnemySprite::agachadoAvanzandoAIzquierda(){
-    EnemySprite::sourceRect.y = (frameHeight*8);
-    EnemySprite::setNextSpriteFrame();
-}
-void EnemySprite::agachadoAvanzandoADerecha(){
-    EnemySprite::sourceRect.y = (frameHeight*9);
-    EnemySprite::setNextSpriteFrame();
-}
-void EnemySprite::mirandoDerechaQuieto(){
-    EnemySprite::sourceRect.y = (frameHeight*10);
-    EnemySprite::setNextSpriteFrame();
-}
-void EnemySprite::mirandoIzquierdaQuieto(){
-    EnemySprite::sourceRect.y = (frameHeight*11);
-    EnemySprite::setNextSpriteFrame();
-}
-
-
 void EnemySprite::handle(struct event nuevoEvento) {
-    this->dibujar = true;
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
 
-    if (grisado and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) {
-        this->colorear();
-        grisado = false;
-    }
-    if (this->arma != nuevoEvento.data.arma){
-        setWeapon(nuevoEvento.data.arma);
-    }
-
     switch (nuevoEvento.data.postura){
 
-        case Postura::CAMINANDO_IZQUIERDA:
-            caminandoIzquierda();
-            break;
-        case Postura::MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA:
-            mirandoArribaCaminandoIzquierda();
-            break;
-        case Postura::AGACHADO_MIRANDO_IZQUIERDA_QUIETO:
-            agachadoMirandoAIzquierdaQuieto();
-            break;
-        case Postura::MIRANDO_ARRIBA_IZQUIERDA_QUIETO:
-            mirandoArribaIzquierdaQuieto();
-            break;
         case Postura::CAMINANDO_DERECHA:
             caminandoDerecha();
             break;
-        case Postura::MIRANDO_ARRIBA_CAMINANDO_DERECHA:
-            mirandoArribaCaminandoDerecha();
+        case Postura::CAMINANDO_IZQUIERDA :
+            caminandoIzquierda();
             break;
-        case Postura::AGACHADO_MIRANDO_DERECHA_QUIETO:
-            agachadoMirandoDerechaQuieto();
+        case Postura::DISPARANDO_CAMINANDO_DERECHA:
+            disparandoCaminandoDerecha();
             break;
-        case Postura::MIRANDO_ARRIBA_DERECHA_QUIETO:
-            mirandoArribaDerechaQuieto();
+        case Postura::DISPARANDO_CAMINANDO_IZQUIERDA:
+            disparandoCaminandoIzquierda();
             break;
-        case Postura::AGACHADO_AVANZANDO_IZQUIERDA:
-            agachadoAvanzandoAIzquierda();
-            break;
-        case AGACHADO_AVANZANDO_DERECHA:
-            agachadoAvanzandoADerecha();
-            break;
-        case Postura::MIRANDO_DERECHA_QUIETO:
-            mirandoDerechaQuieto();
-            break;
-        case Postura::MIRANDO_IZQUIERDA_QUIETO :
-            mirandoIzquierdaQuieto();
-            break;
-        case Postura::DESCONECTADO:
-            if (!this->grisado){
-                this->grisado = true;
-                mirandoDerechaQuieto();
-                this->grisar();
-            }
-            break;
+//        case Postura::MUERTO:
+//            muerto();
+//            break;
         default:
             break;
     }
-}
-
-PlayerSprite::~PlayerSprite() {
-    SDL_DestroyTexture(this->weaponsLayer);
-    this->weaponsLayer = nullptr;
 }
 
 void BackgroundSprite::setUpImage(string imageSpritePath) {
