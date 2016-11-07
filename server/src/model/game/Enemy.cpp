@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include "Enemy.h"
+#include "Player.h"
+#include "../../utils/MathUtil.h"
+#include <algorithm>
 
 Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     id = enemySelected;
@@ -35,29 +38,31 @@ bool Enemy::isJumping() {
 void Enemy::avanzar() {}
 
 
-int Enemy::retroceder(){
+int Enemy::retroceder() {
     this->x -= speed;
     return x;
 };
 
-void Enemy::updatePosition(int posPlayerToFollow, vector<GameObject*> game_objects) {
+void Enemy::updatePosition(vector<GameObject *> game_objects) {
 
     int newX = x;
     int newY = y;
 
+    GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
     // Minima logica para seguir a los jugadores, mejorarla por favor
-    if (x < posPlayerToFollow - 100 ){
+    float playerPosX = playerToFollow->getX();
+    if (x < playerPosX - 100) {
         postura = CAMINANDO_DERECHA;
-        newX =  x + speed;
-	} else if (x > posPlayerToFollow + 100 ){
+        newX = x + speed;
+    } else if (x > playerPosX + 100) {
         postura = CAMINANDO_IZQUIERDA;
         newX = x - speed;
-	}
+    }
 
-	// Logica insolita para saltar cuando pasa por esas posiciones
-	if (x == 50 || x == 350 || x == 600){
-		direccionY = 1;
-	}
+    // Logica insolita para saltar cuando pasa por esas posiciones
+    if (x == 50 || x == 350 || x == 600) {
+        direccionY = 1;
+    }
 
     if (this->isJumping()) {
         if (posAtJump < 24) {
@@ -69,8 +74,8 @@ void Enemy::updatePosition(int posPlayerToFollow, vector<GameObject*> game_objec
         }
     }
 
-    if (this->canIMove(game_objects, newX, newY)){
-        this->set_position(newX,newY);
+    if (this->canIMove(game_objects, newX, newY)) {
+        this->set_position(newX, newY);
     }
 
 };
@@ -93,7 +98,7 @@ struct event Enemy::getState() {
 };
 
 
-bool Enemy::canIMove(vector<GameObject*> game_objects, int newX, int newY) {
+bool Enemy::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
     bool isColisionanding;
     for (auto &game_object : game_objects) {
         // Checkeo de colisiones
@@ -107,4 +112,28 @@ bool Enemy::canIMove(vector<GameObject*> game_objects, int newX, int newY) {
     }
     return true;
 }
+
+/**
+ * Busco el player mas cercano
+ * @param gameObjects
+ * @return
+ */
+GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
+    GameObject *player = nullptr;
+    float distance = 999999;
+    for (auto gameObject : gameObjects) {
+        vector<Entity>::iterator it = std::find(fightAgainst.begin(), fightAgainst.end(), gameObject->getEntity());
+        if (it != fightAgainst.end() && distance > MathUtil::FindDifference(gameObject->getX(), x)) {
+            distance = MathUtil::FindDifference(gameObject->getX(), x);
+            player = gameObject;
+        }
+    }
+    return player;
+}
+
+
+
+
+
+
 

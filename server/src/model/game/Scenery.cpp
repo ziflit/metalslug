@@ -143,7 +143,7 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     }
 
     for (auto enemy : enemies) {
-        enemy->updatePosition(players[0]->getX(),all_objects_in_window); //Van a seguir siempre al player 1 por ahora
+        enemy->updatePosition(all_objects_in_window); //Van a seguir siempre al player 1 por ahora
         eventsToReturn.push_back(enemy->getState());
     }
 
