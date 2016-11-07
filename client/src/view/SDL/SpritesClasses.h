@@ -134,11 +134,9 @@ private:
 public:
 
     EnemySprite(SDL_Renderer *renderer, int window_width, int window_height) : Sprite(renderer,window_width,window_height) {
-
         EnemySprite::set_position(5,550);
         disparandoCaminandoIzquierda();
-        this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0; //FRAME INICIAL
-        this->weaponsDestRect.x = this->weaponsDestRect.y = 0; //POSICION INICIAL
+        cambioFrame = 0;
     }
 
     void setUpImage(string imageSpritePath,
