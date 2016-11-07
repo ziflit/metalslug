@@ -66,6 +66,8 @@ public:
     bool checkCollition(int newX, int newY, GameObject *other_object);
 
     bool puedenColisionar(GameObject *otherObj);
+
+    bool checkCollition(GameObject *gameObject);
 };
 
 #endif //SERVER_GAMEOBJECT_H
