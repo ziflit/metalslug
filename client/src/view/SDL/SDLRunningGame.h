@@ -27,13 +27,7 @@ public:
 
     void audioInitialization();
 
-    void getSpriteAndSend(Entity id, event nuevoEvento );
-
-    EnemySprite* getEnemy(Entity id);
-
-    PlayerSprite* getPlayer(Entity id);
-
-    BackgroundSprite* getBackground(Entity id);
+    void getSpriteAndSendNewEvent(event nuevoEvento);
 
     void updateWindowSprites();
 

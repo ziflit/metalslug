@@ -36,7 +36,6 @@ SDL_Texture* Sprite::loadTexture(SDL_Renderer* renderer,string imageTexturePath)
     return backgroundTexture;
 }
 
-
 void Sprite::setUpImage(string imageSpritePath) {
     this->layer = loadTexture(renderer,imageSpritePath);
     SDL_QueryTexture(layer,NULL, NULL,&spriteImageWidth,&spriteImageHeight);
@@ -433,7 +432,6 @@ PlayerSprite::~PlayerSprite() {
     SDL_DestroyTexture(this->weaponsLayer);
     this->weaponsLayer = nullptr;
 }
-
 
 void EnemySprite::setUpImage(string imageColorPath, int wFramesCant, int hFramesCant) {
 

@@ -161,34 +161,9 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
 
 }
 
-EnemySprite* SDLRunningGame::getEnemy(Entity id) {
-    for (auto enemy : enemiesSprites) {
-        if ( enemy->getId() == id ){
-            return enemy;
-        }
-    }
-    return nullptr;
-}
+void SDLRunningGame::getSpriteAndSendNewEvent(event nuevoEvento) {
+    Entity id = nuevoEvento.data.id;
 
-PlayerSprite* SDLRunningGame::getPlayer(Entity id) {
-    for (auto player : playersSprites) {
-        if ( player->getId() == id ){
-            return player;
-        }
-    }
-    return nullptr;
-}
-
-BackgroundSprite* SDLRunningGame::getBackground(Entity id) {
-    for (auto back : backgroundSprites) {
-        if(back->getId() == id){
-            return back;
-        }
-    }
-    return nullptr;
-}
-
-void SDLRunningGame::getSpriteAndSend(Entity id, event nuevoEvento) {
     for (auto back : backgroundSprites) {
         if(back->getId() == id){
             back->handle(nuevoEvento);
@@ -204,14 +179,19 @@ void SDLRunningGame::getSpriteAndSend(Entity id, event nuevoEvento) {
             enemy->handle(nuevoEvento);
         }
     }
+
+    //TODO: importante ver el dibujo de las balas, no debe cargar la imagen por cada nueva.
 }
 
 void SDLRunningGame::handleModelState(vector <event> model_state) {
 
         for (auto nuevoEvento : model_state){
 
-            this->getSpriteAndSend(nuevoEvento.data.id,nuevoEvento);
+            this->getSpriteAndSendNewEvent(nuevoEvento);
         }
+
+        //TODO: aqui se debe manejar el dibujo de balas y cajas.
+        //TODO: tambien aqui se debe manejar la destruccion de sprites que no deben dibujarse mas.
 
         this->updateWindowSprites();
 }
