@@ -17,6 +17,7 @@ Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     gravity = 10;
     speed = 10;
     postura = MIRANDO_IZQUIERDA_QUIETO;
+    this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_TELE_MISSILE, BT_SHOT, BT_BOMB, MSC_PLATFORM};
 };
 
 Enemy::~Enemy() {
@@ -31,22 +32,26 @@ bool Enemy::isJumping() {
     return (Enemy::direccionY == 1);
 };
 
-void Enemy::avanzar(){
-    postura = CAMINANDO_DERECHA;
-    x += speed;
+void Enemy::avanzar() {}
+
+
+int Enemy::retroceder(){
+    this->x -= speed;
+    return x;
 };
 
-void Enemy::retroceder(){
-    postura = CAMINANDO_IZQUIERDA;
-    x -= speed;
-};
+void Enemy::updatePosition(int posPlayerToFollow, vector<GameObject*> game_objects) {
 
-void Enemy::updatePosition(int posPlayerToFollow) {
-	// Minima logica para seguir a los jugadores, mejorarla por favor
-	if (x < posPlayerToFollow - 100 ){
-		avanzar();
+    int newX = x;
+    int newY = y;
+
+    // Minima logica para seguir a los jugadores, mejorarla por favor
+    if (x < posPlayerToFollow - 100 ){
+        postura = CAMINANDO_DERECHA;
+        newX =  x + speed;
 	} else if (x > posPlayerToFollow + 100 ){
-        retroceder();
+        postura = CAMINANDO_IZQUIERDA;
+        newX = x - speed;
 	}
 
 	// Logica insolita para saltar cuando pasa por esas posiciones
@@ -57,12 +62,17 @@ void Enemy::updatePosition(int posPlayerToFollow) {
     if (this->isJumping()) {
         if (posAtJump < 24) {
             posAtJump++;
-            y = 400 - jumpPos[posAtJump];
+            newY = 400 - jumpPos[posAtJump];
         } else {
             direccionY = 0;
             posAtJump = 0;
         }
     }
+
+    if (this->canIMove(game_objects, newX, newY)){
+        this->set_position(newX,newY);
+    }
+
 };
 
 struct event Enemy::getState() {
@@ -81,4 +91,20 @@ struct event Enemy::getState() {
 
     return estado;
 };
+
+
+bool Enemy::canIMove(vector<GameObject*> game_objects, int newX, int newY) {
+    bool isColisionanding;
+    for (auto &game_object : game_objects) {
+        // Checkeo de colisiones
+        if (this->puedenColisionar(game_object)) {
+            isColisionanding = this->checkCollition(newX, newY, game_object);
+            if (isColisionanding) {
+                // resolucion de colisiones con el game_object:
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
