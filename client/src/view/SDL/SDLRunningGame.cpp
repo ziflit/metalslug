@@ -38,8 +38,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
         newEnemy->setWidth(enemyConfig.ancho);
         newEnemy->setHeight(enemyConfig.alto);
         newEnemy->setId(enemyConfig.id);
-        newEnemy->setUpImage(enemyConfig.path,enemyConfig.path,
-                              enemyConfig.cantWidthFrames,enemyConfig.cantHeightFrames);
+        newEnemy->setUpImage(enemyConfig.path, enemyConfig.cantWidthFrames, enemyConfig.cantHeightFrames);
         this->enemiesSprites.push_back(newEnemy);
     }
 }
@@ -106,6 +105,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 }
                 else{
                     nuevoEvento.data.code = EventCode ::SDL_KEY_A_PRESSED;
+                    holdAKey= 1;
                 }
                 return nuevoEvento;
 
@@ -115,6 +115,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
                 }
                 else{
                     nuevoEvento.data.code = EventCode ::SDL_KEY_S_PRESSED;
+                    holdSKey = 1;
                 }
                 return nuevoEvento;
             default:

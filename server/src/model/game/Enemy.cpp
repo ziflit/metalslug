@@ -16,7 +16,7 @@ Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     posAtJump = 0;
     gravity = 10;
     speed = 10;
-    postura = MIRANDO_IZQUIERDA_QUIETO;
+    postura = CAMINANDO_IZQUIERDA;
 };
 
 Enemy::~Enemy() {
@@ -40,6 +40,16 @@ void Enemy::retroceder(){
     postura = CAMINANDO_IZQUIERDA;
     x -= speed;
 };
+
+/** TENER EN CUENTA CUANDO SE CONFIGUREN LAS POSTURAS
+ *  SOLO DEFINIMOS POSIBLES LAS SIGUIENTES:
+ *  CAMINANDO_DERECHA
+ *  CAMINANDO_IZQUIERDA
+ *  DISPARANDO_CAMINANDO_DERECHA
+ *  DISPARANDO_CAMINANDO_IZQUIERDA
+ *  MUERTO
+ */
+
 
 void Enemy::updatePosition(int posPlayerToFollow) {
 	// Minima logica para seguir a los jugadores, mejorarla por favor

@@ -450,14 +450,6 @@ void EnemySprite::setUpImage(string imageColorPath, int wFramesCant, int hFrames
     EnemySprite::sourceRect.w = EnemySprite::frameWidth;
     EnemySprite::sourceRect.h = EnemySprite::frameHeight;
 }
-/**  MOVIMIENTOS
-*_________________________________________________________________________________________________________
-* _________________
-*|_____|_____|_____|       - De acuerdo a como este definido el sprite de los player
-*|_____|_____|_____|       - se fijaran los valores del frame correspondiente a cada
-*|_____|_____|_____|       - uno de los siquientes movimientos, lo que dara la coordenada
-*|_____|_____|_____|       - "y" que espera el "EnemySprite::sourceRect.y".
-*/
 
 void EnemySprite::setNextSpriteFrame() {
     if(cambioFrame == 2){
@@ -499,6 +491,26 @@ void EnemySprite::handle(struct event nuevoEvento) {
         default:
             break;
     }
+}
+
+void EnemySprite::caminandoDerecha() {
+    this->sourceRect.y = 0;
+    this->setNextSpriteFrame();
+}
+void EnemySprite::caminandoIzquierda() {
+    this->sourceRect.y = (frameHeight * 1);
+    this->setNextSpriteFrame();
+}
+void EnemySprite::disparandoCaminandoDerecha() {
+    this->sourceRect.y = (frameHeight * 2);
+    this->setNextSpriteFrame();
+}
+void EnemySprite::disparandoCaminandoIzquierda() {
+    this->sourceRect.y = (frameHeight * 3);
+    this->setNextSpriteFrame();
+}
+void EnemySprite::muerto() {
+    this->sourceRect.y = (frameHeight * 4);
 }
 
 void BackgroundSprite::setUpImage(string imageSpritePath) {
