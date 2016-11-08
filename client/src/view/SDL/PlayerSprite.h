@@ -2,6 +2,7 @@
 #define METALSLUG_PLAYERSPRITE_H
 
 #include "Sprite.h"
+#include "Sound.h"
 #include "TextBox.h"
 #include <SDL2/SDL_ttf.h>
 
@@ -9,24 +10,20 @@ class PlayerSprite : public Sprite{
 
 private:
     SDL_Rect weaponsSourceRect, weaponsDestRect;
-    char username[20];
-    int wFramesCant,hFramesCant,wActualPosFrame,cambioFrame;
     SDL_Texture* weaponsLayer;
     TextBox* usernameText;
-    string imgaceColorPath,imageGrisadoPath;
-    bool grisado, conectado;
     Arma arma;
+    int wFramesCant,wActualPosFrame,cambioFrame;
+    bool grisado;
+    string imgaceColorPath,imageGrisadoPath;
 public:
 
     PlayerSprite(SDL_Renderer *renderer, int window_width, int window_height) : Sprite(renderer,window_width,window_height) {
-
-        PlayerSprite::set_position(5,550);
-        mirandoDerechaQuieto();
-        setWeapon(PISTOLA);
         grisado = false;
         cambioFrame = 0;
         this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0; //FRAME INICIAL
         this->weaponsDestRect.x = this->weaponsDestRect.y = 0; //POSICION INICIAL
+        usernameText = nullptr;
     }
 
     void actualizarDibujo();
@@ -47,7 +44,11 @@ public:
 
     void handle(struct event nuevoEvento);
 
-    void clientConected(struct event nuevoEvento);
+    void setUsername(struct event nuevoEvento);
+
+    bool firstEvent();
+
+    bool clientIsConnected();
 
     void grisar();
     void colorear();
@@ -80,6 +81,7 @@ public:
     void muerto();
 
     virtual ~PlayerSprite();
+
 };
 
 #endif //METALSLUG_PLAYERSPRITE_H

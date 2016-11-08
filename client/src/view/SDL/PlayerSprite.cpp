@@ -1,5 +1,4 @@
 #include "PlayerSprite.h"
-#include "Sound.h"
 
 
 void PlayerSprite::set_position(int x, int y) {
@@ -21,8 +20,6 @@ void PlayerSprite::setHeight(int h) {
 
 void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, int wFramesCant, int hFramesCant) {
 
-    this->conectado = false;
-
     Sprite::setUpImage(imageColorPath);
 
     this->imgaceColorPath = imageColorPath;
@@ -31,7 +28,6 @@ void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, in
     this->wActualPosFrame = 0;
 
     this->wFramesCant = wFramesCant;
-    this->hFramesCant = hFramesCant;
 
     this->frameWidth = spriteImageWidth / wFramesCant;
     this->frameHeight = spriteImageHeight / hFramesCant;
@@ -53,7 +49,7 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
 }
 
 void PlayerSprite::actualizarDibujo() {
-    if (conectado) {
+    if (clientIsConnected()) {
         SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
         if(not grisado){
             SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
@@ -243,17 +239,14 @@ void PlayerSprite::muerto() {
     this->sourceRect.y = (frameHeight * 25);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
-    this->conectado = false;
 }
-void PlayerSprite::clientConected(struct event nuevoEvento) {
-    this->conectado = true;
-    stpcpy(this->username , nuevoEvento.data.username);
-    this->usernameText = new TextBox(this->username, this->renderer, {10, 255, 2, 255});
+void PlayerSprite::setUsername(struct event nuevoEvento) {
+    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {10, 255, 2, 255});
 }
 
 void PlayerSprite::handle(struct event nuevoEvento) {
-    if (not conectado) {
-        this->clientConected(nuevoEvento);
+    if (firstEvent()) {
+        this->setUsername(nuevoEvento);
     }
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
@@ -390,4 +383,12 @@ void PlayerSprite::setWeapon(Arma weapon) {
 PlayerSprite::~PlayerSprite() {
     SDL_DestroyTexture(this->weaponsLayer);
     this->weaponsLayer = nullptr;
+}
+
+bool PlayerSprite::firstEvent() {
+    return (this->usernameText == nullptr);
+}
+
+bool PlayerSprite::clientIsConnected() {
+    return (this->usernameText != nullptr);
 }

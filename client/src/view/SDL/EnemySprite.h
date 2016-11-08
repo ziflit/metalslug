@@ -16,8 +16,6 @@ private:
 public:
 
     EnemySprite(SDL_Renderer *renderer, int window_width, int window_height) : Sprite(renderer,window_width,window_height) {
-        EnemySprite::set_position(5,550);
-        disparandoCaminandoIzquierda();
         cambioFrame = 0;
     }
 
