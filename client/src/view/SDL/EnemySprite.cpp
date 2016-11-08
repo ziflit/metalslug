@@ -4,21 +4,7 @@
 
 #include "EnemySprite.h"
 
-void EnemySprite::setUpImage(string imageColorPath, int wFramesCant, int hFramesCant) {
 
-    Sprite::setUpImage(imageColorPath);
-
-    EnemySprite::wActualPosFrame = 0;
-
-    EnemySprite::wFramesCant = wFramesCant;
-
-    EnemySprite::frameWidth = spriteImageWidth / wFramesCant;
-    EnemySprite::frameHeight = spriteImageHeight / hFramesCant;
-
-
-    EnemySprite::sourceRect.w = EnemySprite::frameWidth;
-    EnemySprite::sourceRect.h = EnemySprite::frameHeight;
-}
 
 void EnemySprite::setNextSpriteFrame() {
     if(cambioFrame == 2){

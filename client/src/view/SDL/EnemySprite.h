@@ -15,12 +15,21 @@ private:
 
 public:
 
-    EnemySprite(SDL_Renderer *renderer,SDL_Texture* layer, int window_width, int window_height) : Sprite(renderer,window_width,window_height) {
+    EnemySprite(SDL_Renderer *renderer, int window_width, int window_height, EnemyType* enemyType) : Sprite(renderer,window_width,window_height) {
         cambioFrame = 0;
-    }
+        this->layer = enemyType.getLayer();
+        EnemySprite::wActualPosFrame = 0;
 
-    void setUpImage(string imageSpritePath,
-                    int wFramesCant, int hFramesCant);
+        EnemySprite::wFramesCant = enemyType.getCantWidthFrames();
+
+        EnemySprite::frameWidth = enemyType.getImageWidth() / wFramesCant;
+        EnemySprite::frameHeight = enemyType.getImageHeight() / enemyType.getCantHeigthFrames();
+
+
+        EnemySprite::sourceRect.w = EnemySprite::frameWidth;
+        EnemySprite::sourceRect.h = EnemySprite::frameHeight;
+
+    }
 
 
     void handle(struct event nuevoEvento);

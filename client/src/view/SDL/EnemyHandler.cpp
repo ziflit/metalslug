@@ -15,7 +15,7 @@ EnemyHandler::EnemyHandler(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, i
 void EnemyHandler::newEnemyType(int ancho, int alto, Entity id, char *imagePath, int cantWidthFrames,
                                 int cantHeightFrames) {
     enemiesTypes.push_back(
-            new EnemyType(ancho, alto, id, imagePath, cantWidthFrames, cantHeightFrames, mainRenderer);
+            new EnemyType(ancho, alto, id, imagePath, cantWidthFrames, cantHeightFrames, mainRenderer));
 
 }
 
