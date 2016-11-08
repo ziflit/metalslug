@@ -12,7 +12,7 @@ void Background::calculateSpeed(int largeMainBackground, int speedMainBackground
     this->speed = ((this->largeImage-windowWidth) * speedMainBackground)/(largeMainBackground-windowWidth);
 }
 
-void Background::avanzar() {
+void Background::avanzar(vector<GameObject *> gameObjects) {
     this->avanzarFrame();
 }
 

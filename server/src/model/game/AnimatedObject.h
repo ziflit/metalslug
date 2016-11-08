@@ -7,16 +7,21 @@
 
 
 #include "GameObject.h"
-#include "Weapon.h"
 
 class AnimatedObject : public GameObject {
 protected:
     int health;
-    Weapon *weapon;
-    int direccionX;
-    int direccionY;
+    int ammo;
+    Entity bulletType;
+
     Postura postura;
+    bool isShooting;
+    bool isJumping;
+
 public:
+
+    virtual GameObject *shoot() = 0;
+
     Postura getPostura() {
         return postura;
     }
@@ -33,22 +38,6 @@ public:
         AnimatedObject::health = health;
     }
 
-    int getDireccionX() {
-        return direccionX;
-    }
-
-    void setDireccionX(int direccionX) {
-        AnimatedObject::direccionX = direccionX;
-    }
-
-    int getDireccionY() {
-        return direccionY;
-    }
-
-    void setDireccionY(int direccionY) {
-        AnimatedObject::direccionY = direccionY;
-    }
-
     void receiveDamage(int damage) {
         if (health >= damage) {
             health -= damage;
@@ -57,16 +46,23 @@ public:
         }
     }
 
-    Weapon *getWeapon() {
-        return weapon;
-    }
-
-    void setWeapon(Weapon *weapon) {
-        AnimatedObject::weapon = weapon;
-    }
-
     virtual ~AnimatedObject() {
         //delete this->weapon;
+    }
+    bool getShootingState() {
+        return isShooting;
+    }
+
+    void setShootingState(bool shootingState){
+        this->isShooting = shootingState;
+    }
+
+    bool getJumpingState() {
+        return isJumping;
+    }
+
+    void setJumpingState(bool jumpingState){
+        this->isJumping = jumpingState;
     }
 };
 

@@ -16,10 +16,8 @@ Plataforma::Plataforma(int posX, int posY, int ancho, int largo) {
 }
 
 Plataforma::~Plataforma() {
-	// TODO Auto-generated destructor stub
+    // TODO Auto-generated destructor stub
 }
-
-void Plataforma::avanzar() { return; }
 
 struct event Plataforma::getState() {
     struct event estado;
@@ -34,4 +32,8 @@ struct event Plataforma::getState() {
     estado.data = eventExt;
 
     return estado;
+}
+
+void Plataforma::avanzar(vector<GameObject *> gameObjects) {
+    return;
 }
