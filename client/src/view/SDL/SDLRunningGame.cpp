@@ -47,11 +47,8 @@ SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRendere
     SDLRunningGame::mainRenderer = mainRenderer;
     initializeFromXML(configs);
     SDL_GetWindowSize(mainWindow, &window_width, &window_height);
-
     SDLRunningGame::audioInitialization();
-
     holdLeftKey = holdRightKey = holdUpKey = holdDownKey = holdAKey= holdSKey = 0;
-
 }
 
 struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
@@ -83,6 +80,7 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
     for (auto player : playersSprites) {
         if ( player->getId() == id ){
             player->handle(nuevoEvento);
+            
             return;
         }
     }
@@ -235,7 +233,6 @@ struct event SDLRunningGame::handleKeyUp(SDL_Event *sdlEvent){
     }
 }
 
-//DESTRUCTOR
 SDLRunningGame::~SDLRunningGame () {
 
     for (auto playerSprite : playersSprites){

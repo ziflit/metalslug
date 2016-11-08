@@ -174,7 +174,6 @@ struct xmlEnemy {
 	EventCompletion completion;
 	Entity id;
 	char path[40];
-	char pathWeapons[40];
 	int ancho;
 	int alto;
     int cantWidthFrames;
