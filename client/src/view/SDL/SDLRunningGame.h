@@ -28,7 +28,7 @@ private:
 
     void audioInitialization();
 
-    void getSpriteAndSendNewEvent(event nuevoEvento);
+    void getSpriteAndHandleNewEvent(event nuevoEvento);
 
 public:
 

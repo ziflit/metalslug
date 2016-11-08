@@ -176,22 +176,25 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
 
 }
 
-void SDLRunningGame::getSpriteAndSendNewEvent(event nuevoEvento) {
+void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
     Entity id = nuevoEvento.data.id;
 
     for (auto back : backgroundSprites) {
         if(back->getId() == id){
             back->handle(nuevoEvento);
+            return;
         }
     }
     for (auto player : playersSprites) {
         if ( player->getId() == id ){
             player->handle(nuevoEvento);
+            return;
         }
     }
     for (auto enemy : enemiesSprites) {
         if ( enemy->getId() == id ){
             enemy->handle(nuevoEvento);
+            return;
         }
     }
 
@@ -202,7 +205,7 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
 
         for (auto nuevoEvento : model_state){
 
-            this->getSpriteAndSendNewEvent(nuevoEvento);
+            this->getSpriteAndHandleNewEvent(nuevoEvento);
         }
 
         //TODO: aqui se debe manejar el dibujo de balas y cajas.
