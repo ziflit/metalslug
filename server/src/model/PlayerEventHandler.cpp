@@ -95,7 +95,14 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
             if (!((postura == AGACHADO_MIRANDO_DERECHA_QUIETO) or (postura == AGACHADO_AVANZANDO_DERECHA) or
                   (postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == AGACHADO_AVANZANDO_IZQUIERDA))) {
                 animatedObject->setDireccionY(1);
+
             }
+            break;
+
+        case EventCode::SDL_KEY_S_PRESSED:
+            // Aca hay que arreglar la postura
+            animatedObject->setPostura(DISPARANDO_CAMINANDO_DERECHA);
+            animatedObject->setShootingState(true);
             break;
 
         // case EventCode::SDL_KEY_S_PRESSED:
@@ -184,4 +191,6 @@ void PlayerEventHandler::handle(EventCode eventCode, AnimatedObject *animatedObj
     }
 }
 
-PlayerEventHandler::PlayerEventHandler() {}
+PlayerEventHandler::PlayerEventHandler(){
+    
+}

@@ -4,7 +4,7 @@
 
 #include "../../utils/Protocol.h"
 #include "AnimatedObject.h"
-
+#include "Bullet.h"
 
 class Enemy : public AnimatedObject {
 private:
@@ -14,7 +14,6 @@ private:
                        63, 44, 23, 0};
     int valorEnPuntos;
     vector <Entity> fightAgainst = {MARCO, TARMA, FIO, ERI}; // Si, es horrible tener esto aca.. pero es lo mas rapido de codear :P
-
     GameObject *findCloserPlayerToFollow(vector<GameObject *> gameObjects);
 
 public:
@@ -24,11 +23,9 @@ public:
 
     virtual event getState() override;
 
-    bool isJumping();
+    virtual void avanzar(vector<GameObject *> gameObjects) override;
 
-    void avanzar();
-
-    int retroceder();
+    int retroceder(); 
 
     void updatePosition(vector<GameObject *> game_objects);
 
@@ -36,6 +33,7 @@ public:
 
     bool canIMove(vector<GameObject *> game_objects, int newX, int newY);
 
+    GameObject *shoot() override ;
 
 };
 

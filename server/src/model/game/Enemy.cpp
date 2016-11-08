@@ -7,6 +7,8 @@
 #include "Player.h"
 #include "../../utils/MathUtil.h"
 #include <algorithm>
+#include "Bullet.h"
+#include "NormalBulletMovementStrategy.h"
 
 Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     id = enemySelected;
@@ -21,27 +23,29 @@ Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     speed = 10;
     postura = MIRANDO_IZQUIERDA_QUIETO;
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_TELE_MISSILE, BT_SHOT, BT_BOMB, MSC_PLATFORM};
-};
+    isShooting = false;
+    isJumping = false;
+    bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
+}
+
 
 Enemy::~Enemy() {
-};
+}
 
 void Enemy::set_position(int posx, int posy) {
     x = posx;
     y = posy;
 };
 
-bool Enemy::isJumping() {
-    return (Enemy::direccionY == 1);
-};
-
-void Enemy::avanzar() {}
-
-
-int Enemy::retroceder() {
-    this->x -= speed;
+int Enemy::retroceder(){
+    x -= speed;
     return x;
-};
+}
+
+void Enemy::avanzar(vector<GameObject *> gameObjects) {
+    postura = CAMINANDO_DERECHA;
+    x += speed;
+}
 
 void Enemy::updatePosition(vector<GameObject *> game_objects) {
 
@@ -101,8 +105,7 @@ struct event Enemy::getState() {
     estado.data = eventExt;
 
     return estado;
-};
-
+}
 
 bool Enemy::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
     bool isColisionanding;
@@ -137,9 +140,9 @@ GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
     return player;
 }
 
-
-
-
-
-
+GameObject *Enemy::shoot() {
+    Bullet *bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY, fightAgainst, new NormalBulletMovementStrategy());
+    ammo--;
+    return bullet;
+};
 

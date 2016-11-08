@@ -11,8 +11,9 @@
 
 using namespace std;
 
-Server::Server(string xmlConfigPath) {
+Server::Server(string xmlConfigPath, string xmlLvlsConfigPath) {
     this->xmlConfigPath = xmlConfigPath;
+    this->xmlLvlsConfigPath = xmlLvlsConfigPath;
     loadConfigs();
     this->scenery = new Scenery(configs);
 }
@@ -291,11 +292,12 @@ ConfigsXML& Server::getConfigs(){
 }
 
 void Server::loadConfigs(){
-    XmlLoader loader(xmlConfigPath);
+    XmlLoader loader(xmlConfigPath, xmlLvlsConfigPath);
     configs.setGlobalConf(loader.obtainGlobalConfig());
     configs.setBackgroundsConfig(loader.obtainBackgroundsConfig());
     configs.setPlayersConfig(loader.obtainPlayersConfig());
     configs.setEnemiesConfig(loader.obtainEnemiesConfig());
+    configs.setLvlsConfig(loader.obtainLvlsConfig());
 }
 
 bool Server::enough_players_to_start() {

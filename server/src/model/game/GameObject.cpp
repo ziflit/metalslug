@@ -1,6 +1,3 @@
-//
-// Created by leandro on 28/10/16.
-//
 
 #include "GameObject.h"
 
@@ -45,33 +42,34 @@ void GameObject::setSpeed(float speed) {
 }
 
 int GameObject::getBoxAlto() const {
-	return box_alto;
+    return box_alto;
 }
 
 void GameObject::setBoxAlto(int boxAlto) {
-	box_alto = boxAlto;
+    box_alto = boxAlto;
 }
 
 int GameObject::getBoxAncho() const {
-	return box_ancho;
+    return box_ancho;
 }
 
 void GameObject::setBoxAncho(int boxAncho) {
-	box_ancho = boxAncho;
+    box_ancho = boxAncho;
 }
 
-bool GameObject::checkCollition(int newX, int newY, GameObject* other_object) {
+bool GameObject::checkCollition(int newX, int newY, GameObject *other_object) {
     /* SOLO MIRA SI 2 RECTANGULOS COINCIDEN EN UN PUNTO */
-    if     ((newX + box_ancho / 2 ) >= other_object->getX() - other_object->getBoxAncho() / 2
-        and (newX - box_ancho / 2 ) <= other_object->getX() + other_object->getBoxAncho() / 2
-        and (newY + box_alto  / 2 ) >= other_object->getY() - other_object->getBoxAlto()  / 2
-        and (newY - box_alto  / 2 ) <= other_object->getY() + other_object->getBoxAlto()  / 2) {
-            return true;
-    }
-    return false;
+    return (newX + box_ancho / 2) >= other_object->getX() - other_object->getBoxAncho() / 2
+           and (newX - box_ancho / 2) <= other_object->getX() + other_object->getBoxAncho() / 2
+           and (newY + box_alto / 2) >= other_object->getY() - other_object->getBoxAlto() / 2
+           and (newY - box_alto / 2) <= other_object->getY() + other_object->getBoxAlto() / 2;
 }
 
-bool GameObject::puedenColisionar(GameObject* otherObj) {
+bool GameObject::checkCollition(GameObject *gameObject) {
+    return checkCollition(x, y, gameObject);
+}
+
+bool GameObject::puedenColisionar(GameObject *otherObj) {
     Entity otherEnt = otherObj->getEntity();
     for (auto entity : this->colisionables) {
         if (entity == otherEnt) {
@@ -84,4 +82,20 @@ bool GameObject::puedenColisionar(GameObject* otherObj) {
 int GameObject::retroceder(int cantidad) {
     this->x -= cantidad;
     return x;
+}
+
+int GameObject::getDireccionX() {
+    return direccionX;
+}
+
+void GameObject::setDireccionX(int direccionX) {
+    GameObject::direccionX = direccionX;
+}
+
+int GameObject::getDireccionY() {
+    return direccionY;
+}
+
+void GameObject::setDireccionY(int direccionY) {
+    GameObject::direccionY = direccionY;
 }
