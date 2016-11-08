@@ -1,7 +1,7 @@
 # Para el cliente
 #SRC_FILES = src/client_main.cpp $(filter-out src/model/server.cpp, $(wildcard src/model/*.cpp)) $(filter-out src/model/ClientConnection.cpp, $(wildcard src/model/*.cpp)) src/utils/*.cpp
-SRC_FILES = src/client_main.cpp src/utils/*.cpp src/model/client.cpp  src/model/User.cpp src/model/ClientHandler.cpp  src/view/SDL/SpritesClasses.cpp src/view/SDL/SDLRunningGame.cpp src/view/SDL/InitialWindow.cpp src/view/SDL/Music.cpp src/view/SDL/Sound.cpp src/view/SDL/TextBox.cpp
-INC_FILES = src/model/client.h  src/model/User.h src/utils/*.h src/model/ClientHandler.h src/model/ConfigsXML.h src/view/SDL/SpritesClasses.h src/view/SDL/InitialWindow.h src/view/SDL/Music.h src/view/SDL/Sound.h
+SRC_FILES = src/client_main.cpp src/utils/*.cpp src/model/client.cpp  src/model/User.cpp src/model/ClientHandler.cpp  src/view/SDL/Sprite.cpp src/view/SDL/BackgroundSprite.cpp src/view/SDL/EnemySprite.cpp src/view/SDL/PlayerSprite.cpp src/view/SDL/SDLRunningGame.cpp src/view/SDL/InitialWindow.cpp src/view/SDL/Music.cpp src/view/SDL/Sound.cpp src/view/SDL/TextBox.cpp
+INC_FILES = src/model/client.h  src/model/User.h src/utils/*.h src/model/ClientHandler.h src/model/ConfigsXML.h src/view/SDL/*.h
 #INC_FILES = src/*.h -I$(filter-out src/model/server.h, $(wildcard src/model/*.h))
 OBJ_NAME = client
 CLIENT_DEP =

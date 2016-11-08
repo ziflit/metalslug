@@ -4,7 +4,9 @@
 #define gameMusicPath "audios/musicGame.mp3"
 #include "Music.h"
 #include <vector>
-#include "SpritesClasses.h"
+#include "BackgroundSprite.h"
+#include "PlayerSprite.h"
+#include "EnemySprite.h"
 #include <SDL2/SDL_events.h>
 #include "../../model/ConfigsXML.h"
 
