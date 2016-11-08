@@ -5,7 +5,6 @@
 #include "Sprite.h"
 Sprite::Sprite(SDL_Renderer* mainRenderer, int window_width, int window_height) {
 
-    this->layer = layer;
     this->renderer = mainRenderer;
 
     this->sourceRect.x = this->sourceRect.y = 0; //FRAME INICIAL

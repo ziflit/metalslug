@@ -15,7 +15,7 @@ private:
 
 public:
 
-    EnemySprite(SDL_Renderer *renderer, int window_width, int window_height) : Sprite(renderer,window_width,window_height) {
+    EnemySprite(SDL_Renderer *renderer,SDL_Texture* layer, int window_width, int window_height) : Sprite(renderer,window_width,window_height) {
         cambioFrame = 0;
     }
 
