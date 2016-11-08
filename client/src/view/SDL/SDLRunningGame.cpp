@@ -32,13 +32,12 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
     }
 
     for (auto enemyConfig : configs.getEnemiesConfig()) {
-        EnemySprite* newEnemy = new EnemySprite(this->mainRenderer,
-                                                   window_width, window_height);
-        newEnemy->setWidth(enemyConfig.ancho);
-        newEnemy->setHeight(enemyConfig.alto);
-        newEnemy->setId(enemyConfig.id);
-        newEnemy->setUpImage(enemyConfig.path, enemyConfig.cantWidthFrames, enemyConfig.cantHeightFrames);
-
+        enemyHandler->newEnemyType(enemyConfig.ancho,
+                               enemyConfig.alto,
+                               enemyConfig.id,
+                               enemyConfig.path,
+                               enemyConfig.cantWidthFrames,
+                               enemyConfig.cantHeightFrames);
     }
 }
 
@@ -85,12 +84,12 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
             return;
         }
     }
-    for (auto enemy : enemiesSprites) {
-        if ( enemy->getId() == id ){
-            enemy->handle(nuevoEvento);
-            return;
-        }
+
+    if(enemyHandler->isEnemyType(id)) {
+        this->enemyHandler->handle(nuevoEvento);
+        return;
     }
+
 
     //TODO: importante ver el dibujo de las balas, no debe cargar la imagen por cada nueva.
 }
@@ -116,11 +115,11 @@ void SDLRunningGame::updateWindowSprites () {
         backgroundSprites[i]->actualizarDibujo();
     }
 
-    for (int i = 0 ; i< playersSprites.size() ; i++) {  //ojo con el auto, le ponia por defecto tipo Sprite cuando es PlayerSprite
+    for (int i = 0 ; i< playersSprites.size() ; i++) {
             playersSprites[i]->actualizarDibujo();
     }
 
-    for (int i = 0 ; i< enemiesSprites.size() ; i++) {  //ojo con el auto, le ponia por defecto tipo Sprite cuando es EnemySprite
+    for (int i = 0 ; i< enemiesSprites.size() ; i++) {
         enemiesSprites[i]->actualizarDibujo();
     }
 
