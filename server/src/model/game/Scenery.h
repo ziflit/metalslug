@@ -24,18 +24,23 @@ using namespace std;
 
 class Scenery {
 private:
+    vector<struct xmlLvl> lvlsConfig;
     bool nivelEnded;
     vector<Player *> players;
     vector<Enemy *> enemies;
     vector<GameObject *> backgrounds;
+    vector<Bullet *> bullets; // las vamos a tener que diferencias para que el colisionador pueda usarlas
+    int cantPlayers;
     vector<GameObject *> miscs;  // Se utiliza para plataformas, cajas y elementos bonus
-    vector<Bullet> bullets; // las vamos a tener que diferencias para que el colisionador pueda usarlas
 
     unsigned int windowWidth, windowHeight, playersSpeed;
+    
     void initializeFromXML(ConfigsXML configs);
 
     // *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
     void addElementToScenery(Player *player);
+
+    void addElementToScenery(Bullet *bullet);
 
     void addElementToScenery(Enemy *enemy);
 

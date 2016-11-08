@@ -33,7 +33,7 @@ public:
 
     void calculateSpeed(int largeMainBackground, int speedMainBackground);
 
-	void avanzar();
+	void avanzar(vector<GameObject *> gameObjects) override ;
 
     bool avanzarFrame();
 

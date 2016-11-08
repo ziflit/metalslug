@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "Player.h"
+#include "NormalBulletMovementStrategy.h"
 
 Player::Player(string user, Entity entitySelected, int windowWidth) {
     username = user;
@@ -21,18 +22,23 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
      *        (0,600)___________________(600,800)
      */
     x = 5;
-    y = 400;
+    y = 0;
     box_alto = 100; // TODO inicializar esto desde el XML y no acá
     box_ancho = 50;
     direccionY = 0;
     direccionX = 0;
-    posAtJump = 0;
     gravity = 10;
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
+
+    isShooting = false;
+    isJumping = false;
+    bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
+
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_SHOT, BT_BOMB,
                            MSC_BONUS_KILLALL, MSC_POWER_BONUS, MSC_BONUS_KILLALL,
                            MSC_PLATFORM};
+
 }
 
 Player::~Player() {
@@ -47,11 +53,21 @@ bool Player::isMoving() {
     return (Player::direccionX != 0); // en -1 y 1 se esta moviendo
 }
 
-bool Player::isJumping() {
-    return (Player::direccionY == 1);
+bool Player::haveBullets() {
+    return ammo > 0;
 }
 
-void Player::updatePosition(vector<GameObject*> game_objects) {
+
+GameObject *Player::shoot() {
+    // TODO : ver tema cuando no quedan mas balas y la creacion de las estrategias segun el arma
+    Bullet *bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY, shootsTo,
+                                new NormalBulletMovementStrategy());
+    ammo--;
+    return bullet;
+};
+
+
+void Player::updatePosition(vector<GameObject *> game_objects) {
     if (this->postura != DESCONECTADO) {
         int newX = x;
         int newY = y;
@@ -59,21 +75,27 @@ void Player::updatePosition(vector<GameObject*> game_objects) {
             if (((direccionX == 1) and (x < (windowWidth - 100))) or ((direccionX == -1) and (x > 0))) {
                 newX = x + direccionX * speed;
             }
-        }
-        if (this->isJumping()) {
-            if (posAtJump < 24) {
-                posAtJump++;
-                newY = 400 - jumpPos[posAtJump];
-            } else {
-                direccionY = 0;
-                posAtJump = 0;
+            if (this->canIMove(game_objects, newX, newY)) {
+                this->set_position(newX, newY);
             }
         }
+        /* Checkeo de gravedad */
 
+        int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
+        if (this->canIMove(game_objects, newX, newYconGravedad)){
+            fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
+        }
+
+        newY -= ((this->direccionY * fsalto) + (gravity * -1));
+        if (fsalto > 0) {
+            fsalto -= gravity;
+        }
+        if (fsalto == 0) {
+            this->setDireccionY(0);
+        }
         if (this->canIMove(game_objects, newX, newY)) {
             this->set_position(newX, newY);
         }
-
     } else {
         x = 0; //pone al grisado en el borde izquierdo
     }
@@ -102,7 +124,7 @@ struct event Player::getState() {
     return estado;
 }
 
-bool Player::canIMove(vector<GameObject*> game_objects, int newX, int newY) {
+bool Player::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
     /* Auto??? que pasa con las cosas abstractas? */
     bool isColisionanding;
     for (auto &game_object : game_objects) {

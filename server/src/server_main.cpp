@@ -7,6 +7,7 @@
 #include "utils/Logger.h"
 #include "utils/xml/XmlLoader.h"
 #define DEFAULT_CONFIG_XML_PATH "config.xml"
+#define DEFAULT_LEVELS_CONFIG_XML_PATH "levels.xml"
 const int FPS = 30;
 bool onlinethread = true;
 
@@ -97,9 +98,9 @@ int main(int argc, char* argv[]) {
     Server* server;
     if (argc > 2) {
         string pathxml = argv[2];
-        server = new Server(pathxml);
+        server = new Server(pathxml, DEFAULT_LEVELS_CONFIG_XML_PATH);
     } else {
-        server = new Server(DEFAULT_CONFIG_XML_PATH);
+        server = new Server(DEFAULT_CONFIG_XML_PATH, DEFAULT_LEVELS_CONFIG_XML_PATH);
     }
     server->shouldCloseFunc(false);
 

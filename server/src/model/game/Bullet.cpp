@@ -1,16 +1,41 @@
 #include "Bullet.h"
 
-Bullet::Bullet(Entity bulletType, int bulletSpeed, int spawnX, int spawnY, int direccionY, int direccionX) {
+Bullet::Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int direccionX,
+               vector<Entity> collitionables, BulletMovementStrategy *bulletMovementStrategy) {
     id = bulletType;
     x = spawnX;
     y = spawnY;
     this->direccionY = direccionY;
     this->direccionX = direccionX;
-    speed = bulletSpeed;
+    switch (bulletType) {
+        case Entity::BT_HEAVY_BULLET:
+            speed = 60;
+            damage = 100;
+            break;
+        case Entity::BT_MISSILE:
+            speed = 30;
+            damage = 100;
+            break;
+        case Entity::BT_TELE_MISSILE:
+            speed = 10;
+            damage = 100;
+            break;
+        case Entity::BT_SHOT:
+            speed = 20;
+            damage = 100;
+            break;
+        default:
+            speed = 50;
+            damage = 100;
+            break;
+    }
+    this->colisionables = collitionables;
+    this->movementStrategy = bulletMovementStrategy;
 }
 
 Bullet::~Bullet() {
-};
+    delete movementStrategy;
+}
 
 event Bullet::getState() {
     struct event estado;
@@ -25,23 +50,8 @@ event Bullet::getState() {
     return estado;
 }
 
-void Bullet::avanzar(int dirX, int dirY, int some_enemy_posX, int some_enemy_posY) { 
-    if ( id == Entity::BT_TELE_MISSILE){
-        if (x < some_enemy_posX){
-            dirX = 1;
-        } else {
-            dirX = -1;
-        }
-
-        if (y < some_enemy_posY){
-            dirY = 1;
-        } else {
-            dirY = -1;
-        }
-    }
-
-    x += dirX*speed;
-    y += dirY*speed;
+void Bullet::avanzar(vector<GameObject *> collitionables) {
+    movementStrategy->avanzar(collitionables, this);
 }
 
 int Bullet::getDamage() const {
