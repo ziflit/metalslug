@@ -21,7 +21,7 @@ void PlayerSprite::setHeight(int h) {
 
 void PlayerSprite::setUpImage(string imageColorPath, string imageGrisadoPath, int wFramesCant, int hFramesCant) {
 
-    this->dibujar = false;
+    this->conectado = false;
 
     Sprite::setUpImage(imageColorPath);
 
@@ -53,7 +53,7 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
 }
 
 void PlayerSprite::actualizarDibujo() {
-    if (dibujar) {
+    if (conectado) {
         SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
         if(not grisado){
             SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
@@ -243,16 +243,16 @@ void PlayerSprite::muerto() {
     this->sourceRect.y = (frameHeight * 25);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
-    this->dibujar = false;
+    this->conectado = false;
 }
 void PlayerSprite::clientConected(struct event nuevoEvento) {
-    this->dibujar = true;
+    this->conectado = true;
     stpcpy(this->username , nuevoEvento.data.username);
     this->usernameText = new TextBox(this->username, this->renderer, {10, 255, 2, 255});
 }
 
 void PlayerSprite::handle(struct event nuevoEvento) {
-    if (not dibujar) {
+    if (not conectado) {
         this->clientConected(nuevoEvento);
     }
 

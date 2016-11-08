@@ -14,7 +14,7 @@ private:
     SDL_Texture* weaponsLayer;
     TextBox* usernameText;
     string imgaceColorPath,imageGrisadoPath;
-    bool grisado, dibujar;
+    bool grisado, conectado;
     Arma arma;
 public:
 
