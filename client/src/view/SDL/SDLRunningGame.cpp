@@ -1,7 +1,6 @@
 #include "SDLRunningGame.h"
 
 void SDLRunningGame::audioInitialization () {
-    //Audio Initialization
     SDLRunningGame::music = new Music(gameMusicPath);
     music->play();
 }
@@ -53,6 +52,83 @@ SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRendere
 
     holdLeftKey = holdRightKey = holdUpKey = holdDownKey = holdAKey= holdSKey = 0;
 
+}
+
+struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
+
+    if (sdlEvent->type == SDL_KEYDOWN) {  //si aprieto tal tecla:
+        return this->handleKeyDown(sdlEvent);
+    }
+
+    else if(sdlEvent->type == SDL_KEYUP){ //si dejo de apretar una tecla
+        return this->handleKeyUp(sdlEvent);
+    }
+
+    struct event nuevoEvento;
+    nuevoEvento.completion = EventCompletion::FINAL_MSG;
+    nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
+    return nuevoEvento;
+
+}
+
+void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
+    Entity id = nuevoEvento.data.id;
+
+    for (auto back : backgroundSprites) {
+        if(back->getId() == id){
+            back->handle(nuevoEvento);
+            return;
+        }
+    }
+    for (auto player : playersSprites) {
+        if ( player->getId() == id ){
+            player->handle(nuevoEvento);
+            return;
+        }
+    }
+    for (auto enemy : enemiesSprites) {
+        if ( enemy->getId() == id ){
+            enemy->handle(nuevoEvento);
+            return;
+        }
+    }
+
+    //TODO: importante ver el dibujo de las balas, no debe cargar la imagen por cada nueva.
+}
+
+void SDLRunningGame::handleModelState(vector <event> model_state) {
+
+        for (auto nuevoEvento : model_state){
+
+            this->getSpriteAndHandleNewEvent(nuevoEvento);
+        }
+
+        //TODO: aqui se debe manejar el dibujo de balas y cajas.
+        //TODO: tambien aqui se debe manejar la destruccion de sprites que no deben dibujarse mas.
+
+        this->updateWindowSprites();
+}
+
+
+void SDLRunningGame::updateWindowSprites () {
+    SDL_RenderClear(this->mainRenderer);
+
+    for (int i = 0 ; i < (backgroundSprites.size()-1) ; i++) {
+        backgroundSprites[i]->actualizarDibujo();
+    }
+
+    for (int i = 0 ; i< playersSprites.size() ; i++) {  //ojo con el auto, le ponia por defecto tipo Sprite cuando es PlayerSprite
+            playersSprites[i]->actualizarDibujo();
+    }
+
+    for (int i = 0 ; i< enemiesSprites.size() ; i++) {  //ojo con el auto, le ponia por defecto tipo Sprite cuando es EnemySprite
+        enemiesSprites[i]->actualizarDibujo();
+    }
+
+
+   backgroundSprites[(backgroundSprites.size() - 1)]->actualizarDibujo();
+
+    SDL_RenderPresent(this->mainRenderer);
 }
 
 struct event SDLRunningGame::handleKeyDown(SDL_Event* sdlEvent){
@@ -157,83 +233,6 @@ struct event SDLRunningGame::handleKeyUp(SDL_Event *sdlEvent){
             return nuevoEvento;
 
     }
-}
-
-struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
-
-    if (sdlEvent->type == SDL_KEYDOWN) {  //si aprieto tal tecla:
-        return this->handleKeyDown(sdlEvent);
-    }
-
-    else if(sdlEvent->type == SDL_KEYUP){ //si dejo de apretar una tecla
-        return this->handleKeyUp(sdlEvent);
-    }
-
-    struct event nuevoEvento;
-    nuevoEvento.completion = EventCompletion::FINAL_MSG;
-    nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
-    return nuevoEvento;
-
-}
-
-void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
-    Entity id = nuevoEvento.data.id;
-
-    for (auto back : backgroundSprites) {
-        if(back->getId() == id){
-            back->handle(nuevoEvento);
-            return;
-        }
-    }
-    for (auto player : playersSprites) {
-        if ( player->getId() == id ){
-            player->handle(nuevoEvento);
-            return;
-        }
-    }
-    for (auto enemy : enemiesSprites) {
-        if ( enemy->getId() == id ){
-            enemy->handle(nuevoEvento);
-            return;
-        }
-    }
-
-    //TODO: importante ver el dibujo de las balas, no debe cargar la imagen por cada nueva.
-}
-
-void SDLRunningGame::handleModelState(vector <event> model_state) {
-
-        for (auto nuevoEvento : model_state){
-
-            this->getSpriteAndHandleNewEvent(nuevoEvento);
-        }
-
-        //TODO: aqui se debe manejar el dibujo de balas y cajas.
-        //TODO: tambien aqui se debe manejar la destruccion de sprites que no deben dibujarse mas.
-
-        this->updateWindowSprites();
-}
-
-
-void SDLRunningGame::updateWindowSprites () {
-    SDL_RenderClear(this->mainRenderer);
-
-    for (int i = 0 ; i < (backgroundSprites.size()-1) ; i++) {
-        backgroundSprites[i]->actualizarDibujo();
-    }
-
-    for (int i = 0 ; i< playersSprites.size() ; i++) {  //ojo con el auto, le ponia por defecto tipo Sprite cuando es PlayerSprite
-            playersSprites[i]->actualizarDibujo();
-    }
-
-    for (int i = 0 ; i< enemiesSprites.size() ; i++) {  //ojo con el auto, le ponia por defecto tipo Sprite cuando es EnemySprite
-        enemiesSprites[i]->actualizarDibujo();
-    }
-
-
-   backgroundSprites[(backgroundSprites.size() - 1)]->actualizarDibujo();
-
-    SDL_RenderPresent(this->mainRenderer);
 }
 
 //DESTRUCTOR

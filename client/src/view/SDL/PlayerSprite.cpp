@@ -1,4 +1,5 @@
 #include "PlayerSprite.h"
+#include "Sound.h"
 
 
 void PlayerSprite::set_position(int x, int y) {
@@ -365,6 +366,9 @@ void PlayerSprite::setWeapon(Arma weapon) {
             break;
         case HEAVY_MACHINEGUN:
             this->weaponsSourceRect.y = (this->frameHeight * 1 );
+//            Sound *heavyMachineSound = new Sound("heaveMachineSound.wav");
+//            heavyMachineSound->playOnce();
+//            delete heavyMachineSound;
             break;
         case ROCKET_LAUNCHER:
             this->weaponsSourceRect.y = (this->frameHeight * 2 );
