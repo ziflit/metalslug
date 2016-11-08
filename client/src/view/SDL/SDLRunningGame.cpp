@@ -38,13 +38,14 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
         newEnemy->setHeight(enemyConfig.alto);
         newEnemy->setId(enemyConfig.id);
         newEnemy->setUpImage(enemyConfig.path, enemyConfig.cantWidthFrames, enemyConfig.cantHeightFrames);
-        this->enemiesSprites.push_back(newEnemy);
+
     }
 }
 
 SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
-    SDLRunningGame::mainWindow = mainWindow;
-    SDLRunningGame::mainRenderer = mainRenderer;
+    this->mainWindow = mainWindow;
+    this->mainRenderer = mainRenderer;
+    this->enemyHandler = new EnemyHandler(mainWindow, mainRenderer, window_width, window_height);
     initializeFromXML(configs);
     SDL_GetWindowSize(mainWindow, &window_width, &window_height);
     SDLRunningGame::audioInitialization();
@@ -80,7 +81,7 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
     for (auto player : playersSprites) {
         if ( player->getId() == id ){
             player->handle(nuevoEvento);
-            
+
             return;
         }
     }

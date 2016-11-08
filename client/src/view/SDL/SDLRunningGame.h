@@ -7,6 +7,7 @@
 #include "BackgroundSprite.h"
 #include "PlayerSprite.h"
 #include "EnemySprite.h"
+#include "EnemyHandler.h"
 #include <SDL2/SDL_events.h>
 #include "../../model/ConfigsXML.h"
 
@@ -19,7 +20,7 @@ private:
     int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
     vector<BackgroundSprite*> backgroundSprites;
     vector<PlayerSprite*> playersSprites;
-    vector<EnemySprite*> enemiesSprites;
+    EnemyHandler* enemyHandler;
 
 
     event handleKeyDown(SDL_Event *sdlEvent);
