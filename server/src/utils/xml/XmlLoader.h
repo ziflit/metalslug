@@ -21,9 +21,10 @@ using namespace rapidxml;
 class XmlLoader {
 private:
     string path;
+    string pathLevelsConfig;
 public:
 
-    XmlLoader(string path);
+    XmlLoader(string path, string pathLevelsConfig);
 
     virtual ~XmlLoader();
 
@@ -34,6 +35,8 @@ public:
     vector<struct xmlEnemy> obtainEnemiesConfig();
 
     vector<struct xmlBackground> obtainBackgroundsConfig();
+
+    vector<struct xmlLvl> obtainLvlsConfig();
 
     Entity convertToEntity(string id);
 };

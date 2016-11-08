@@ -1,7 +1,8 @@
 #include "XmlLoader.h"
 
-XmlLoader::XmlLoader(string path) {
+XmlLoader::XmlLoader(string path, string pathLevelsConfig) {
     this->path = path;
+    this->pathLevelsConfig = pathLevelsConfig;
 }
 
 XmlLoader::~XmlLoader() {
@@ -162,3 +163,44 @@ struct xmlConfig XmlLoader::obtainGlobalConfig() {
     return config;
 }
 
+vector<struct xmlLvl> XmlLoader::obtainLvlsConfig() {
+    xml_document<> doc;
+    file<> xmlFile(pathLevelsConfig.c_str()); //open file
+    doc.parse<0>(xmlFile.data());
+    vector<struct xmlLvl> configs;
+    vector<struct xmlPlatform> plataformas;
+    xml_node<> *lvls = doc.first_node("levels");
+    for (xml_node<> *lvl = lvls->first_node("lvl"); lvl; lvl = lvl->next_sibling()) {
+        xml_node<> *id = lvl->first_node("id");
+        xml_node<> *cant_enemies = lvl->first_node("cant_enemies");
+        xml_node<> *cant_boxes = lvl->first_node("cant_boxes");
+        xml_node<> *posXtoFinish = lvl->first_node("posXtoFinish");
+        xml_node<> *platforms = lvl->first_node("platforms");
+        for (xml_node<> *platform = platforms->first_node("platform"); platform; platform = platform->next_sibling()) {
+            xml_node<> *x = platform->first_node("x");
+            xml_node<> *y = platform->first_node("y");                    
+            xml_node<> *ancho = platform->first_node("ancho");
+            xml_node<> *alto = platform->first_node("alto");
+
+            struct xmlPlatform platfrm;
+            platfrm.x = atoi(x->value());
+            platfrm.y = atoi(y->value());
+            platfrm.ancho = atoi(ancho->value());
+            platfrm.alto = atoi(alto->value());
+
+            plataformas.push_back(platfrm);
+        }
+
+        struct xmlLvl lvlConfig;
+        lvlConfig.completion = EventCompletion::PARTIAL_MSG;
+        lvlConfig.id = atoi(id->value());
+        lvlConfig.cant_enemies = atoi(cant_enemies->value());
+        lvlConfig.cant_boxes = atoi(cant_boxes->value());
+        lvlConfig.posXtoFinish = atoi(posXtoFinish->value());
+        lvlConfig.platforms = plataformas;
+
+        configs.push_back(lvlConfig);
+    }
+    configs.back().completion = EventCompletion::FINAL_MSG;
+    return configs;
+}

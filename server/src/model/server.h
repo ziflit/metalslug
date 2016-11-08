@@ -34,14 +34,10 @@ private:
     vector<shared_ptr<ClientConnection> > connections;
     bool shouldClose;
     string xmlConfigPath;
-
-    // guardo los structs de lo que se cargo por XML, despues ver como refactorizar
-    struct xmlConfig globalConfig;
-    vector<struct xmlPlayer> spritesConfig;
-    vector<struct xmlBackground> backgroundsConfig;
+    string xmlLvlsConfigPath;
 
 public:
-    Server(string xmlConfigPath);
+    Server(string xmlConfigPath, string xmlLvlsConfigPath);
 
     ~Server();
 

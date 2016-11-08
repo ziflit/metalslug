@@ -24,6 +24,7 @@ using namespace std;
 
 class Scenery {
 private:
+    vector<struct xmlLvl> lvlsConfig;
     bool nivelEnded;
     vector<Player *> players;
     vector<Enemy *> enemies;

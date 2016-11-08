@@ -2,6 +2,7 @@
 #include "../EventHandler.h"
 #include "../PlayerEventHandler.h"
 #include "PlayerBuilder.h"
+#include <time.h>
 
 Scenery::Scenery(ConfigsXML configs) {
     this->initializeFromXML(configs);
@@ -9,6 +10,7 @@ Scenery::Scenery(ConfigsXML configs) {
 }
 
 void Scenery::initializeFromXML(ConfigsXML configs) {
+    lvlsConfig = configs.getLvlsConfig();
     this->nivelEnded = false;
 
     this->windowWidth = configs.getGlobalConf().ancho;
@@ -17,15 +19,35 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
 
     vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
 
-    // Probando para ver si funcionan los enemigos
-    Enemy *enemy = new Enemy(ENEMY_NORMAL_1, 3500, 400);
-    enemies.push_back(enemy);
-    Enemy *enemy2 = new Enemy(ENEMY_NORMAL_2, 5200, 400);
-    enemies.push_back(enemy2);
-    Enemy *enemy3 = new Enemy(ENEMY_NORMAL_3, 1500, 400);
-    enemies.push_back(enemy3);
-    //------------------------------------------------------
+    //La idea de este switch es que elija que nivel inicializar, es horrible, seguro se puede cambiar.
+    int selectedLevel = 1;
+    switch (selectedLevel){
+        case 1:
+            selectedLevel = 0;
+            break;
+        case 2:
+            selectedLevel = 1;
+            break;
+        case 3:
+            selectedLevel = 2;
+            break;
+    }
 
+    //Seteo de enemigos de forma random, en base a la carga del XML
+    srand (time(NULL));
+    for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
+        int randomSpawnInX = rand() % 3000 + 800;
+        Enemy *enemy = new Enemy(ENEMY_NORMAL_1, randomSpawnInX , 400);
+        enemies.push_back(enemy);
+    }
+
+    //Seteo los pisos y plataformas, en base a la carga del XML
+    for (auto p : lvlsConfig[selectedLevel].platforms) {
+        Plataforma *plataforma = new Plataforma(p.x, p.y, p.ancho, p.alto);
+        miscs.push_back(plataforma);
+    }
+
+    //TODO: Habria que ver de linkear los backgrounds con los level, para cargar los correspondientes
     for (auto backgroundConfig : backgroundConfigs) {
         Background *newBackground = new Background(backgroundConfig.id, playersSpeed,
                                                    backgroundConfig.ancho, windowWidth);
