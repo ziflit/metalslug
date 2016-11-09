@@ -236,10 +236,6 @@ SDLRunningGame::~SDLRunningGame () {
         delete playerSprite;
     }
 
-    for (auto enemySprite : enemiesSprites){
-        delete enemySprite;
-    }
-
     for (auto backSprite : backgroundSprites){
         delete backSprite;
     }

@@ -35,6 +35,12 @@ public:
     int getCantWidthFrames() { return cantWidthFrames;}
 
     int getCantHeightFrames() { return cantHeigthFrames;}
+
+    SDL_Texture *getLayer();
+
+    int getImageWidth();
+
+    int getImageHeight();
 };
 
 

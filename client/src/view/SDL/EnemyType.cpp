@@ -41,3 +41,15 @@ SDL_Texture* EnemyType::createTexture(SDL_Renderer* renderer,string imageTexture
     SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
     return backgroundTexture;
 }
+
+SDL_Texture *EnemyType::getLayer() {
+    return layer;
+}
+
+int EnemyType::getImageWidth() {
+    return spriteImageWidth;
+}
+
+int EnemyType::getImageHeight() {
+    return spriteImageHeight;
+}
