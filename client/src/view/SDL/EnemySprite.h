@@ -16,15 +16,17 @@ private:
 
 public:
 
-    EnemySprite(SDL_Renderer *renderer, int window_width, int window_height, enemyType enemyType) : Sprite(renderer,window_width,window_height) {
-        cambioFrame = 0;
-        this->layer = enemyType.layer;
+    EnemySprite(SDL_Renderer *renderer, int window_width, int window_height, enemyType type) : Sprite(renderer, window_width, window_height) {
+
+        this->cambioFrame = 0;
         EnemySprite::wActualPosFrame = 0;
 
-        EnemySprite::wFramesCant = enemyType.cantWidthFrames;
+        this->layer = type.layer;
 
-        EnemySprite::frameWidth = enemyType.imageWidth / wFramesCant;
-        EnemySprite::frameHeight = enemyType.imageHeight / enemyType.cantHeightFrames;
+        EnemySprite::wFramesCant = type.cantWidthFrames;
+
+        EnemySprite::frameWidth = type.spriteImageWidth / wFramesCant;
+        EnemySprite::frameHeight = type.spriteImageHeight / type.cantHeigthFrames;
 
 
         EnemySprite::sourceRect.w = EnemySprite::frameWidth;
