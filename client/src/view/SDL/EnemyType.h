@@ -2,7 +2,7 @@
 #define METALSLUG_ENEMYTYPE_H
 
 #include "../../utils/Protocol.h"
-
+#include "SDL2/SDL.h"
 
 struct enemyType {
 
