@@ -17,7 +17,7 @@ private:
 public:
 
     EnemySprite(SDL_Renderer *renderer, int window_width, int window_height, enemyType type) : Sprite(renderer, window_width, window_height) {
-
+        this->id = type.id;
         this->cambioFrame = 0;
         EnemySprite::wActualPosFrame = 0;
 

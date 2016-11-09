@@ -26,11 +26,11 @@ private:
     vector<EnemySprite*> enemies;
     int window_width;
     int window_heigth;
-    int enemyToHandled;
+    int enemyToHandler;
 
 public:
 
-    EnemyHandler(SDL_Window* mainWindow,SDL_Renderer* mainRenderer, int window_width, int window_height);
+    EnemyHandler(SDL_Renderer* mainRenderer, int window_width, int window_height);
 
     void newEnemyType(int ancho, int alto, Entity id, char imagePath[40], int cantWidthFrames, int cantHeightFrames);
 
@@ -44,13 +44,13 @@ public:
 
     void modelStateSet();
 
-    enemyType getEnemyType(Entity entity);
+    enemyType getEnemyType(Entity id);
 
-    bool enemiesCreated();
+    bool notEnemiesCreated();
 
-    EnemySprite* getEnemyToHandle(Entity entity);
+    EnemySprite* getEnemyToHandle(Entity id);
 
-    EnemySprite *createNewEnemyType(Entity entity);
+    EnemySprite *createNewEnemyType(Entity id);
 
     void createEnemyAndHandle(event nuevoEvento);
 };

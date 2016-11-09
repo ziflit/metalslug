@@ -1,7 +1,7 @@
 	<config>
 		<ancho>800</ancho>
 		<alto>600</alto>
-		<cant_players>2</cant_players>
+		<cant_players>1</cant_players>
 	</config>
 
 	<players>
@@ -58,7 +58,7 @@
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
-			<cantHeightFrames>4</cantHeightFrames>
+			<cantHeightFrames>12</cantHeightFrames>
 			<speed>10</speed>
 		</enemy>
 		<enemy>
@@ -67,7 +67,7 @@
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
-			<cantHeightFrames>4</cantHeightFrames>
+			<cantHeightFrames>12</cantHeightFrames>
 			<speed>10</speed>
 		</enemy>
 		<enemy>
@@ -76,7 +76,7 @@
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
-			<cantHeightFrames>4</cantHeightFrames>
+			<cantHeightFrames>12</cantHeightFrames>
 			<speed>10</speed>
 		</enemy>
 	</enemies>
