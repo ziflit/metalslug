@@ -44,7 +44,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
 SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
     this->mainWindow = mainWindow;
     this->mainRenderer = mainRenderer;
-    this->enemyHandler = new EnemyHandler(mainWindow, mainRenderer, window_width, window_height);
+    this->enemyHandler = new EnemyHandler(mainRenderer, window_width, window_height);
     initializeFromXML(configs);
     SDL_GetWindowSize(mainWindow, &window_width, &window_height);
     SDLRunningGame::audioInitialization();
@@ -69,8 +69,8 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
 }
 
 void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
+//todo: mejorar esta funcion.
     Entity id = nuevoEvento.data.id;
-
     for (auto back : backgroundSprites) {
         if(back->getId() == id){
             back->handle(nuevoEvento);
@@ -80,13 +80,12 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
     for (auto player : playersSprites) {
         if ( player->getId() == id ){
             player->handle(nuevoEvento);
-
             return;
         }
     }
 
     //Los enemies types son seteados desde el XML.
-    if(enemyHandler->isEnemyType(id)) {
+    if (enemyHandler->isEnemyType(id)) {
         this->enemyHandler->handle(nuevoEvento);
         return;
     }
@@ -133,60 +132,60 @@ struct event SDLRunningGame::handleKeyDown(SDL_Event* sdlEvent){
     struct event nuevoEvento;
     nuevoEvento.completion = EventCompletion::FINAL_MSG;
 
-    switch (sdlEvent->key.keysym.sym){
+    switch (sdlEvent->key.keysym.sym) {
         case SDLK_LEFT:
             //holdLeftKey != 0 no volver a enviarlo al servidor
-            if(holdLeftKey>0){
+            if (holdLeftKey>0) {
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
             }
-            else{
+            else {
                 nuevoEvento.data.code = EventCode::SDL_KEYLEFT_PRESSED;
                 holdLeftKey = 1;
             }
             return nuevoEvento;
         case SDLK_RIGHT:
-            if(holdRightKey>0){
+            if (holdRightKey>0) {
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
             }
-            else{
+            else {
                 nuevoEvento.data.code = EventCode::SDL_KEYRIGHT_PRESSED;
                 holdRightKey = 1;
             }
             return nuevoEvento;
         case SDLK_UP:
-            if(holdUpKey>0){
+            if (holdUpKey>0) {
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
             }
-            else{
+            else {
                 nuevoEvento.data.code = EventCode::SDL_KEYUP_PRESSED;
                 holdUpKey = 1;
             }
             return nuevoEvento;
         case SDLK_DOWN:
-            if(holdDownKey>0){
+            if (holdDownKey>0) {
                 nuevoEvento.data.code = EventCode::TODO_SIGUE_IGUAL;
             }
-            else{
+            else {
                 nuevoEvento.data.code = EventCode::SDL_KEYDOWN_PRESSED;
                 holdDownKey = 1;
             }
             return nuevoEvento;
 
         case SDLK_a:  //salto
-            if(holdAKey>0){
+            if (holdAKey>0){
                 nuevoEvento.data.code = EventCode ::TODO_SIGUE_IGUAL;
             }
-            else{
+            else {
                 nuevoEvento.data.code = EventCode ::SDL_KEY_A_PRESSED;
                 holdAKey= 1;
             }
             return nuevoEvento;
 
         case SDLK_s: //tiros
-            if(holdSKey>0){
+            if (holdSKey>0) {
                 nuevoEvento.data.code = EventCode ::TODO_SIGUE_IGUAL;
             }
-            else{
+            else {
                 nuevoEvento.data.code = EventCode ::SDL_KEY_S_PRESSED;
                 holdSKey = 1;
             }
