@@ -14,15 +14,29 @@ EnemyHandler::EnemyHandler(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, i
 
 void EnemyHandler::newEnemyType(int ancho, int alto, Entity id, char *imagePath, int cantWidthFrames,
                                 int cantHeightFrames) {
-    enemiesTypes.push_back(
-            new EnemyType(ancho, alto, id, imagePath, cantWidthFrames, cantHeightFrames, mainRenderer));
+    enemiesTypes.push_back( new EnemyType(ancho,
+                                          alto,
+                                          id,
+                                          imagePath,
+                                          cantWidthFrames,
+                                          cantHeightFrames,
+                                          mainRenderer));
 
 }
 
 bool EnemyHandler::isEnemyType(Entity id) {
+    for(auto type : enemiesTypes){
+        if(type->getId() == id) {
+            return true;
+        }
+    }
     return false;
 }
 
-void EnemyHandler::handle(event event) {
+void EnemyHandler::handle(event nuevoEvento) {
+
+}
+
+void EnemyHandler::updateEnemiesSprites() {
 
 }

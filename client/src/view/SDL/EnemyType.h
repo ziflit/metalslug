@@ -25,6 +25,16 @@ public:
     EnemyType(int ancho, int alto, Entity id, char *imagePath, int cantWidthFrames, int cantHeightFrames, SDL_Renderer* mainRenderer);
 
     SDL_Texture *createTexture(SDL_Renderer *renderer, string imageTexturePath);
+
+    Entity getId() { return id;}
+
+    int getAncho(){ return ancho;}
+
+    int getAlto() { return alto;}
+
+    int getCantWidthFrames() { return cantWidthFrames;}
+
+    int getCantHeightFrames() { return cantHeigthFrames;}
 };
 
 

@@ -119,10 +119,7 @@ void SDLRunningGame::updateWindowSprites () {
             playersSprites[i]->actualizarDibujo();
     }
 
-    for (int i = 0 ; i< enemiesSprites.size() ; i++) {
-        enemiesSprites[i]->actualizarDibujo();
-    }
-
+    this->enemyHandler->updateEnemiesSprites();
 
    backgroundSprites[(backgroundSprites.size() - 1)]->actualizarDibujo();
 
