@@ -188,6 +188,6 @@ set(SOURCE_FILES
     server/Makefile
     server/server
     server/server.log
-    server/userslist.csv client/src/view/SDL/EnemyType.cpp client/src/view/SDL/EnemyType.h)
+    server/userslist.csv client/src/view/SDL/EnemyType.h)
 
 add_executable(metalslug ${SOURCE_FILES})

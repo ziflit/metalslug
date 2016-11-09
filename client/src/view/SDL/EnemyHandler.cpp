@@ -2,6 +2,7 @@
 // Created by mfp on 08/11/16.
 //
 
+#include <iostream>
 #include "EnemyHandler.h"
 
 
@@ -12,21 +13,55 @@ EnemyHandler::EnemyHandler(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, i
     this->window_heigth = window_height;
 }
 
-void EnemyHandler::newEnemyType(int ancho, int alto, Entity id, char *imagePath, int cantWidthFrames,
-                                int cantHeightFrames) {
-    enemiesTypes.push_back( new EnemyType(ancho,
-                                          alto,
-                                          id,
-                                          imagePath,
-                                          cantWidthFrames,
-                                          cantHeightFrames,
-                                          mainRenderer));
 
+SDL_Texture* EnemyHandler::createTexture(SDL_Renderer* renderer,string imageTexturePath){
+    /* The loading of the background layer. since SDL_LoadBMP() returns
+     * a surface, we convert it to a layer afterwards for fast accelerated
+     * blitting, handdling hardware. (Surface works with software) */
+
+    SDL_Texture* backgroundTexture = NULL;
+    SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
+
+    if(loadingSurface == NULL){
+        cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
+        loadingSurface = IMG_Load("sprites/defaultImage.png");
+    }
+
+    backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
+
+    if(backgroundTexture == NULL){
+        cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
+
+    }
+
+    SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
+    return backgroundTexture;
+}
+
+
+void EnemyHandler::newEnemyType(int ancho, int alto, Entity id, char *imagePath, int cantWidthFrames, int cantHeightFrames) {
+
+    SDL_Texture* layer = this->createTexture(mainRenderer,imagePath);
+    int spriteImageWidth, spriteImageHeight;
+    SDL_QueryTexture(layer, NULL, NULL, &spriteImageWidth, &spriteImageHeight);
+
+    struct enemyType newType;
+
+    newType.ancho = ancho;
+    newType.alto = alto;
+    newType.id = id;
+    newType.layer = layer;
+    newType.cantWidthFrames = cantWidthFrames;
+    newType.cantHeigthFrames = cantHeightFrames;
+    newType.spriteImageWidth = spriteImageWidth;
+    newType.spriteImageHeight = spriteImageHeight;
+
+    this->enemiesTypes.push_back(newType);
 }
 
 bool EnemyHandler::isEnemyType(Entity id) {
     for(auto type : enemiesTypes){
-        if(type->getId() == id) {
+        if(type.id == id) {
             return true;
         }
     }
