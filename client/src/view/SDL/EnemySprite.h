@@ -11,8 +11,8 @@
 class EnemySprite : public Sprite{
 
 private:
-    int wFramesCant,wActualPosFrame, cambioFrame;
 
+    int wFramesCant,wActualPosFrame, cambioFrame;
 
 public:
 

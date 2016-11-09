@@ -11,7 +11,13 @@
 #include "../../utils/Protocol.h"
 #include "EnemySprite.h"
 
-
+/**
+ * EN UN PRINCIPIO ESTA CLASE ES CAPAZ DE MANEJAR LOS ENEMIGOS DEL TIPO:
+ * ENEMY_NORMAL_1
+ * ENEMY_NORMAL_2
+ * ENEMY_NORMAL_3
+ * MAS ADELANTE DEBERIAMOS VER EL TEMA DE LOS ENEMIGOS FINALES.
+ */
 class EnemyHandler {
 private:
     SDL_Window *mainWindow;
