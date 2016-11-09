@@ -11,6 +11,7 @@ EnemyHandler::EnemyHandler(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, i
     this->mainRenderer = mainRenderer;
     this->window_width = window_width;
     this->window_heigth = window_height;
+    this->enemyToHandled = -1;
 }
 
 
@@ -69,9 +70,69 @@ bool EnemyHandler::isEnemyType(Entity id) {
 }
 
 void EnemyHandler::handle(event nuevoEvento) {
+    if (not this->enemiesCreated()){
+            this->createEnemyAndHandle(nuevoEvento);
+        }
+    else {
+        this->getEnemyToHandle(nuevoEvento.data.id)->handle(nuevoEvento);
+    }
+}
 
+void EnemyHandler::createEnemyAndHandle(event nuevoEvento) {
+    EnemySprite* newEnemy = this->createNewEnemyType(nuevoEvento.data.id);
+    newEnemy->handle(nuevoEvento);
+    this->enemies.push_back(newEnemy);
 }
 
 void EnemyHandler::updateEnemiesSprites() {
+    this->modelStateSet();
+
+    for(auto enemy : enemies) {
+        enemy->actualizarDibujo();
+    }
+}
+
+void EnemyHandler::modelStateSet() {
+    if(enemyToHandled < enemies.size() ){
+        //todo: algo esta pasando que el modelo del server no me esta enviando el estado de todos los enemigos.
+        //creo que esto es bueno chequearlo mas que nada por coherencia entre server-cliente
+        cout<<"NO ESTA SIENDO COHERENTE EL SERVER-CLIENTE"<<endl;
+    }
+        this->enemyToHandled = 0;
+}
+
+enemyType EnemyHandler::getEnemyType(Entity entity) {
+    for (auto type : enemiesTypes){
+        if(type.id == entity) {
+            return type;
+        }
+    }
+    return enemiesTypes[0];
+}
+
+bool EnemyHandler::enemiesCreated() {
+    return (enemyToHandled == -1);
+}
+
+EnemySprite* EnemyHandler::getEnemyToHandle(Entity entity) {
+
+    if(enemies[enemyToHandled]->getId() == entity){ //compruebo que realmente este handleando el enemigo correcto
+        this->enemyToHandled += 1;
+        return enemies[enemyToHandled];
+    }
+    //si el enemigo a manejar no se corresponde con la entity del evento se crea un enemigo... esto no deberia pasar nunca.
+    EnemySprite* newEnemy = this->createNewEnemyType(entity);
+    this->enemies.push_back(newEnemy);
+    return newEnemy;
 
 }
+
+EnemySprite *EnemyHandler::createNewEnemyType(Entity entity) {
+
+    enemyType type = this->getEnemyType(entity);
+    return (new EnemySprite(mainRenderer, window_width, window_heigth, type));
+
+}
+
+
+

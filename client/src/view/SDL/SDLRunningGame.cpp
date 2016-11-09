@@ -85,6 +85,7 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
         }
     }
 
+    //Los enemies types son seteados desde el XML.
     if(enemyHandler->isEnemyType(id)) {
         this->enemyHandler->handle(nuevoEvento);
         return;
@@ -96,10 +97,12 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
 
 void SDLRunningGame::handleModelState(vector <event> model_state) {
 
+
         for (auto nuevoEvento : model_state){
 
             this->getSpriteAndHandleNewEvent(nuevoEvento);
         }
+
 
         //TODO: aqui se debe manejar el dibujo de balas y cajas.
         //TODO: tambien aqui se debe manejar la destruccion de sprites que no deben dibujarse mas.

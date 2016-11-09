@@ -9,6 +9,7 @@
 #include "SDL2/SDL.h"
 #include "EnemyType.h"
 #include "../../utils/Protocol.h"
+#include "EnemySprite.h"
 
 
 class EnemyHandler {
@@ -16,8 +17,11 @@ private:
     SDL_Window *mainWindow;
     SDL_Renderer *mainRenderer;
     vector<enemyType> enemiesTypes;
+    vector<EnemySprite*> enemies;
     int window_width;
     int window_heigth;
+    int enemyToHandled;
+
 public:
 
     EnemyHandler(SDL_Window* mainWindow,SDL_Renderer* mainRenderer, int window_width, int window_height);
@@ -31,6 +35,18 @@ public:
     void handle(event nuevoEvento);
 
     void updateEnemiesSprites();
+
+    void modelStateSet();
+
+    enemyType getEnemyType(Entity entity);
+
+    bool enemiesCreated();
+
+    EnemySprite* getEnemyToHandle(Entity entity);
+
+    EnemySprite *createNewEnemyType(Entity entity);
+
+    void createEnemyAndHandle(event nuevoEvento);
 };
 
 
