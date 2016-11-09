@@ -11,9 +11,11 @@
 class AnimatedObject : public GameObject {
 protected:
     int health;
+    int direccionX;
+    int direccionY;
+    int fsalto;
     int ammo;
     Entity bulletType;
-
     Postura postura;
     bool isShooting;
     bool isJumping;
@@ -36,6 +38,26 @@ public:
 
     void setHealth(int health) {
         AnimatedObject::health = health;
+    }
+
+    int getDireccionX() {
+        return direccionX;
+    }
+
+    void setDireccionX(int direccionX) {
+        AnimatedObject::direccionX = direccionX;
+    }
+
+    int getDireccionY() {
+        return direccionY;
+    }
+
+    void setDireccionY(int direccionY) {
+        if (this->direccionY == direccionY) {
+            return;
+        }
+        this->fsalto = 150;
+        this->direccionY = direccionY;
     }
 
     void receiveDamage(int damage) {

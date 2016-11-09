@@ -6,15 +6,9 @@
 		<posXtoFinish>7000</posXtoFinish>
 		<platforms>
 			<platform>
-				<x>500</x>
-				<y>300</y>
-				<ancho>600</ancho>
-				<alto>20</alto>
-			</platform>
-			<platform>
-				<x>700</x>
-				<y>400</y>
-				<ancho>600</ancho>
+				<x>0</x>
+				<y>500</y>
+				<ancho>7000</ancho>
 				<alto>20</alto>
 			</platform>
 		</platforms>

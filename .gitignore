@@ -12,4 +12,4 @@ server/.cproject
 server/.idea/
 server/.project
 server/.settings/
-
+client/src/view/client.log

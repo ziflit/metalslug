@@ -22,12 +22,11 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
      *        (0,600)___________________(600,800)
      */
     x = 5;
-    y = 400;
+    y = 0;
     box_alto = 100; // TODO inicializar esto desde el XML y no acá
     box_ancho = 50;
     direccionY = 0;
     direccionX = 0;
-    posAtJump = 0;
     gravity = 10;
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
@@ -76,22 +75,27 @@ void Player::updatePosition(vector<GameObject *> game_objects) {
             if (((direccionX == 1) and (x < (windowWidth - 100))) or ((direccionX == -1) and (x > 0))) {
                 newX = x + direccionX * speed;
             }
-        }
-
-        if (this->getJumpingState()) {
-            if (posAtJump < 24) {
-                posAtJump++;
-                newY = 400 - jumpPos[posAtJump];
-            } else {
-                isJumping = false;
-                posAtJump = 0;
+            if (this->canIMove(game_objects, newX, newY)) {
+                this->set_position(newX, newY);
             }
         }
+        /* Checkeo de gravedad */
 
+        int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
+        if (this->canIMove(game_objects, newX, newYconGravedad)){
+            fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
+        }
+
+        newY -= ((this->direccionY * fsalto) + (gravity * -1));
+        if (fsalto > 0) {
+            fsalto -= gravity;
+        }
+        if (fsalto == 0) {
+            this->setDireccionY(0);
+        }
         if (this->canIMove(game_objects, newX, newY)) {
             this->set_position(newX, newY);
         }
-
     } else {
         x = 0; //pone al grisado en el borde izquierdo
     }

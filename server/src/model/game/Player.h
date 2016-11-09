@@ -17,10 +17,7 @@
 class Player : public AnimatedObject {
 private:
     string username;
-    int posAtJump;
     int gravity;
-    int jumpPos[25] = {0, 23, 44, 63, 80, 95, 108, 119, 128, 135, 140, 143, 144,
-                       143, 140, 135, 128, 119, 108, 95, 80, 63, 44, 23, 0};
     int windowWidth;
     vector<Entity> shootsTo = {ENEMY_NORMAL_1, ENEMY_NORMAL_2, ENEMY_NORMAL_3, ENEMY_FINAL_1,
                                ENEMY_FINAL_2, ENEMY_FINAL_3, MSC_PLATFORM};
@@ -53,7 +50,6 @@ public:
     string getUsername() const {
         return username;
     }
-
 };
 
 
