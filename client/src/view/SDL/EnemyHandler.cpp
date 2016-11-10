@@ -111,7 +111,7 @@ enemyType EnemyHandler::getEnemyType(Entity id) {
 }
 
 bool EnemyHandler::notEnemiesCreated() {
-    return (enemies.size() == 0);
+    return (enemyToHandler == -1); //TODO:por ahora es asi pero cuando esta hecho el tema MUERTO este return sera: enemies.size() == 0;
 }
 
 EnemySprite* EnemyHandler::getEnemyToHandle(Entity id) {
