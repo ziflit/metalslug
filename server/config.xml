@@ -144,21 +144,21 @@
     <miscelaneas>
         <miscelanea>
             <id>MSC_WEAPON_BOX</id>
-            <path>MSC_WEAPON_BOX.png</path>
+            <path>sprites/miscelaneas/MSC_WEAPON_BOX.png</path>
             <ancho>20</ancho>
             <alto>20</alto>
             <cantWidthFrames>3</cantWidthFrames>
         </miscelanea>
         <miscelanea>
             <id>MSC_POWER_BONUS</id>
-            <path>MSC_POWER_BONUS.png</path>
+            <path>sprites/miscelaneas/MSC_POWER_BONUS.png</path>
             <ancho>20</ancho>
             <alto>20</alto>
             <cantWidthFrames>3</cantWidthFrames>
         </miscelanea>
         <miscelanea>
             <id>MSC_BONUS_KILL_ALL</id>
-            <path>MSC_BONUS_KILL_ALL.png</path>
+            <path>sprites/miscelaneas/MSC_BONUS_KILL_ALL.png</path>
             <ancho>20</ancho>
             <alto>20</alto>
             <cantWidthFrames>3</cantWidthFrames>
