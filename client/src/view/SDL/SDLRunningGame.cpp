@@ -39,12 +39,20 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
                                enemyConfig.cantWidthFrames,
                                enemyConfig.cantHeightFrames);
     }
+
+    for (auto bulletConfig : configs.getBulletsConfig()) {
+        bulletHandler->newBulletType(bulletConfig.ancho,
+                                     bulletConfig.alto,
+                                     bulletConfig.id,
+                                     bulletConfig.path);
+    }
 }
 
 SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
     this->mainWindow = mainWindow;
     this->mainRenderer = mainRenderer;
     this->enemyHandler = new EnemyHandler(mainRenderer, window_width, window_height);
+    this->bulletHandler =new BulletHandler(mainRenderer);
     initializeFromXML(configs);
     SDL_GetWindowSize(mainWindow, &window_width, &window_height);
     SDLRunningGame::audioInitialization();

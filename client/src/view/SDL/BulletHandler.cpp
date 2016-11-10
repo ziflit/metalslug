@@ -74,4 +74,5 @@ void BulletHandler::updateBulletsSprites() {
         bullet->set_position(event.data.x, event.data.y);
         bullet->actualizarDibujo();
     }
+    events.clear();
 }
