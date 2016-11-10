@@ -202,6 +202,23 @@ struct xmlBackground {
 	int ancho;
 	int alto;
 };
+
+struct xmlBullet {
+    EventCompletion completion;
+    Entity id;
+    char path[40];
+    int ancho;
+    int alto;
+};
+
+struct xmlMiscelanea {
+    EventCompletion completion;
+    Entity id;
+    char path[40];
+    int ancho;
+    int alto;
+    int cantWidthFrames;
+};
 //---------------------------------------------------
 
 #endif //METALSLUG_PROTOCOL_H

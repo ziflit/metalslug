@@ -66,7 +66,7 @@ enum Entity {
 	ENEMY_FINAL_3,
 	BACKGROUND_Z0,    // fondo con Z-index 1
 	BACKGROUND_Z1,
-    BACKGROUND_Z2,
+	BACKGROUND_Z2,
 	BACKGROUND_Z3,
 	NOPLAYER,
 	BT_BULLET,			// BT = Bullet Type
@@ -93,10 +93,10 @@ enum Postura{
 	AGACHADO_AVANZANDO_IZQUIERDA,
 	AGACHADO_AVANZANDO_DERECHA,
 	MIRANDO_DERECHA_QUIETO,
-    MIRANDO_IZQUIERDA_QUIETO,
-    DESCONECTADO,
+	MIRANDO_IZQUIERDA_QUIETO,
+	DESCONECTADO,
 	DISPARANDO_DERECHA_QUIETO,
-	DISPARANDO_IZQUIERDA_QUIETA,
+	DISPARANDO_IZQUIERDA_QUIETO,
 	DISPARANDO_CAMINANDO_DERECHA,
 	DISPARANDO_CAMINANDO_IZQUIERDA,
 	DISPARANDO_AGACHADO_QUIETO_DERECHA,
@@ -106,7 +106,10 @@ enum Postura{
 	DISPARANDO_MIRANDO_ARRIBA_DERECHA_QUIETO,
 	DISPARANDO_MIRANDO_ARRIBA_IZQUIERDA_QUIETO,
 	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_DERECHA,
-	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA
+	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA,
+	MURIENDO,
+	MUERTO
+
 };
 
 enum Arma{
@@ -125,7 +128,7 @@ struct event_ext {
 	int x;
 	int y;
 	Postura postura;
-    Arma arma;
+	Arma arma;
 };
 
 struct event {
@@ -141,7 +144,7 @@ struct xmlConfig {
 	int cant_players;
 };
 
-struct xmlPlatform { 
+struct xmlPlatform {
 	int x;
 	int y;
 	int ancho;
@@ -149,8 +152,8 @@ struct xmlPlatform {
 };
 
 struct xmlLvl {
-    EventCompletion completion;
-	int id; 
+	EventCompletion completion;
+	int id;
 	int cant_enemies;
 	int cant_boxes;
 	int posXtoFinish;
@@ -158,7 +161,7 @@ struct xmlLvl {
 };
 
 struct xmlPlayer {
-    EventCompletion completion;
+	EventCompletion completion;
 	Entity id;
 	char pathColor[40];
 	char pathGrey[40];
@@ -176,12 +179,12 @@ struct xmlEnemy {
 	char path[40];
 	int ancho;
 	int alto;
-    int cantWidthFrames;
-    int cantHeightFrames;
+	int cantWidthFrames;
+	int cantHeightFrames;
 	int speed;
 };
 
-struct xmlMisc {  
+struct xmlMisc {
 	EventCompletion completion;
 	Entity id;
 	char path[40];
@@ -193,11 +196,28 @@ struct xmlMisc {
 };
 
 struct xmlBackground {
-    EventCompletion completion;
+	EventCompletion completion;
 	Entity id;
 	char path[40];
 	int ancho;
 	int alto;
+};
+
+struct xmlBullet {
+	EventCompletion completion;
+	Entity id;
+	char path[40];
+	int ancho;
+	int alto;
+};
+
+struct xmlMiscelanea {
+	EventCompletion completion;
+	Entity id;
+	char path[40];
+	int ancho;
+	int alto;
+	int cantWidthFrames;
 };
 //---------------------------------------------------
 
