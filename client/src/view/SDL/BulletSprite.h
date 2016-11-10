@@ -9,7 +9,7 @@
 #include "Sprite.h"
 #include "types.h"
 
-class BulletSprite : Sprite {
+class BulletSprite : public Sprite {
 
 public:
     BulletSprite(SDL_Renderer* mainRenderer, bulletType type) : Sprite(mainRenderer,0,0){  //0,0 no importa en el bulletSprite el tamano de ventana
@@ -19,6 +19,9 @@ public:
         this->sourceRect.h = this->destRect.h = type.alto;
     }
 
+    void handle(struct event nuevoEvento) {
+        this->set_position(nuevoEvento.data.x, nuevoEvento.data.y);
+    }
 
 };
 

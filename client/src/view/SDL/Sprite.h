@@ -35,7 +35,7 @@ public:
 
     virtual void handle(struct event nuevoEvento)=0;
 
-    virtual void actualizarDibujo();
+    void actualizarDibujo();
 
     void setId(Entity id){ this->id = id;}
     Entity getId(){ return id;}

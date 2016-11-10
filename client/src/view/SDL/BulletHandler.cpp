@@ -71,7 +71,7 @@ void BulletHandler::handle(event newEvent) {
 void BulletHandler::updateBulletsSprites() {
     for (auto event : events ) {
         BulletSprite* bullet = createBulletType(event.data.id);
-        bullet->set_position(event.data.x, event.data.y);
+        bullet->handle(event);
         bullet->actualizarDibujo();
     }
     events.clear();
