@@ -6,7 +6,7 @@
 #define METALSLUG_ENEMYSPRITE_H
 
 #include "Sprite.h"
-#include "EnemyType.h"
+#include "types.h"
 
 class EnemySprite : public Sprite{
 

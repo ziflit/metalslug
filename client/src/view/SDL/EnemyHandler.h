@@ -7,7 +7,7 @@
 
 #include <SDL2/SDL_image.h>
 #include "SDL2/SDL.h"
-#include "EnemyType.h"
+#include "types.h"
 #include "../../utils/Protocol.h"
 #include "EnemySprite.h"
 

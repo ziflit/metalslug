@@ -91,7 +91,6 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
     }
 
 
-    //TODO: importante ver el dibujo de las balas, no debe cargar la imagen por cada nueva.
 }
 
 void SDLRunningGame::handleModelState(vector <event> model_state) {

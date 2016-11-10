@@ -10,7 +10,7 @@ EnemyHandler::EnemyHandler(SDL_Renderer *mainRenderer, int window_width, int win
     this->mainRenderer = mainRenderer;
     this->window_width = window_width;
     this->window_heigth = window_height;
-    this->enemyToHandler = 0;
+    this->enemyToHandler = -1;
 }
 
 
@@ -107,7 +107,6 @@ enemyType EnemyHandler::getEnemyType(Entity id) {
             return type;
         }
     }
-    return enemiesTypes[0];
 }
 
 bool EnemyHandler::notEnemiesCreated() {

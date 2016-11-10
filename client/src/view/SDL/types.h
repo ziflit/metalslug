@@ -15,4 +15,12 @@ struct enemyType {
     int spriteImageHeight;
 };
 
+struct bulletType {
+    int ancho;
+    int alto;
+    Entity id;
+    SDL_Texture* layer;
+};
+
+
 #endif //METALSLUG_ENEMYTYPE_H

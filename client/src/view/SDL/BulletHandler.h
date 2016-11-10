@@ -6,8 +6,32 @@
 #define METALSLUG_BULLETHANDLER_H
 
 
-class BulletHandler {
+#include <SDL2/SDL_system.h>
+#include "../../utils/Protocol.h"
+#include "types.h"
+#include "BulletSprite.h"
 
+class BulletHandler {
+private:
+    SDL_Renderer *mainRenderer;
+    vector<bulletType> bulletsTypes;
+    vector<struct event> events;
+public:
+    BulletHandler(SDL_Renderer *mainRenderer);
+
+    void newBulletType(int ancho, int alto, Entity id, char imagePath[40]);
+
+    void handle(event newEvent);
+
+    void updateBulletsSprites();
+
+    bulletType getBulletType(Entity id);
+
+    BulletSprite* createBulletType(Entity id);
+
+    bool isBulletType(Entity id);
+
+    SDL_Texture *createTexture(SDL_Renderer *renderer, string imageTexturePath);
 };
 
 
