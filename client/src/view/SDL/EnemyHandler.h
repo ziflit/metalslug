@@ -20,7 +20,6 @@
  */
 class EnemyHandler {
 private:
-    SDL_Window *mainWindow;
     SDL_Renderer *mainRenderer;
     vector<enemyType> enemiesTypes;
     vector<EnemySprite*> enemies;

@@ -32,6 +32,9 @@ public:
         EnemySprite::sourceRect.w = EnemySprite::frameWidth;
         EnemySprite::sourceRect.h = EnemySprite::frameHeight;
 
+        EnemySprite::destRect.w = type.ancho;
+        EnemySprite::destRect.h = type.alto;
+
     }
 
 
