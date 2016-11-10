@@ -94,7 +94,12 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
 
     //Los enemies types son seteados desde el XML.
     if (enemyHandler->isEnemyType(id)) {
-        this->enemyHandler->handle(nuevoEvento);
+        enemyHandler->handle(nuevoEvento);
+        return;
+    }
+
+    if(bulletHandler->isBulletType(id)) {
+        bulletHandler->handle(nuevoEvento);
         return;
     }
 
@@ -130,6 +135,7 @@ void SDLRunningGame::updateWindowSprites () {
     }
 
     this->enemyHandler->updateEnemiesSprites();
+    this->bulletHandler->updateBulletsSprites();
 
    backgroundSprites[(backgroundSprites.size() - 1)]->actualizarDibujo();
 
