@@ -96,6 +96,7 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
 
 void SDLRunningGame::handleModelState(vector <event> model_state) {
 
+        cout<<"TAMANIO: "<<model_state.size()<<endl;
 
         for (auto nuevoEvento : model_state){
 
