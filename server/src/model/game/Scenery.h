@@ -8,22 +8,23 @@
 #ifndef SRC_MODEL_GAME_SCENERY_H_
 #define SRC_MODEL_GAME_SCENERY_H_
 
-#include "Player.h"
-#include "Background.h"
 #include <vector>
 #include <string>
-#include "../../utils/Protocol.h"
 #include <queue>
-#include "../Event.h"
-#include "../ConfigsXML.h"
+#include "Player.h"
+#include "Background.h"
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Plataforma.h"
+#include "../Event.h"
+#include "../ConfigsXML.h"
+#include "../../utils/Protocol.h"
 
 using namespace std;
 
 class Scenery {
 private:
+    ConfigsXML* configs;
     vector<struct xmlLvl> lvlsConfig;
     bool nivelEnded;
     vector<Player *> players;
@@ -35,7 +36,7 @@ private:
 
     unsigned int windowWidth, windowHeight, playersSpeed;
     
-    void initializeFromXML(ConfigsXML configs, int selectedLevel);
+    void setUpLevel(int selectedLevel);
 
     // *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
     void addElementToScenery(Player *player);
@@ -51,7 +52,7 @@ private:
 
 
 public:
-    Scenery(ConfigsXML configs, int selectedLevel);
+    Scenery(ConfigsXML* confs, int selectedLevel);
 
     virtual ~Scenery();
 
