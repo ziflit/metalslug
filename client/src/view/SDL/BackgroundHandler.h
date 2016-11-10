@@ -14,7 +14,7 @@ class BackgroundHandler {
 private:
     SDL_Renderer *mainRenderer;
     vector<BackgroundSprite*> backgrounds;
-    vector<BackgroundSprite*> backgroundsToUpdate;
+    int level;
 public:
     BackgroundHandler(SDL_Renderer *mainRenderer);
 
@@ -27,6 +27,14 @@ public:
     void updateBottomBackgroundSprites();
 
     void updateFrontBackgroundSprite();
+
+    void setLevel(Entity id);
+
+    BackgroundSprite *getBack0ToUpdate();
+
+    BackgroundSprite *getBack1ToUpdate();
+
+    BackgroundSprite *getBack2ToUpdate();
 };
 
 
