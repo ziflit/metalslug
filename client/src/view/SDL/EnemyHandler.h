@@ -37,7 +37,7 @@ public:
 
     bool isEnemyType(Entity id);
 
-    void handle(event nuevoEvento);
+    void handle(event newEvent);
 
     void updateEnemiesSprites();
 

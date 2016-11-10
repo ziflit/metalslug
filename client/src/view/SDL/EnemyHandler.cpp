@@ -68,12 +68,12 @@ bool EnemyHandler::isEnemyType(Entity id) {
     return false;
 }
 
-void EnemyHandler::handle(event nuevoEvento) {
+void EnemyHandler::handle(event newEvent) {
     if (this->notEnemiesCreated()){
-            return this->createEnemyAndHandle(nuevoEvento);
+            return this->createEnemyAndHandle(newEvent);
         }
     else {
-        this->getEnemyToHandle(nuevoEvento.data.id)->handle(nuevoEvento);
+        this->getEnemyToHandle(newEvent.data.id)->handle(newEvent);
         this->enemyToHandler += 1;
     }
 }
