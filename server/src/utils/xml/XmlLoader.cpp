@@ -43,10 +43,37 @@ Entity XmlLoader::convertToEntity(string id) {
         else if ("ENEMY_NORMAL_3" == id) {
             return ENEMY_NORMAL_3;
         }
+        else if ("BT_BULLET" == id) {
+            return BT_BULLET;
+        }
+        else if ("BT_HEAVY_BULLET" == id) {
+            return BT_HEAVY_BULLET;
+        }
+        else if ("BT_MISSILE" == id) {
+            return BT_MISSILE;
+        }
+        else if ("BT_TELE_MISSILE" == id) {
+            return BT_TELE_MISSILE;
+        }
+        else if ("BT_SHOT" == id) {
+            return BT_SHOT;
+        }
+        else if ("BT_BOMB" == id) {
+            return BT_BOMB;
+        }
+        else if ("MSC_WEAPON_BOX" == id) {
+            return MSC_WEAPON_BOX;
+        }
+        else if ("MSC_POWER_BONUS" == id) {
+            return MSC_POWER_BONUS;
+        }
+
+        else if ("MSC_BONUS_KILLALL" == id) {
+            return MSC_BONUS_KILLALL;
+        }
         else {
             return NOPLAYER;
         }
-
 }
 
 vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
@@ -200,6 +227,62 @@ vector<struct xmlLvl> XmlLoader::obtainLvlsConfig() {
         lvlConfig.platforms = plataformas;
 
         configs.push_back(lvlConfig);
+    }
+    configs.back().completion = EventCompletion::FINAL_MSG;
+    return configs;
+}
+
+vector<struct xmlBullet> XmlLoader::obtainBulletsConfig() {
+    xml_document<> doc;
+    file<> xmlFile(path.c_str());
+    doc.parse<0>(xmlFile.data());
+    vector<struct xmlBullet> configs;
+    xml_node<> *bullets = doc.first_node("bullets");
+
+    for (xml_node<> *bullet = bullets->first_node("bullet");
+         bullet; bullet = bullet->next_sibling()) {
+        xml_node<> *id = bullet->first_node("id");
+        xml_node<> *path = bullet->first_node("path");
+        xml_node<> *ancho = bullet->first_node("ancho");
+        xml_node<> *alto = bullet->first_node("alto");
+
+        struct xmlBullet bulletConfig;
+        bulletConfig.completion = EventCompletion::PARTIAL_MSG;
+        bulletConfig.id = this->convertToEntity(id->value());
+        bulletConfig.ancho = atoi(ancho->value());
+        bulletConfig.alto = atoi(alto->value());
+        strcpy(bulletConfig.path, path->value());
+
+        configs.push_back(bulletConfig);
+    }
+    configs.back().completion = EventCompletion::FINAL_MSG;
+    return configs;
+}
+
+vector<struct xmlMiscelanea> XmlLoader::obtainMiscelaneasConfig() {
+    xml_document<> doc;
+    file<> xmlFile(path.c_str());
+    doc.parse<0>(xmlFile.data());
+    vector<struct xmlMiscelanea> configs;
+    xml_node<> *miscelaneas = doc.first_node("miscelaneas");
+
+    for (xml_node<> *miscelanea = miscelaneas->first_node("miscelanea");
+         miscelanea; miscelanea = miscelanea->next_sibling()) {
+        xml_node<> *id = miscelanea->first_node("id");
+        xml_node<> *path = miscelanea->first_node("path");
+        xml_node<> *ancho = miscelanea->first_node("ancho");
+        xml_node<> *alto = miscelanea->first_node("alto");
+        xml_node<> *cantWidthFrames = miscelanea->first_node("cantWidthFrames");
+
+        struct xmlMiscelanea miscelaneaConfig;
+        miscelaneaConfig.completion = EventCompletion::PARTIAL_MSG;
+        miscelaneaConfig.id = this->convertToEntity(id->value());
+        miscelaneaConfig.ancho = atoi(ancho->value());
+        miscelaneaConfig.alto = atoi(alto->value());
+        strcpy(miscelaneaConfig.path, path->value());
+        miscelaneaConfig.cantWidthFrames = atoi(cantWidthFrames->value());
+
+        configs.push_back(miscelaneaConfig);
     }
     configs.back().completion = EventCompletion::FINAL_MSG;
     return configs;
