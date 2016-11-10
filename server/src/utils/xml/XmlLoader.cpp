@@ -22,17 +22,32 @@ Entity XmlLoader::convertToEntity(string id) {
         else if ("ERI" == id) {
             return ERI;
         }
-        else if ("BACKGROUND_Z0" == id) {
-            return BACKGROUND_Z0;
+        else if ("BACKGROUND_LVL1_Z0" == id) {
+            return BACKGROUND_LVL1_Z0;
         }
-        else if ("BACKGROUND_Z1" == id) {
-            return BACKGROUND_Z1;
+        else if ("BACKGROUND_LVL1_Z1" == id) {
+            return BACKGROUND_LVL1_Z1;
         }
-        else if ("BACKGROUND_Z2" == id) {
-            return BACKGROUND_Z2;
+        else if ("BACKGROUND_LVL1_Z2" == id) {
+            return BACKGROUND_LVL1_Z2;
         }
-        else if ("BACKGROUND_Z3" == id) {
-            return BACKGROUND_Z3;
+        else if ("BACKGROUND_LVL2_Z0" == id) {
+            return BACKGROUND_LVL2_Z0;
+        }
+        else if ("BACKGROUND_LVL2_Z1" == id) {
+            return BACKGROUND_LVL2_Z1;
+        }
+        else if ("BACKGROUND_LVL2_Z2" == id) {
+            return BACKGROUND_LVL2_Z2;
+        }
+        else if ("BACKGROUND_LVL3_Z0" == id) {
+            return BACKGROUND_LVL3_Z0;
+        }
+        else if ("BACKGROUND_LVL3_Z1" == id) {
+            return BACKGROUND_LVL3_Z1;
+        }
+        else if ("BACKGROUND_LVL3_Z2" == id) {
+            return BACKGROUND_LVL3_Z2;
         }
         else if ("ENEMY_NORMAL_1" == id) {
             return ENEMY_NORMAL_1;

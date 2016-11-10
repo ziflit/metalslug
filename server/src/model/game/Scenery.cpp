@@ -4,12 +4,12 @@
 #include "PlayerBuilder.h"
 #include <time.h>
 
-Scenery::Scenery(ConfigsXML configs) {
-    this->initializeFromXML(configs);
+Scenery::Scenery(ConfigsXML configs, int selectedLevel) {
+    this->initializeFromXML(configs, selectedLevel);
     cantPlayers = 0;
 }
 
-void Scenery::initializeFromXML(ConfigsXML configs) {
+void Scenery::initializeFromXML(ConfigsXML configs, int selectedLevel) {
     lvlsConfig = configs.getLvlsConfig();
     this->nivelEnded = false;
 
@@ -19,19 +19,9 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
 
     vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
 
-    //La idea de este switch es que elija que nivel inicializar, es horrible, seguro se puede cambiar.
-    int selectedLevel = 1;
-    switch (selectedLevel){
-        case 1:
-            selectedLevel = 0;
-            break;
-        case 2:
-            selectedLevel = 1;
-            break;
-        case 3:
-            selectedLevel = 2;
-            break;
-    }
+    //Seteo los backgrounds correspondientes para el nivel
+    Entity back_z0, back_z1, back_z2;
+    selectedLevel = setLevelBackgrounds(&back_z0, &back_z1, &back_z2, selectedLevel);
 
     //Seteo de enemigos de forma random, en base a la carga del XML
     srand (time(NULL));
@@ -47,11 +37,13 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
         miscs.push_back(plataforma);
     }
 
-    //TODO: Habria que ver de linkear los backgrounds con los level, para cargar los correspondientes
+    //Seteo los 3 backgrounds correspondientes al nivel elegido
     for (auto backgroundConfig : backgroundConfigs) {
-        Background *newBackground = new Background(backgroundConfig.id, playersSpeed,
+        if (backgroundConfig.id == back_z0 || backgroundConfig.id == back_z1 || backgroundConfig.id == back_z2 ) {
+            Background *newBackground = new Background(backgroundConfig.id, playersSpeed,
                                                    backgroundConfig.ancho, windowWidth);
-        this->backgrounds.push_back(newBackground);
+            this->backgrounds.push_back(newBackground);
+        }
     }
     ((Background *) backgrounds[0])->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, playersSpeed);
 }
@@ -225,3 +217,25 @@ vector<GameObject *> Scenery::getVisibleObjects() {
     return todos;
 }
 
+int Scenery::setLevelBackgrounds(Entity* z0, Entity* z1, Entity* z2, int selectedLevel){
+    switch (selectedLevel){
+        case 1:
+            *z0 = BACKGROUND_LVL1_Z0;
+            *z1 = BACKGROUND_LVL1_Z1;
+            *z2 = BACKGROUND_LVL1_Z2;
+            return 0;
+            break;
+        case 2:
+            *z0 = BACKGROUND_LVL2_Z0;
+            *z1 = BACKGROUND_LVL2_Z1;
+            *z2 = BACKGROUND_LVL2_Z2;
+            return 1;
+            break;
+        case 3:
+            *z0 = BACKGROUND_LVL3_Z0;
+            *z1 = BACKGROUND_LVL3_Z1;
+            *z2 = BACKGROUND_LVL3_Z2;
+            return 2;
+            break;
+    }
+}

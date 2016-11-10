@@ -83,22 +83,58 @@
 
 	<backgrounds>
 		<background>
-			<id>BACKGROUND_Z0</id>
+			<id>BACKGROUND_LVL1_Z0</id>
 			<imagen_fondo>sprites/backgrounds/lvl1/z0.png</imagen_fondo>
 			<ancho>4000</ancho>
 			<alto>600</alto>
 		</background>
 		<background>
-			<id>BACKGROUND_Z1</id>
+			<id>BACKGROUND_LVL1_Z1</id>
 			<imagen_fondo>sprites/backgrounds/lvl1/z1.png</imagen_fondo>
 			<ancho>8192</ancho>
 			<alto>600</alto>
 		</background>
 		<background>
-			<id>BACKGROUND_Z2</id>
+			<id>BACKGROUND_LVL1_Z2</id>
 			<imagen_fondo>sprites/backgrounds/lvl1/z2.png</imagen_fondo>
 			<ancho>8192</ancho>
 			<alto>600</alto>
+		</background>
+		<background>
+			<id>BACKGROUND_LVL2_Z0</id>
+			<imagen_fondo>sprites/backgrounds/lvl2/z0.png</imagen_fondo>
+			<ancho>6000</ancho>
+			<alto>600</alto>
+		</background>
+		<background>
+			<id>BACKGROUND_LVL2_Z1</id>
+			<imagen_fondo>sprites/backgrounds/lvl2/z1.png</imagen_fondo>
+			<ancho>8192</ancho>
+			<alto>600</alto>
+		</background>
+		<background>
+			<id>BACKGROUND_LVL2_Z2</id>
+			<imagen_fondo>sprites/backgrounds/lvl2/z2.png</imagen_fondo>
+			<ancho>8192</ancho>
+			<alto>600</alto>
+		</background>
+		<background>
+			<id>BACKGROUND_LVL3_Z0</id>
+			<imagen_fondo>sprites/backgrounds/lvl3/z0.png</imagen_fondo>
+			<ancho>4000</ancho>
+			<alto>600</alto>
+		</background>
+		<background>
+			<id>BACKGROUND_LVL3_Z1</id>
+			<imagen_fondo>sprites/backgrounds/lvl3/z1.png</imagen_fondo>
+			<ancho>8192</ancho>
+			<alto>600</alto>
+		</background>
+		<background>
+			<id>BACKGROUND_LVL3_Z2</id>
+			<imagen_fondo>sprites/backgrounds/lvl3/z2.png</imagen_fondo>
+			<ancho>8192</ancho>
+			<alto>600</alto>			
 		</background>
 	</backgrounds>
 

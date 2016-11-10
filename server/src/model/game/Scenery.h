@@ -35,7 +35,7 @@ private:
 
     unsigned int windowWidth, windowHeight, playersSpeed;
     
-    void initializeFromXML(ConfigsXML configs);
+    void initializeFromXML(ConfigsXML configs, int selectedLevel);
 
     // *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
     void addElementToScenery(Player *player);
@@ -51,7 +51,7 @@ private:
 
 
 public:
-    Scenery(ConfigsXML configs);
+    Scenery(ConfigsXML configs, int selectedLevel);
 
     virtual ~Scenery();
 
@@ -74,6 +74,8 @@ public:
     int findPlayerByUsername(string user);
 
     vector<GameObject*> getVisibleObjects();
+
+    int setLevelBackgrounds(Entity* z0, Entity* z1, Entity* z2, int levelSelected);
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */
