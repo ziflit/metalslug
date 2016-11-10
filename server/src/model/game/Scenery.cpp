@@ -20,6 +20,13 @@ void Scenery::setUpLevel(int selectedLevel) {
 
     vector<xmlBackground> backgroundConfigs = this->configs->getBackgroundsConfig();
 
+    // Esto es para resetear la posicion de los players
+    if (selectedLevel > 1){
+        for (auto player: players) {
+            player->set_position(0, 0);
+        }
+    }
+
     //Seteo los backgrounds correspondientes para el nivel
     Entity back_z0, back_z1, back_z2;
     selectedLevel = setLevelBackgrounds(&back_z0, &back_z1, &back_z2, selectedLevel);
