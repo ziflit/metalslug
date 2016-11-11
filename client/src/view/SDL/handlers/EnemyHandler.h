@@ -48,6 +48,10 @@ public:
     EnemySprite *createNewEnemyType(Entity id);
 
     void createEnemyAndHandle(event nuevoEvento);
+
+
+
+
 };
 
 

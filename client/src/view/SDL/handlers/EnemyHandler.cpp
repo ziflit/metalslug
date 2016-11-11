@@ -10,7 +10,7 @@ EnemyHandler::EnemyHandler(SDL_Renderer *mainRenderer, int window_width, int win
     this->mainRenderer = mainRenderer;
     this->window_width = window_width;
     this->window_heigth = window_height;
-    this->enemyToHandler = -1;
+    this->enemyToHandler = 0;
 }
 
 
@@ -91,11 +91,11 @@ void EnemyHandler::updateEnemiesSprites() {
 }
 
 void EnemyHandler::modelStateSet() {
-//    if(enemyToHandler != (enemies.size()) ){
-//        //todo: algo esta pasando que el modelo del server no me esta enviando el estado de todos los enemigos.
-//        //creo que esto es bueno chequearlo mas que nada por coherencia entre server-cliente
-//        cout<<"NO ESTA SIENDO COHERENTE EL SERVER-CLIENTE"<<endl;
-//    }
+    if(enemyToHandler != (enemies.size()) ){
+        //todo: algo esta pasando que el modelo del server no me esta enviando el estado de todos los enemigos.
+        //creo que esto es bueno chequearlo mas que nada por coherencia entre server-cliente
+        cout<<"NO ESTA SIENDO COHERENTE EL SERVER-CLIENTE"<<endl;
+    }
         this->enemyToHandler = 0;
 }
 
@@ -108,7 +108,7 @@ enemyType EnemyHandler::getEnemyType(Entity id) {
 }
 
 bool EnemyHandler::notEnemiesCreated() {
-    return (enemyToHandler == -1); //TODO:por ahora es asi pero cuando esta hecho el tema MUERTO este return sera: enemies.size() == 0;
+    return (enemies.size() <= enemyToHandler);
 }
 
 EnemySprite* EnemyHandler::getEnemyToHandle(Entity id) {
@@ -124,6 +124,7 @@ EnemySprite *EnemyHandler::createNewEnemyType(Entity id) {
     return (new EnemySprite(mainRenderer, window_width, window_heigth, type));
 
 }
+
 
 
 
