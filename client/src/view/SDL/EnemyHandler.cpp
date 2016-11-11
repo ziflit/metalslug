@@ -41,11 +41,11 @@ SDL_Texture* EnemyHandler::createTexture(SDL_Renderer* renderer,string imageText
 
 void EnemyHandler::newEnemyType(int ancho, int alto, Entity id, char *imagePath, int cantWidthFrames, int cantHeightFrames) {
 
-    SDL_Texture* layer = this->createTexture(mainRenderer,imagePath);
-    int spriteImageWidth, spriteImageHeight;
-    SDL_QueryTexture(layer, NULL, NULL, &spriteImageWidth, &spriteImageHeight);
-
     struct enemyType newType;
+
+    SDL_Texture* layer = this->createTexture(mainRenderer,imagePath);
+    SDL_QueryTexture(layer, NULL, NULL, &newType.spriteImageWidth, &newType.spriteImageHeight);
+
 
     newType.ancho = ancho;
     newType.alto = alto;
@@ -53,8 +53,6 @@ void EnemyHandler::newEnemyType(int ancho, int alto, Entity id, char *imagePath,
     newType.layer = layer;
     newType.cantWidthFrames = cantWidthFrames;
     newType.cantHeigthFrames = cantHeightFrames;
-    newType.spriteImageWidth = spriteImageWidth;
-    newType.spriteImageHeight = spriteImageHeight;
 
     this->enemiesTypes.push_back(newType);
 }

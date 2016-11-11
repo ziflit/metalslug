@@ -31,7 +31,7 @@ public:
 
     bool isBulletType(Entity id);
 
-    SDL_Texture *createTexture(SDL_Renderer *renderer, string imageTexturePath);
+    SDL_Texture *createTexture(string imageTexturePath);
 };
 
 

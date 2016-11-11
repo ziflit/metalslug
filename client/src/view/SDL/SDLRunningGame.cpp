@@ -64,6 +64,8 @@ SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRendere
     this->enemyHandler = new EnemyHandler(mainRenderer, window_width, window_height);
     this->bulletHandler =new BulletHandler(mainRenderer);
     this->backgroundHandler = new BackgroundHandler();
+    this->miscelaneasHandler = new MscHandler(mainRenderer);
+
     initializeFromXML(configs);
     SDL_GetWindowSize(mainWindow, &window_width, &window_height);
     SDLRunningGame::audioInitialization();

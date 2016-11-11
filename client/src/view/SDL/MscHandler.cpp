@@ -10,7 +10,7 @@ MscHandler::MscHandler(SDL_Renderer *mainRenderer) {
 }
 
 
-SDL_Texture* MscHandler::createTexture(SDL_Renderer* renderer,string imageTexturePath){
+SDL_Texture* MscHandler::createTexture(string imageTexturePath){
     /* The loading of the background layer. since SDL_LoadBMP() returns
      * a surface, we convert it to a layer afterwards for fast accelerated
      * blitting, handdling hardware. (Surface works with software) */
@@ -23,7 +23,7 @@ SDL_Texture* MscHandler::createTexture(SDL_Renderer* renderer,string imageTextur
         loadingSurface = IMG_Load("sprites/defaultImage.png");
     }
 
-    backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
+    backgroundTexture = SDL_CreateTextureFromSurface(this->mainRenderer, loadingSurface);
 
     if(backgroundTexture == NULL){
         cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
@@ -31,15 +31,21 @@ SDL_Texture* MscHandler::createTexture(SDL_Renderer* renderer,string imageTextur
     }
 
     SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
+    cout<<"ENTROOOOO";
     return backgroundTexture;
 }
 
+
 void MscHandler::newMscType(int ancho, int alto, Entity id, char *imagePath) {
     miscelaneaType newType;
+
+    SDL_Texture* layer = this->createTexture(imagePath);
+    SDL_QueryTexture(layer, NULL, NULL, &newType.frameWidth, &newType.frameHeigth);
+
     newType.ancho = ancho;
     newType.alto = alto;
     newType.id = id;
-    newType.layer = this->createTexture(mainRenderer,imagePath);
+    newType.layer = layer;
     this->miscelaneasTypes.push_back(newType);
 }
 

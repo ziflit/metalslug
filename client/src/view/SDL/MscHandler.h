@@ -5,11 +5,10 @@
 #ifndef METALSLUG_MSCHANDLER_H
 #define METALSLUG_MSCHANDLER_H
 
-
-#include <SDL2/SDL_system.h>
+#include <SDL2/SDL_image.h>
+#include "SDL2/SDL.h"
 #include "types.h"
 #include "MiscelaneaSprite.h"
-#include <SDL2/SDL_image.h>
 
 class MscHandler {
 private:
@@ -20,6 +19,8 @@ private:
 public:
     MscHandler(SDL_Renderer* mainRenderer);
 
+    SDL_Texture *createTexture(string imageTexturePath);
+
     void newMscType(int ancho, int alto, Entity id, char *imagePath);
 
     void handle(event newEvent);
@@ -29,8 +30,6 @@ public:
     miscelaneaType getMscType(Entity id);
 
     bool isMscType(Entity id);
-
-    SDL_Texture *createTexture(SDL_Renderer *renderer, string imageTexturePath);
 
     MiscelaneaSprite *createMiscelaneaType(Entity id);
 };

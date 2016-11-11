@@ -8,7 +8,7 @@ BulletHandler::BulletHandler(SDL_Renderer *mainRenderer) {
     this->mainRenderer = mainRenderer;
 }
 
-SDL_Texture* BulletHandler::createTexture(SDL_Renderer* renderer,string imageTexturePath){
+SDL_Texture* BulletHandler::createTexture(string imageTexturePath){
     /* The loading of the background layer. since SDL_LoadBMP() returns
      * a surface, we convert it to a layer afterwards for fast accelerated
      * blitting, handdling hardware. (Surface works with software) */
@@ -21,7 +21,7 @@ SDL_Texture* BulletHandler::createTexture(SDL_Renderer* renderer,string imageTex
         loadingSurface = IMG_Load("sprites/defaultImage.png");
     }
 
-    backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
+    backgroundTexture = SDL_CreateTextureFromSurface(this->mainRenderer, loadingSurface);
 
     if(backgroundTexture == NULL){
         cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
@@ -36,10 +36,14 @@ SDL_Texture* BulletHandler::createTexture(SDL_Renderer* renderer,string imageTex
 
 void BulletHandler::newBulletType(int ancho, int alto, Entity id, char *imagePath) {
     bulletType newType;
+
+    SDL_Texture* layer = this->createTexture(imagePath);
+    SDL_QueryTexture(layer, NULL, NULL, &newType.frameWidth, &newType.frameHeigth);
+
     newType.ancho = ancho;
     newType.alto = alto;
     newType.id = id;
-    newType.layer = this->createTexture(mainRenderer,imagePath);
+    newType.layer = this->createTexture(imagePath);
     this->bulletsTypes.push_back(newType);
 }
 
