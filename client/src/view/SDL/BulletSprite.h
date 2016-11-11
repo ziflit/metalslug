@@ -19,8 +19,8 @@ public:
         this->sourceRect.h = this->destRect.h = type.alto;
     }
 
-    void handle(struct event nuevoEvento) {
-        this->set_position(nuevoEvento.data.x, nuevoEvento.data.y);
+    void handle(struct event event) {
+        this->set_position(event.data.x, event.data.y);
     }
 
 };

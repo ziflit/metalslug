@@ -9,7 +9,7 @@
 #include "Sprite.h"
 #include "types.h"
 
-class MiscelaneaSprite : Sprite {
+class MiscelaneaSprite : public Sprite {
 public:
     MiscelaneaSprite(SDL_Renderer *renderer, miscelaneaType type) : Sprite(renderer,
                                                                       0,
@@ -20,6 +20,9 @@ public:
         this->sourceRect.h = type.frameHeigth;
         this->destRect.w = type.ancho;
         this->destRect.h = type.alto;
+    }
+    void handle(event event){
+        this->set_position(event.data.x, event.data.y);
     }
 };
 
