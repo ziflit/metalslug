@@ -21,8 +21,8 @@ public:
         this->destRect.w = type.ancho;
         this->destRect.h = type.alto;
     }
-    void handle(event event){
-        this->set_position(event.data.x, event.data.y);
+    void handle(event newEvent){
+        this->set_position(newEvent.data.x, newEvent.data.y);
     }
 };
 
