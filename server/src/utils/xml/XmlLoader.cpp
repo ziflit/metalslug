@@ -228,7 +228,6 @@ vector<struct xmlMiscelanea> XmlLoader::obtainMiscelaneasConfig() {
         xml_node<> *path = miscelanea->first_node("path");
         xml_node<> *ancho = miscelanea->first_node("ancho");
         xml_node<> *alto = miscelanea->first_node("alto");
-        xml_node<> *cantWidthFrames = miscelanea->first_node("cantWidthFrames");
 
         struct xmlMiscelanea miscelaneaConfig;
         miscelaneaConfig.completion = EventCompletion::PARTIAL_MSG;
@@ -236,7 +235,6 @@ vector<struct xmlMiscelanea> XmlLoader::obtainMiscelaneasConfig() {
         miscelaneaConfig.ancho = atoi(ancho->value());
         miscelaneaConfig.alto = atoi(alto->value());
         strcpy(miscelaneaConfig.path, path->value());
-        miscelaneaConfig.cantWidthFrames = atoi(cantWidthFrames->value());
 
         configs.push_back(miscelaneaConfig);
     }

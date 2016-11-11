@@ -189,17 +189,6 @@ struct xmlEnemy {
 	int speed;
 };
 
-struct xmlMisc {  
-	EventCompletion completion;
-	Entity id;
-	char path[40];
-	int ancho;
-	int alto;
-	int cantWidthFrames;
-	int cantHeightFrames;
-	int speed;
-};
-
 struct xmlBackground {
     EventCompletion completion;
 	Entity id;
@@ -222,7 +211,6 @@ struct xmlMiscelanea {
     char path[40];
     int ancho;
     int alto;
-    int cantWidthFrames;
 };
 //---------------------------------------------------
 

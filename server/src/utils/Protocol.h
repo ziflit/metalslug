@@ -222,7 +222,6 @@ struct xmlMiscelanea {
 	char path[40];
 	int ancho;
 	int alto;
-	int cantWidthFrames;
 };
 //---------------------------------------------------
 

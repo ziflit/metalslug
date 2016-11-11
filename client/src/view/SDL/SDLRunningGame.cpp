@@ -42,7 +42,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
                                enemyConfig.cantWidthFrames,
                                enemyConfig.cantHeightFrames);
     }
-
+    //TODO: TODA ESTA MIEDA VOY A SIMPLIFICAR Y MANDO EL CONFIG DIRECTAMENTE.
     for (auto bulletConfig : configs.getBulletsConfig()) {
         bulletHandler->newBulletType(bulletConfig.ancho,
                                      bulletConfig.alto,

@@ -147,20 +147,17 @@
             <path>sprites/msc/MSC_WEAPON_BOX.png</path>
             <ancho>20</ancho>
             <alto>20</alto>
-            <cantWidthFrames>3</cantWidthFrames>
         </miscelanea>
         <miscelanea>
             <id>MSC_POWER_BONUS</id>
             <path>sprites/msc/MSC_POWER_BONUS.png</path>
             <ancho>20</ancho>
             <alto>20</alto>
-            <cantWidthFrames>3</cantWidthFrames>
         </miscelanea>
         <miscelanea>
             <id>MSC_BONUS_KILL_ALL</id>
             <path>sprites/msc/MSC_BONUS_KILL_ALL.png</path>
             <ancho>20</ancho>
             <alto>20</alto>
-            <cantWidthFrames>3</cantWidthFrames>
         </miscelanea>
     </miscelaneas>
