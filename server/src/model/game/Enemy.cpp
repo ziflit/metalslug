@@ -20,7 +20,7 @@ Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     direccionX = 0;
     posAtJump = 0;
     gravity = 10;
-    speed = 10;
+    speed = 9;
     postura = CAMINANDO_IZQUIERDA;
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_TELE_MISSILE, BT_SHOT, BT_BOMB, MSC_PLATFORM};
     isShooting = false;
