@@ -5,7 +5,6 @@
 #include "SDL2/SDL.h"
 
 struct enemyType {
-
     int ancho;
     int alto;
     Entity id;
@@ -20,7 +19,17 @@ struct bulletType {
     int alto;
     Entity id;
     SDL_Texture* layer;
+    int frameHeigth;
+    int frameWidth;
 };
 
 
+struct miscelaneaType {
+    int ancho;
+    int alto;
+    Entity id;
+    SDL_Texture* layer;
+    int frameHeigth;
+    int frameWidth;
+};
 #endif //METALSLUG_ENEMYTYPE_H

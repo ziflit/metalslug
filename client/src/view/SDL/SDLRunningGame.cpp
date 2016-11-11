@@ -9,11 +9,10 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
     this->window_width = configs.getGlobalConf().ancho;
     this->window_height = configs.getGlobalConf().alto;
 
-    vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
-
-    for (auto backgroundConfig : backgroundConfigs) {
+    for (auto backgroundConfig : configs.getBackgroundsConfig()) {
         BackgroundSprite* newBackground = new BackgroundSprite(this->mainRenderer,
-                                                               window_width,window_height);
+                                                               window_width,
+                                                               window_height);
         newBackground->setUpImage(backgroundConfig.path);
         newBackground->setId(backgroundConfig.id);
         this->backgroundHandler->addBackgroundToHandle(newBackground);
@@ -21,7 +20,8 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
 
     for (auto playerConfig : configs.getPlayersConfig()) {
         PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer,
-                                                   window_width, window_height);
+                                                   window_width,
+                                                   window_height);
         newPlayer->setWidth(playerConfig.ancho);
         newPlayer->setHeight(playerConfig.alto);
         newPlayer->setId(playerConfig.id);
@@ -48,6 +48,13 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
                                      bulletConfig.alto,
                                      bulletConfig.id,
                                      bulletConfig.path);
+    }
+
+    for (auto miscConfig : configs.getMiscelaneasConfig()) {
+        miscelaneasHandler->newMscType(miscConfig.ancho,
+                                       miscConfig.alto,
+                                       miscConfig.id,
+                                       miscConfig.path);
     }
 }
 
@@ -107,6 +114,10 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
         return;
     }
 
+    if(miscelaneasHandler->isMscType(id)) {
+        miscelaneasHandler->handle(nuevoEvento);
+        return;
+    }
 
 }
 
@@ -138,6 +149,7 @@ void SDLRunningGame::updateWindowSprites () {
 
     this->enemyHandler->updateEnemiesSprites();
     this->bulletHandler->updateBulletsSprites();
+    this->miscelaneasHandler->updateMiscelaneaSprites();
     this->backgroundHandler->updateFrontBackgroundSprite();
 
     SDL_RenderPresent(this->mainRenderer);

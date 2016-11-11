@@ -188,6 +188,6 @@ set(SOURCE_FILES
     server/Makefile
     server/server
     server/server.log
-    server/userslist.csv client/src/view/SDL/types.h client/src/view/SDL/BulletHandler.cpp client/src/view/SDL/BulletHandler.h client/src/view/SDL/BulletSprite.h client/src/view/SDL/BackgroundHandler.cpp client/src/view/SDL/BackgroundHandler.h)
+    server/userslist.csv client/src/view/SDL/types.h client/src/view/SDL/BulletHandler.cpp client/src/view/SDL/BulletHandler.h client/src/view/SDL/BulletSprite.h client/src/view/SDL/BackgroundHandler.cpp client/src/view/SDL/BackgroundHandler.h client/src/view/SDL/MscHandler.cpp client/src/view/SDL/MscHandler.h client/src/view/SDL/MiscelaneaSprite.cpp client/src/view/SDL/MiscelaneaSprite.h)
 
 add_executable(metalslug ${SOURCE_FILES})

@@ -12,6 +12,7 @@
 #include "../../model/ConfigsXML.h"
 #include "BulletHandler.h"
 #include "BackgroundHandler.h"
+#include "MscHandler.h"
 
 class SDLRunningGame {
 private:
@@ -25,6 +26,7 @@ private:
     EnemyHandler* enemyHandler;
     BulletHandler *bulletHandler;
     BackgroundHandler *backgroundHandler;
+    MscHandler *miscelaneasHandler;
 
     event handleKeyDown(SDL_Event *sdlEvent);
 
@@ -47,6 +49,8 @@ public:
     virtual~SDLRunningGame();
 
     void handleModelState(vector<struct event> model_state);
+
+
 };
 
 
