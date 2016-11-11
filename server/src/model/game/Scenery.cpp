@@ -147,9 +147,7 @@ void Scenery::updateBackgroudsState() {
             }
 
             for (auto &misc : miscs) {
-                if (not misc->getEntity() == MSC_PLATFORM){
-                    misc->retroceder(playersSpeed);
-                }
+                misc->retroceder(playersSpeed);
             }
 
             for (auto &enemy : enemies){
