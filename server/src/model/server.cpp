@@ -15,7 +15,7 @@ Server::Server(string xmlConfigPath, string xmlLvlsConfigPath) {
     this->xmlConfigPath = xmlConfigPath;
     this->xmlLvlsConfigPath = xmlLvlsConfigPath;
     loadConfigs();
-    this->scenery = new Scenery(configs);
+    this->scenery = new Scenery(&configs, 1); //El 1 es para que inicie en level 1
 }
 
 Server::~Server() {

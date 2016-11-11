@@ -4,36 +4,35 @@
 #include "PlayerBuilder.h"
 #include <time.h>
 
-Scenery::Scenery(ConfigsXML configs) {
-    this->initializeFromXML(configs);
+Scenery::Scenery(ConfigsXML* confs, int selectedLevel) {
+    this->configs = confs;
+    this->setUpLevel(selectedLevel);
     cantPlayers = 0;
 }
 
-void Scenery::initializeFromXML(ConfigsXML configs) {
-    lvlsConfig = configs.getLvlsConfig();
+void Scenery::setUpLevel(int selectedLevel) {
+    lvlsConfig = this->configs->getLvlsConfig();
     this->nivelEnded = false;
 
-    this->windowWidth = configs.getGlobalConf().ancho;
-    this->windowHeight = configs.getGlobalConf().alto;
-    this->playersSpeed = configs.getPlayersConfig()[0].speed;
+    this->windowWidth = this->configs->getGlobalConf().ancho;
+    this->windowHeight = this->configs->getGlobalConf().alto;
+    this->playersSpeed = this->configs->getPlayersConfig()[0].speed;
 
-    vector<xmlBackground> backgroundConfigs = configs.getBackgroundsConfig();
+    vector<xmlBackground> backgroundConfigs = this->configs->getBackgroundsConfig();
 
-    //La idea de este switch es que elija que nivel inicializar, es horrible, seguro se puede cambiar.
-    int selectedLevel = 1;
-    switch (selectedLevel){
-        case 1:
-            selectedLevel = 0;
-            break;
-        case 2:
-            selectedLevel = 1;
-            break;
-        case 3:
-            selectedLevel = 2;
-            break;
+    // Esto es para resetear la posicion de los players
+    if (selectedLevel > 1){
+        for (auto player: players) {
+            player->set_position(0, 0);
+        }
     }
 
-    //Seteo de enemigos de forma random, en base a la carga del XML
+    //Seteo los backgrounds correspondientes para el nivel
+    Entity back_z0, back_z1, back_z2;
+    selectedLevel = setLevelBackgrounds(&back_z0, &back_z1, &back_z2, selectedLevel);
+
+    //Borro los viejos y Seteo de enemigos de forma random, en base a la carga del XML
+    if (not enemies.size() == 0) enemies.clear();
     srand (time(NULL));
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
         int randomSpawnInX = rand() % 3000 + 800;
@@ -41,19 +40,23 @@ void Scenery::initializeFromXML(ConfigsXML configs) {
         enemies.push_back(enemy);
     }
 
-    //Seteo los pisos y plataformas, en base a la carga del XML
+    //Borro los viejos y Seteo los pisos y plataformas, en base a la carga del XML
+    if (not miscs.size() == 0) miscs.clear();
     for (auto p : lvlsConfig[selectedLevel].platforms) {
         Plataforma *plataforma = new Plataforma(p.x, p.y, p.ancho, p.alto);
         miscs.push_back(plataforma);
     }
 
-    //TODO: Habria que ver de linkear los backgrounds con los level, para cargar los correspondientes
+    //Borro los backgrounds que haya y Seteo los 3 backgrounds correspondientes al nivel elegido
+    if (not backgrounds.size() == 0) backgrounds.clear();
     for (auto backgroundConfig : backgroundConfigs) {
-        Background *newBackground = new Background(backgroundConfig.id, playersSpeed,
+        if (backgroundConfig.id == back_z0 || backgroundConfig.id == back_z1 || backgroundConfig.id == back_z2 ) {
+            Background *newBackground = new Background(backgroundConfig.id, playersSpeed,
                                                    backgroundConfig.ancho, windowWidth);
-        this->backgrounds.push_back(newBackground);
+            this->backgrounds.push_back(newBackground);
+        }
     }
-    ((Background *) backgrounds[0])->calculateSpeed(configs.getBackgroundsConfig()[1].ancho, playersSpeed);
+    ((Background *) backgrounds[0])->calculateSpeed(this->configs->getBackgroundsConfig()[1].ancho, playersSpeed);
 }
 
 Entity Scenery::buildPlayer(string user) {
@@ -108,15 +111,11 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys) {
 
 
 bool Scenery::hayJugadorEnBordeIzq() {
-    if (this->nivelEnded) {
-        return true;
-    }
     for (auto player: players) {
         if ((player->getPostura() != Postura::DESCONECTADO) and (player->getX() <= 0)) {
             return true;
         }
     }
-
     return false;
 }
 
@@ -131,27 +130,31 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
 }
 
 void Scenery::updateBackgroudsState() {
-    if ((not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
-        for (auto background : backgrounds) {
-            this->nivelEnded = ((Background *) background)->avanzarFrame();
-            /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
-             * el asociado a los players debe avanzar exactamente igual que ellos.
-             * Es por eso que tiene seteada igual velocidad.
-             */
-        }
-        /* Vuelvo atrás todos los elementos que se movieron */
-        for (auto player : players) {
-            if (player->getPostura() != DESCONECTADO) {
-                player->retroceder();
+    if (not this->nivelEnded){
+        if ( (not hayJugadorEnBordeIzq() ) and ( jugadorPasoMitadPantallaYEstaAvanzando() ) ) {
+            for (auto background : backgrounds) {
+                this->nivelEnded = ((Background *) background)->avanzarFrame();
+                /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
+                 * el asociado a los players debe avanzar exactamente igual que ellos.
+                 * Es por eso que tiene seteada igual velocidad.
+                 */
+            }
+            /* Vuelvo atrás todos los elementos que se movieron */
+            for (auto player : players) {
+                if (player->getPostura() != DESCONECTADO) {
+                    player->retroceder();
+                }
+            }
+            for (auto &misc : miscs) {
+                misc->retroceder(playersSpeed);
+            }
+
+            for (auto &enemy : enemies){
+                enemy->retroceder();
             }
         }
-        for (auto &misc : miscs) {
-            misc->retroceder(playersSpeed);
-        }
-
-        for (auto &enemy : enemies){
-            enemy->retroceder();
-        }
+    } else {
+        this->setUpLevel(2);
     }
 }
 
@@ -225,3 +228,25 @@ vector<GameObject *> Scenery::getVisibleObjects() {
     return todos;
 }
 
+int Scenery::setLevelBackgrounds(Entity* z0, Entity* z1, Entity* z2, int selectedLevel){
+    switch (selectedLevel){
+        case 1:
+            *z0 = BACKGROUND_LVL1_Z0;
+            *z1 = BACKGROUND_LVL1_Z1;
+            *z2 = BACKGROUND_LVL1_Z2;
+            return 0;
+            break;
+        case 2:
+            *z0 = BACKGROUND_LVL2_Z0;
+            *z1 = BACKGROUND_LVL2_Z1;
+            *z2 = BACKGROUND_LVL2_Z2;
+            return 1;
+            break;
+        case 3:
+            *z0 = BACKGROUND_LVL3_Z0;
+            *z1 = BACKGROUND_LVL3_Z1;
+            *z2 = BACKGROUND_LVL3_Z2;
+            return 2;
+            break;
+    }
+}
