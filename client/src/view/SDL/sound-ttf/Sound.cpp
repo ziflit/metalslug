@@ -1,7 +1,3 @@
-//
-// Created by mfprado on 08/10/16.
-//
-
 #include "Sound.h"
 
 Sound::Sound(char* soundPath){

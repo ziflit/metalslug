@@ -1,6 +1,5 @@
 #include <zconf.h>
 #include "InitialWindow.h"
-#include "SpritesClasses.h"
 
 void InitialWindow::initializeSDL() {
     if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {

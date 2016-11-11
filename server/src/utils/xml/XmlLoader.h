@@ -38,6 +38,10 @@ public:
 
     vector<struct xmlLvl> obtainLvlsConfig();
 
+    vector<struct xmlBullet> obtainBulletsConfig();
+
+    vector<struct xmlMiscelanea> obtainMiscelaneasConfig();
+
     Entity convertToEntity(string id);
 };
 

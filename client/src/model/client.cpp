@@ -81,9 +81,25 @@ bool Client::connect_to_server(string ip, int port, string user) {
         backgroundsConfig.emplace_back(backSetup);
     } while (backSetup.completion != EventCompletion::FINAL_MSG);
 
+    /* Recepción de configuraciones de bullets */
+    vector<struct xmlBullet> bulletsConfig;
+    struct xmlBullet bulletSetup;
+    do {
+        recv(socket_number, &bulletSetup, sizeof(struct xmlBullet), 0);
+        bulletsConfig.emplace_back(bulletSetup);
+    } while (bulletSetup.completion != EventCompletion::FINAL_MSG);
+
+    /* Recepción de configuraciones de miscelaneas */
+    vector<struct xmlMiscelanea> miscelaneasConfig;
+    struct xmlMiscelanea miscSetup;
+    do {
+        recv(socket_number, &miscSetup, sizeof(struct xmlMiscelanea), 0);
+        miscelaneasConfig.emplace_back(miscSetup);
+    } while (miscSetup.completion != EventCompletion::FINAL_MSG);
+
     /* Una vez recibidas las configuraciones las aplico en el cliente */
-    loadConfigsFromServer(globalConf, playersConfig, enemiesConfig , backgroundsConfig );
-    // TODO Enviar a SDL las configuraciones
+    loadConfigsFromServer(globalConf, playersConfig, enemiesConfig, backgroundsConfig,
+                         bulletsConfig, miscelaneasConfig);
 
     /* Lanzo el handler del cliente */
     this->handler = new ClientHandler(socket_number, this, user.data());
@@ -148,9 +164,15 @@ int Client::get_socket() {
 	return socket_number;
 }
 
-void Client::loadConfigsFromServer(struct xmlConfig globalConf, vector<struct xmlPlayer> playersConfig, vector<struct xmlEnemy> enemiesConfig, vector<struct xmlBackground> backgroundsConfig){
+void Client::loadConfigsFromServer(struct xmlConfig globalConf, vector<struct xmlPlayer> playersConfig,
+                                   vector<struct xmlEnemy> enemiesConfig,
+                                   vector<struct xmlBackground> backgroundsConfig,
+                                   vector<struct xmlBullet> bulletsConfig,
+                                   vector<struct xmlMiscelanea> miscelaneasConfig) {
     configs.setGlobalConf(globalConf);
 	configs.setPlayersConfig(playersConfig);
 	configs.setEnemiesConfig(enemiesConfig);
     configs.setBackgroundsConfig(backgroundsConfig);
+	configs.setBulletsConfig(bulletsConfig);
+    configs.setMiscelaneasConfig(miscelaneasConfig);
 }

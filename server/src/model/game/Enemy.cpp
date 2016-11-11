@@ -21,13 +21,12 @@ Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     posAtJump = 0;
     gravity = 10;
     speed = 10;
-    postura = MIRANDO_IZQUIERDA_QUIETO;
+    postura = CAMINANDO_IZQUIERDA;
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_TELE_MISSILE, BT_SHOT, BT_BOMB, MSC_PLATFORM};
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
 }
-
 
 Enemy::~Enemy() {
 }
@@ -46,6 +45,15 @@ void Enemy::avanzar(vector<GameObject *> gameObjects) {
     postura = CAMINANDO_DERECHA;
     x += speed;
 }
+
+/** TENER EN CUENTA CUANDO SE CONFIGUREN LAS POSTURAS
+ *  SOLO DEFINIMOS POSIBLES LAS SIGUIENTES:
+ *  CAMINANDO_DERECHA
+ *  CAMINANDO_IZQUIERDA
+ *  DISPARANDO_CAMINANDO_DERECHA
+ *  DISPARANDO_CAMINANDO_IZQUIERDA
+ *  MUERTO
+ */
 
 void Enemy::updatePosition(vector<GameObject *> game_objects) {
 
@@ -70,22 +78,6 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
     // Logica insolita para saltar cuando pasa por esas posiciones
     if (x == 50 || x == 350 || x == 600) {
         this->setDireccionY(1);
-    }
-
-    int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-    if (this->canIMove(game_objects, newX, newYconGravedad)){
-        fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
-    }
-
-    newY -= ((this->direccionY * fsalto) + (gravity * -1));
-    if (fsalto > 0) {
-        fsalto -= gravity;
-    }
-    if (fsalto == 0) {
-        this->setDireccionY(0);
-    }
-    if (this->canIMove(game_objects, newX, newY)) {
-        this->set_position(newX, newY);
     }
 
 };

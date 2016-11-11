@@ -15,7 +15,7 @@ Server::Server(string xmlConfigPath, string xmlLvlsConfigPath) {
     this->xmlConfigPath = xmlConfigPath;
     this->xmlLvlsConfigPath = xmlLvlsConfigPath;
     loadConfigs();
-    this->scenery = new Scenery(configs);
+    this->scenery = new Scenery(&configs, 1); //El 1 es para que inicie en level 1
 }
 
 Server::~Server() {
@@ -28,6 +28,8 @@ void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutil
     vector<struct xmlPlayer> players_sprites = configs.getPlayersConfig();
     vector<struct xmlEnemy> enemies_sprites = configs.getEnemiesConfig();
     vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
+    vector<struct xmlBullet> bullets = configs.getBulletsConfig();
+    vector<struct xmlMiscelanea> miscelaneas = configs.getMiscelaneasConfig();
 
     sockutils.writeSocket(clientSocket, &globalConf, sizeof(struct xmlConfig));
 
@@ -61,6 +63,25 @@ void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutil
     back_it->completion = EventCompletion::FINAL_MSG;
     sockutils.writeSocket(clientSocket, &(*back_it), sizeof(struct xmlBackground));
 
+    auto bullet_it = bullets.begin();
+    while (bullet_it < bullets.end() - 1) {
+        bullet_it->completion = EventCompletion::PARTIAL_MSG;
+        sockutils.writeSocket(clientSocket, &(*bullet_it), sizeof(struct xmlBullet));
+        ++bullet_it;
+    }
+    /* Mando el último mensaje como FINAL */
+    bullet_it->completion = EventCompletion::FINAL_MSG;
+    sockutils.writeSocket(clientSocket, &(*bullet_it), sizeof(struct xmlBullet));
+
+    auto misc_it = miscelaneas.begin();
+    while (misc_it < miscelaneas.end() - 1) {
+        misc_it->completion = EventCompletion::PARTIAL_MSG;
+        sockutils.writeSocket(clientSocket, &(*misc_it), sizeof(struct xmlMiscelanea));
+        ++misc_it;
+    }
+    /* Mando el último mensaje como FINAL */
+    misc_it->completion = EventCompletion::FINAL_MSG;
+    sockutils.writeSocket(clientSocket, &(*misc_it), sizeof(struct xmlMiscelanea));
 }
 
 /* Función para el thread de comunicación con el cliente
@@ -297,6 +318,8 @@ void Server::loadConfigs(){
     configs.setBackgroundsConfig(loader.obtainBackgroundsConfig());
     configs.setPlayersConfig(loader.obtainPlayersConfig());
     configs.setEnemiesConfig(loader.obtainEnemiesConfig());
+    configs.setBulletsConfig(loader.obtainBulletsConfig());
+    configs.setMiscelaneasConfig(loader.obtainMiscelaneasConfig());
     configs.setLvlsConfig(loader.obtainLvlsConfig());
 }
 

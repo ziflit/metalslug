@@ -18,6 +18,8 @@ private:
     vector<struct xmlPlayer> playersConfig;
     vector<struct xmlEnemy> enemiesConfig;
     vector<struct xmlLvl> lvlsConfig;
+    vector<struct xmlBullet> bulletsConfig;
+    vector<struct xmlMiscelanea> miscelaneasConfig;
     
 public:
 
@@ -55,6 +57,23 @@ public:
     void setEnemiesConfig(vector<struct xmlEnemy> enemiesConfig) {
         this->enemiesConfig = enemiesConfig;
     }
+
+    vector<struct xmlBullet> getBulletsConfig() {
+        return this->bulletsConfig;
+    }
+
+    void setBulletsConfig(vector<struct xmlBullet> bulletsConfig) {
+        this->bulletsConfig = bulletsConfig;
+    }
+
+    vector<struct xmlMiscelanea> getMiscelaneasConfig() {
+        return this->miscelaneasConfig;
+    }
+
+    void setMiscelaneasConfig(vector<struct xmlMiscelanea> miscelaneasConfig) {
+        this->miscelaneasConfig = miscelaneasConfig;
+    }
+
 
     vector<struct xmlLvl> getLvlsConfig() {
         return lvlsConfig;

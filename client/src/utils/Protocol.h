@@ -64,10 +64,15 @@ enum Entity {
 	ENEMY_FINAL_1,
 	ENEMY_FINAL_2,
 	ENEMY_FINAL_3,
-	BACKGROUND_Z0,    // fondo con Z-index 1
-	BACKGROUND_Z1,
-    BACKGROUND_Z2,
-	BACKGROUND_Z3,
+	BACKGROUND_LVL1_Z0,   
+	BACKGROUND_LVL1_Z1,
+    BACKGROUND_LVL1_Z2,
+    BACKGROUND_LVL2_Z0,   
+	BACKGROUND_LVL2_Z1,
+    BACKGROUND_LVL2_Z2,
+	BACKGROUND_LVL3_Z0,   
+	BACKGROUND_LVL3_Z1,
+    BACKGROUND_LVL3_Z2,
 	NOPLAYER,
 	BT_BULLET,			// BT = Bullet Type
 	BT_HEAVY_BULLET,
@@ -96,7 +101,7 @@ enum Postura{
     MIRANDO_IZQUIERDA_QUIETO,
     DESCONECTADO,
 	DISPARANDO_DERECHA_QUIETO,
-	DISPARANDO_IZQUIERDA_QUIETA,
+	DISPARANDO_IZQUIERDA_QUIETO,
 	DISPARANDO_CAMINANDO_DERECHA,
 	DISPARANDO_CAMINANDO_IZQUIERDA,
 	DISPARANDO_AGACHADO_QUIETO_DERECHA,
@@ -106,7 +111,10 @@ enum Postura{
 	DISPARANDO_MIRANDO_ARRIBA_DERECHA_QUIETO,
 	DISPARANDO_MIRANDO_ARRIBA_IZQUIERDA_QUIETO,
 	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_DERECHA,
-	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA
+	DISPARANDO_AVANZANDO_MIRANDO_ARRIBA_IZQUIERDA,
+	MURIENDO,
+	MUERTO
+
 };
 
 enum Arma{
@@ -174,22 +182,10 @@ struct xmlEnemy {
 	EventCompletion completion;
 	Entity id;
 	char path[40];
-	char pathWeapons[40];
 	int ancho;
 	int alto;
     int cantWidthFrames;
     int cantHeightFrames;
-	int speed;
-};
-
-struct xmlMisc {  
-	EventCompletion completion;
-	Entity id;
-	char path[40];
-	int ancho;
-	int alto;
-	int cantWidthFrames;
-	int cantHeightFrames;
 	int speed;
 };
 
@@ -199,6 +195,22 @@ struct xmlBackground {
 	char path[40];
 	int ancho;
 	int alto;
+};
+
+struct xmlBullet {
+    EventCompletion completion;
+    Entity id;
+    char path[40];
+    int ancho;
+    int alto;
+};
+
+struct xmlMiscelanea {
+    EventCompletion completion;
+    Entity id;
+    char path[40];
+    int ancho;
+    int alto;
 };
 //---------------------------------------------------
 

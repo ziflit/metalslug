@@ -1,7 +1,3 @@
-//
-// Created by mfprado on 08/10/16.
-//
-
 #ifndef SDLBASE_MUSIC_H
 #define SDLBASE_MUSIC_H
 

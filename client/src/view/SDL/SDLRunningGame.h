@@ -2,11 +2,17 @@
 #define SDLBASE_SDLRUNNINGGAME_H
 
 #define gameMusicPath "audios/musicGame.mp3"
-#include "Music.h"
+#include "sound-ttf/Music.h"
 #include <vector>
-#include "SpritesClasses.h"
+#include "spriteClasses/BackgroundSprite.h"
+#include "spriteClasses/PlayerSprite.h"
+#include "spriteClasses/EnemySprite.h"
+#include "handlers/EnemyHandler.h"
 #include <SDL2/SDL_events.h>
 #include "../../model/ConfigsXML.h"
+#include "handlers/BulletHandler.h"
+#include "handlers/BackgroundHandler.h"
+#include "handlers/MscHandler.h"
 
 class SDLRunningGame {
 private:
@@ -17,23 +23,24 @@ private:
     int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
     vector<BackgroundSprite*> backgroundSprites;
     vector<PlayerSprite*> playersSprites;
-    vector<EnemySprite*> enemiesSprites;
+    EnemyHandler* enemyHandler;
+    BulletHandler *bulletHandler;
+    BackgroundHandler *backgroundHandler;
+    MscHandler *miscelaneasHandler;
 
+    event handleKeyDown(SDL_Event *sdlEvent);
 
-public:
-    SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer, ConfigsXML configs );
+    event handleKeyUp(SDL_Event *sdlEvent);
 
     void initializeFromXML(ConfigsXML configs);
 
     void audioInitialization();
 
-    void getSpriteAndSend(Entity id, event nuevoEvento );
+    void getSpriteAndHandleNewEvent(event nuevoEvento);
 
-    EnemySprite* getEnemy(Entity id);
+public:
 
-    PlayerSprite* getPlayer(Entity id);
-
-    BackgroundSprite* getBackground(Entity id);
+    SDLRunningGame(SDL_Window* mainWindow, SDL_Renderer* mainRenderer, ConfigsXML configs );
 
     void updateWindowSprites();
 
@@ -42,6 +49,7 @@ public:
     virtual~SDLRunningGame();
 
     void handleModelState(vector<struct event> model_state);
+
 
 };
 

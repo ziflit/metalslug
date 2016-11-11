@@ -1,7 +1,3 @@
-//
-// Created by mfprado on 08/10/16.
-//
-
 #include "Music.h"
 
 #define FOREVER -1
