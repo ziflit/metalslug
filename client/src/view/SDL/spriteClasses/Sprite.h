@@ -1,7 +1,3 @@
-//
-// Created by mfp on 08/11/16.
-//
-
 #ifndef METALSLUG_SPRITE_H
 #define METALSLUG_SPRITE_H
 
@@ -10,7 +6,7 @@ using namespace std;
 #include <iostream>
 #include "SDL2/SDL.h"
 #include <SDL2/SDL_image.h>
-#include "../../utils/Protocol.h"
+#include "../../../utils/Protocol.h"
 
 class Sprite {
 protected:

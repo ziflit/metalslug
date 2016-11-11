@@ -1,13 +1,9 @@
-//
-// Created by mfp on 10/11/16.
-//
-
 #ifndef METALSLUG_BULLETSPRITE_H
 #define METALSLUG_BULLETSPRITE_H
 
 
 #include "Sprite.h"
-#include "types.h"
+#include "../handlers/types.h"
 
 class BulletSprite : public Sprite {
 

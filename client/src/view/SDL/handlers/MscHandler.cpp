@@ -1,8 +1,3 @@
-//
-// Created by mfp on 10/11/16.
-//
-
-
 #include "MscHandler.h"
 
 MscHandler::MscHandler(SDL_Renderer *mainRenderer) {
@@ -11,27 +6,17 @@ MscHandler::MscHandler(SDL_Renderer *mainRenderer) {
 
 
 SDL_Texture* MscHandler::createTexture(string imageTexturePath){
-    /* The loading of the background layer. since SDL_LoadBMP() returns
-     * a surface, we convert it to a layer afterwards for fast accelerated
-     * blitting, handdling hardware. (Surface works with software) */
-
     SDL_Texture* backgroundTexture = NULL;
     SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
-
     if(loadingSurface == NULL){
         cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
         loadingSurface = IMG_Load("sprites/defaultImage.png");
     }
-
     backgroundTexture = SDL_CreateTextureFromSurface(this->mainRenderer, loadingSurface);
-
     if(backgroundTexture == NULL){
         cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
-
     }
-
     SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
-    cout<<"ENTROOOOO";
     return backgroundTexture;
 }
 

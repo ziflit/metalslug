@@ -1,7 +1,3 @@
-//
-// Created by mfp on 08/11/16.
-//
-
 #include "Sprite.h"
 Sprite::Sprite(SDL_Renderer* mainRenderer, int window_width, int window_height) {
 

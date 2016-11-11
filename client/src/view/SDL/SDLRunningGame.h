@@ -2,17 +2,17 @@
 #define SDLBASE_SDLRUNNINGGAME_H
 
 #define gameMusicPath "audios/musicGame.mp3"
-#include "Music.h"
+#include "sound-ttf/Music.h"
 #include <vector>
-#include "BackgroundSprite.h"
-#include "PlayerSprite.h"
-#include "EnemySprite.h"
-#include "EnemyHandler.h"
+#include "spriteClasses/BackgroundSprite.h"
+#include "spriteClasses/PlayerSprite.h"
+#include "spriteClasses/EnemySprite.h"
+#include "handlers/EnemyHandler.h"
 #include <SDL2/SDL_events.h>
 #include "../../model/ConfigsXML.h"
-#include "BulletHandler.h"
-#include "BackgroundHandler.h"
-#include "MscHandler.h"
+#include "handlers/BulletHandler.h"
+#include "handlers/BackgroundHandler.h"
+#include "handlers/MscHandler.h"
 
 class SDLRunningGame {
 private:

@@ -1,15 +1,11 @@
-//
-// Created by mfp on 08/11/16.
-//
-
 #ifndef METALSLUG_ENEMYBUILDER_H
 #define METALSLUG_ENEMYBUILDER_H
 
 #include <SDL2/SDL_image.h>
 #include "SDL2/SDL.h"
 #include "types.h"
-#include "../../utils/Protocol.h"
-#include "EnemySprite.h"
+#include "../../../utils/Protocol.h"
+#include "../spriteClasses/EnemySprite.h"
 
 /**
  * EN UN PRINCIPIO ESTA CLASE ES CAPAZ DE MANEJAR LOS ENEMIGOS DEL TIPO:

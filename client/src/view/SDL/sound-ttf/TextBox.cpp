@@ -1,7 +1,3 @@
-//
-// Created by mfp on 04/11/16.
-//
-
 #include "TextBox.h"
 
 TextBox::TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color) {

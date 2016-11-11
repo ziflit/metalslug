@@ -8,7 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include "SDL2/SDL.h"
 #include "types.h"
-#include "MiscelaneaSprite.h"
+#include "../spriteClasses/MiscelaneaSprite.h"
 
 class MscHandler {
 private:

@@ -1,15 +1,11 @@
-//
-// Created by mfp on 10/11/16.
-//
-
 #ifndef METALSLUG_BULLETHANDLER_H
 #define METALSLUG_BULLETHANDLER_H
 
 
 #include <SDL2/SDL_system.h>
-#include "../../utils/Protocol.h"
+#include "../../../utils/Protocol.h"
 #include "types.h"
-#include "BulletSprite.h"
+#include "../spriteClasses/BulletSprite.h"
 
 class BulletHandler {
 private:

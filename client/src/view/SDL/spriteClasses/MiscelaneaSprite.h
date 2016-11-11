@@ -1,13 +1,9 @@
-//
-// Created by mfp on 10/11/16.
-//
-
 #ifndef METALSLUG_MISCELANEASPRITE_H
 #define METALSLUG_MISCELANEASPRITE_H
 
 
 #include "Sprite.h"
-#include "types.h"
+#include "../handlers/types.h"
 
 class MiscelaneaSprite : public Sprite {
 public:

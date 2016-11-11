@@ -1,10 +1,5 @@
-//
-// Created by mfp on 04/11/16.
-//
-
 #ifndef METALSLUG_TEXTBOX_H
 #define METALSLUG_TEXTBOX_H
-
 
 #include <SDL2/SDL_system.h>
 #include <SDL2/SDL_ttf.h>

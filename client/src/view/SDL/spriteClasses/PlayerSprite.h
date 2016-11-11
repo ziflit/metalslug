@@ -2,8 +2,8 @@
 #define METALSLUG_PLAYERSPRITE_H
 
 #include "Sprite.h"
-#include "Sound.h"
-#include "TextBox.h"
+#include "../sound-ttf/Sound.h"
+#include "../sound-ttf/TextBox.h"
 #include <SDL2/SDL_ttf.h>
 
 class PlayerSprite : public Sprite{

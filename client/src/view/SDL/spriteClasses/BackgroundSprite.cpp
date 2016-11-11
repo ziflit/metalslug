@@ -1,7 +1,3 @@
-//
-// Created by mfp on 08/11/16.
-//
-
 #include "BackgroundSprite.h"
 
 void BackgroundSprite::setFramePosition(int x) {

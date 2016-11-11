@@ -1,7 +1,3 @@
-//
-// Created by mfp on 08/11/16.
-//
-
 #ifndef METALSLUG_BACKGROUNDSPRITE_H
 #define METALSLUG_BACKGROUNDSPRITE_H
 

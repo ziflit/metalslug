@@ -8,7 +8,7 @@
 
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_system.h>
-#include "BackgroundSprite.h"
+#include "../spriteClasses/BackgroundSprite.h"
 
 class BackgroundHandler {
 private:
