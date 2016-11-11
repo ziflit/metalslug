@@ -91,11 +91,11 @@ void EnemyHandler::updateEnemiesSprites() {
 }
 
 void EnemyHandler::modelStateSet() {
-    if(enemyToHandler != (enemies.size()) ){
-        //todo: algo esta pasando que el modelo del server no me esta enviando el estado de todos los enemigos.
-        //creo que esto es bueno chequearlo mas que nada por coherencia entre server-cliente
-        cout<<"NO ESTA SIENDO COHERENTE EL SERVER-CLIENTE"<<endl;
-    }
+//    if(enemyToHandler != (enemies.size()) ){
+//        //todo: algo esta pasando que el modelo del server no me esta enviando el estado de todos los enemigos.
+//        //creo que esto es bueno chequearlo mas que nada por coherencia entre server-cliente
+//        cout<<"NO ESTA SIENDO COHERENTE EL SERVER-CLIENTE"<<endl;
+//    }
         this->enemyToHandler = 0;
 }
 
