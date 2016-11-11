@@ -16,7 +16,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
                                                                window_width,window_height);
         newBackground->setUpImage(backgroundConfig.path);
         newBackground->setId(backgroundConfig.id);
-        this->backgroundSprites.push_back(newBackground);
+        this->backgroundHandler->addBackgroundToHandle(newBackground);
     }
 
     for (auto playerConfig : configs.getPlayersConfig()) {
@@ -56,6 +56,7 @@ SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRendere
     this->mainRenderer = mainRenderer;
     this->enemyHandler = new EnemyHandler(mainRenderer, window_width, window_height);
     this->bulletHandler =new BulletHandler(mainRenderer);
+    this->backgroundHandler = new BackgroundHandler();
     initializeFromXML(configs);
     SDL_GetWindowSize(mainWindow, &window_width, &window_height);
     SDLRunningGame::audioInitialization();
@@ -82,12 +83,12 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
 void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
 //todo: mejorar esta funcion.
     Entity id = nuevoEvento.data.id;
-    for (auto back : backgroundSprites) {
-        if(back->getId() == id){
-            back->handle(nuevoEvento);
-            return;
-        }
+
+    if (backgroundHandler->isBackgroundType(id)) {
+        backgroundHandler->handle(nuevoEvento);
+        return;
     }
+
     for (auto player : playersSprites) {
         if ( player->getId() == id ){
             player->handle(nuevoEvento);
@@ -129,9 +130,7 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
 void SDLRunningGame::updateWindowSprites () {
     SDL_RenderClear(this->mainRenderer);
 
-    for (int i = 0 ; i < (backgroundSprites.size()-1) ; i++) {
-        backgroundSprites[i]->actualizarDibujo();
-    }
+    this->backgroundHandler->updateBottomBackgroundSprites();
 
     for (int i = 0 ; i< playersSprites.size() ; i++) {
             playersSprites[i]->actualizarDibujo();
@@ -139,8 +138,7 @@ void SDLRunningGame::updateWindowSprites () {
 
     this->enemyHandler->updateEnemiesSprites();
     this->bulletHandler->updateBulletsSprites();
-
-   backgroundSprites[(backgroundSprites.size() - 1)]->actualizarDibujo();
+    this->backgroundHandler->updateFrontBackgroundSprite();
 
     SDL_RenderPresent(this->mainRenderer);
 }

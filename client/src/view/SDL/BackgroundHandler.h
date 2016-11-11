@@ -12,11 +12,10 @@
 
 class BackgroundHandler {
 private:
-    SDL_Renderer *mainRenderer;
     vector<BackgroundSprite*> backgrounds;
     int level;
 public:
-    BackgroundHandler(SDL_Renderer *mainRenderer);
+    BackgroundHandler();
 
     void addBackgroundToHandle(BackgroundSprite* newBack);
 
@@ -35,6 +34,8 @@ public:
     BackgroundSprite *getBack1ToUpdate();
 
     BackgroundSprite *getBack2ToUpdate();
+
+    bool isBackgroundType(Entity id);
 };
 
 

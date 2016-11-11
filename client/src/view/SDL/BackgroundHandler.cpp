@@ -5,8 +5,7 @@
 #include "BackgroundHandler.h"
 
 
-BackgroundHandler::BackgroundHandler(SDL_Renderer *mainRenderer) {
-    this->mainRenderer = mainRenderer;
+BackgroundHandler::BackgroundHandler() {
 }
 
 void BackgroundHandler::addBackgroundToHandle(BackgroundSprite *newBack) {
@@ -80,4 +79,10 @@ BackgroundSprite *BackgroundHandler::getBack2ToUpdate() {
         case 3:
             return getBackground(BACKGROUND_LVL3_Z2);
     }
+}
+
+bool BackgroundHandler::isBackgroundType(Entity id) {
+    return (id == BACKGROUND_LVL1_Z0 || id == BACKGROUND_LVL1_Z1 || id == BACKGROUND_LVL1_Z2 ||
+            id == BACKGROUND_LVL2_Z0 || id == BACKGROUND_LVL2_Z1 || id == BACKGROUND_LVL2_Z2 ||
+            id == BACKGROUND_LVL3_Z0 || id == BACKGROUND_LVL3_Z1 || id == BACKGROUND_LVL3_Z2 );
 }
