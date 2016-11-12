@@ -56,8 +56,11 @@ public:
         if (this->direccionY == direccionY) {
             return;
         }
-        this->fsalto = 150;
+        this->fsalto = 60;
         this->direccionY = direccionY;
+        if (this->direccionY != 0) {
+            setJumpingState(true);
+        }
     }
 
     void receiveDamage(int damage) {
