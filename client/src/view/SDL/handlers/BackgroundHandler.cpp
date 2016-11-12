@@ -6,15 +6,16 @@
 
 
 BackgroundHandler::BackgroundHandler() {
+    this->level = 1;
 }
 
 void BackgroundHandler::addBackgroundToHandle(BackgroundSprite *newBack) {
     this->backgrounds.push_back(newBack);
 }
 
-void BackgroundHandler::handle(event newEvent) {
+bool BackgroundHandler::handle(event newEvent) {
     getBackground(newEvent.data.id)->handle(newEvent);
-    this->setLevel(newEvent.data.id);
+    return this->setLevel(newEvent.data.id);
 }
 
 BackgroundSprite * BackgroundHandler::getBackground(Entity id) {
@@ -35,17 +36,22 @@ void BackgroundHandler::updateFrontBackgroundSprite() {
     getBack2ToUpdate()->actualizarDibujo();
 }
 
-void BackgroundHandler::setLevel(Entity id) {
-
+bool BackgroundHandler::setLevel(Entity id) {
+    int newLevel;
     if (id == BACKGROUND_LVL1_Z0 || id == BACKGROUND_LVL1_Z1 || id == BACKGROUND_LVL1_Z2) {
-        this->level = 1;
+        newLevel = 1;
     }
     else if (id == BACKGROUND_LVL2_Z0 || id == BACKGROUND_LVL2_Z1 || id == BACKGROUND_LVL2_Z2) {
-        this->level = 2;
+        newLevel = 2;
     }
     else if (id == BACKGROUND_LVL3_Z0 || id == BACKGROUND_LVL3_Z1 || id == BACKGROUND_LVL3_Z2) {
-        this->level = 3;
+        newLevel = 3;
     }
+    if (this->level != newLevel) {
+        this->level = newLevel;
+        return true;
+    }
+    return false;
 }
 
 BackgroundSprite *BackgroundHandler::getBack0ToUpdate() {

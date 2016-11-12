@@ -18,7 +18,7 @@ private:
     string imgaceColorPath,imageGrisadoPath;
 public:
 
-    PlayerSprite(SDL_Renderer *renderer, int window_width, int window_height) : Sprite(renderer,window_width,window_height) {
+    PlayerSprite(SDL_Renderer *renderer) : Sprite(renderer,0,0) {
         grisado = false;
         cambioFrame = 0;
         this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0; //FRAME INICIAL
