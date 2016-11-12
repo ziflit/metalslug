@@ -8,6 +8,7 @@
 
 class Enemy : public AnimatedObject {
 private:
+    int number;
     int posAtJump;
     int gravity;
     int jumpPos[25] = {0, 23, 44, 63, 80, 95, 108, 119, 128, 135, 140, 143, 144, 143, 140, 135, 128, 119, 108, 95, 80,
@@ -17,7 +18,7 @@ private:
     GameObject *findCloserPlayerToFollow(vector<GameObject *> gameObjects);
 
 public:
-    Enemy(Entity enemySelected, int spawnX, int spawnY);
+    Enemy(int number, Entity enemySelected, int spawnX, int spawnY);
 
     virtual ~Enemy();
 
