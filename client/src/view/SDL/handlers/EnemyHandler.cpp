@@ -28,7 +28,6 @@ void EnemyHandler::newEnemyType(int ancho, int alto, Entity id, char *imagePath,
     SDL_Texture* layer = this->createTexture(imagePath);
     SDL_QueryTexture(layer, NULL, NULL, &newType.spriteImageWidth, &newType.spriteImageHeight);
 
-
     newType.ancho = ancho;
     newType.alto = alto;
     newType.id = id;
@@ -77,7 +76,7 @@ EnemySprite* EnemyHandler::getEnemyToHandle(event newEvent) {
 }
 
 void EnemyHandler::newLevel() {
-    this->enemies.clear();
+
 }
 
 

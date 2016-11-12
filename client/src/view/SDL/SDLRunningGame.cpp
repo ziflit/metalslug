@@ -19,9 +19,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
     }
 
     for (auto playerConfig : configs.getPlayersConfig()) {
-        PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer,
-                                                   window_width,
-                                                   window_height);
+        PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer);
         newPlayer->setWidth(playerConfig.ancho);
         newPlayer->setHeight(playerConfig.alto);
         newPlayer->setId(playerConfig.id);
@@ -131,11 +129,6 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
             this->getSpriteAndHandleNewEvent(nuevoEvento);
 
         }
-
-
-        //TODO: aqui se debe manejar el dibujo de balas y cajas.
-        //TODO: tambien aqui se debe manejar la destruccion de sprites que no deben dibujarse mas.
-
         this->updateWindowSprites();
 }
 
