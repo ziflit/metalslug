@@ -297,6 +297,7 @@ vector<struct xmlLvl> XmlLoader::obtainLvlsConfig() {
         lvlConfig.platforms = plataformas;
 
         configs.push_back(lvlConfig);
+        plataformas.clear();
     }
     configs.back().completion = EventCompletion::FINAL_MSG;
     return configs;
