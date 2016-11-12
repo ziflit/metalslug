@@ -1,7 +1,3 @@
-//
-// Created by leandro on 31/10/16.
-//
-
 #ifndef SERVER_ANIMATEDOBJECT_H
 #define SERVER_ANIMATEDOBJECT_H
 
@@ -19,7 +15,7 @@ protected:
     Postura postura;
     bool isShooting;
     bool isJumping;
-
+    vector<Entity> shootsTo;
 public:
 
     virtual GameObject *shoot() = 0;
@@ -68,17 +64,19 @@ public:
             health -= damage;
         } else {
             health = 0;
+            postura = MUERTO;
         }
     }
 
     virtual ~AnimatedObject() {
         //delete this->weapon;
     }
+
     bool getShootingState() {
         return isShooting;
     }
 
-    void setShootingState(bool shootingState){
+    void setShootingState(bool shootingState) {
         this->isShooting = shootingState;
     }
 
@@ -86,8 +84,16 @@ public:
         return isJumping;
     }
 
-    void setJumpingState(bool jumpingState){
+    void setJumpingState(bool jumpingState) {
         this->isJumping = jumpingState;
+    }
+
+    const vector<Entity> &getShootsTo() const {
+        return shootsTo;
+    }
+
+    void setShootsTo(const vector<Entity> &shootsTo) {
+        AnimatedObject::shootsTo = shootsTo;
     }
 };
 

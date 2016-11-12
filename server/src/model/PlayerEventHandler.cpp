@@ -19,7 +19,9 @@ void PlayerEventHandler::handleRealeasedKey(EventCode eventCode, AnimatedObject 
                 /* Puede estar tocando ambas teclas a la vez, y suelta una de ellas */
             else if (direccionX == 0) {
                 if (postura == MIRANDO_DERECHA_QUIETO) { animatedObject->setPostura(CAMINANDO_DERECHA); }
-                else if (postura == AGACHADO_MIRANDO_DERECHA_QUIETO) { animatedObject->setPostura(AGACHADO_AVANZANDO_DERECHA); }
+                else if (postura == AGACHADO_MIRANDO_DERECHA_QUIETO) {
+                    animatedObject->setPostura(AGACHADO_AVANZANDO_DERECHA);
+                }
                 else if (postura == MIRANDO_ARRIBA_DERECHA_QUIETO) {
                     animatedObject->setPostura(MIRANDO_ARRIBA_CAMINANDO_DERECHA);
                 }
@@ -28,9 +30,13 @@ void PlayerEventHandler::handleRealeasedKey(EventCode eventCode, AnimatedObject 
             break;
         case EventCode::SDL_KEYRIGHT_RELEASED:
             if (direccionX == 1) {
-                if (postura == MIRANDO_ARRIBA_CAMINANDO_DERECHA) { animatedObject->setPostura(MIRANDO_ARRIBA_DERECHA_QUIETO); }
+                if (postura == MIRANDO_ARRIBA_CAMINANDO_DERECHA) {
+                    animatedObject->setPostura(MIRANDO_ARRIBA_DERECHA_QUIETO);
+                }
                 else if (postura == CAMINANDO_DERECHA) { animatedObject->setPostura(MIRANDO_DERECHA_QUIETO); }
-                else if (postura == AGACHADO_AVANZANDO_DERECHA) { animatedObject->setPostura(AGACHADO_MIRANDO_DERECHA_QUIETO); }
+                else if (postura == AGACHADO_AVANZANDO_DERECHA) {
+                    animatedObject->setPostura(AGACHADO_MIRANDO_DERECHA_QUIETO);
+                }
                 animatedObject->setDireccionX(0);
             }
                 /* Puede estar tocando ambas teclas a la vez, y suelta una de ellas. */
@@ -81,6 +87,8 @@ void PlayerEventHandler::handleRealeasedKey(EventCode eventCode, AnimatedObject 
                     animatedObject->setPostura(MIRANDO_DERECHA_QUIETO);
                     break;
             }
+        case EventCode::SDL_KEY_S_RELEASED:
+            animatedObject->setShootingState(false);
         default:
             break;
 
@@ -105,11 +113,11 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
             animatedObject->setShootingState(true);
             break;
 
-        // case EventCode::SDL_KEY_S_PRESSED:
-        // // Aca hay que arreglar la postura
-        //         animatedObject->setPostura(DISPARANDO_CAMINANDO_DERECHA);
-        //         animatedObject->getWeapon()->shoot();
-        //     break;
+            // case EventCode::SDL_KEY_S_PRESSED:
+            // // Aca hay que arreglar la postura
+            //         animatedObject->setPostura(DISPARANDO_CAMINANDO_DERECHA);
+            //         animatedObject->getWeapon()->shoot();
+            //     break;
 
         case EventCode::SDL_KEYUP_PRESSED:
             if (direccionX == 1) { animatedObject->setPostura(MIRANDO_ARRIBA_CAMINANDO_DERECHA); }
@@ -150,9 +158,8 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
                 if ((postura == MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or
                     (postura == MIRANDO_ARRIBA_DERECHA_QUIETO)) {
                     animatedObject->setPostura(MIRANDO_ARRIBA_CAMINANDO_DERECHA);
-                }
-                else if ((postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or
-                         (postura == AGACHADO_MIRANDO_DERECHA_QUIETO)) {
+                } else if ((postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or
+                           (postura == AGACHADO_MIRANDO_DERECHA_QUIETO)) {
                     animatedObject->setPostura(AGACHADO_AVANZANDO_DERECHA);
                 } else { animatedObject->setPostura(CAMINANDO_DERECHA); }
                 animatedObject->setDireccionX(1);
@@ -191,6 +198,6 @@ void PlayerEventHandler::handle(EventCode eventCode, AnimatedObject *animatedObj
     }
 }
 
-PlayerEventHandler::PlayerEventHandler(){
-    
+PlayerEventHandler::PlayerEventHandler() {
+
 }

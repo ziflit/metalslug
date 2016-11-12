@@ -1,13 +1,6 @@
-/*
- * Player.cpp
- *
- *  Created on: 02/10/2016
- *      Author: fpirra
- */
-
 #include <iostream>
 #include "Player.h"
-#include "NormalBulletMovementStrategy.h"
+#include "BulletBuilder.h"
 
 Player::Player(string user, Entity entitySelected, int windowWidth) {
     username = user;
@@ -38,6 +31,8 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_SHOT, BT_BOMB,
                            MSC_BONUS_KILLALL, MSC_POWER_BONUS, MSC_BONUS_KILLALL,
                            MSC_PLATFORM};
+    this->shootsTo = {ENEMY_NORMAL_1, ENEMY_NORMAL_2, ENEMY_NORMAL_3, ENEMY_FINAL_1,
+                      ENEMY_FINAL_2, ENEMY_FINAL_3, MSC_PLATFORM};
 
 }
 
@@ -59,11 +54,13 @@ bool Player::haveBullets() {
 
 
 GameObject *Player::shoot() {
-    // TODO : ver tema cuando no quedan mas balas y la creacion de las estrategias segun el arma
-    Bullet *bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY, shootsTo,
-                                new NormalBulletMovementStrategy());
-    ammo--;
-    return bullet;
+    // TODO : ver tema cuando no quedan mas balas
+    if (ammo > 0) {
+        ammo--;
+    } else {
+        bulletType = BT_BULLET;
+    }
+    return BulletBuilder::createBullet(bulletType, this);
 };
 
 
@@ -82,7 +79,7 @@ void Player::updatePosition(vector<GameObject *> game_objects) {
         /* Checkeo de gravedad */
 
         int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-        if (this->canIMove(game_objects, newX, newYconGravedad)){
+        if (this->canIMove(game_objects, newX, newYconGravedad)) {
             isJumping = false;
         }
 

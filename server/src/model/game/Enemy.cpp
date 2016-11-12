@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "Bullet.h"
 #include "NormalBulletMovementStrategy.h"
+#include "BulletBuilder.h"
 
 Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     id = enemySelected;
@@ -26,6 +27,8 @@ Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
+    this->shootsTo = {ENEMY_NORMAL_1, ENEMY_NORMAL_2, ENEMY_NORMAL_3, ENEMY_FINAL_1,
+                      ENEMY_FINAL_2, ENEMY_FINAL_3, MSC_PLATFORM};
 }
 
 Enemy::~Enemy() {
@@ -36,7 +39,7 @@ void Enemy::set_position(int posx, int posy) {
     y = posy;
 };
 
-int Enemy::retroceder(){
+int Enemy::retroceder() {
     x -= speed;
     return x;
 }
@@ -61,9 +64,13 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
     int newY = y;
 
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
+    if (MathUtil::FindDifference(playerToFollow->getX(), x) > 400)
+        return; //para que solo se acerquen cuando estan a 400 de distancia
+
     // Minima logica para seguir a los jugadores, mejorarla por favor
     float playerPosX = playerToFollow->getX();
     if (x < playerPosX - 100) {
+        cout << "camino derecha"<<endl;
         postura = CAMINANDO_DERECHA;
         newX = x + speed;
     } else if (x > playerPosX + 100) {
@@ -80,7 +87,7 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
         this->setDireccionY(1);
     }
     int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-    if (this->canIMove(game_objects, newX, newYconGravedad)){
+    if (this->canIMove(game_objects, newX, newYconGravedad)) {
         fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
     }
 
@@ -144,12 +151,12 @@ GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
             player = gameObject;
         }
     }
+
     return player;
 }
 
 GameObject *Enemy::shoot() {
-    Bullet *bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY, fightAgainst, new NormalBulletMovementStrategy());
-    ammo--;
+    Bullet *bullet = BulletBuilder::createBullet(bulletType, this);
     return bullet;
 };
 
