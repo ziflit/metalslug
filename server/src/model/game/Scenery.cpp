@@ -36,7 +36,7 @@ void Scenery::setUpLevel(int selectedLevel) {
     srand (time(NULL));
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
         int randomSpawnInX = rand() % 3000 + 800;
-        Enemy *enemy = new Enemy(enemy_normal_type, randomSpawnInX , 400);
+        Enemy *enemy = new Enemy(i,enemy_normal_type, randomSpawnInX , 400);
         enemies.push_back(enemy);
     }
 

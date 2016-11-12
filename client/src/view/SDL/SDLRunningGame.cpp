@@ -61,7 +61,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
 SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
     this->mainWindow = mainWindow;
     this->mainRenderer = mainRenderer;
-    this->enemyHandler = new EnemyHandler(mainRenderer, window_width, window_height);
+    this->enemyHandler = new EnemyHandler(mainRenderer);
     this->bulletHandler =new BulletHandler(mainRenderer);
     this->backgroundHandler = new BackgroundHandler();
     this->miscelaneasHandler = new MscHandler(mainRenderer);
@@ -94,7 +94,7 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
     Entity id = nuevoEvento.data.id;
 
     if (backgroundHandler->isBackgroundType(id)) {
-        backgroundHandler->handle(nuevoEvento);
+        if (backgroundHandler->handle(nuevoEvento)) enemyHandler->newLevel();
         return;
     }
 
@@ -265,10 +265,6 @@ SDLRunningGame::~SDLRunningGame () {
 
     for (auto playerSprite : playersSprites){
         delete playerSprite;
-    }
-
-    for (auto backSprite : backgroundSprites){
-        delete backSprite;
     }
 
     SDL_DestroyRenderer(mainRenderer);

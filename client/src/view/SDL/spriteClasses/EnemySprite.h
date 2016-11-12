@@ -8,12 +8,13 @@ class EnemySprite : public Sprite{
 
 private:
 
-    int wFramesCant,wActualPosFrame, cambioFrame;
+    int wFramesCant,wActualPosFrame, cambioFrame, number;
 
 public:
 
-    EnemySprite(SDL_Renderer *renderer, int window_width, int window_height, enemyType type) : Sprite(renderer, window_width, window_height) {
-       Sprite::id = type.id;
+    EnemySprite(SDL_Renderer *renderer, enemyType type, int number) : Sprite(renderer, 0, 0) {
+        Sprite::id = type.id;
+        this->number = number;
         this->cambioFrame = 0;
         EnemySprite::wActualPosFrame = 0;
 
@@ -37,7 +38,7 @@ public:
     void handle(struct event nuevoEvento);
 
     void setNextSpriteFrame();
-
+    int getNumber() { return number;}
     void caminandoDerecha();
     void caminandoIzquierda();
     void disparandoCaminandoDerecha();

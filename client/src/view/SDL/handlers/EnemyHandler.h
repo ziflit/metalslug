@@ -19,17 +19,14 @@ private:
     SDL_Renderer *mainRenderer;
     vector<enemyType> enemiesTypes;
     vector<EnemySprite*> enemies;
-    int window_width;
-    int window_heigth;
-    int enemyToHandler;
 
 public:
 
-    EnemyHandler(SDL_Renderer* mainRenderer, int window_width, int window_height);
+    EnemyHandler(SDL_Renderer* mainRenderer);
 
     void newEnemyType(int ancho, int alto, Entity id, char imagePath[40], int cantWidthFrames, int cantHeightFrames);
 
-    SDL_Texture* createTexture(SDL_Renderer *renderer, string imageTexturePath);
+    SDL_Texture* createTexture(string imageTexturePath);
 
     bool isEnemyType(Entity id);
 
@@ -37,21 +34,11 @@ public:
 
     void updateEnemiesSprites();
 
-    void modelStateSet();
-
     enemyType getEnemyType(Entity id);
 
-    bool notEnemiesCreated();
+    EnemySprite* getEnemyToHandle(event newEvent);
 
-    EnemySprite* getEnemyToHandle(Entity id);
-
-    EnemySprite *createNewEnemyType(Entity id);
-
-    void createEnemyAndHandle(event nuevoEvento);
-
-
-
-
+    void newLevel();
 };
 
 

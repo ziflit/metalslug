@@ -1,49 +1,31 @@
-//
-// Created by mfp on 08/11/16.
-//
-
 #include <iostream>
 #include "EnemyHandler.h"
 
 
-EnemyHandler::EnemyHandler(SDL_Renderer *mainRenderer, int window_width, int window_height) {
+EnemyHandler::EnemyHandler(SDL_Renderer *mainRenderer) {
     this->mainRenderer = mainRenderer;
-    this->window_width = window_width;
-    this->window_heigth = window_height;
-    this->enemyToHandler = 0;
 }
 
-
-SDL_Texture* EnemyHandler::createTexture(SDL_Renderer* renderer,string imageTexturePath){
-    /* The loading of the background layer. since SDL_LoadBMP() returns
-     * a surface, we convert it to a layer afterwards for fast accelerated
-     * blitting, handdling hardware. (Surface works with software) */
-
+SDL_Texture* EnemyHandler::createTexture(string imageTexturePath){
     SDL_Texture* backgroundTexture = NULL;
     SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
-
     if(loadingSurface == NULL){
         cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
         loadingSurface = IMG_Load("sprites/defaultImage.png");
     }
-
-    backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
-
+    backgroundTexture = SDL_CreateTextureFromSurface(mainRenderer, loadingSurface);
     if(backgroundTexture == NULL){
         cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
-
     }
-
     SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
     return backgroundTexture;
 }
-
 
 void EnemyHandler::newEnemyType(int ancho, int alto, Entity id, char *imagePath, int cantWidthFrames, int cantHeightFrames) {
 
     struct enemyType newType;
 
-    SDL_Texture* layer = this->createTexture(mainRenderer,imagePath);
+    SDL_Texture* layer = this->createTexture(imagePath);
     SDL_QueryTexture(layer, NULL, NULL, &newType.spriteImageWidth, &newType.spriteImageHeight);
 
 
@@ -67,36 +49,11 @@ bool EnemyHandler::isEnemyType(Entity id) {
 }
 
 void EnemyHandler::handle(event newEvent) {
-    if (this->notEnemiesCreated()){
-            return this->createEnemyAndHandle(newEvent);
-        }
-    else {
-        this->getEnemyToHandle(newEvent.data.id)->handle(newEvent);
-        this->enemyToHandler += 1;
-    }
-}
-
-void EnemyHandler::createEnemyAndHandle(event nuevoEvento) {
-    EnemySprite* newEnemy = this->createNewEnemyType(nuevoEvento.data.id);
-    newEnemy->handle(nuevoEvento);
-    this->enemies.push_back(newEnemy);
+    this->getEnemyToHandle(newEvent)->handle(newEvent);
 }
 
 void EnemyHandler::updateEnemiesSprites() {
-    this->modelStateSet();
-
-    for(auto enemy : enemies) {
-        enemy->actualizarDibujo();
-    }
-}
-
-void EnemyHandler::modelStateSet() {
-    if(enemyToHandler != (enemies.size()) ){
-        //todo: algo esta pasando que el modelo del server no me esta enviando el estado de todos los enemigos.
-        //creo que esto es bueno chequearlo mas que nada por coherencia entre server-cliente
-        cout<<"NO ESTA SIENDO COHERENTE EL SERVER-CLIENTE"<<endl;
-    }
-        this->enemyToHandler = 0;
+    for(auto enemy : enemies) enemy->actualizarDibujo();
 }
 
 enemyType EnemyHandler::getEnemyType(Entity id) {
@@ -107,22 +64,20 @@ enemyType EnemyHandler::getEnemyType(Entity id) {
     }
 }
 
-bool EnemyHandler::notEnemiesCreated() {
-    return (enemies.size() <= enemyToHandler);
-}
-
-EnemySprite* EnemyHandler::getEnemyToHandle(Entity id) {
-
-    if(enemies[enemyToHandler]->getId() == id){ //compruebo que realmente este handleando el enemigo correcto
-        return enemies[enemyToHandler];
+EnemySprite* EnemyHandler::getEnemyToHandle(event newEvent) {
+    int num = atoi(newEvent.data.username);
+    for (auto enemy : enemies) {
+        if (enemy->getNumber() == num) {
+            return enemy;
+        }
     }
+    EnemySprite* newEnemy = new EnemySprite(mainRenderer, getEnemyType(newEvent.data.id), num);
+    enemies.push_back(newEnemy);
+    return newEnemy;
 }
 
-EnemySprite *EnemyHandler::createNewEnemyType(Entity id) {
-
-    enemyType type = this->getEnemyType(id);
-    return (new EnemySprite(mainRenderer, window_width, window_heigth, type));
-
+void EnemyHandler::newLevel() {
+    this->enemies.clear();
 }
 
 

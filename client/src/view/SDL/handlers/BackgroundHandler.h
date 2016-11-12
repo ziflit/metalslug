@@ -19,7 +19,7 @@ public:
 
     void addBackgroundToHandle(BackgroundSprite* newBack);
 
-    void handle(event newEvent);
+    bool handle(event newEvent);
 
     BackgroundSprite * getBackground(Entity id);
 
@@ -27,7 +27,7 @@ public:
 
     void updateFrontBackgroundSprite();
 
-    void setLevel(Entity id);
+    bool setLevel(Entity id);
 
     BackgroundSprite *getBack0ToUpdate();
 
