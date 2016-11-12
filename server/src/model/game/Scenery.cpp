@@ -169,22 +169,24 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
             bullets.push_back((Bullet *) player->shoot());
         }
         player->updatePosition(all_objects_in_window);
-        eventsToReturn.push_back(player->getState());
     }
 
     for (auto enemy : enemies) {
         enemy->updatePosition(all_objects_in_window); //Van a seguir siempre al player 1 por ahora
-        eventsToReturn.push_back(enemy->getState());
         i++;
     }
 
     updateBackgroudsState();
 
-    for (auto background : backgrounds) {
+    for (auto &background : backgrounds) {
         eventsToReturn.push_back(background->getState());
     }
 
+    for (auto &object : all_objects_in_window) {
+        eventsToReturn.push_back(object->getState());
+    }
     eventsToReturn.back().completion = EventCompletion::FINAL_MSG;
+
     return eventsToReturn;
 }
 
@@ -214,15 +216,24 @@ Scenery::~Scenery() {
 }
 
 vector<GameObject *> Scenery::getVisibleObjects() {
+    int x, y;
     vector<GameObject *> todos;
     for (auto &enemy : enemies) {
+        x = enemy->getX();
+        y = enemy->getY();
+        if (x <= windowWidth and x >= 0 and y <= windowHeight and y >= 0)
         todos.push_back(enemy);
     }
     for (auto &misc : miscs) {
+        x = misc->getX();
+        y = misc->getY();
+        if (x <= windowWidth and x >= 0 and y <= windowHeight and y >= 0)
         todos.push_back(misc);
     }
 
     for (auto &player : players) {
+        x = player->getX();
+        y = player->getY();
         todos.push_back(player);
     }
     return todos;
