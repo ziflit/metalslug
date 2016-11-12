@@ -19,9 +19,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
     }
 
     for (auto playerConfig : configs.getPlayersConfig()) {
-        PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer,
-                                                   window_width,
-                                                   window_height);
+        PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer);
         newPlayer->setWidth(playerConfig.ancho);
         newPlayer->setHeight(playerConfig.alto);
         newPlayer->setId(playerConfig.id);
@@ -61,7 +59,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
 SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
     this->mainWindow = mainWindow;
     this->mainRenderer = mainRenderer;
-    this->enemyHandler = new EnemyHandler(mainRenderer, window_width, window_height);
+    this->enemyHandler = new EnemyHandler(mainRenderer);
     this->bulletHandler =new BulletHandler(mainRenderer);
     this->backgroundHandler = new BackgroundHandler();
     this->miscelaneasHandler = new MscHandler(mainRenderer);
@@ -94,7 +92,7 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
     Entity id = nuevoEvento.data.id;
 
     if (backgroundHandler->isBackgroundType(id)) {
-        backgroundHandler->handle(nuevoEvento);
+        if (backgroundHandler->handle(nuevoEvento)) enemyHandler->newLevel();
         return;
     }
 
@@ -105,18 +103,17 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
         }
     }
 
-    //Los enemies types son seteados desde el XML.
     if (enemyHandler->isEnemyType(id)) {
         enemyHandler->handle(nuevoEvento);
         return;
     }
 
-    if(bulletHandler->isBulletType(id)) {
+    if (bulletHandler->isBulletType(id)) {
         bulletHandler->handle(nuevoEvento);
         return;
     }
 
-    if(miscelaneasHandler->isMscType(id)) {
+    if (miscelaneasHandler->isMscType(id)) {
         miscelaneasHandler->handle(nuevoEvento);
         return;
     }
@@ -130,12 +127,8 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
         for (auto nuevoEvento : model_state){
 
             this->getSpriteAndHandleNewEvent(nuevoEvento);
+
         }
-
-
-        //TODO: aqui se debe manejar el dibujo de balas y cajas.
-        //TODO: tambien aqui se debe manejar la destruccion de sprites que no deben dibujarse mas.
-
         this->updateWindowSprites();
 }
 
@@ -265,10 +258,6 @@ SDLRunningGame::~SDLRunningGame () {
 
     for (auto playerSprite : playersSprites){
         delete playerSprite;
-    }
-
-    for (auto backSprite : backgroundSprites){
-        delete backSprite;
     }
 
     SDL_DestroyRenderer(mainRenderer);

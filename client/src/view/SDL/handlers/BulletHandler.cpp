@@ -9,10 +9,6 @@ BulletHandler::BulletHandler(SDL_Renderer *mainRenderer) {
 }
 
 SDL_Texture* BulletHandler::createTexture(string imageTexturePath){
-    /* The loading of the background layer. since SDL_LoadBMP() returns
-     * a surface, we convert it to a layer afterwards for fast accelerated
-     * blitting, handdling hardware. (Surface works with software) */
-
     SDL_Texture* backgroundTexture = NULL;
     SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
 

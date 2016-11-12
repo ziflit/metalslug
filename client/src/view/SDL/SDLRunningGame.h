@@ -21,7 +21,6 @@ private:
     SDL_Renderer* mainRenderer;
     Music* music;
     int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
-    vector<BackgroundSprite*> backgroundSprites;
     vector<PlayerSprite*> playersSprites;
     EnemyHandler* enemyHandler;
     BulletHandler *bulletHandler;
@@ -51,6 +50,7 @@ public:
     void handleModelState(vector<struct event> model_state);
 
 
+    void resetStatus();
 };
 
 

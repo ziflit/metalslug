@@ -10,7 +10,8 @@
 #include "Bullet.h"
 #include "NormalBulletMovementStrategy.h"
 
-Enemy::Enemy(Entity enemySelected, int spawnX, int spawnY) {
+Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
+    this->number = number;
     id = enemySelected;
     x = spawnX;
     y = spawnY;
@@ -103,6 +104,7 @@ struct event Enemy::getState() {
 
     eventExt.code = EventCode::ENEMY_STATUS;
     eventExt.id = id;
+    sprintf(eventExt.username, "%.20s", (to_string(number)).c_str());
 
     eventExt.x = x;  //Actualizo la posicion del enemy
     eventExt.y = y;

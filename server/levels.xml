@@ -1,7 +1,7 @@
 <levels>
 	<lvl>
 		<id>1</id>
-		<cant_enemies>2</cant_enemies>
+		<cant_enemies>5</cant_enemies>
 		<cant_boxes>2</cant_boxes>
 		<posXtoFinish>7000</posXtoFinish>
 		<platforms>
@@ -16,7 +16,7 @@
 
 	<lvl>
 		<id>2</id>
-		<cant_enemies>2</cant_enemies>
+		<cant_enemies>16</cant_enemies>
 		<cant_boxes>6</cant_boxes>
 		<posXtoFinish>8192</posXtoFinish>
 		<platforms>
@@ -37,7 +37,7 @@
 	
 	<lvl>
 		<id>3</id>
-		<cant_enemies>2</cant_enemies>
+		<cant_enemies>23</cant_enemies>
 		<cant_boxes>10</cant_boxes>
 		<posXtoFinish>8192</posXtoFinish>
 		<platforms>
