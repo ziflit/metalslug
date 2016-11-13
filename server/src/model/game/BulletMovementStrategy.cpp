@@ -8,14 +8,12 @@ void BulletMovementStrategy::makeCollision(vector<GameObject *> collisionables, 
     Bullet *bullet = (Bullet *) gameObject;
     for (auto object : collisionables) {
         if (bullet->puedenColisionar(object) && object->checkCollition(bullet)) {
-            if (gameObject->getEntity() != MSC_PLATFORM) {
+            if (object->getEntity() != MSC_PLATFORM) {
                 AnimatedObject *animatedObject = (AnimatedObject *) object;
                 animatedObject->receiveDamage(bullet->getDamage());
             }
+            cout << "colision! con " << object->getEntity() << endl;
             bullet->setEntity(DEAD);
-            cout << "colision!" << endl;
-            //TODO: aca vamos a tener que setearle a la bala el estado de
-            // muerto y realizar el impacto con el objeto colisionado
         }
     }
 }

@@ -23,8 +23,7 @@ Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
-    this->shootsTo = {ENEMY_NORMAL_1, ENEMY_NORMAL_2, ENEMY_NORMAL_3, ENEMY_FINAL_1,
-                      ENEMY_FINAL_2, ENEMY_FINAL_3, MSC_PLATFORM};
+    this->shootsTo = {MARCO, TARMA, FIO, ERI, MSC_PLATFORM};
 }
 
 Enemy::~Enemy() {
@@ -61,8 +60,8 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
 
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
     float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
-    if (distance > 500 && distance < 200) {
-        return; //para que solo se acerquen cuando estan a 400 de distancia
+    if (distance > 700 || distance < 300) {
+        return;
     }
     // Minima logica para seguir a los jugadores, mejorarla por favor
     float playerPosX = playerToFollow->getX();

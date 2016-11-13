@@ -45,6 +45,7 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
             setupBullet(bullet, 250, 250, 100, 50, vector->getX(), vector->getY());
             break;
     }
+        cout << "direcion bala " <<bullet->getDireccionX() << "," << bullet->getDireccionY()<<endl;
     return bullet;
 }
 
