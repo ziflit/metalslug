@@ -31,24 +31,27 @@ void Scenery::setUpLevel(int selectedLevel) {
     Entity back_z0, back_z1, back_z2, enemy_normal_type, enemy_final_type;
     selectedLevel = setLevelConfigs(&back_z0, &back_z1, &back_z2, &enemy_normal_type, &enemy_final_type, selectedLevel);
 
+    //Borro las balas que hayan quedado
+    bullets.clear();
+
     //Borro los viejos y Seteo de enemigos de forma random, en base a la carga del XML
-    if (not enemies.size() == 0) enemies.clear();
+    enemies.clear();
     srand (time(NULL));
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
-        int randomSpawnInX = rand() % 3000 + 800;
-        Enemy *enemy = new Enemy(i,enemy_normal_type, randomSpawnInX , 400);
+        int randomSpawnInX = rand() % 5000 + 400;
+        Enemy *enemy = new Enemy(i, enemy_normal_type, randomSpawnInX , 0);
         enemies.push_back(enemy);
     }
 
     //Borro los viejos y Seteo los pisos y plataformas, en base a la carga del XML
-    if (not miscs.size() == 0) miscs.clear();
+    miscs.clear();
     for (auto p : lvlsConfig[selectedLevel].platforms) {
         Plataforma *plataforma = new Plataforma(p.x, p.y, p.ancho, p.alto);
         miscs.push_back(plataforma);
     }
 
     //Borro los backgrounds que haya y Seteo los 3 backgrounds correspondientes al nivel elegido
-    if (not backgrounds.size() == 0) backgrounds.clear();
+    backgrounds.clear();
     for (auto backgroundConfig : backgroundConfigs) {
         if (backgroundConfig.id == back_z0 || backgroundConfig.id == back_z1 || backgroundConfig.id == back_z2 ) {
             Background *newBackground = new Background(backgroundConfig.id, playersSpeed,
@@ -252,7 +255,7 @@ int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Ent
             *z0 = BACKGROUND_LVL2_Z0;
             *z1 = BACKGROUND_LVL2_Z1;
             *z2 = BACKGROUND_LVL2_Z2;
-            *en = ENEMY_NORMAL_2;
+            *en = ENEMY_NORMAL_1;
             *ef = ENEMY_FINAL_2;            
             return 1;
             break;
@@ -260,7 +263,7 @@ int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Ent
             *z0 = BACKGROUND_LVL3_Z0;
             *z1 = BACKGROUND_LVL3_Z1;
             *z2 = BACKGROUND_LVL3_Z2;
-            *en = ENEMY_NORMAL_3;
+            *en = ENEMY_NORMAL_1;
             *ef = ENEMY_FINAL_3;
             return 2;
             break;
