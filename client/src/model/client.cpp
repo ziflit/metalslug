@@ -101,12 +101,10 @@ bool Client::connect_to_server(string ip, int port, string user) {
     loadConfigsFromServer(globalConf, playersConfig, enemiesConfig, backgroundsConfig,
                          bulletsConfig, miscelaneasConfig);
 
-    /* Lanzo el handler del cliente */
-    this->handler = new ClientHandler(socket_number, this, user.data());
     this->my_character = ((struct event*) response)->data.id;
-		this->handler->start();
-		return true;
-	}
+    return true;
+
+    }
 
 }
 
@@ -175,4 +173,18 @@ void Client::loadConfigsFromServer(struct xmlConfig globalConf, vector<struct xm
     configs.setBackgroundsConfig(backgroundsConfig);
 	configs.setBulletsConfig(bulletsConfig);
     configs.setMiscelaneasConfig(miscelaneasConfig);
+}
+
+ClientHandler* Client::start_connection() {
+    /* Envío un MSG_OK al servidor para avisarle que puede empezar la conexión.
+       Desde este lado se arranca el handler para usar la conexión en paralelo. */
+    struct event finished_loading;
+    finished_loading.completion = FINAL_MSG;
+    finished_loading.data.code = MSG_OK;
+    send(socket_number, &finished_loading, sizeof(struct event), 0);
+
+    this->handler = new ClientHandler(socket_number, this, userName);
+    this->handler->start();
+
+    return handler;
 }
