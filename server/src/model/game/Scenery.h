@@ -84,9 +84,9 @@ public:
 
     int setLevelBackgrounds(Entity *z0, Entity *z1, Entity *z2, int levelSelected);
 
-    void updatePlayersState(vector<event> &eventsToReturn, vector<GameObject *> &all_objects_in_window);
+    void updatePlayersState(vector<GameObject *> &all_objects_in_window);
 
-    void updateEnemiesState(vector<event> &eventsToReturn, vector<GameObject *> &all_objects_in_window);
+    void updateEnemiesState(vector<GameObject *> &all_objects_in_window);
 
     void updateBulletsState(vector<GameObject *> &all_objects_in_window);
 

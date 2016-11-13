@@ -103,6 +103,10 @@ void client_comm(Server *srv, int client) {
 
         sendConfigsToClient(client, srv, sockutils);
 
+        /* El server espera un mensaje del cliente que le dice que terminó de cargar
+         * la respuesta no sirve de absolutamente nada, sólo que se reciba algo */
+        recv(client, &resp, sizeof(event), 0);
+
         ClientConnection* handler = new ClientConnection(client, srv, user);
         srv->add_connection(handler); /* El clientconnection se podría crear dentro de add_connection */
         handler->start();

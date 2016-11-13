@@ -37,10 +37,10 @@ void Scenery::setUpLevel(int selectedLevel) {
     //Borro los viejos y Seteo de enemigos de forma random, en base a la carga del XML
 
     enemies.clear();
-    srand (time(NULL));
+    srand(time(NULL));
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
         int randomSpawnInX = rand() % 5000 + 400;
-        Enemy *enemy = new Enemy(i, enemy_normal_type, randomSpawnInX , 0);
+        Enemy *enemy = new Enemy(i, enemy_normal_type, randomSpawnInX, 0);
         enemies.push_back(enemy);
     }
 
@@ -169,20 +169,22 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
     vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
 
-    updatePlayersState(eventsToReturn, all_objects_in_window);
-    updateEnemiesState(eventsToReturn, all_objects_in_window);
+
+    updatePlayersState(all_objects_in_window);
+    updateEnemiesState(all_objects_in_window);
     updateBulletsState(all_objects_in_window);
     updateBackgroudsState();
 
-    for (auto background : backgrounds) {
+    for (auto &background : backgrounds) {
         eventsToReturn.push_back(background->getState());
     }
 
-    for (auto &bullet : bullets) {
-        eventsToReturn.push_back(bullet->getState());
+    for (auto &object : all_objects_in_window) {
+        eventsToReturn.push_back(object->getState());
     }
 
     eventsToReturn.back().completion = EventCompletion::FINAL_MSG;
+
     return eventsToReturn;
 }
 
@@ -193,20 +195,18 @@ void Scenery::updateBulletsState(vector<GameObject *> &all_objects_in_window) {
 }
 
 void
-Scenery::updateEnemiesState(vector<event> &eventsToReturn, vector<GameObject *> &all_objects_in_window) {
+Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
     for (auto enemy : enemies) {
-        enemy->updatePosition(all_objects_in_window);
-        eventsToReturn.push_back(enemy->getState());
+        enemy->updatePosition(all_objects_in_window); //Van a seguir siempre al player 1 por ahora
     }
 }
 
-void Scenery::updatePlayersState(vector<event> &eventsToReturn, vector<GameObject *> &all_objects_in_window) {
+void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
     for (auto player : players) {
         if (player->getShootingState() and player->haveBullets()) {
             bullets.push_back((Bullet *) player->shoot());
         }
         player->updatePosition(all_objects_in_window);
-        eventsToReturn.push_back(player->getState());
     }
 }
 
@@ -236,17 +236,30 @@ Scenery::~Scenery() {
 }
 
 vector<GameObject *> Scenery::getVisibleObjects() {
-    //TODO: ESTO NO DEBERIA FILTRAR POR LOS QUE ESTAN EN LA PANTALLA?
+    int x, y;
     vector<GameObject *> todos;
     for (auto &enemy : enemies) {
-        todos.push_back(enemy);
+        x = enemy->getX();
+        y = enemy->getY();
+        if (x <= windowWidth and x >= 0 and y <= windowHeight and y >= 0)
+            todos.push_back(enemy);
     }
     for (auto &misc : miscs) {
-        todos.push_back(misc);
+        x = misc->getX();
+        y = misc->getY();
+        if (x <= windowWidth and x >= 0 and y <= windowHeight and
+            y >= 0 or misc->getEntity() == MSC_PLATFORM) // El piso siempre se envía
+            todos.push_back(misc);
     }
 
     for (auto &player : players) {
+        x = player->getX();
+        y = player->getY();
         todos.push_back(player);
+    }
+
+    for (auto &bullet : bullets) {
+        todos.push_back(bullet);
     }
     return todos;
 }
@@ -259,8 +272,8 @@ void Scenery::removeDeadObjects() {
 }
 
 
-int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Entity* ef, int selectedLevel){
-    switch (selectedLevel){
+int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel) {
+    switch (selectedLevel) {
         case 1:
             *z0 = BACKGROUND_LVL1_Z0;
             *z1 = BACKGROUND_LVL1_Z1;
@@ -273,7 +286,7 @@ int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Ent
             *z1 = BACKGROUND_LVL2_Z1;
             *z2 = BACKGROUND_LVL2_Z2;
             *en = ENEMY_NORMAL_1;
-            *ef = ENEMY_FINAL_2;            
+            *ef = ENEMY_FINAL_2;
             return 1;
         case 3:
             *z0 = BACKGROUND_LVL3_Z0;
