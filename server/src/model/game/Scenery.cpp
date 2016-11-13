@@ -43,11 +43,17 @@ void Scenery::setUpLevel(int selectedLevel) {
         enemies.push_back(enemy);
     }
 
-    //Borro los viejos y Seteo los pisos y plataformas, en base a la carga del XML
+    //Borro los viejos y Seteo los pisos, plataformas, y cajas, en base a la carga del XML
     miscs.clear();
     for (auto p : lvlsConfig[selectedLevel].platforms) {
         Plataforma *plataforma = new Plataforma(p.x, p.y, p.ancho, p.alto);
         miscs.push_back(plataforma);
+    }
+    for (int i = 0; i < lvlsConfig[selectedLevel].cant_boxes; i++) {
+        int randomSpawnInX = rand() % 2000 + 400;
+        //Ver cual va, o como decidir MSC_WEAPON_BOX, MSC_POWER_BONUS, MSC_BONUS_KILLALL
+        BoxBonus *boxBonus = new BoxBonus(MSC_WEAPON_BOX, randomSpawnInX, 500); //No tienen gravedad, por eso y = 500
+        miscs.push_back(boxBonus);
     }
 
     //Borro los backgrounds que haya y Seteo los 3 backgrounds correspondientes al nivel elegido
@@ -186,6 +192,10 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
 
     for (auto background : backgrounds) {
         eventsToReturn.push_back(background->getState());
+    }
+
+    for (auto misc : miscs) {
+        eventsToReturn.push_back(misc->getState());
     }
 
     eventsToReturn.back().completion = EventCompletion::FINAL_MSG;
