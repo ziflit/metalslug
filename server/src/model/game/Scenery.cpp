@@ -229,7 +229,8 @@ vector<GameObject *> Scenery::getVisibleObjects() {
     for (auto &misc : miscs) {
         x = misc->getX();
         y = misc->getY();
-        if (x <= windowWidth and x >= 0 and y <= windowHeight and y >= 0)
+        if (x <= windowWidth and x >= 0 and y <= windowHeight and y >= 0 or
+            misc->getEntity() == MSC_PLATFORM) // El piso siempre se envía
         todos.push_back(misc);
     }
 
