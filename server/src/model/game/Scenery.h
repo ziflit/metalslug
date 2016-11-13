@@ -16,6 +16,7 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Plataforma.h"
+#include "BoxBonus.h"
 #include "../Event.h"
 #include "../ConfigsXML.h"
 #include "../../utils/Protocol.h"
