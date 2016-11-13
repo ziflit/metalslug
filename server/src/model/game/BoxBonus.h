@@ -7,7 +7,7 @@
 class BoxBonus : public GameObject {
 
 public:
-    BoxBonus(Entity boxType, int posX, int posY);
+    BoxBonus(int posX, int posY);
 
     virtual ~BoxBonus();
 

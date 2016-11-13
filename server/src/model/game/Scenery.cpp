@@ -51,8 +51,7 @@ void Scenery::setUpLevel(int selectedLevel) {
     }
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_boxes; i++) {
         int randomSpawnInX = rand() % 2000 + 400;
-        //Ver cual va, o como decidir MSC_WEAPON_BOX, MSC_POWER_BONUS, MSC_BONUS_KILLALL
-        BoxBonus *boxBonus = new BoxBonus(MSC_WEAPON_BOX, randomSpawnInX, 500); //No tienen gravedad, por eso y = 500
+        BoxBonus *boxBonus = new BoxBonus(randomSpawnInX, 500); //No tienen gravedad, por eso y = 500
         miscs.push_back(boxBonus);
     }
 
