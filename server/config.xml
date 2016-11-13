@@ -79,6 +79,33 @@
 			<cantHeightFrames>12</cantHeightFrames>
 			<speed>10</speed>
 		</enemy>
+        <enemy>
+            <id>ENEMY_FINAL_1</id>
+            <path>sprites/enemies/enemy_final_1.png</path>
+            <ancho>300</ancho>
+            <alto>300</alto>
+            <cantWidthFrames>15</cantWidthFrames>
+            <cantHeightFrames>12</cantHeightFrames>
+            <speed>0</speed>
+        </enemy>
+        <enemy>
+            <id>ENEMY_FINAL_2</id>
+            <path>sprites/enemies/enemy_final_2.png</path>
+            <ancho>300</ancho>
+            <alto>300</alto>
+            <cantWidthFrames>15</cantWidthFrames>
+            <cantHeightFrames>12</cantHeightFrames>
+            <speed>0</speed>
+        </enemy>
+        <enemy>
+            <id>ENEMY_FINAL_3</id>
+            <path>sprites/enemies/enemy_final_3.png</path>
+            <ancho>300</ancho>
+            <alto>300</alto>
+            <cantWidthFrames>15</cantWidthFrames>
+            <cantHeightFrames>12</cantHeightFrames>
+            <speed>0</speed>
+        </enemy>
 	</enemies>
 
 	<backgrounds>

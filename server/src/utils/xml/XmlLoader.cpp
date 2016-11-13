@@ -58,6 +58,15 @@ Entity XmlLoader::convertToEntity(string id) {
         else if ("ENEMY_NORMAL_3" == id) {
             return ENEMY_NORMAL_3;
         }
+        else if ("ENEMY_FINAL_1" == id) {
+            return ENEMY_FINAL_1;
+        }
+        else if ("ENEMY_FINAL_2" == id) {
+            return ENEMY_FINAL_2;
+        }
+        else if ("ENEMY_FINAL_3" == id) {
+            return ENEMY_FINAL_3;
+        }
         else if ("BT_BULLET" == id) {
             return BT_BULLET;
         }
