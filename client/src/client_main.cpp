@@ -73,6 +73,10 @@ if (cliente->is_connected()){
 
     SDLRunningGame* sdlRunningGame = new SDLRunningGame(initialWindow->getMainWindow(),initialWindow->getMainRenderer(),cliente->getConfigs());
 
+    /* Una vez que tengo SDL cargado, se avisa al servidor y se inicia el
+     handler para el envío y recepción de mensajes */
+    cliente->start_connection();
+
     thread enviarTeclasAlServerEnThread;
     enviarTeclasAlServerEnThread = thread(enviarTeclasAlServer, cliente, sdlRunningGame);
 

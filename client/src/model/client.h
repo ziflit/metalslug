@@ -91,6 +91,7 @@ public:
         return my_character;
     }
 	ConfigsXML getConfigs(){ return (configs);}
+    ClientHandler* start_connection();
 };
 
 
