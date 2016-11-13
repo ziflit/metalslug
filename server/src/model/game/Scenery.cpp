@@ -203,7 +203,7 @@ Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
 
 void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
     for (auto player : players) {
-        if (player->getShootingState() and player->haveBullets()) {
+        if (player->getShootingState()) {
             bullets.push_back((Bullet *) player->shoot());
         }
         player->updatePosition(all_objects_in_window);
@@ -301,7 +301,9 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
 void Scenery::removeDeadBullets() {
     vector<Bullet *>::iterator it = bullets.begin();
     while (it != bullets.end()) {
-        if ((*it)->getEntity() == DEAD) {
+        if ((*it)->getEntity() == DEAD ||
+            !((*it)->getX() <= windowWidth && (*it)->getX() >= 0 && (*it)->getY() <= windowHeight &&
+              (*it)->getY() >= 0)) {
             it = bullets.erase(it);
         } else {
             ++it;

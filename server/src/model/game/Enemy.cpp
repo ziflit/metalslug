@@ -1,14 +1,7 @@
-//
-// Created by leandro on 31/10/16.
-//
-
 #include <iostream>
 #include "Enemy.h"
-#include "Player.h"
 #include "../../utils/MathUtil.h"
 #include <algorithm>
-#include "Bullet.h"
-#include "NormalBulletMovementStrategy.h"
 #include "BulletBuilder.h"
 
 Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
@@ -16,6 +9,7 @@ Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
     id = enemySelected;
     x = spawnX;
     y = spawnY;
+    health = 100;
     box_ancho = 50;
     box_alto = 100;
     direccionY = 0;
@@ -24,7 +18,8 @@ Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
     gravity = 10;
     speed = 9;
     postura = CAMINANDO_IZQUIERDA;
-    this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_TELE_MISSILE, BT_SHOT, BT_BOMB, MSC_PLATFORM};
+    this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_TELE_MISSILE,
+                           BT_SHOT, BT_BOMB, MSC_PLATFORM};
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
@@ -65,13 +60,14 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
     int newY = y;
 
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
-    if (MathUtil::FindDifference(playerToFollow->getX(), x) > 400)
+    float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
+    if (distance > 400 && distance <200)
         return; //para que solo se acerquen cuando estan a 400 de distancia
 
     // Minima logica para seguir a los jugadores, mejorarla por favor
     float playerPosX = playerToFollow->getX();
     if (x < playerPosX - 100) {
-        cout << "camino derecha"<<endl;
+        cout << "camino derecha" << endl;
         postura = CAMINANDO_DERECHA;
         newX = x + speed;
     } else if (x > playerPosX + 100) {

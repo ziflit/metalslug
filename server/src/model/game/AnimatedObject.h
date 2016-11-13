@@ -2,7 +2,9 @@
 #define SERVER_ANIMATEDOBJECT_H
 
 
+#include <iostream>
 #include "GameObject.h"
+#include "Vector.h"
 
 class AnimatedObject : public GameObject {
 protected:
@@ -15,8 +17,13 @@ protected:
     Postura postura;
     bool isShooting;
     bool isJumping;
+    Vector *bulletdirection;
+
     vector<Entity> shootsTo;
 public:
+    AnimatedObject() {
+        bulletdirection = new Vector(0,0);
+    }
 
     virtual GameObject *shoot() = 0;
 
@@ -66,10 +73,12 @@ public:
             health = 0;
             postura = MUERTO;
         }
+        string a = (postura == MUERTO) ? "muerto " : "vivo ";
+        cout << a << health << endl;
     }
 
     virtual ~AnimatedObject() {
-        //delete this->weapon;
+        delete this->bulletdirection;
     }
 
     bool getShootingState() {
@@ -94,6 +103,15 @@ public:
 
     void setShootsTo(const vector<Entity> &shootsTo) {
         AnimatedObject::shootsTo = shootsTo;
+    }
+
+    Vector *getBulletdirection() const {
+        return bulletdirection;
+    }
+
+    void updateBulletdirection(float x, float y) {
+        AnimatedObject::bulletdirection->setX(x);
+        AnimatedObject::bulletdirection->setY(y);
     }
 };
 

@@ -6,41 +6,43 @@
 
 Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) {
     Bullet *bullet = nullptr;
+    Vector *vector = firedBy->getBulletdirection();
     switch (bulletType) {
         case Entity::BT_HEAVY_BULLET:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(), firedBy->getY(),
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
                                 new NormalBulletMovementStrategy());
-            setupBullet(bullet, 50, 50, 100, 60, 0, 0);
+            setupBullet(bullet, 50, 50, 100, 60, vector->getX(), vector->getY());
             break;
         case Entity::BT_MISSILE:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(), firedBy->getY(),
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
                                 new NormalBulletMovementStrategy());
-            setupBullet(bullet, 50, 50, 100, 30, 0, 0);
+            setupBullet(bullet, 50, 50, 100, 30, vector->getX(), vector->getY());
             break;
         case Entity::BT_TELE_MISSILE:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(), firedBy->getY(),
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
                                 new TeledirBulletMovementStrategy());
-            setupBullet(bullet, 50, 50, 100, 10, 0, 0);
+            setupBullet(bullet, 50, 50, 100, 10, vector->getX(), vector->getY());
             break;
         case Entity::BT_SHOT:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(), firedBy->getY(),
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
                                 new NotMoveBulletStrategy());
-            setupBullet(bullet, 50, 50, 200, 20, 0, 0);
+            setupBullet(bullet, 50, 50, 200, 20, vector->getX(), vector->getY());
             break;
         default:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(), firedBy->getY(),
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
                                 new NormalBulletMovementStrategy());
-            setupBullet(bullet, 50, 50, 100, 50, 0, 0);
+
+            setupBullet(bullet, 250, 250, 100, 50, vector->getX(), vector->getY());
             break;
     }
     return bullet;

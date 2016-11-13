@@ -23,7 +23,7 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     gravity = 10;
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
-
+    health = 100;
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
