@@ -26,7 +26,8 @@ class Scenery {
 private:
     ConfigsXML* configs;
     vector<struct xmlLvl> lvlsConfig;
-    bool nivelEnded;
+    bool spawnFinalEnemy;
+    int actualLevel;
     vector<Player *> players;
     vector<Enemy *> enemies;
     vector<GameObject *> backgrounds;

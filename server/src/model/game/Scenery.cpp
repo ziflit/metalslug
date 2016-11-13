@@ -11,8 +11,9 @@ Scenery::Scenery(ConfigsXML* confs, int selectedLevel) {
 }
 
 void Scenery::setUpLevel(int selectedLevel) {
+    this->actualLevel = selectedLevel;
     lvlsConfig = this->configs->getLvlsConfig();
-    this->nivelEnded = false;
+    this->spawnFinalEnemy = false;
 
     this->windowWidth = this->configs->getGlobalConf().ancho;
     this->windowHeight = this->configs->getGlobalConf().alto;
@@ -133,10 +134,10 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
 }
 
 void Scenery::updateBackgroudsState() {
-    if (not this->nivelEnded){
+    if (not this->spawnFinalEnemy){
         if ( (not hayJugadorEnBordeIzq() ) and ( jugadorPasoMitadPantallaYEstaAvanzando() ) ) {
             for (auto background : backgrounds) {
-                this->nivelEnded = ((Background *) background)->avanzarFrame();
+                this->spawnFinalEnemy = ((Background *) background)->avanzarFrame();
                 /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
                  * el asociado a los players debe avanzar exactamente igual que ellos.
                  * Es por eso que tiene seteada igual velocidad.
@@ -158,7 +159,11 @@ void Scenery::updateBackgroudsState() {
             }
         }
     } else {
-        this->setUpLevel(2);
+        if (actualLevel < 3){
+            this->setUpLevel(this->actualLevel + 1);    
+        } else {
+            this->setUpLevel(1); // En vez del 1, tendria que terminar el juego.
+        }
     }
 }
 
@@ -246,7 +251,7 @@ int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Ent
             *z0 = BACKGROUND_LVL2_Z0;
             *z1 = BACKGROUND_LVL2_Z1;
             *z2 = BACKGROUND_LVL2_Z2;
-            *en = ENEMY_NORMAL_1;
+            *en = ENEMY_NORMAL_2;
             *ef = ENEMY_FINAL_2;            
             return 1;
             break;
@@ -254,7 +259,7 @@ int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Ent
             *z0 = BACKGROUND_LVL3_Z0;
             *z1 = BACKGROUND_LVL3_Z1;
             *z2 = BACKGROUND_LVL3_Z2;
-            *en = ENEMY_NORMAL_1;
+            *en = ENEMY_NORMAL_3;
             *ef = ENEMY_FINAL_3;
             return 2;
             break;
