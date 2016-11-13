@@ -61,9 +61,9 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
 
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
     float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
-    if (distance > 400 && distance <200)
+    if (distance > 500 && distance < 200) {
         return; //para que solo se acerquen cuando estan a 400 de distancia
-
+    }
     // Minima logica para seguir a los jugadores, mejorarla por favor
     float playerPosX = playerToFollow->getX();
     if (x < playerPosX - 100) {

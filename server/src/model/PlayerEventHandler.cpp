@@ -216,11 +216,13 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
             } else if (direccionX == -1) {
                 animatedObject->setPostura(AGACHADO_AVANZANDO_IZQUIERDA);
                 animatedObject->updateBulletdirection(-1, 0);
-            } else if (postura == MIRANDO_IZQUIERDA_QUIETO and
-                       direccionX == 0) {
+            } else if (postura == MIRANDO_IZQUIERDA_QUIETO and direccionX == 0) {
                 animatedObject->setPostura(AGACHADO_MIRANDO_IZQUIERDA_QUIETO);
+                animatedObject->updateBulletdirection(-1, 0);
+            } else {
+                animatedObject->setPostura(AGACHADO_MIRANDO_DERECHA_QUIETO);
                 animatedObject->updateBulletdirection(1, 0);
-            } else { animatedObject->setPostura(AGACHADO_MIRANDO_DERECHA_QUIETO); }
+            }
             break;
 
         case EventCode::SDL_KEYLEFT_PRESSED:
@@ -228,18 +230,23 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
                 if ((postura == MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or
                     (postura == MIRANDO_ARRIBA_DERECHA_QUIETO)) {
                     animatedObject->setPostura(MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA);
+                    animatedObject->updateBulletdirection(0, 1);
                 } else if ((postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or
                            (postura == AGACHADO_MIRANDO_DERECHA_QUIETO)) {
                     animatedObject->setPostura(AGACHADO_AVANZANDO_IZQUIERDA);
-                } else { animatedObject->setPostura(CAMINANDO_IZQUIERDA); }
+                    animatedObject->updateBulletdirection(-1, 0);
+                } else {
+                    animatedObject->setPostura(CAMINANDO_IZQUIERDA);
+                    animatedObject->updateBulletdirection(-1, 0);
+                }
                 animatedObject->setDireccionX(-1);
             }
                 /* Si está caminando hacia la derecha y presiona LEFT entonces queda quieto */
             else if (direccionX == 1) {
                 animatedObject->setDireccionX(-1);
                 animatedObject->setPostura(CAMINANDO_IZQUIERDA);
+                animatedObject->updateBulletdirection(-1, 0);
             }
-            animatedObject->updateBulletdirection(-1, 0);
             break;
 
         case EventCode::SDL_KEYRIGHT_PRESSED:
@@ -247,18 +254,23 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
                 if ((postura == MIRANDO_ARRIBA_IZQUIERDA_QUIETO) or
                     (postura == MIRANDO_ARRIBA_DERECHA_QUIETO)) {
                     animatedObject->setPostura(MIRANDO_ARRIBA_CAMINANDO_DERECHA);
+                    animatedObject->updateBulletdirection(0, 1);
                 } else if ((postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or
                            (postura == AGACHADO_MIRANDO_DERECHA_QUIETO)) {
                     animatedObject->setPostura(AGACHADO_AVANZANDO_DERECHA);
-                } else { animatedObject->setPostura(CAMINANDO_DERECHA); }
+                    animatedObject->updateBulletdirection(1, 0);
+                } else {
+                    animatedObject->setPostura(CAMINANDO_DERECHA);
+                    animatedObject->updateBulletdirection(1, 0);
+                }
                 animatedObject->setDireccionX(1);
             }
                 /* Si está caminando hacia la izquierda y presiona RIGHT entonces queda quieto */
             else if (direccionX == -1) {
                 animatedObject->setDireccionX(1);
                 animatedObject->setPostura(CAMINANDO_DERECHA);
+                animatedObject->updateBulletdirection(1, 0);
             }
-            animatedObject->updateBulletdirection(1, 0);
             break;
 
         default:
