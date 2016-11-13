@@ -134,7 +134,7 @@
 			<id>BACKGROUND_LVL3_Z2</id>
 			<imagen_fondo>sprites/backgrounds/lvl3/z2.png</imagen_fondo>
 			<ancho>8192</ancho>
-			<alto>600</alto>			
+			<alto>600</alto>
 		</background>
 	</backgrounds>
 

@@ -28,27 +28,31 @@ void Scenery::setUpLevel(int selectedLevel) {
     }
 
     //Seteo los backgrounds correspondientes para el nivel
-    Entity back_z0, back_z1, back_z2;
-    selectedLevel = setLevelBackgrounds(&back_z0, &back_z1, &back_z2, selectedLevel);
+    Entity back_z0, back_z1, back_z2, enemy_normal_type, enemy_final_type;
+    selectedLevel = setLevelConfigs(&back_z0, &back_z1, &back_z2, &enemy_normal_type, &enemy_final_type, selectedLevel);
+
+    //Borro las balas que hayan quedado
+    bullets.clear();
 
     //Borro los viejos y Seteo de enemigos de forma random, en base a la carga del XML
-    if (not enemies.size() == 0) enemies.clear();
-    srand(time(NULL));
+
+    enemies.clear();
+    srand (time(NULL));
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
-        int randomSpawnInX = rand() % 3000 + 800;
-        Enemy *enemy = new Enemy(ENEMY_NORMAL_1, randomSpawnInX, 400);
+        int randomSpawnInX = rand() % 5000 + 400;
+        Enemy *enemy = new Enemy(i, enemy_normal_type, randomSpawnInX , 0);
         enemies.push_back(enemy);
     }
 
     //Borro los viejos y Seteo los pisos y plataformas, en base a la carga del XML
-    if (not miscs.size() == 0) miscs.clear();
+    miscs.clear();
     for (auto p : lvlsConfig[selectedLevel].platforms) {
         Plataforma *plataforma = new Plataforma(p.x, p.y, p.ancho, p.alto);
         miscs.push_back(plataforma);
     }
 
     //Borro los backgrounds que haya y Seteo los 3 backgrounds correspondientes al nivel elegido
-    if (not backgrounds.size() == 0) backgrounds.clear();
+    backgrounds.clear();
     for (auto backgroundConfig : backgroundConfigs) {
         if (backgroundConfig.id == back_z0 || backgroundConfig.id == back_z1 || backgroundConfig.id == back_z2) {
             Background *newBackground = new Background(backgroundConfig.id, playersSpeed,
@@ -145,6 +149,7 @@ void Scenery::updateBackgroudsState() {
                     player->retroceder();
                 }
             }
+
             for (auto &misc : miscs) {
                 misc->retroceder(playersSpeed);
             }
@@ -246,32 +251,37 @@ vector<GameObject *> Scenery::getVisibleObjects() {
     return todos;
 }
 
+
 void Scenery::removeDeadObjects() {
     removeDeadBullets();
     removeDeadPlayers();
     removeDeadEnemies();
 }
 
-int Scenery::setLevelBackgrounds(Entity *z0, Entity *z1, Entity *z2, int selectedLevel) {
-    switch (selectedLevel) {
+
+int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Entity* ef, int selectedLevel){
+    switch (selectedLevel){
         case 1:
             *z0 = BACKGROUND_LVL1_Z0;
             *z1 = BACKGROUND_LVL1_Z1;
             *z2 = BACKGROUND_LVL1_Z2;
+            *en = ENEMY_NORMAL_1;
+            *ef = ENEMY_FINAL_1;
             return 0;
-            break;
         case 2:
             *z0 = BACKGROUND_LVL2_Z0;
             *z1 = BACKGROUND_LVL2_Z1;
             *z2 = BACKGROUND_LVL2_Z2;
+            *en = ENEMY_NORMAL_1;
+            *ef = ENEMY_FINAL_2;            
             return 1;
-            break;
         case 3:
             *z0 = BACKGROUND_LVL3_Z0;
             *z1 = BACKGROUND_LVL3_Z1;
             *z2 = BACKGROUND_LVL3_Z2;
+            *en = ENEMY_NORMAL_1;
+            *ef = ENEMY_FINAL_3;
             return 2;
-            break;
     }
 }
 
