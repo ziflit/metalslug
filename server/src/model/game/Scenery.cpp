@@ -189,12 +189,6 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
         eventsToReturn.push_back(background->getState());
     }
 
-    for (auto misc : miscs) {
-        if (misc->getEntity() != MSC_PLATFORM){
-            eventsToReturn.push_back(misc->getState());    
-        }
-    }
-
     for (auto &object : all_objects_in_window) {
         eventsToReturn.push_back(object->getState());
     }
