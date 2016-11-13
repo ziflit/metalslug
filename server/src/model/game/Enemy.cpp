@@ -60,24 +60,22 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
 
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
     float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
-    if (distance > 700 || distance < 300) {
-        return;
+    if (not(distance > 700 || distance < 300)) {
+        float playerPosX = playerToFollow->getX();
+        if (x < playerPosX - 100) {
+            cout << "camino derecha" << endl;
+            postura = CAMINANDO_DERECHA;
+            newX = x + speed;
+        } else if (x > playerPosX + 100) {
+            postura = CAMINANDO_IZQUIERDA;
+            newX = x - speed;
+        }
+        /* Se mueve en X */
+        if (this->canIMove(game_objects, newX, newY)) {
+            this->set_position(newX, newY);
+        }
     }
     // Minima logica para seguir a los jugadores, mejorarla por favor
-    float playerPosX = playerToFollow->getX();
-    if (x < playerPosX - 100) {
-        cout << "camino derecha" << endl;
-        postura = CAMINANDO_DERECHA;
-        newX = x + speed;
-    } else if (x > playerPosX + 100) {
-        postura = CAMINANDO_IZQUIERDA;
-        newX = x - speed;
-    }
-    /* Se mueve en X */
-    if (this->canIMove(game_objects, newX, newY)) {
-        this->set_position(newX, newY);
-    }
-
     // Logica insolita para saltar cuando pasa por esas posiciones
     if (x == 50 || x == 350 || x == 600) {
         this->setDireccionY(1);
