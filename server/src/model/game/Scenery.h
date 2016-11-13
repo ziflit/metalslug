@@ -26,7 +26,8 @@ class Scenery {
 private:
     ConfigsXML* configs;
     vector<struct xmlLvl> lvlsConfig;
-    bool spawnFinalEnemy, moverPantalla;
+    bool finDelNivel, yaSpawneoElFinalEnemy, moverPantalla;
+    Entity finalEnemyType;
     int actualLevel;
     vector<Player *> players;
     vector<Enemy *> enemies;
@@ -76,6 +77,8 @@ public:
     int findPlayerByUsername(string user);
 
     vector<GameObject*> getVisibleObjects();
+
+    void fightWithFinalEnemy();
 
     int setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Entity* ef, int selectedLevel);
 };
