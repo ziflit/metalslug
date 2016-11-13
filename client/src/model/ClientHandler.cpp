@@ -25,42 +25,42 @@ void readConfigs(ClientHandler* handler, SocketUtils& sockutils){
 }
 
 void connectionReader(ClientHandler *handler) {
-	int is_server_alive;
-	bool isComplete;
+    int is_server_alive;
+    bool isComplete;
 
-	SocketUtils sockutils;
-	vector<struct event> events;
+    SocketUtils sockutils;
+    vector<struct event> events;
 
-	char buffer[MSGSIZE];
-	char eventBuffer[MSGSIZE];
+    char buffer[MSGSIZE];
+    char eventBuffer[MSGSIZE];
 
-	while (!handler->shouldClose) {
-//		is_server_alive = sockutils.peek(handler->getClientSocket(), buffer);
-//		if (not is_server_alive and !handler->shouldClose) {
-//			handler->stop();
-//			break;
-//		}
-		isComplete = sockutils.readSocket(handler->getClientSocket(),
-				eventBuffer);
-    if (isComplete) {
-        struct event incommingEvent = (*(struct event*) eventBuffer);
-        if (incommingEvent.data.code == EventCode::MSG_OK) {
-//            readConfigs(handler, sockutils);
-            continue;
+    while (!handler->shouldClose) {
+        //        is_server_alive = sockutils.peek(handler->getClientSocket(), buffer);
+        //        if (not is_server_alive and !handler->shouldClose) {
+        //            handler->stop();
+        //            break;
+        //        }
+        isComplete = sockutils.readSocket(handler->getClientSocket(),
+                eventBuffer);
+        if (isComplete) {
+            struct event incommingEvent = (*(struct event*) eventBuffer);
+            if (incommingEvent.data.code == EventCode::MSG_OK) {
+                //            readConfigs(handler, sockutils);
+                continue;
+            }
+            handler->receiveEvent(incommingEvent);
+        } else {
+            cout << "Mal paquete..." << endl;
+            is_server_alive = recv(handler->getClientSocket(), &buffer, MSGSIZE,
+                    MSG_PEEK);
+            if (is_server_alive == -1) {
+                LOGGER_WRITE(Logger::ERROR, "Conexion con el servidor perdida",
+                        "ClientHandler.class")
+                    handler->stop();
+            }
         }
-        handler->receiveEvent(incommingEvent);
-    } else {
-        cout << "Mal paquete..." << endl;
-        is_server_alive = recv(handler->getClientSocket(), &buffer, MSGSIZE,
-                               MSG_PEEK);
-        if (is_server_alive == -1) {
-            LOGGER_WRITE(Logger::ERROR, "Conexion con el servidor perdida",
-                         "ClientHandler.class")
-                handler->stop();
-        }
-		}
-    usleep(2500);
-	}
+        usleep(500);
+    }
 }
 
 int connectionWriter(ClientHandler *data) {
@@ -85,7 +85,7 @@ int connectionWriter(ClientHandler *data) {
 		} else {
 			data->outgoingMutex.unlock();
 		}
-		usleep(2500);
+		usleep(500);
 	}
 	return 1;
 }
