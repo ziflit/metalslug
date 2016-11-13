@@ -97,15 +97,15 @@ public:
         this->isJumping = jumpingState;
     }
 
-    const vector<Entity> &getShootsTo() const {
+    vector<Entity> &getShootsTo() {
         return shootsTo;
     }
 
-    void setShootsTo(const vector<Entity> &shootsTo) {
+    void setShootsTo(vector<Entity> &shootsTo) {
         AnimatedObject::shootsTo = shootsTo;
     }
 
-    Vector *getBulletdirection() const {
+    Vector *getBulletdirection() {
         return bulletdirection;
     }
 

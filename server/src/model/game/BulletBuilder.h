@@ -10,7 +10,7 @@ class BulletBuilder {
 private:
 
     static void setupBullet(Bullet *bullet, int boxAlto, int boxAncho, int damage, int speed, int directionX,
-                            int directionY);
+                            int directionY, vector<Entity> &collisionables);
 
 public:
     Bullet static *createBullet(Entity bulletType, AnimatedObject *firedBy);
