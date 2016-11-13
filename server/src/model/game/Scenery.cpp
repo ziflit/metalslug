@@ -161,7 +161,6 @@ void Scenery::updateBackgroudsState() {
 
 vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
-    int i = 0;
 
     vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
 
@@ -174,7 +173,6 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
 
     for (auto enemy : enemies) {
         enemy->updatePosition(all_objects_in_window); //Van a seguir siempre al player 1 por ahora
-        i++;
     }
 
     updateBackgroudsState();

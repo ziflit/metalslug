@@ -107,7 +107,7 @@ int connectionWriter(ClientConnection *data) {
         } else { //data->queuemutex.unlock();
 
         }
-        usleep(2500);
+        usleep(500);
     }
     return 1;
 }
