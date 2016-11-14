@@ -17,9 +17,8 @@ protected:
 
     int direccionX;
     int direccionY;
-
-
 public:
+    void setColisionables(vector<Entity> &colisionables);
 
     virtual struct event getState()= 0;
 

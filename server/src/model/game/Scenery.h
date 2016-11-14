@@ -24,7 +24,7 @@ using namespace std;
 
 class Scenery {
 private:
-    ConfigsXML* configs;
+    ConfigsXML *configs;
     vector<struct xmlLvl> lvlsConfig;
     bool finDelNivel, yaSpawneoElFinalEnemy, moverPantalla;
     Entity finalEnemyType;
@@ -37,7 +37,7 @@ private:
     vector<GameObject *> miscs;  // Se utiliza para plataformas, cajas y elementos bonus
 
     unsigned int windowWidth, windowHeight, playersSpeed;
-    
+
     void setUpLevel(int selectedLevel);
 
     // *-* El que llame a player debe chequear si ya se llego al maximo de jugadores permitidos en el nivel
@@ -52,9 +52,15 @@ private:
     // El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
     void addElementToScenery(Background *background);
 
+    void removeDeadBullets();
+
+    void removeDeadPlayers();
+
+    void removeDeadEnemies();
+
 
 public:
-    Scenery(ConfigsXML* confs, int selectedLevel);
+    Scenery(ConfigsXML *confs, int selectedLevel);
 
     virtual ~Scenery();
 
@@ -76,7 +82,17 @@ public:
 
     int findPlayerByUsername(string user);
 
-    vector<GameObject*> getVisibleObjects();
+    vector<GameObject *> getVisibleObjects();
+
+    int setLevelBackgrounds(Entity *z0, Entity *z1, Entity *z2, int levelSelected);
+
+    void updatePlayersState(vector<GameObject *> &all_objects_in_window);
+
+    void updateEnemiesState(vector<GameObject *> &all_objects_in_window);
+
+    void updateBulletsState(vector<GameObject *> &all_objects_in_window);
+
+    void removeDeadObjects();
 
     void fightWithFinalEnemy();
 
