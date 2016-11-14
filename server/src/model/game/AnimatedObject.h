@@ -22,7 +22,7 @@ protected:
     vector<Entity> shootsTo;
 public:
     AnimatedObject() {
-        bulletdirection = new Vector(0, 0);
+        bulletdirection = new Vector(1, 0);
     }
 
     virtual GameObject *shoot() = 0;

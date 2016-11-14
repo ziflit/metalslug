@@ -12,7 +12,6 @@ void BulletMovementStrategy::makeCollision(vector<GameObject *> collisionables, 
                 AnimatedObject *animatedObject = (AnimatedObject *) object;
                 animatedObject->receiveDamage(bullet->getDamage());
             }
-            cout << "colision! con " << object->getEntity() << endl;
             bullet->setEntity(DEAD);
         }
     }
