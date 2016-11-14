@@ -7,28 +7,6 @@ Bullet::Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int di
     y = spawnY;
     this->direccionY = direccionY;
     this->direccionX = direccionX;
-    switch (bulletType) {
-        case Entity::BT_HEAVY_BULLET:
-            speed = 60;
-            damage = 100;
-            break;
-        case Entity::BT_MISSILE:
-            speed = 30;
-            damage = 100;
-            break;
-        case Entity::BT_TELE_MISSILE:
-            speed = 10;
-            damage = 100;
-            break;
-        case Entity::BT_SHOT:
-            speed = 20;
-            damage = 100;
-            break;
-        default:
-            speed = 50;
-            damage = 100;
-            break;
-    }
     this->colisionables = collitionables;
     this->movementStrategy = bulletMovementStrategy;
 }
