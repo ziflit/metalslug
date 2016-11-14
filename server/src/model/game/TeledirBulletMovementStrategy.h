@@ -5,10 +5,10 @@
 #include "BulletMovementStrategy.h"
 #include "GameObject.h"
 
-class TeledirBulletMovementStrategy : BulletMovementStrategy {
+class TeledirBulletMovementStrategy : public BulletMovementStrategy {
 private:
 
-    GameObject *getCloserObject(const vector<GameObject *> &collisionables, const GameObject *bullet);
+    GameObject *getCloserObject(vector<GameObject *> collisionables, GameObject *bullet);
 
     void changeBulletDirection(GameObject *bullet, GameObject *gameObject);
 

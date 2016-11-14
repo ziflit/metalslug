@@ -4,7 +4,7 @@
 #include "PlayerBuilder.h"
 #include <time.h>
 
-Scenery::Scenery(ConfigsXML* confs, int selectedLevel) {
+Scenery::Scenery(ConfigsXML *confs, int selectedLevel) {
     this->configs = confs;
     this->setUpLevel(selectedLevel);
     cantPlayers = 0;
@@ -21,7 +21,7 @@ void Scenery::setUpLevel(int selectedLevel) {
     vector<xmlBackground> backgroundConfigs = this->configs->getBackgroundsConfig();
 
     // Esto es para resetear la posicion de los players
-    if (selectedLevel > 1){
+    if (selectedLevel > 1) {
         for (auto player: players) {
             player->set_position(0, 0);
         }
@@ -35,11 +35,12 @@ void Scenery::setUpLevel(int selectedLevel) {
     bullets.clear();
 
     //Borro los viejos y Seteo de enemigos de forma random, en base a la carga del XML
+
     enemies.clear();
-    srand (time(NULL));
+    srand(time(NULL));
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
         int randomSpawnInX = rand() % 5000 + 400;
-        Enemy *enemy = new Enemy(i, enemy_normal_type, randomSpawnInX , 0);
+        Enemy *enemy = new Enemy(i, enemy_normal_type, randomSpawnInX, 0);
         enemies.push_back(enemy);
     }
 
@@ -53,9 +54,9 @@ void Scenery::setUpLevel(int selectedLevel) {
     //Borro los backgrounds que haya y Seteo los 3 backgrounds correspondientes al nivel elegido
     backgrounds.clear();
     for (auto backgroundConfig : backgroundConfigs) {
-        if (backgroundConfig.id == back_z0 || backgroundConfig.id == back_z1 || backgroundConfig.id == back_z2 ) {
+        if (backgroundConfig.id == back_z0 || backgroundConfig.id == back_z1 || backgroundConfig.id == back_z2) {
             Background *newBackground = new Background(backgroundConfig.id, playersSpeed,
-                                                   backgroundConfig.ancho, windowWidth);
+                                                       backgroundConfig.ancho, windowWidth);
             this->backgrounds.push_back(newBackground);
         }
     }
@@ -133,8 +134,8 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
 }
 
 void Scenery::updateBackgroudsState() {
-    if (not this->nivelEnded){
-        if ( (not hayJugadorEnBordeIzq() ) and ( jugadorPasoMitadPantallaYEstaAvanzando() ) ) {
+    if (not this->nivelEnded) {
+        if ((not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
             for (auto background : backgrounds) {
                 this->nivelEnded = ((Background *) background)->avanzarFrame();
                 /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
@@ -153,7 +154,7 @@ void Scenery::updateBackgroudsState() {
                 misc->retroceder(playersSpeed);
             }
 
-            for (auto &enemy : enemies){
+            for (auto &enemy : enemies) {
                 enemy->retroceder();
             }
         }
@@ -163,21 +164,15 @@ void Scenery::updateBackgroudsState() {
 }
 
 vector<struct event> Scenery::obtenerEstadoEscenario() {
-    vector<struct event> eventsToReturn;
+    removeDeadObjects();
 
+    vector<struct event> eventsToReturn;
     vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
 
-    for (auto player : players) {
-        if (player->getShootingState() and player->haveBullets()) {
-            bullets.push_back((Bullet *) player->shoot());
-        }
-        player->updatePosition(all_objects_in_window);
-    }
 
-    for (auto enemy : enemies) {
-        enemy->updatePosition(all_objects_in_window); //Van a seguir siempre al player 1 por ahora
-    }
-
+    updatePlayersState(all_objects_in_window);
+    updateEnemiesState(all_objects_in_window);
+    updateBulletsState(all_objects_in_window);
     updateBackgroudsState();
 
     for (auto &background : backgrounds) {
@@ -187,9 +182,32 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     for (auto &object : all_objects_in_window) {
         eventsToReturn.push_back(object->getState());
     }
+
     eventsToReturn.back().completion = EventCompletion::FINAL_MSG;
 
     return eventsToReturn;
+}
+
+void Scenery::updateBulletsState(vector<GameObject *> &all_objects_in_window) {
+    for (auto &bullet : bullets) {
+        bullet->avanzar(all_objects_in_window);
+    }
+}
+
+void
+Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
+    for (auto enemy : enemies) {
+        enemy->updatePosition(all_objects_in_window); //Van a seguir siempre al player 1 por ahora
+    }
+}
+
+void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
+    for (auto player : players) {
+        if (player->getShootingState()) {
+            bullets.push_back((Bullet *) player->shoot());
+        }
+        player->updatePosition(all_objects_in_window);
+    }
 }
 
 void Scenery::addElementToScenery(Player *player) {
@@ -224,14 +242,14 @@ vector<GameObject *> Scenery::getVisibleObjects() {
         x = enemy->getX();
         y = enemy->getY();
         if (x <= windowWidth and x >= 0 and y <= windowHeight and y >= 0)
-        todos.push_back(enemy);
+            todos.push_back(enemy);
     }
     for (auto &misc : miscs) {
         x = misc->getX();
         y = misc->getY();
-        if (x <= windowWidth and x >= 0 and y <= windowHeight and y >= 0 or
-            misc->getEntity() == MSC_PLATFORM) // El piso siempre se envía
-        todos.push_back(misc);
+        if (x <= windowWidth and x >= 0 and y <= windowHeight and
+            y >= 0 or misc->getEntity() == MSC_PLATFORM) // El piso siempre se envía
+            todos.push_back(misc);
     }
 
     for (auto &player : players) {
@@ -239,11 +257,23 @@ vector<GameObject *> Scenery::getVisibleObjects() {
         y = player->getY();
         todos.push_back(player);
     }
+
+    for (auto &bullet : bullets) {
+        todos.push_back(bullet);
+    }
     return todos;
 }
 
-int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Entity* ef, int selectedLevel){
-    switch (selectedLevel){
+
+void Scenery::removeDeadObjects() {
+    removeDeadBullets();
+    removeDeadPlayers();
+    removeDeadEnemies();
+}
+
+
+int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel) {
+    switch (selectedLevel) {
         case 1:
             *z0 = BACKGROUND_LVL1_Z0;
             *z1 = BACKGROUND_LVL1_Z1;
@@ -251,15 +281,13 @@ int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Ent
             *en = ENEMY_NORMAL_1;
             *ef = ENEMY_FINAL_1;
             return 0;
-            break;
         case 2:
             *z0 = BACKGROUND_LVL2_Z0;
             *z1 = BACKGROUND_LVL2_Z1;
             *z2 = BACKGROUND_LVL2_Z2;
             *en = ENEMY_NORMAL_1;
-            *ef = ENEMY_FINAL_2;            
+            *ef = ENEMY_FINAL_2;
             return 1;
-            break;
         case 3:
             *z0 = BACKGROUND_LVL3_Z0;
             *z1 = BACKGROUND_LVL3_Z1;
@@ -267,6 +295,40 @@ int Scenery::setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Ent
             *en = ENEMY_NORMAL_1;
             *ef = ENEMY_FINAL_3;
             return 2;
-            break;
+    }
+}
+
+void Scenery::removeDeadBullets() {
+    vector<Bullet *>::iterator it = bullets.begin();
+    while (it != bullets.end()) {
+        if ((*it)->getEntity() == DEAD ||
+            !((*it)->getX() <= windowWidth && (*it)->getX() >= 0 && (*it)->getY() <= windowHeight &&
+              (*it)->getY() >= 0)) {
+            it = bullets.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+void Scenery::removeDeadPlayers() {
+    vector<Player *>::iterator it = players.begin();
+    while (it != players.end()) {
+        if ((*it)->getPostura() == MUERTO) {
+            it = players.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+void Scenery::removeDeadEnemies() {
+    vector<Enemy *>::iterator it = enemies.begin();
+    while (it != enemies.end()) {
+        if ((*it)->getPostura() == MUERTO) {
+            it = enemies.erase(it);
+        } else {
+            ++it;
+        }
     }
 }

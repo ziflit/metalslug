@@ -99,3 +99,7 @@ int GameObject::getDireccionY() {
 void GameObject::setDireccionY(int direccionY) {
     GameObject::direccionY = direccionY;
 }
+
+void GameObject::setColisionables(vector<Entity> &colisionables) {
+    GameObject::colisionables = colisionables;
+}
