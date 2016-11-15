@@ -37,18 +37,22 @@ void Scenery::setUpLevel(int selectedLevel) {
     //Borro los viejos y Seteo de enemigos de forma random, en base a la carga del XML
 
     enemies.clear();
-    srand(time(NULL));
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
         int randomSpawnInX = rand() % 5000 + 400;
         Enemy *enemy = new Enemy(i, enemy_normal_type, randomSpawnInX, 0);
         enemies.push_back(enemy);
     }
 
-    //Borro los viejos y Seteo los pisos y plataformas, en base a la carga del XML
+    //Borro los viejos y Seteo los pisos, plataformas, y cajas, en base a la carga del XML
     miscs.clear();
     for (auto p : lvlsConfig[selectedLevel].platforms) {
         Plataforma *plataforma = new Plataforma(p.x, p.y, p.ancho, p.alto);
         miscs.push_back(plataforma);
+    }
+    for (int i = 0; i < lvlsConfig[selectedLevel].cant_boxes; i++) {
+        int randomSpawnInX = rand() % 2000 + 400;
+        BoxBonus *boxBonus = new BoxBonus(randomSpawnInX, 500); //No tienen gravedad, por eso y = 500
+        miscs.push_back(boxBonus);
     }
 
     //Borro los backgrounds que haya y Seteo los 3 backgrounds correspondientes al nivel elegido

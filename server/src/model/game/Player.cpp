@@ -29,7 +29,7 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
 
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_SHOT, BT_BOMB,
-                           MSC_BONUS_KILLALL, MSC_POWER_BONUS, MSC_BONUS_KILLALL,
+                           MSC_WEAPON_BOX, MSC_POWER_BONUS, MSC_BONUS_KILLALL,
                            MSC_PLATFORM};
     this->shootsTo = {ENEMY_NORMAL_1, ENEMY_NORMAL_2, ENEMY_NORMAL_3, ENEMY_FINAL_1,
                       ENEMY_FINAL_2, ENEMY_FINAL_3, MSC_PLATFORM};
