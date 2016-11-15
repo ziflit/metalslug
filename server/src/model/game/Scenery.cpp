@@ -37,7 +37,6 @@ void Scenery::setUpLevel(int selectedLevel) {
     //Borro los viejos y Seteo de enemigos de forma random, en base a la carga del XML
 
     enemies.clear();
-    srand(time(NULL));
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_enemies; i++) {
         int randomSpawnInX = rand() % 5000 + 400;
         Enemy *enemy = new Enemy(i, enemy_normal_type, randomSpawnInX, 0);

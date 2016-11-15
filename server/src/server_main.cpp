@@ -95,6 +95,10 @@ int main(int argc, char* argv[]) {
     /* Si no se pasa un puerto o es invalido uso 1500 */
     if (port == 0) port = 1500;
 
+
+    /* Random seed, usado para cajas y otras sarazas */
+    srand(time(NULL));
+
     Server* server;
     if (argc > 2) {
         string pathxml = argv[2];
