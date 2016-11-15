@@ -10,45 +10,59 @@ void PlayerEventHandler::handleRealeasedKey(EventCode eventCode, AnimatedObject 
             if (direccionX == -1) {
                 if (postura == MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA) {
                     animatedObject->setPostura(MIRANDO_ARRIBA_IZQUIERDA_QUIETO);
-                } else if (postura == CAMINANDO_IZQUIERDA) { animatedObject->setPostura(MIRANDO_IZQUIERDA_QUIETO); }
-                else if (postura == AGACHADO_AVANZANDO_IZQUIERDA) {
+                    animatedObject->updateBulletdirection(0, 1);
+                } else if (postura == CAMINANDO_IZQUIERDA) {
+                    animatedObject->setPostura(MIRANDO_IZQUIERDA_QUIETO);
+                    animatedObject->updateBulletdirection(-1, 0);
+                } else if (postura == AGACHADO_AVANZANDO_IZQUIERDA) {
                     animatedObject->setPostura(AGACHADO_MIRANDO_IZQUIERDA_QUIETO);
+                    animatedObject->updateBulletdirection(0, 0);
                 }
                 animatedObject->setDireccionX(0);
             }
                 /* Puede estar tocando ambas teclas a la vez, y suelta una de ellas */
             else if (direccionX == 0) {
-                if (postura == MIRANDO_DERECHA_QUIETO) { animatedObject->setPostura(CAMINANDO_DERECHA); }
-                else if (postura == AGACHADO_MIRANDO_DERECHA_QUIETO) {
+                if (postura == MIRANDO_DERECHA_QUIETO) {
+                    animatedObject->setPostura(CAMINANDO_DERECHA);
+                    animatedObject->updateBulletdirection(1, 0);
+                } else if (postura == AGACHADO_MIRANDO_DERECHA_QUIETO) {
                     animatedObject->setPostura(AGACHADO_AVANZANDO_DERECHA);
+                    animatedObject->updateBulletdirection(0, 0);
                 } else if (postura == MIRANDO_ARRIBA_DERECHA_QUIETO) {
                     animatedObject->setPostura(MIRANDO_ARRIBA_CAMINANDO_DERECHA);
+                    animatedObject->updateBulletdirection(0, 1);
                 }
                 animatedObject->setDireccionX(1);
             }
-            animatedObject->updateBulletdirection(-1, 0);
             break;
         case EventCode::SDL_KEYRIGHT_RELEASED:
             if (direccionX == 1) {
                 if (postura == MIRANDO_ARRIBA_CAMINANDO_DERECHA) {
                     animatedObject->setPostura(MIRANDO_ARRIBA_DERECHA_QUIETO);
-                } else if (postura == CAMINANDO_DERECHA) { animatedObject->setPostura(MIRANDO_DERECHA_QUIETO); }
-                else if (postura == AGACHADO_AVANZANDO_DERECHA) {
+                    animatedObject->updateBulletdirection(0, 1);
+                } else if (postura == CAMINANDO_DERECHA) {
+                    animatedObject->setPostura(MIRANDO_DERECHA_QUIETO);
+                    animatedObject->updateBulletdirection(1, 0);
+                } else if (postura == AGACHADO_AVANZANDO_DERECHA) {
                     animatedObject->setPostura(AGACHADO_MIRANDO_DERECHA_QUIETO);
+                    animatedObject->updateBulletdirection(0, 0);
                 }
                 animatedObject->setDireccionX(0);
             }
                 /* Puede estar tocando ambas teclas a la vez, y suelta una de ellas. */
             else if (direccionX == 0) {
-                if (postura == MIRANDO_IZQUIERDA_QUIETO) { animatedObject->setPostura(CAMINANDO_IZQUIERDA); }
-                else if (postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) {
+                if (postura == MIRANDO_IZQUIERDA_QUIETO) {
+                    animatedObject->setPostura(CAMINANDO_IZQUIERDA);
+                    animatedObject->updateBulletdirection(-1, 0);
+                } else if (postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) {
                     animatedObject->setPostura(AGACHADO_AVANZANDO_IZQUIERDA);
+                    animatedObject->updateBulletdirection(0, 0);
                 } else if (postura == MIRANDO_ARRIBA_IZQUIERDA_QUIETO) {
                     animatedObject->setPostura(MIRANDO_ARRIBA_CAMINANDO_IZQUIERDA);
+                    animatedObject->updateBulletdirection(0, 1);
                 }
                 animatedObject->setDireccionX(-1);
             }
-            animatedObject->updateBulletdirection(1, 0);
             break;
         case EventCode::SDL_KEYUP_RELEASED:
             switch (postura) {
@@ -78,18 +92,23 @@ void PlayerEventHandler::handleRealeasedKey(EventCode eventCode, AnimatedObject 
             switch (postura) {
                 case AGACHADO_MIRANDO_DERECHA_QUIETO:
                     animatedObject->setPostura(MIRANDO_DERECHA_QUIETO);
+                    animatedObject->updateBulletdirection(1, 0);
                     break;
                 case AGACHADO_MIRANDO_IZQUIERDA_QUIETO:
                     animatedObject->setPostura(MIRANDO_IZQUIERDA_QUIETO);
+                    animatedObject->updateBulletdirection(-1, 0);
                     break;
                 case AGACHADO_AVANZANDO_DERECHA:
                     animatedObject->setPostura(CAMINANDO_DERECHA);
+                    animatedObject->updateBulletdirection(1, 0);
                     break;
                 case AGACHADO_AVANZANDO_IZQUIERDA:
                     animatedObject->setPostura(CAMINANDO_IZQUIERDA);
+                    animatedObject->updateBulletdirection(-1, 0);
                     break;
                 default:
                     animatedObject->setPostura(MIRANDO_DERECHA_QUIETO);
+                    animatedObject->updateBulletdirection(1, 0);
                     break;
             }
             break;
@@ -212,17 +231,15 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
         case EventCode::SDL_KEYDOWN_PRESSED:
             if (direccionX == 1) {
                 animatedObject->setPostura(AGACHADO_AVANZANDO_DERECHA);
-                animatedObject->updateBulletdirection(1, 0);
+
             } else if (direccionX == -1) {
                 animatedObject->setPostura(AGACHADO_AVANZANDO_IZQUIERDA);
-                animatedObject->updateBulletdirection(-1, 0);
             } else if (postura == MIRANDO_IZQUIERDA_QUIETO and direccionX == 0) {
                 animatedObject->setPostura(AGACHADO_MIRANDO_IZQUIERDA_QUIETO);
-                animatedObject->updateBulletdirection(-1, 0);
             } else {
                 animatedObject->setPostura(AGACHADO_MIRANDO_DERECHA_QUIETO);
-                animatedObject->updateBulletdirection(1, 0);
             }
+            animatedObject->updateBulletdirection(0, 0);
             break;
 
         case EventCode::SDL_KEYLEFT_PRESSED:
@@ -234,7 +251,7 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
                 } else if ((postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or
                            (postura == AGACHADO_MIRANDO_DERECHA_QUIETO)) {
                     animatedObject->setPostura(AGACHADO_AVANZANDO_IZQUIERDA);
-                    animatedObject->updateBulletdirection(-1, 0);
+                    animatedObject->updateBulletdirection(0, 0);
                 } else {
                     animatedObject->setPostura(CAMINANDO_IZQUIERDA);
                     animatedObject->updateBulletdirection(-1, 0);
@@ -258,7 +275,7 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
                 } else if ((postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or
                            (postura == AGACHADO_MIRANDO_DERECHA_QUIETO)) {
                     animatedObject->setPostura(AGACHADO_AVANZANDO_DERECHA);
-                    animatedObject->updateBulletdirection(1, 0);
+                    animatedObject->updateBulletdirection(0, 0);
                 } else {
                     animatedObject->setPostura(CAMINANDO_DERECHA);
                     animatedObject->updateBulletdirection(1, 0);

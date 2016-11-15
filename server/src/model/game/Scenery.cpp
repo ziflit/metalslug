@@ -208,7 +208,8 @@ Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
 void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
     for (auto player : players) {
         if (player->getShootingState()) {
-            bullets.push_back((Bullet *) player->shoot());
+            Bullet *bullet = (Bullet *) player->shoot();
+            if (bullet != nullptr) bullets.push_back(bullet);
         }
         player->updatePosition(all_objects_in_window);
     }
