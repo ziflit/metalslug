@@ -1,10 +1,10 @@
 <levels>
 	<lvl>
 		<id>1</id>
-		<cant_enemies>5</cant_enemies>
-		<cant_boxes>2</cant_boxes>
+		<cant_enemies>0</cant_enemies>
+		<cant_boxes>0</cant_boxes>
 		<posXtoFinish>7000</posXtoFinish>
-		<platforms>
+		<platforms>	
 			<!-- Piso -->
 			<platform>
 				<x>0</x>
@@ -26,7 +26,7 @@
 				<ancho>192</ancho>
 				<alto>1</alto>
 			</platform>
-			<!-- Techo de las cupulas-->
+			<!-- Techo de las cupulas -->
 			<platform>
 				<x>2900</x>
 				<y>280</y>
@@ -60,21 +60,146 @@
 				<y>425</y>
 				<ancho>110</ancho>
 				<alto>100</alto>
-			</platform>
+			</platform>	
 		</platforms>
 	</lvl>
 
 	<lvl>
 		<id>2</id>
-		<cant_enemies>16</cant_enemies>
-		<cant_boxes>6</cant_boxes>
+		<cant_enemies>0</cant_enemies>
+		<cant_boxes>0</cant_boxes>
 		<posXtoFinish>8192</posXtoFinish>
 		<platforms>
+			<!-- Piso -->
 			<platform>
 				<x>0</x>
 				<y>500</y>
 				<ancho>16400</ancho>
 				<alto>1</alto>
+			</platform>
+			<!-- Escalon bajo izquierdo -->
+			<platform>
+				<x>1464</x>
+				<y>380</y>
+				<ancho>20</ancho>
+				<alto>1</alto>
+			</platform>
+			<!-- Escalon alto izquierdo -->
+			<platform>
+				<x>1514</x>
+				<y>330</y>
+				<ancho>20</ancho>
+				<alto>20</alto>
+			</platform>
+			<!-- Planta alta -->
+			<platform>
+				<x>1800</x>
+				<y>300</y>
+				<ancho>495</ancho>
+				<alto>1</alto>
+			</platform>
+			<!-- Escalon alto derecho -->
+			<platform>
+				<x>2070</x>
+				<y>330</y>
+				<ancho>20</ancho>
+				<alto>20</alto>
+			</platform>
+			<!-- Escalon bajo derecho -->
+			<platform>
+				<x>2120</x>
+				<y>380</y>
+				<ancho>20</ancho>
+				<alto>0</alto>
+			</platform>
+			<platform>
+				<x>2700</x>
+				<y>470</y>
+				<ancho>95</ancho>
+				<alto>100</alto>
+			</platform>
+			<platform>
+				<x>2900</x>
+				<y>500</y>
+				<ancho>350</ancho>
+				<alto>100</alto>
+			</platform>
+			<platform>
+				<x>3080</x>
+				<y>435</y>
+				<ancho>96</ancho>
+				<alto>100</alto>
+			</platform>
+			<platform>
+				<x>3740</x>
+				<y>470</y>
+				<ancho>95</ancho>
+				<alto>100</alto>
+			</platform>
+			<platform>
+				<x>4100</x>
+				<y>500</y>
+				<ancho>550</ancho>
+				<alto>100</alto>
+			</platform>
+			<platform>
+				<x>4400</x>
+				<y>435</y>
+				<ancho>54</ancho>
+				<alto>100</alto>
+			</platform>
+			<!-- Tranquera -->
+			<platform>
+				<x>4950</x>
+				<y>450</y>
+				<ancho>100</ancho>
+				<alto>100</alto>
+			</platform>
+			<!-- Colina baja -->
+			<platform>
+				<x>5000</x>
+				<y>420</y>
+				<ancho>100</ancho>
+				<alto>100</alto>
+			</platform>
+			<!-- Colina alta -->
+			<platform>
+				<x>5050</x>
+				<y>450</y>
+				<ancho>20</ancho>
+				<alto>50</alto>
+			</platform>
+			<!-- Montaña -->
+			<platform>
+				<x>5200</x>
+				<y>350</y>
+				<ancho>300</ancho>
+				<alto>100</alto>
+			</platform>
+			<!-- Bunker -->
+			<platform>
+				<x>5300</x>
+				<y>300</y>
+				<ancho>150</ancho>
+				<alto>50</alto>
+			</platform>
+			<platform>
+				<x>6400</x>
+				<y>500</y>
+				<ancho>1050</ancho>
+				<alto>100</alto>
+			</platform>
+			<platform>
+				<x>7000</x>
+				<y>430</y>
+				<ancho>70</ancho>
+				<alto>100</alto>
+			</platform>
+			<platform>
+				<x>7250</x>
+				<y>350</y>
+				<ancho>390</ancho>
+				<alto>100</alto>
 			</platform>
 		</platforms>
 	</lvl>
