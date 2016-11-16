@@ -19,14 +19,8 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
     }
 
     for (auto playerConfig : configs.getPlayersConfig()) {
-        PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer);
-        newPlayer->setWidth(playerConfig.ancho);
-        newPlayer->setHeight(playerConfig.alto);
-        newPlayer->setId(playerConfig.id);
-        newPlayer->setUpImage(playerConfig.pathColor,
-                              playerConfig.pathGrey,
-                              playerConfig.cantWidthFrames,
-                              playerConfig.cantHeightFrames);
+        PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer, playerConfig);
+
 
         newPlayer->setUpWeaponsImage(playerConfig.pathWeapons);
         this->playersSprites.push_back(newPlayer);
@@ -122,7 +116,8 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
 
 void SDLRunningGame::handleModelState(vector <event> model_state) {
 
-//        cout<<"TAMANIO: "<<model_state.size()<<endl;
+
+
 
         for (auto nuevoEvento : model_state){
 

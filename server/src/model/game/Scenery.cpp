@@ -189,6 +189,9 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
 
     eventsToReturn.back().completion = EventCompletion::FINAL_MSG;
 
+
+    cout<<"ESTOY ENVIANDO EL ESTADO DE: "<<eventsToReturn.size()<< "ELEMENTOS" << endl;
+
     return eventsToReturn;
 }
 
