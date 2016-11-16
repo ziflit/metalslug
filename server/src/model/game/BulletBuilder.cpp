@@ -7,6 +7,7 @@
 Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) {
     Bullet *bullet = nullptr;
     Vector *vector = firedBy->getBulletdirection();
+    if (vector->getX() == 0 && vector->getY() == 0) return nullptr;
     switch (bulletType) {
         case Entity::BT_HEAVY_BULLET:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(),
