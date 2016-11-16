@@ -1,20 +1,15 @@
-//
-// Created by leandro on 31/10/16.
-//
-
 #include <iostream>
 #include "Enemy.h"
-#include "Player.h"
 #include "../../utils/MathUtil.h"
 #include <algorithm>
-#include "Bullet.h"
-#include "NormalBulletMovementStrategy.h"
+#include "BulletBuilder.h"
 
 Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
     this->number = number;
     id = enemySelected;
     x = spawnX;
     y = spawnY;
+    health = 100;
     box_ancho = 50;
     box_alto = 100;
     direccionY = 0;
@@ -23,10 +18,12 @@ Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
     gravity = 10;
     speed = 9;
     postura = CAMINANDO_IZQUIERDA;
-    this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_TELE_MISSILE, BT_SHOT, BT_BOMB, MSC_PLATFORM};
+    this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_TELE_MISSILE,
+                           BT_SHOT, BT_BOMB, MSC_PLATFORM};
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
+    this->shootsTo = {MARCO, TARMA, FIO, ERI, MSC_PLATFORM};
 }
 
 Enemy::~Enemy() {
@@ -37,7 +34,7 @@ void Enemy::set_position(int posx, int posy) {
     y = posy;
 };
 
-int Enemy::retroceder(){
+int Enemy::retroceder() {
     x -= speed;
     return x;
 }
@@ -62,26 +59,29 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
     int newY = y;
 
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
+    float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
+    if (not(distance > 700 || distance < 300)) {
+        float playerPosX = playerToFollow->getX();
+        if (x < playerPosX - 100) {
+            cout << "camino derecha" << endl;
+            postura = CAMINANDO_DERECHA;
+            newX = x + speed;
+        } else if (x > playerPosX + 100) {
+            postura = CAMINANDO_IZQUIERDA;
+            newX = x - speed;
+        }
+        /* Se mueve en X */
+        if (this->canIMove(game_objects, newX, newY)) {
+            this->set_position(newX, newY);
+        }
+    }
     // Minima logica para seguir a los jugadores, mejorarla por favor
-    float playerPosX = playerToFollow->getX();
-    if (x < playerPosX - 100) {
-        postura = CAMINANDO_DERECHA;
-        newX = x + speed;
-    } else if (x > playerPosX + 100) {
-        postura = CAMINANDO_IZQUIERDA;
-        newX = x - speed;
-    }
-    /* Se mueve en X */
-    if (this->canIMove(game_objects, newX, newY)) {
-        this->set_position(newX, newY);
-    }
-
     // Logica insolita para saltar cuando pasa por esas posiciones
     if (x == 50 || x == 350 || x == 600) {
         this->setDireccionY(1);
     }
     int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-    if (this->canIMove(game_objects, newX, newYconGravedad)){
+    if (this->canIMove(game_objects, newX, newYconGravedad + this->box_alto)) {
         fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
     }
 
@@ -92,7 +92,7 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
     if (fsalto == 0) {
         this->setDireccionY(0);
     }
-    if (this->canIMove(game_objects, newX, newY)) {
+    if (this->canIMove(game_objects, newX, newY + this->box_alto)) {
         this->set_position(newX, newY);
     }
 
@@ -146,12 +146,12 @@ GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
             player = gameObject;
         }
     }
+
     return player;
 }
 
 GameObject *Enemy::shoot() {
-    Bullet *bullet = new Bullet(bulletType, this->x, this->y, this->direccionX, this->direccionY, fightAgainst, new NormalBulletMovementStrategy());
-    ammo--;
+    Bullet *bullet = BulletBuilder::createBullet(bulletType, this);
     return bullet;
 };
 

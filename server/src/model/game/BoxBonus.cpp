@@ -9,7 +9,6 @@
 #include <time.h>
 
 BoxBonus::BoxBonus(int posX, int posY) {
-    srand (time(NULL)); 
     Entity entityBoxArray[3] = {MSC_WEAPON_BOX, MSC_POWER_BONUS, MSC_BONUS_KILLALL};
     int RandIndex = rand() % 3;
     id = entityBoxArray[RandIndex];
