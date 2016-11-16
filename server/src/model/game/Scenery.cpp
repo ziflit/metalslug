@@ -11,8 +11,11 @@ Scenery::Scenery(ConfigsXML *confs, int selectedLevel) {
 }
 
 void Scenery::setUpLevel(int selectedLevel) {
+    this->actualLevel = selectedLevel;
+    this->moverPantalla = true;
     lvlsConfig = this->configs->getLvlsConfig();
-    this->nivelEnded = false;
+    this->finDelNivel = false;
+    this->yaSpawneoElFinalEnemy = false;
 
     this->windowWidth = this->configs->getGlobalConf().ancho;
     this->windowHeight = this->configs->getGlobalConf().alto;
@@ -28,8 +31,8 @@ void Scenery::setUpLevel(int selectedLevel) {
     }
 
     //Seteo los backgrounds correspondientes para el nivel
-    Entity back_z0, back_z1, back_z2, enemy_normal_type, enemy_final_type;
-    selectedLevel = setLevelConfigs(&back_z0, &back_z1, &back_z2, &enemy_normal_type, &enemy_final_type, selectedLevel);
+    Entity back_z0, back_z1, back_z2, enemy_normal_type;
+    selectedLevel = setLevelConfigs(&back_z0, &back_z1, &back_z2, &enemy_normal_type, &(this->finalEnemyType), selectedLevel);
 
     //Borro las balas que hayan quedado
     bullets.clear();
@@ -138,10 +141,10 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
 }
 
 void Scenery::updateBackgroudsState() {
-    if (not this->nivelEnded) {
-        if ((not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
+    if (not this->finDelNivel){
+        if ( this->moverPantalla and (not hayJugadorEnBordeIzq() ) and ( jugadorPasoMitadPantallaYEstaAvanzando() ) ) {
             for (auto background : backgrounds) {
-                this->nivelEnded = ((Background *) background)->avanzarFrame();
+                this->finDelNivel = ((Background *) background)->avanzarFrame();
                 /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
                  * el asociado a los players debe avanzar exactamente igual que ellos.
                  * Es por eso que tiene seteada igual velocidad.
@@ -163,7 +166,14 @@ void Scenery::updateBackgroudsState() {
             }
         }
     } else {
-        this->setUpLevel(2);
+        if (not yaSpawneoElFinalEnemy) {
+            Enemy *finalEnemy = new Enemy(999, ENEMY_FINAL_1, 700 , 0);
+            enemies.push_back(finalEnemy);
+            yaSpawneoElFinalEnemy = true;
+            this->moverPantalla = false;
+        } else {
+            this->fightWithFinalEnemy(); 
+        }
     }
 }
 
@@ -289,16 +299,30 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
             *z0 = BACKGROUND_LVL2_Z0;
             *z1 = BACKGROUND_LVL2_Z1;
             *z2 = BACKGROUND_LVL2_Z2;
-            *en = ENEMY_NORMAL_1;
-            *ef = ENEMY_FINAL_2;
+            *en = ENEMY_NORMAL_2;
+            *ef = ENEMY_FINAL_2;            
             return 1;
         case 3:
             *z0 = BACKGROUND_LVL3_Z0;
             *z1 = BACKGROUND_LVL3_Z1;
             *z2 = BACKGROUND_LVL3_Z2;
-            *en = ENEMY_NORMAL_1;
+            *en = ENEMY_NORMAL_3;
             *ef = ENEMY_FINAL_3;
             return 2;
+    }
+}
+
+void Scenery::fightWithFinalEnemy(){
+    for (auto enemy : enemies) {
+        if (enemy->getEntity() == this->finalEnemyType){
+           if (enemy->getPostura() == MUERTO ){
+                if (actualLevel < 3){
+                    this->setUpLevel(this->actualLevel + 1);    
+                } else {
+                    this->setUpLevel(1); // En vez del 1, tendria que terminar el juego.
+                }
+            }
+        }
     }
 }
 

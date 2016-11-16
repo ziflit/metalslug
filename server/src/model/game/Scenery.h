@@ -27,7 +27,9 @@ class Scenery {
 private:
     ConfigsXML *configs;
     vector<struct xmlLvl> lvlsConfig;
-    bool nivelEnded;
+    bool finDelNivel, yaSpawneoElFinalEnemy, moverPantalla;
+    Entity finalEnemyType;
+    int actualLevel;
     vector<Player *> players;
     vector<Enemy *> enemies;
     vector<GameObject *> backgrounds;
@@ -92,6 +94,8 @@ public:
     void updateBulletsState(vector<GameObject *> &all_objects_in_window);
 
     void removeDeadObjects();
+
+    void fightWithFinalEnemy();
 
     int setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Entity* ef, int selectedLevel);
 };
