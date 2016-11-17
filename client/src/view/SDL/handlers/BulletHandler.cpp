@@ -17,10 +17,8 @@ SDL_Texture* BulletHandler::createTexture(string imageTexturePath){
     return backgroundTexture;
 }
 
-
-
 void BulletHandler::newBulletType(xmlBullet bulletConfig) {
-    simpleObjectType newType;
+    simpleSpriteType newType;
 
     SDL_Texture* layer = this->createTexture(bulletConfig.path);
     SDL_QueryTexture(layer, NULL, NULL, &newType.frameWidth, &newType.frameHeigth);
@@ -32,7 +30,7 @@ void BulletHandler::newBulletType(xmlBullet bulletConfig) {
     this->bulletsTypes.push_back(newType);
 }
 
-simpleObjectType BulletHandler::getBulletType(Entity id) {
+simpleSpriteType BulletHandler::getBulletType(Entity id) {
     for (auto type : bulletsTypes) {
         if (id == type.id) {
             return type;

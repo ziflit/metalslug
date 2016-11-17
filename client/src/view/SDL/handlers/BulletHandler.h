@@ -10,7 +10,7 @@
 class BulletHandler {
 private:
     SDL_Renderer *mainRenderer;
-    vector<simpleObjectType> bulletsTypes;
+    vector<simpleSpriteType> bulletsTypes;
     vector<struct event> events;
 public:
     BulletHandler(SDL_Renderer *mainRenderer);
@@ -21,7 +21,7 @@ public:
 
     void updateBulletsSprites();
 
-    simpleObjectType getBulletType(Entity id);
+    simpleSpriteType getBulletType(Entity id);
 
     BulletSprite* createBulletType(Entity id);
 
