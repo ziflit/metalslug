@@ -14,6 +14,8 @@ protected:
     int fsalto;
     int ammo;
     Entity bulletType;
+
+protected:
     Postura postura;
     bool isShooting;
     bool isJumping;
@@ -112,6 +114,22 @@ public:
     void updateBulletdirection(float x, float y) {
         AnimatedObject::bulletdirection->setX(x);
         AnimatedObject::bulletdirection->setY(y);
+    }
+
+    Entity getBulletType() {
+        return bulletType;
+    }
+
+    int getAmmo() {
+        return ammo;
+    }
+
+    void setAmmo(int ammo) {
+        AnimatedObject::ammo = ammo;
+    }
+
+    void setBulletType(Entity bulletType) {
+        AnimatedObject::bulletType = bulletType;
     }
 };
 
