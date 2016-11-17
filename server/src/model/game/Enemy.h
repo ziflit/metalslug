@@ -28,7 +28,7 @@ public:
 
     int retroceder(); 
 
-    void updatePosition(vector<GameObject *> game_objects);
+    virtual void updatePosition(vector<GameObject *> game_objects);
 
     void set_position(int posx, int posy);
 

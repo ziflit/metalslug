@@ -163,23 +163,23 @@ void Scenery::updateBackgroudsState() {
         }
     } else {
         if (not yaSpawneoElFinalEnemy) {
+            Enemy* finalEnemy;
             switch (this->finalEnemyType) {
             case ENEMY_FINAL_1:
-                Enemy *finalEnemy = new EnemyFinal1(999, 700 , 0);
+                finalEnemy = new EnemyFinal1(999, 700, 0);
                 break;
             case ENEMY_FINAL_2:
-                Enemy *finalEnemy = new EnemyFinal2(999, ,700 , 0);
+                finalEnemy = new EnemyFinal2(999, 700, 0);
                 break;
             case ENEMY_FINAL_3:
-                Enemy *finalEnemy = new EnemyFinal3(999, 700 , 0);
+                finalEnemy = new EnemyFinal3(999, 700, 0);
                 break;
             }
-            Enemy *finalEnemy = new Enemy(999, this->finalEnemyType, 700 , 0);
             enemies.push_back(finalEnemy);
             yaSpawneoElFinalEnemy = true;
             this->moverPantalla = false;
         } else {
-            this->fightWithFinalEnemy(); 
+            this->fightWithFinalEnemy();
         }
     }
 }

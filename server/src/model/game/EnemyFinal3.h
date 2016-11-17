@@ -14,9 +14,9 @@ class EnemyFinal3 : public Enemy {
 
     virtual ~EnemyFinal3();
 
-    virtual event getState() override;
+    virtual void avanzar(vector<GameObject *> gameObjects);
 
-    virtual void avanzar(vector<GameObject *> gameObjects) override;
+    virtual void updatePosition(vector<GameObject *> game_objects);
 };
 
 #endif
