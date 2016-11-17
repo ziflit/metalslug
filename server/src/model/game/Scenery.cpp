@@ -74,7 +74,8 @@ Entity Scenery::buildPlayer(string user) {
     }
 
     PlayerBuilder playerBuilder;
-    Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth);
+    //todo: aca hay que tener el groupID para la creacion del player
+    Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth, 0);
     if (newPlayer != nullptr) {
         newPlayer->setSpeed(this->playersSpeed);
         this->addElementToScenery(newPlayer);
