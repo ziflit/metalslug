@@ -74,7 +74,8 @@ Entity Scenery::buildPlayer(string user) {
     }
 
     PlayerBuilder playerBuilder;
-    Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth);
+    //todo: aca hay que tener el groupID para la creacion del player
+    Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth, 0);
     if (newPlayer != nullptr) {
         newPlayer->setSpeed(this->playersSpeed);
         this->addElementToScenery(newPlayer);
@@ -215,6 +216,7 @@ void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
             if (bullet != nullptr) bullets.push_back(bullet);
         }
         player->updatePosition(all_objects_in_window);
+        cout << "--Player: " << player->getEntity() << "--Points: " << player->getPoints() << endl;
     }
 }
 

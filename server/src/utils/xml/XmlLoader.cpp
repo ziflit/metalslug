@@ -9,86 +9,12 @@ XmlLoader::~XmlLoader() {
 }
 
 Entity XmlLoader::convertToEntity(string id) {
-
-        if ("MARCO" == id) {
-            return MARCO;
-        }
-        else if ("TARMA" == id) {
-            return TARMA;
-        }
-        else if ("FIO" == id) {
-            return FIO;
-        }
-        else if ("ERI" == id) {
-            return ERI;
-        }
-        else if ("BACKGROUND_LVL1_Z0" == id) {
-            return BACKGROUND_LVL1_Z0;
-        }
-        else if ("BACKGROUND_LVL1_Z1" == id) {
-            return BACKGROUND_LVL1_Z1;
-        }
-        else if ("BACKGROUND_LVL1_Z2" == id) {
-            return BACKGROUND_LVL1_Z2;
-        }
-        else if ("BACKGROUND_LVL2_Z0" == id) {
-            return BACKGROUND_LVL2_Z0;
-        }
-        else if ("BACKGROUND_LVL2_Z1" == id) {
-            return BACKGROUND_LVL2_Z1;
-        }
-        else if ("BACKGROUND_LVL2_Z2" == id) {
-            return BACKGROUND_LVL2_Z2;
-        }
-        else if ("BACKGROUND_LVL3_Z0" == id) {
-            return BACKGROUND_LVL3_Z0;
-        }
-        else if ("BACKGROUND_LVL3_Z1" == id) {
-            return BACKGROUND_LVL3_Z1;
-        }
-        else if ("BACKGROUND_LVL3_Z2" == id) {
-            return BACKGROUND_LVL3_Z2;
-        }
-        else if ("ENEMY_NORMAL_1" == id) {
-            return ENEMY_NORMAL_1;
-        }
-        else if ("ENEMY_NORMAL_2" == id) {
-            return ENEMY_NORMAL_2;
-        }
-        else if ("ENEMY_NORMAL_3" == id) {
-            return ENEMY_NORMAL_3;
-        }
-        else if ("BT_BULLET" == id) {
-            return BT_BULLET;
-        }
-        else if ("BT_HEAVY_BULLET" == id) {
-            return BT_HEAVY_BULLET;
-        }
-        else if ("BT_MISSILE" == id) {
-            return BT_MISSILE;
-        }
-        else if ("BT_TELE_MISSILE" == id) {
-            return BT_TELE_MISSILE;
-        }
-        else if ("BT_SHOT" == id) {
-            return BT_SHOT;
-        }
-        else if ("BT_BOMB" == id) {
-            return BT_BOMB;
-        }
-        else if ("MSC_WEAPON_BOX" == id) {
-            return MSC_WEAPON_BOX;
-        }
-        else if ("MSC_POWER_BONUS" == id) {
-            return MSC_POWER_BONUS;
-        }
-
-        else if ("MSC_BONUS_KILLALL" == id) {
-            return MSC_BONUS_KILLALL;
-        }
-        else {
-            return NOPLAYER;
-        }
+    auto search = entities.find(id);
+    if (search != entities.end()) {
+        return search->second;
+    } else {
+        return NOPLAYER;
+    }
 }
 
 vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
@@ -99,7 +25,7 @@ vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
     xml_node<> *backgrounds = doc.first_node("backgrounds");
 
     for (xml_node<> *background = backgrounds->first_node("background");
-            background; background = background->next_sibling()) {
+         background; background = background->next_sibling()) {
         xml_node<> *id = background->first_node("id");
         xml_node<> *imagen_fondo = background->first_node("imagen_fondo");
         xml_node<> *ancho = background->first_node("ancho");
@@ -142,7 +68,7 @@ vector<struct xmlPlayer> XmlLoader::obtainPlayersConfig() {
         playerConfig.id = this->convertToEntity(id->value());
         strcpy(playerConfig.pathColor, pathColor->value());
         strcpy(playerConfig.pathGrey, pathGrey->value());
-        strcpy(playerConfig.pathWeapons,pathWeapons->value());
+        strcpy(playerConfig.pathWeapons, pathWeapons->value());
         playerConfig.ancho = atoi(ancho->value());
         playerConfig.alto = atoi(alto->value());
         playerConfig.cantWidthFrames = atoi(cantWidthFrames->value());
@@ -275,7 +201,7 @@ vector<struct xmlLvl> XmlLoader::obtainLvlsConfig() {
         xml_node<> *platforms = lvl->first_node("platforms");
         for (xml_node<> *platform = platforms->first_node("platform"); platform; platform = platform->next_sibling()) {
             xml_node<> *x = platform->first_node("x");
-            xml_node<> *y = platform->first_node("y");                    
+            xml_node<> *y = platform->first_node("y");
             xml_node<> *ancho = platform->first_node("ancho");
             xml_node<> *alto = platform->first_node("alto");
 

@@ -9,8 +9,10 @@
 #include <time.h>
 
 BoxBonus::BoxBonus(int posX, int posY) {
-    Entity entityBoxArray[3] = {MSC_WEAPON_BOX, MSC_POWER_BONUS, MSC_BONUS_KILLALL};
-    int RandIndex = rand() % 3;
+    Entity entityBoxArray[6] = {MSC_WEAPON_BOX_HEAVY, MSC_WEAPON_BOX_ROCKET,
+                                MSC_WEAPON_BOX_SHOT, MSC_WEAPON_BOX_CHASER,
+                                MSC_POWER_BONUS, MSC_BONUS_KILLALL};
+    int RandIndex = rand() % 6;
     id = entityBoxArray[RandIndex];
     x = posX;
     y = posY;

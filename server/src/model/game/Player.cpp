@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Player.h"
 #include "BulletBuilder.h"
+#include "BonusManager.h"
 
-Player::Player(string user, Entity entitySelected, int windowWidth) {
+Player::Player(string user, Entity entitySelected, int windowWidth, int groupId) {
     username = user;
     id = entitySelected;
     this->windowWidth = windowWidth;
@@ -23,14 +24,15 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     gravity = 10;
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
-    health = 100;
+    health = PLAYER_HEALTH; //todo: hay que ver cuanta vida le vamos a meter
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
+    puntaje = 0;
 
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_SHOT, BT_BOMB,
-                           MSC_WEAPON_BOX, MSC_POWER_BONUS, MSC_BONUS_KILLALL,
-                           MSC_PLATFORM};
+                           MSC_WEAPON_BOX_HEAVY, MSC_WEAPON_BOX_ROCKET, MSC_WEAPON_BOX_SHOT,
+                           MSC_WEAPON_BOX_CHASER, MSC_POWER_BONUS, MSC_BONUS_KILLALL, MSC_PLATFORM};
     this->shootsTo = {ENEMY_NORMAL_1, ENEMY_NORMAL_2, ENEMY_NORMAL_3, ENEMY_FINAL_1,
                       ENEMY_FINAL_2, ENEMY_FINAL_3, MSC_PLATFORM};
 
@@ -59,6 +61,7 @@ GameObject *Player::shoot() {
         ammo--;
     } else {
         bulletType = BT_BULLET;
+        // TODO: Habria que ver como cambiar el arma, a pistola comun si se acabaron las balas
     }
     return BulletBuilder::createBullet(bulletType, this);
 };
@@ -130,9 +133,17 @@ bool Player::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
             isColisionanding = this->checkCollition(newX, newY, game_object);
             if (isColisionanding) {
                 // resolucion de colisiones con el game_object:
-                return false;
+                return BonusManager::execute(game_object, game_objects, this);
             }
         }
     }
     return true;
+}
+
+int Player::getGroupId() const {
+    return groupId;
+}
+
+void Player::setGroupId(int groupId) {
+    Player::groupId = groupId;
 }

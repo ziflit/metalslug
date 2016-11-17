@@ -10,7 +10,10 @@ void BulletMovementStrategy::makeCollision(vector<GameObject *> collisionables, 
         if (bullet->puedenColisionar(object) && object->checkCollition(bullet)) {
             if (object->getEntity() != MSC_PLATFORM) {
                 AnimatedObject *animatedObject = (AnimatedObject *) object;
-                animatedObject->receiveDamage(bullet->getDamage());
+                if (animatedObject->receiveDamage(bullet->getDamage()) > 0 and (animatedObject->getEntity() == ENEMY_NORMAL_1 or animatedObject->getEntity() == ENEMY_NORMAL_2 or animatedObject->getEntity() == ENEMY_NORMAL_3
+                    or animatedObject->getEntity() == ENEMY_FINAL_1 or animatedObject->getEntity() == ENEMY_FINAL_2 or animatedObject->getEntity() == ENEMY_FINAL_3) ){
+                    bullet->getBulletOwner()->updateScore(bullet->getBulletScore());
+                }
             }
             bullet->setEntity(DEAD);
         }
