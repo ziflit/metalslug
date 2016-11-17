@@ -130,6 +130,12 @@ enum Arma {
     BOMB
 };
 
+enum GameMode {
+    INDIVIDUAL,
+    COLAVORATIVO,
+    GRUPAL
+};
+
 struct event_ext {
     EventCode code;
     Entity id;
@@ -151,6 +157,11 @@ struct xmlConfig {
     int ancho;
     int alto;
     int cant_players;
+};
+
+struct xmlGameMode {
+    GameMode mode;
+    bool testMode;
 };
 
 struct xmlPlatform {

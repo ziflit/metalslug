@@ -74,6 +74,7 @@ Entity Scenery::buildPlayer(string user) {
     }
 
     PlayerBuilder playerBuilder;
+//    playerBuilder.setGameMode(configs.getGameMode());
     //todo: aca hay que tener el groupID para la creacion del player
     Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth, 0);
     if (newPlayer != nullptr) {
