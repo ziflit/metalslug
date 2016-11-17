@@ -1,5 +1,5 @@
 #ifndef SRC_MODEL_GAME_BOXBONUS_H_
-
+#define SRC_MODEL_GAME_BOXBONUS_H_
 
 #include "GameObject.h"
 #include "../../utils/Protocol.h"
