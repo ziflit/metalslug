@@ -162,63 +162,63 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
 void PlayerSprite::disparandoDerechaQuieto() {
     this->sourceRect.y = (sourceRect.h * 12);
     this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = sourceRect.w * 7; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 8);
 }
 void PlayerSprite::disparandoIzquierdaQuieto() {
     this->sourceRect.y = (sourceRect.h * 13);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 9);
 }
 void PlayerSprite::disparandoCaminandoDerecha() {
     this->sourceRect.y = (sourceRect.h * 14);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 8);
 }
 void PlayerSprite::disparandoCaminandoIzquierda() {
     this->sourceRect.y = (sourceRect.h * 15);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 9);
 }
 void PlayerSprite::disparandoAgachadoQuietoDerecha() {
     this->sourceRect.y = (sourceRect.h * 16);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 7);
 }
 void PlayerSprite::disparandoAgachadoQuietoIzquierda() {
     this->sourceRect.y = (sourceRect.h * 17);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 6);
 }
 
 void PlayerSprite::disparandoMirandoArribaDerechaQuieto() {
     this->sourceRect.y = (sourceRect.h * 18);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 3);
 }
 void PlayerSprite::disparandoMirandoArribaIzquierdaQuieto() {
     this->sourceRect.y = (sourceRect.h * 19);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 2);
 }
 void PlayerSprite::disparandoAvanzandoMirandoArribaDerecha() {
     this->sourceRect.y = (sourceRect.h * 20);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 3);
 }
 void PlayerSprite::disparandoAvanzandoMirandoArribaIzquierda() {
     this->sourceRect.y = (sourceRect.h * 21);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 2);
 }
 void PlayerSprite::muriendo() {
     this->sourceRect.y = (sourceRect.h * 22);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 100);
 }
 void PlayerSprite::muerto() {
     this->sourceRect.y = (sourceRect.h * 23);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = (sourceRect.w * 100);
 }
 void PlayerSprite::setUsername(struct event nuevoEvento) {
     this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {10, 255, 2, 255});
