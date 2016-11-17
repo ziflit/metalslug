@@ -14,11 +14,10 @@ protected:
     int fsalto;
     int ammo;
     Entity bulletType;
-
-protected:
     Postura postura;
     bool isShooting;
     bool isJumping;
+    int puntaje;
     Vector *bulletdirection;
 
     vector<Entity> shootsTo;
@@ -68,7 +67,7 @@ public:
         }
     }
 
-    void receiveDamage(int damage) {
+    int receiveDamage(int damage) { //devuelve la vida que le queda 
         if (health >= damage) {
             health -= damage;
         } else {
@@ -77,6 +76,7 @@ public:
         }
         string a = (postura == MUERTO) ? " muerto " : " vivo ";
         cout << id << a << health << endl;
+        return health;
     }
 
     virtual ~AnimatedObject() {
@@ -131,7 +131,14 @@ public:
     void setBulletType(Entity bulletType) {
         AnimatedObject::bulletType = bulletType;
     }
-};
 
+    int getPoints(){
+        return this->puntaje;
+    }
+
+    void updateScore(int points){
+        this->puntaje += points;
+    }
+};
 
 #endif //SERVER_ANIMATEDOBJECT_H
