@@ -12,7 +12,9 @@ void WeaponBonusStrategy::execute(GameObject *bonus, vector<GameObject *> &gameO
 
 void WeaponBonusStrategy::applyBonus(Player *player, Entity bulletType) {
     if (player->getBulletType() == bulletType) {
+        int currentAmmo = player->getAmmo();
         addAmmo(player, bulletType, ammoReload);
+        player->setAmmo(player->getAmmo() + currentAmmo);
     } else {
         addAmmo(player, bulletType, ammo);
     }
