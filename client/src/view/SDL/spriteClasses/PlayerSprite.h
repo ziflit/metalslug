@@ -87,6 +87,7 @@ public:
 
     virtual ~PlayerSprite();
 
+    void playHeavyMachineGunSound();
 };
 
 #endif //METALSLUG_PLAYERSPRITE_H

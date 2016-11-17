@@ -333,9 +333,7 @@ void PlayerSprite::setWeapon(Arma weapon) {
             break;
         case HEAVY_MACHINEGUN:
             this->weaponsSourceRect.y = (this->sourceRect.h * 1 );
-            Sound *heavyMachineSound = new Sound("heavyMachineGun.wav");
-            heavyMachineSound->playOnce();
-            delete heavyMachineSound;
+            this->playHeavyMachineGunSound();
             break;
         case ROCKET_LAUNCHER:
             this->weaponsSourceRect.y = (this->sourceRect.h * 2 );
@@ -352,6 +350,12 @@ void PlayerSprite::setWeapon(Arma weapon) {
         default:
             break;
     }
+}
+
+void PlayerSprite::playHeavyMachineGunSound() {
+    Sound *heavyMachineSound = new Sound("audios/heavyMachineGun.wav");
+    heavyMachineSound->playOnce();
+    delete heavyMachineSound;
 }
 
 PlayerSprite::~PlayerSprite() {
