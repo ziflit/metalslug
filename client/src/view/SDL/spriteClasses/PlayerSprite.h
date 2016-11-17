@@ -76,6 +76,8 @@ public:
     void disparandoIzquierdaQuieto();
     void disparandoCaminandoDerecha();
     void disparandoCaminandoIzquierda();
+    void disparandoAgachadoQuietoDerecha();
+    void disparandoAgachadoQuietoIzquierda();
     void disparandoMirandoArribaDerechaQuieto();
     void disparandoMirandoArribaIzquierdaQuieto();
     void disparandoAvanzandoMirandoArribaDerecha();

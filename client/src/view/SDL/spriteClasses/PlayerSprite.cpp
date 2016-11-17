@@ -162,7 +162,7 @@ void PlayerSprite::mirandoIzquierdaQuieto(){
 void PlayerSprite::disparandoDerechaQuieto() {
     this->sourceRect.y = (sourceRect.h * 12);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+    this->weaponsSourceRect.x = sourceRect.w * 7; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
 void PlayerSprite::disparandoIzquierdaQuieto() {
     this->sourceRect.y = (sourceRect.h * 13);
@@ -179,33 +179,44 @@ void PlayerSprite::disparandoCaminandoIzquierda() {
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoMirandoArribaDerechaQuieto() {
+void PlayerSprite::disparandoAgachadoQuietoDerecha() {
     this->sourceRect.y = (sourceRect.h * 16);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+//    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoMirandoArribaIzquierdaQuieto() {
+void PlayerSprite::disparandoAgachadoQuietoIzquierda() {
     this->sourceRect.y = (sourceRect.h * 17);
     this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+//    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoAvanzandoMirandoArribaDerecha() {
+
+void PlayerSprite::disparandoMirandoArribaDerechaQuieto() {
     this->sourceRect.y = (sourceRect.h * 18);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoAvanzandoMirandoArribaIzquierda() {
+void PlayerSprite::disparandoMirandoArribaIzquierdaQuieto() {
     this->sourceRect.y = (sourceRect.h * 19);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::muriendo() {
+void PlayerSprite::disparandoAvanzandoMirandoArribaDerecha() {
     this->sourceRect.y = (sourceRect.h * 20);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::muerto() {
+void PlayerSprite::disparandoAvanzandoMirandoArribaIzquierda() {
     this->sourceRect.y = (sourceRect.h * 21);
+    this->setNextSpriteFrame();
+//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+}
+void PlayerSprite::muriendo() {
+    this->sourceRect.y = (sourceRect.h * 22);
+    this->setNextSpriteFrame();
+//    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
+}
+void PlayerSprite::muerto() {
+    this->sourceRect.y = (sourceRect.h * 23);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = sourceRect.w * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
