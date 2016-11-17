@@ -28,7 +28,7 @@ public:
         setUpImage(playerConfig.pathColor, playerConfig.pathGrey);
 
         sourceRect.w = spriteImageWidth / playerConfig.cantWidthFrames;
-        sourceRect.h = spriteImageHeight /  playerConfig.cantHeightFrames;
+        sourceRect.h = spriteImageHeight / playerConfig.cantHeightFrames;
 
         this->setUpWeaponsImage(playerConfig.pathWeapons);
         this->usernameText = nullptr;
