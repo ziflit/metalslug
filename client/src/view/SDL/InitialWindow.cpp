@@ -59,9 +59,7 @@ void InitialWindow::showStartScreen() {
 
         while(SDL_PollEvent(&evento)){
             if(evento.type == SDL_KEYDOWN and evento.key.keysym.sym == SDLK_RETURN){
-                cout<<"ENTRO AL PRESSED ENTER"<<endl;
                 enterPressed = true;
-
             }
         }
     }

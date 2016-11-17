@@ -221,7 +221,7 @@ void PlayerSprite::muerto() {
     this->weaponsSourceRect.x = (sourceRect.w * 100);
 }
 void PlayerSprite::setUsername(struct event nuevoEvento) {
-    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {10, 255, 2, 255});
+    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {10, 0, 0, 255});
 }
 
 void PlayerSprite::handle(struct event nuevoEvento) {
