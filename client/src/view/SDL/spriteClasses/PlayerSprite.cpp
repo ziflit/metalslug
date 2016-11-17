@@ -292,6 +292,12 @@ void PlayerSprite::setPostura(Postura postura) {
         case Postura::DISPARANDO_CAMINANDO_IZQUIERDA:
             disparandoCaminandoIzquierda();
             break;
+        case Postura::DISPARANDO_AGACHADO_QUIETO_DERECHA:
+            disparandoAgachadoQuietoDerecha();
+            break;
+        case Postura::DISPARANDO_AGACHADO_QUIETO_IZQUIERDA:
+            disparandoAgachadoQuietoIzquierda();
+            break;
         case Postura::DISPARANDO_MIRANDO_ARRIBA_DERECHA_QUIETO:
             disparandoMirandoArribaDerechaQuieto();
             break;
