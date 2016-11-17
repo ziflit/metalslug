@@ -12,7 +12,7 @@ private:
 
 public:
 
-    EnemySprite(SDL_Renderer *renderer, enemyType type, int number) : Sprite(renderer, 0, 0) {
+    EnemySprite(SDL_Renderer *renderer, enemyType type, int number) : Sprite(renderer) {
         Sprite::id = type.id;
         this->number = number;
         this->cambioFrame = 0;

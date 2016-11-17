@@ -8,7 +8,7 @@
 class BulletSprite : public Sprite {
 
 public:
-    BulletSprite(SDL_Renderer* mainRenderer, bulletType type) : Sprite(mainRenderer,0,0){  //0,0 no importa en el bulletSprite el tamano de ventana
+    BulletSprite(SDL_Renderer* mainRenderer, simpleSpriteType type) : Sprite(mainRenderer){  //0,0 no importa en el bulletSprite el tamano de ventana
         this->id = type.id;
         this->layer = type.layer;
         this->sourceRect.w = type.frameWidth;

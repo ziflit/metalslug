@@ -1,13 +1,10 @@
 #include "Sprite.h"
-Sprite::Sprite(SDL_Renderer* mainRenderer, int window_width, int window_height) {
+Sprite::Sprite(SDL_Renderer* mainRenderer) {
 
     this->renderer = mainRenderer;
 
     this->sourceRect.x = this->sourceRect.y = 0; //FRAME INICIAL
     this->destRect.x = this->destRect.y = 0; //POSICION INICIAL
-
-    this->window_width = window_width;
-    this->window_height = window_height;
 }
 
 SDL_Texture* Sprite::loadTexture(SDL_Renderer* renderer,string imageTexturePath){

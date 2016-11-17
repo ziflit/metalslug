@@ -190,53 +190,33 @@ void PlayerSprite::disparandoCaminandoIzquierda() {
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoAgachadoQuietoDerecha() {
+void PlayerSprite::disparandoMirandoArribaDerechaQuieto() {
     this->sourceRect.y = (frameHeight * 16);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoAgachadoQuietoIzquierda() {
+void PlayerSprite::disparandoMirandoArribaIzquierdaQuieto() {
     this->sourceRect.y = (frameHeight * 17);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoAgachadoAvanzandoDerecha() {
+void PlayerSprite::disparandoAvanzandoMirandoArribaDerecha() {
     this->sourceRect.y = (frameHeight * 18);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoAgachadoAvanzandoIzquierda() {
+void PlayerSprite::disparandoAvanzandoMirandoArribaIzquierda() {
     this->sourceRect.y = (frameHeight * 19);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoMirandoArribaDerechaQuieto() {
+void PlayerSprite::muriendo() {
     this->sourceRect.y = (frameHeight * 20);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
-void PlayerSprite::disparandoMirandoArribaIzquierdaQuieto() {
-    this->sourceRect.y = (frameHeight * 21);
-    this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
-}
-void PlayerSprite::disparandoAvanzandoMirandoArribaDerecha() {
-    this->sourceRect.y = (frameHeight * 22);
-    this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
-}
-void PlayerSprite::disparandoAvanzandoMirandoArribaIzquierda() {
-    this->sourceRect.y = (frameHeight * 23);
-    this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
-}
-void PlayerSprite::muriendo() {
-    this->sourceRect.y = (frameHeight * 24);
-    this->setNextSpriteFrame();
-//    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
-}
 void PlayerSprite::muerto() {
-    this->sourceRect.y = (frameHeight * 25);
+    this->sourceRect.y = (frameHeight * 21);
     this->setNextSpriteFrame();
 //    this->weaponsSourceRect.x = frameWidth * 6; //TODO: poner el multiplo correcto cuando esten los sprites de las armas completos.
 }
@@ -312,18 +292,6 @@ void PlayerSprite::setPostura(Postura postura) {
         case Postura::DISPARANDO_CAMINANDO_IZQUIERDA:
             disparandoCaminandoIzquierda();
             break;
-        case Postura::DISPARANDO_AGACHADO_QUIETO_DERECHA:
-            disparandoAgachadoQuietoDerecha();
-            break;
-        case Postura::DISPARANDO_AGACHADO_QUIETO_IZQUIERDA:
-            disparandoAgachadoQuietoIzquierda();
-            break;
-        case Postura::DISPARANDO_AGACHADO_AVANZANDO_DERECHA:
-            disparandoAgachadoAvanzandoDerecha();
-            break;
-        case Postura::DISPARANDO_AGACHADO_AVANZANDO_IZQUIERDA:
-            disparandoAgachadoAvanzandoIzquierda();
-            break;
         case Postura::DISPARANDO_MIRANDO_ARRIBA_DERECHA_QUIETO:
             disparandoMirandoArribaDerechaQuieto();
             break;
@@ -359,7 +327,7 @@ void PlayerSprite::setWeapon(Arma weapon) {
             break;
         case HEAVY_MACHINEGUN:
             this->weaponsSourceRect.y = (this->frameHeight * 1 );
-//            Sound *heavyMachineSound = new Sound("heaveMachineSound.wav");
+//            Sound *heavyMachineSound = new Sound("heaveMachineSound.wav"); //todo
 //            heavyMachineSound->playOnce();
 //            delete heavyMachineSound;
             break;

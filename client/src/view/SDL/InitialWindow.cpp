@@ -48,7 +48,7 @@ InitialWindow::InitialWindow(unsigned int window_width, unsigned int window_heig
 
 
 void InitialWindow::showStartScreen() {
-    BackgroundSprite* startBack = new BackgroundSprite(mainRender,800,600);
+    BackgroundSprite* startBack = new BackgroundSprite(mainRender, 800, 600, xmlBackground());
     startBack->setUpImage("sprites/backgrounds/startScreen.png");
     startBack->setSourceRectWidth(startBack->getSpriteImageWidth()/2);
     startBack->setSourceRectHeight(startBack->getSpriteImageHeight());
@@ -73,7 +73,7 @@ void InitialWindow::showStartScreen() {
         }
     }
 
-    BackgroundSprite* waitingPlayers = new BackgroundSprite(mainRender,800,600);
+    BackgroundSprite* waitingPlayers = new BackgroundSprite(mainRender, 800, 600, xmlBackground());
     waitingPlayers->setUpImage("sprites/backgrounds/waitingPlayers.png");
     waitingPlayers->setSourceRectWidth(startBack->getSpriteImageWidth());
     waitingPlayers->setSourceRectHeight(startBack->getSpriteImageHeight());
