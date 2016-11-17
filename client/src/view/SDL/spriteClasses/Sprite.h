@@ -18,14 +18,12 @@ protected:
 
     int spriteImageWidth,spriteImageHeight;
 
-    int frameWidth, frameHeight;
-
     Entity id;
 
 public:
 
     Sprite(SDL_Renderer *renderer);
-    SDL_Texture* loadTexture(SDL_Renderer* renderer,string imageTexturePath);
+    SDL_Texture* loadTexture(string imageTexturePath);
 
     virtual void setUpImage(string imageSpritePath);
 

@@ -7,9 +7,7 @@ void InitialWindow::initializeSDL() {
         cout<<"There was error initializing SDL: "<< endl
             <<SDL_GetError() << endl;
     }
-    if(TTF_Init() < 0){
-        cout<<"There was error initializig TTF: "<< TTF_GetError()<<endl;
-    }
+    if (TTF_Init() < 0) cout<<"There was error initializig TTF: "<< TTF_GetError()<<endl;
 }
 
 SDL_Window* InitialWindow::createWindow(const char *windowName, unsigned int window_width, unsigned int window_height) {
@@ -27,17 +25,13 @@ SDL_Window* InitialWindow::createWindow(const char *windowName, unsigned int win
     }
 
     return window;
-
 }
 
 SDL_Renderer* InitialWindow::createRenderer(SDL_Window* window){
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    if(renderer == NULL){
-        cout<<"There was error creating renderer: "<<SDL_GetError()<<endl;
-    }
+    if(renderer == NULL) cout<<"There was error creating renderer: "<<SDL_GetError()<<endl;
     return renderer;
-
 }
 
 InitialWindow::InitialWindow(unsigned int window_width, unsigned int window_height) {
@@ -60,7 +54,6 @@ void InitialWindow::showStartScreen() {
         startBack->setNextStartBackFrame();
         startBack->actualizarDibujo();
         SDL_RenderPresent(mainRender);
-
 
         usleep(100000);
 

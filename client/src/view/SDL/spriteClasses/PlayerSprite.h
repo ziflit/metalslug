@@ -24,12 +24,12 @@ public:
         this->setWidth(playerConfig.ancho);
         this->setHeight(playerConfig.alto);
         this->setId(playerConfig.id);
-        this->setUpImage(playerConfig.pathColor,
-                         playerConfig.pathGrey,
-                         playerConfig.cantWidthFrames,
-                         playerConfig.cantHeightFrames);
-        this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0;
-        this->weaponsDestRect.x = this->weaponsDestRect.y = 0;
+        wFramesCant = playerConfig.cantWidthFrames;
+        setUpImage(playerConfig.pathColor, playerConfig.pathGrey);
+
+        sourceRect.w = spriteImageWidth / playerConfig.cantWidthFrames;
+        sourceRect.h = spriteImageHeight /  playerConfig.cantHeightFrames;
+
         this->setUpWeaponsImage(playerConfig.pathWeapons);
         this->usernameText = nullptr;
     }
@@ -42,8 +42,7 @@ public:
 
     void setHeight(int h);
 
-    void setUpImage(string imageSpritePath,string imageGrisadoPath,
-                    int wFramesCant, int hFramesCant);
+    void setUpImage(string imageSpritePath,string imageGrisadoPath);
     void setWeapon(Arma weapon);
 
     void setUpWeaponsImage(string weaponsPath);

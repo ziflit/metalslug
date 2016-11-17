@@ -22,6 +22,4 @@ public:
     }
 
 };
-
-
 #endif //METALSLUG_BULLETSPRITE_H

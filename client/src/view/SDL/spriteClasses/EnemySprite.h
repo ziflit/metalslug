@@ -22,12 +22,8 @@ public:
 
         EnemySprite::wFramesCant = type.cantWidthFrames;
 
-        EnemySprite::frameWidth = type.spriteImageWidth / wFramesCant;
-        EnemySprite::frameHeight = type.spriteImageHeight / type.cantHeigthFrames;
-
-
-        EnemySprite::sourceRect.w = EnemySprite::frameWidth;
-        EnemySprite::sourceRect.h = EnemySprite::frameHeight;
+        EnemySprite::sourceRect.w = type.spriteImageWidth / wFramesCant;
+        EnemySprite::sourceRect.h =type.spriteImageHeight / type.cantHeigthFrames;
 
         EnemySprite::destRect.w = type.ancho;
         EnemySprite::destRect.h = type.alto;
