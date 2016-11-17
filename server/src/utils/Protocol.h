@@ -6,6 +6,7 @@
 #include <vector>
 
 #define MSGSIZE sizeof(struct event)
+#define PLAYER_HEALTH 1000
 
 using namespace std;
 
@@ -80,7 +81,10 @@ enum Entity {
 	BT_TELE_MISSILE,
 	BT_SHOT,
 	BT_BOMB,
-	MSC_WEAPON_BOX, 	// MSC = Miscelanea
+	MSC_WEAPON_BOX_HEAVY,    // MSC = Miscelanea
+	MSC_WEAPON_BOX_ROCKET,
+	MSC_WEAPON_BOX_SHOT,
+	MSC_WEAPON_BOX_CHASER,
 	MSC_POWER_BONUS,
 	MSC_BONUS_KILLALL,
 	MSC_PLATFORM,
