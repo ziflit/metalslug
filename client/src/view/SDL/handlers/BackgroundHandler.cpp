@@ -29,7 +29,6 @@ BackgroundSprite * BackgroundHandler::getBackground(Entity id) {
 void BackgroundHandler::updateBottomBackgroundSprites() {
     getBack0ToUpdate()->actualizarDibujo();
     getBack1ToUpdate()->actualizarDibujo();
-
 }
 
 void BackgroundHandler::updateFrontBackgroundSprite() {

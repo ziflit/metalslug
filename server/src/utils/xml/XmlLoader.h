@@ -48,6 +48,12 @@ private:
             {"MSC_BONUS_KILLALL",     MSC_BONUS_KILLALL}
     };
 
+    map<string, GameMode> modes = {
+            {"INDIVIDUAL",            INDIVIDUAL},
+            {"COLAVORATIVO",          COLAVORATIVO},
+            {"GRUPAL",                GRUPAL}
+    };
+
 
 public:
 
@@ -56,6 +62,8 @@ public:
     virtual ~XmlLoader();
 
     struct xmlConfig obtainGlobalConfig();
+
+    struct xmlGameMode obtainGameModeConfig();
 
     vector<struct xmlPlayer> obtainPlayersConfig();
 
@@ -70,6 +78,8 @@ public:
     vector<struct xmlMiscelanea> obtainMiscelaneasConfig();
 
     Entity convertToEntity(string id);
+
+    GameMode convertToGameMode(string mode);
 };
 
 #endif /* SRC_UTILS_XMLLOADER_H_ */

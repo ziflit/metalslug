@@ -48,9 +48,6 @@ public:
     virtual~SDLRunningGame();
 
     void handleModelState(vector<struct event> model_state);
-
-
-    void resetStatus();
 };
 
 

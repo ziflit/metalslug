@@ -325,6 +325,7 @@ void Server::loadConfigs(){
     configs.setBulletsConfig(loader.obtainBulletsConfig());
     configs.setMiscelaneasConfig(loader.obtainMiscelaneasConfig());
     configs.setLvlsConfig(loader.obtainLvlsConfig());
+    configs.setGameModeConfig(loader.obtainGameModeConfig());
 }
 
 bool Server::enough_players_to_start() {

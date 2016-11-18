@@ -17,6 +17,15 @@ Entity XmlLoader::convertToEntity(string id) {
     }
 }
 
+GameMode XmlLoader::convertToGameMode(string mode) {
+    auto search = modes.find(mode);
+    if (search != modes.end()) {
+        return search->second;
+    } else {
+        return INDIVIDUAL;
+    }
+}
+
 vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {
     xml_document<> doc;
     file<> xmlFile(path.c_str());
@@ -182,6 +191,21 @@ struct xmlConfig XmlLoader::obtainGlobalConfig() {
     config.ancho = atoi(ancho->value());
     config.alto = atoi(alto->value());
     config.cant_players = atoi(cant_players->value());
+
+    return config;
+}
+
+struct xmlGameMode XmlLoader::obtainGameModeConfig() {
+    xml_document<> doc;
+    file<> xmlFile(path.c_str()); //open file
+    doc.parse<0>(xmlFile.data());
+    xml_node<> *gameMode = doc.first_node("gameMode");
+    xml_node<> *mode = gameMode->first_node("mode");
+    xml_node<> *testMode = gameMode->first_node("testMode");
+
+    struct xmlGameMode config;
+    config.mode = this->convertToGameMode(mode->value());
+    config.testMode = atoi(testMode->value());
 
     return config;
 }

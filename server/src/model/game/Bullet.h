@@ -7,14 +7,17 @@
 #include "../../utils/Protocol.h"
 #include "BulletMovementStrategy.h"
 #include "GameObject.h"
+#include "AnimatedObject.h"
 
 class Bullet : public GameObject {
 private:
     int damage;
+    int bulletScore;
+    AnimatedObject* bulletOwner;
     BulletMovementStrategy *movementStrategy = nullptr;
 public:
     Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int direccionX,
-           vector<Entity> collitionables, BulletMovementStrategy *bulletMovementStrategy);
+           vector<Entity> collitionables, BulletMovementStrategy *bulletMovementStrategy, AnimatedObject* bulletOwner);
 
     virtual ~Bullet();
 
@@ -26,6 +29,17 @@ public:
 
     void avanzar(vector<GameObject *> collitionables) override;
 
+    AnimatedObject* getBulletOwner(){
+        return bulletOwner;
+    }
+
+    void setBulletScore(int scoreOfThisType){
+        bulletScore = scoreOfThisType;
+    }
+
+    int getBulletScore(){
+        return bulletScore;
+    }
 };
 
 

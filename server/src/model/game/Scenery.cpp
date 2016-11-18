@@ -74,8 +74,13 @@ Entity Scenery::buildPlayer(string user) {
     }
 
     PlayerBuilder playerBuilder;
-    //todo: aca hay que tener el groupID para la creacion del player
-    Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth, 0);
+    /**
+    TODO: en el constructor de player se esta harcodeando la vida, la posicion incial entre otras cosas.
+    Creo que se podria pasar al PlayerBuilder el config de los players con toda esa info
+    para que lo setee limpio y sacar el hardcode.
+     */
+    playerBuilder.setGameMode(configs->getGameMode());
+    Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth);
     if (newPlayer != nullptr) {
         newPlayer->setSpeed(this->playersSpeed);
         this->addElementToScenery(newPlayer);
@@ -213,6 +218,7 @@ void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
             if (bullet != nullptr) bullets.push_back(bullet);
         }
         player->updatePosition(all_objects_in_window);
+        cout << "--Player: " << player->getEntity() << "--Points: " << player->getPoints() << endl;
     }
 }
 

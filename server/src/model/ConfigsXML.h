@@ -14,6 +14,7 @@
 class ConfigsXML {
 private:
     struct xmlConfig globalConf;
+    xmlGameMode gameMode;
     vector<struct xmlBackground> backgroundsConfig;
     vector<struct xmlPlayer> playersConfig;
     vector<struct xmlEnemy> enemiesConfig;
@@ -81,6 +82,15 @@ public:
 
     void setLvlsConfig(vector<struct xmlLvl> lvlsConfig) {
         this->lvlsConfig = lvlsConfig;
+    }
+
+    void setGameModeConfig(xmlGameMode mode) {
+        this->gameMode = mode;
+
+    }
+
+    xmlGameMode getGameMode() {
+        return gameMode;
     }
 };
 
