@@ -31,7 +31,7 @@ int PlayerBuilder::getGroupId(int playerNumber) {
 int PlayerBuilder::getHealth() {
 //TODO: ESTO TIENE QUE SETEARSE BIEN, ESTO ES MUY CHINO
     if (mode.testMode){
-        return 99999;
+        return 999999;
     }
     return 1000;
 }

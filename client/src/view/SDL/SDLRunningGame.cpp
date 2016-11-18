@@ -19,6 +19,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
 
     for (auto playerConfig : configs.getPlayersConfig()) {
         PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer, playerConfig);
+        newPlayer->setGroupId(configs.getGameMode());
         this->playersSprites.push_back(newPlayer);
     }
 

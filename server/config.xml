@@ -12,7 +12,7 @@
 			<id>MARCO</id>
 			<pathColor>sprites/player/marco.png</pathColor>
             <pathGrey>sprites/player/marcoGrisado.png</pathGrey>
-			<pathWeapons>sprites/player/armas.png</pathWeapons>
+			<pathWeapons>sprites/player/marcoWeapons.png</pathWeapons>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
@@ -23,7 +23,7 @@
 			<id>TARMA</id>
 			<pathColor>sprites/player/tarma.png</pathColor>
             <pathGrey>sprites/player/tarmaGrisado.png</pathGrey>
-            <pathWeapons>sprites/player/weaponsTarma.png</pathWeapons>
+            <pathWeapons>sprites/player/tarmaWeapons.png</pathWeapons>
             <ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
@@ -34,7 +34,7 @@
 			<id>FIO</id>
 			<pathColor>sprites/player/fio.png</pathColor>
             <pathGrey>sprites/player/fioGrisado.png</pathGrey>
-            <pathWeapons>sprites/player/weaponsFio.png</pathWeapons>
+            <pathWeapons>sprites/player/fioWeapons.png</pathWeapons>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
@@ -45,7 +45,7 @@
 			<id>ERI</id>
 			<pathColor>sprites/player/eri.png</pathColor>
             <pathGrey>sprites/player/eriGrisado.png</pathGrey>
-            <pathWeapons>sprites/player/weaponsEri.png</pathWeapons>
+            <pathWeapons>sprites/player/eriWeapons.png</pathWeapons>
             <ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>

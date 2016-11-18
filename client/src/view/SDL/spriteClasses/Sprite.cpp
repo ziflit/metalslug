@@ -10,8 +10,11 @@ Sprite::Sprite(SDL_Renderer* mainRenderer) {
 SDL_Texture* Sprite::loadTexture(string imageTexturePath){
     SDL_Texture* backgroundTexture = NULL;
     SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
+    if(loadingSurface == NULL){
+        cout<<"Error: can't load image which path is: "<<imageTexturePath.c_str()<<endl;
+        loadingSurface = IMG_Load("sprites/defaultImage.png");
+    }
 
-    if(loadingSurface == NULL) loadingSurface = IMG_Load("sprites/defaultImage.png");
 
     backgroundTexture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
 

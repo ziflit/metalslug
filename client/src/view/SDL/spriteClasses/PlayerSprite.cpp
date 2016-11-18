@@ -370,3 +370,33 @@ bool PlayerSprite::firstEvent() {
 bool PlayerSprite::clientIsConnected() {
     return (this->usernameText != nullptr);
 }
+
+void PlayerSprite::setGroupId(xmlGameMode mode) {
+    switch (mode.mode) {
+        case INDIVIDUAL:
+            if (id == MARCO) {
+                groupId = 0;
+            } else if (id == FIO) {
+                groupId = 1;
+            } else if (id == TARMA) {
+                groupId = 2;
+            } else if (id == ERI) {
+                groupId = 3;
+            }
+            break;
+        case COLAVORATIVO:
+            this->groupId = 0;
+            break;
+        case GRUPAL:
+            if (id == MARCO) {
+                groupId = 0;
+            } else if (id == FIO) {
+                groupId = 1;
+            } else if (id == TARMA) {
+                groupId = 0;
+            } else if (id == ERI) {
+                groupId = 1;
+            }
+            break;
+    }
+}
