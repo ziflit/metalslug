@@ -13,6 +13,7 @@ private:
     SDL_Texture* weaponsLayer;
     TextBox* usernameText;
     Arma arma;
+    int groupId;
     int wFramesCant,wActualPosFrame,cambioFrame;
     bool grisado;
     string imgaceColorPath,imageGrisadoPath;

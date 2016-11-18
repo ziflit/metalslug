@@ -133,6 +133,7 @@ struct event_ext {
 	char username[20];
 	int x;
 	int y;
+	int puntaje;
 	Postura postura;
     Arma arma;
 };

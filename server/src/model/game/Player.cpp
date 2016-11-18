@@ -24,7 +24,12 @@ Player::Player(string user, Entity entitySelected, int windowWidth, int groupId)
     gravity = 10;
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
-    health = PLAYER_HEALTH; //todo: hay que ver cuanta vida le vamos a meter
+    health = PLAYER_HEALTH;
+    //todo: hay que ver cuanta vida le vamos a meter,
+    //todo: tambien tener en cuenta el modo de juego con vida infinita. (Leer enunciado de TP)
+    //todo: terminar de configurar esto en PlayerBuilder, ya esta encaminado.
+    this->groupId = groupId;
+
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
@@ -117,6 +122,7 @@ struct event Player::getState() {
     eventExt.x = x;  //Actualizo la posicion del player
     eventExt.y = y;
     eventExt.postura = this->postura;
+    eventExt.puntaje = this->puntaje;
 
     estado.completion = EventCompletion::PARTIAL_MSG;
     estado.data = eventExt;

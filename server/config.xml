@@ -3,7 +3,10 @@
 		<alto>600</alto>
 		<cant_players>1</cant_players>
 	</config>
-
+    <gameMode>
+        <mode>INDIVIDUAL</mode>
+        <testMode>0</testMode>
+    </gameMode>
 	<players>
 		<player>
 			<id>MARCO</id>
