@@ -1,10 +1,5 @@
-//
-// Created by mfp on 10/11/16.
-//
-
 #ifndef METALSLUG_BACKGROUNDHANDLER_H
 #define METALSLUG_BACKGROUNDHANDLER_H
-
 
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_system.h>
@@ -37,6 +32,5 @@ public:
 
     bool isBackgroundType(Entity id);
 };
-
 
 #endif //METALSLUG_BACKGROUNDHANDLER_H

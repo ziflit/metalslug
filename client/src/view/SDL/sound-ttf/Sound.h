@@ -2,13 +2,13 @@
 #define SDLBASE_SOUND_H
 
 #include "SDL2/SDL_mixer.h"
-
+#include <string>
 
 class Sound {
 private:
     Mix_Chunk* sound;
 public:
-    Sound(char* soundPath);
+    Sound(std::string soundPath);
     void playOnce();
     virtual ~Sound();
 };

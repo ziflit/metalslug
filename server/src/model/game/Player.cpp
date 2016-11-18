@@ -27,7 +27,9 @@ Player::Player(string user, Entity entitySelected, int windowWidth, int groupId)
     health = PLAYER_HEALTH;
     //todo: hay que ver cuanta vida le vamos a meter,
     //todo: tambien tener en cuenta el modo de juego con vida infinita. (Leer enunciado de TP)
+    //todo: terminar de configurar esto en PlayerBuilder, ya esta encaminado.
     this->groupId = groupId;
+
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal

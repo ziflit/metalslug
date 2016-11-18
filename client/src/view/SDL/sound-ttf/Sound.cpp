@@ -1,8 +1,8 @@
 #include "Sound.h"
 
-Sound::Sound(char* soundPath){
+Sound::Sound(std::string soundPath) {
     Mix_Chunk *sound = NULL;
-    Sound::sound = Mix_LoadWAV( soundPath );
+    Sound::sound = Mix_LoadWAV( soundPath.c_str() );
     if( !sound ){printf( "Mix_LoadWAV: %s\n", Mix_GetError() );}
 
 }

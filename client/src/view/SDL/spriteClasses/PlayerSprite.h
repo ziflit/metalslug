@@ -13,17 +13,26 @@ private:
     SDL_Texture* weaponsLayer;
     TextBox* usernameText;
     Arma arma;
+    int groupId;
     int wFramesCant,wActualPosFrame,cambioFrame;
     bool grisado;
     string imgaceColorPath,imageGrisadoPath;
 public:
 
-    PlayerSprite(SDL_Renderer *renderer) : Sprite(renderer,0,0) {
+    PlayerSprite(SDL_Renderer *renderer, xmlPlayer playerConfig) : Sprite(renderer) {
         grisado = false;
         cambioFrame = 0;
-        this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0; //FRAME INICIAL
-        this->weaponsDestRect.x = this->weaponsDestRect.y = 0; //POSICION INICIAL
-        usernameText = nullptr;
+        this->setWidth(playerConfig.ancho);
+        this->setHeight(playerConfig.alto);
+        this->setId(playerConfig.id);
+        wFramesCant = playerConfig.cantWidthFrames;
+        setUpImage(playerConfig.pathColor, playerConfig.pathGrey);
+
+        sourceRect.w = spriteImageWidth / playerConfig.cantWidthFrames;
+        sourceRect.h = spriteImageHeight / playerConfig.cantHeightFrames;
+
+        this->setUpWeaponsImage(playerConfig.pathWeapons);
+        this->usernameText = nullptr;
     }
 
     void actualizarDibujo();
@@ -34,8 +43,7 @@ public:
 
     void setHeight(int h);
 
-    void setUpImage(string imageSpritePath,string imageGrisadoPath,
-                    int wFramesCant, int hFramesCant);
+    void setUpImage(string imageSpritePath,string imageGrisadoPath);
     void setWeapon(Arma weapon);
 
     void setUpWeaponsImage(string weaponsPath);
@@ -71,8 +79,6 @@ public:
     void disparandoCaminandoIzquierda();
     void disparandoAgachadoQuietoDerecha();
     void disparandoAgachadoQuietoIzquierda();
-    void disparandoAgachadoAvanzandoDerecha();
-    void disparandoAgachadoAvanzandoIzquierda();
     void disparandoMirandoArribaDerechaQuieto();
     void disparandoMirandoArribaIzquierdaQuieto();
     void disparandoAvanzandoMirandoArribaDerecha();
@@ -82,6 +88,7 @@ public:
 
     virtual ~PlayerSprite();
 
+    void playHeavyMachineGunSound();
 };
 
 #endif //METALSLUG_PLAYERSPRITE_H

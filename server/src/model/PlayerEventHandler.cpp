@@ -144,12 +144,6 @@ void PlayerEventHandler::handleRealeasedKey(EventCode eventCode, AnimatedObject 
                 case DISPARANDO_IZQUIERDA_QUIETO:
                     animatedObject->setPostura(MIRANDO_IZQUIERDA_QUIETO);
                     break;
-                case DISPARANDO_AGACHADO_AVANZANDO_DERECHA:
-                    animatedObject->setPostura(AGACHADO_AVANZANDO_DERECHA);
-                    break;
-                case DISPARANDO_AGACHADO_AVANZANDO_IZQUIERDA:
-                    animatedObject->setPostura(AGACHADO_AVANZANDO_IZQUIERDA);
-                    break;
                 default:
                     animatedObject->setPostura(MIRANDO_DERECHA_QUIETO);
                     break;
@@ -170,7 +164,6 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
             if (!((postura == AGACHADO_MIRANDO_DERECHA_QUIETO) or (postura == AGACHADO_AVANZANDO_DERECHA) or
                   (postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == AGACHADO_AVANZANDO_IZQUIERDA))) {
                 animatedObject->setDireccionY(1);
-
             }
             break;
 
@@ -205,12 +198,6 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
                     break;
                 case MIRANDO_IZQUIERDA_QUIETO:
                     animatedObject->setPostura(DISPARANDO_IZQUIERDA_QUIETO);
-                    break;
-                case AGACHADO_AVANZANDO_DERECHA:
-                    animatedObject->setPostura(DISPARANDO_AGACHADO_AVANZANDO_DERECHA);
-                    break;
-                case AGACHADO_AVANZANDO_IZQUIERDA:
-                    animatedObject->setPostura(DISPARANDO_AGACHADO_AVANZANDO_IZQUIERDA);
                     break;
                 default:
                     animatedObject->setPostura(DISPARANDO_DERECHA_QUIETO);

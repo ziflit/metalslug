@@ -74,6 +74,11 @@ Entity Scenery::buildPlayer(string user) {
     }
 
     PlayerBuilder playerBuilder;
+    /**
+    TODO: en el constructor de player se esta harcodeando la vida, la posicion incial entre otras cosas.
+    Creo que se podria pasar al PlayerBuilder el config de los players con toda esa info
+    para que lo setee limpio y sacar el hardcode.
+     */
     playerBuilder.setGameMode(configs->getGameMode());
     Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth);
     if (newPlayer != nullptr) {

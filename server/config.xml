@@ -3,12 +3,10 @@
 		<alto>600</alto>
 		<cant_players>1</cant_players>
 	</config>
-
     <gameMode>
         <mode>INDIVIDUAL</mode>
         <testMode>0</testMode>
     </gameMode>
-
 	<players>
 		<player>
 			<id>MARCO</id>
@@ -18,14 +16,14 @@
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
-			<cantHeightFrames>12</cantHeightFrames>
+			<cantHeightFrames>22</cantHeightFrames>
 			<speed>10</speed>
 		</player>
 		<player>
 			<id>TARMA</id>
 			<pathColor>sprites/player/tarma.png</pathColor>
             <pathGrey>sprites/player/tarmaGrisado.png</pathGrey>
-            <pathWeapons>sprites/player/armas.png</pathWeapons>
+            <pathWeapons>sprites/player/weaponsTarma.png</pathWeapons>
             <ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
@@ -36,7 +34,7 @@
 			<id>FIO</id>
 			<pathColor>sprites/player/fio.png</pathColor>
             <pathGrey>sprites/player/fioGrisado.png</pathGrey>
-            <pathWeapons>sprites/player/armas.png</pathWeapons>
+            <pathWeapons>sprites/player/weaponsFio.png</pathWeapons>
 			<ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
@@ -47,7 +45,7 @@
 			<id>ERI</id>
 			<pathColor>sprites/player/eri.png</pathColor>
             <pathGrey>sprites/player/eriGrisado.png</pathGrey>
-            <pathWeapons>sprites/player/armas.png</pathWeapons>
+            <pathWeapons>sprites/player/weaponsEri.png</pathWeapons>
             <ancho>100</ancho>
 			<alto>100</alto>
 			<cantWidthFrames>15</cantWidthFrames>
@@ -62,8 +60,8 @@
 			<path>sprites/enemies/enemy_normal_1.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
-			<cantWidthFrames>15</cantWidthFrames>
-			<cantHeightFrames>12</cantHeightFrames>
+			<cantWidthFrames>16</cantWidthFrames>
+			<cantHeightFrames>6</cantHeightFrames>
 			<speed>10</speed>
 		</enemy>
 		<enemy>
@@ -71,8 +69,8 @@
 			<path>sprites/enemies/enemy_normal_2.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
-			<cantWidthFrames>15</cantWidthFrames>
-			<cantHeightFrames>12</cantHeightFrames>
+			<cantWidthFrames>16</cantWidthFrames>
+			<cantHeightFrames>6</cantHeightFrames>
 			<speed>10</speed>
 		</enemy>
 		<enemy>
@@ -80,8 +78,8 @@
 			<path>sprites/enemies/enemy_normal_3.png</path>
 			<ancho>100</ancho>
 			<alto>100</alto>
-			<cantWidthFrames>15</cantWidthFrames>
-			<cantHeightFrames>12</cantHeightFrames>
+			<cantWidthFrames>16</cantWidthFrames>
+			<cantHeightFrames>6</cantHeightFrames>
 			<speed>10</speed>
 		</enemy>
 	</enemies>
