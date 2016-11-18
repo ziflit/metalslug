@@ -25,6 +25,7 @@ Server::~Server() {
 void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutils) {
     ConfigsXML configs = server->getConfigs();
     struct xmlConfig globalConf = configs.getGlobalConf();
+    struct xmlGameMode gameMode = configs.getGameMode();
     vector<struct xmlPlayer> players_sprites = configs.getPlayersConfig();
     vector<struct xmlEnemy> enemies_sprites = configs.getEnemiesConfig();
     vector<struct xmlBackground> backgrounds = configs.getBackgroundsConfig();
@@ -32,6 +33,7 @@ void sendConfigsToClient(int clientSocket, Server* server, SocketUtils& sockutil
     vector<struct xmlMiscelanea> miscelaneas = configs.getMiscelaneasConfig();
 
     sockutils.writeSocket(clientSocket, &globalConf, sizeof(struct xmlConfig));
+    sockutils.writeSocket(clientSocket, &gameMode, sizeof(struct xmlConfig));
 
     auto players_sprites_it = players_sprites.begin();
     while (players_sprites_it < players_sprites.end() - 1) {
