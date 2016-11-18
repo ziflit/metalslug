@@ -5,8 +5,8 @@ Player *PlayerBuilder::createPlayer(int playerNumber, string user, int windowWid
     auto search = playerCreator.find(playerNumber);
     if (search != playerCreator.end()) {
         auto &creator = search->second;
-        Player* player = creator(user, windowWidth);
-        player->setHealth(setHealth());
+        Player* player = creator(user, windowWidth, getGroupId(playerNumber));
+        player->setHealth(getHealth());
         return player;
     } else {
         return nullptr;
@@ -16,19 +16,19 @@ Player *PlayerBuilder::createPlayer(int playerNumber, string user, int windowWid
 void PlayerBuilder::setGameMode(xmlGameMode mode) {
     this->mode = mode;
 }
-//PASAR AL CLIENT
-//int PlayerBuilder::getGroupId(int playerNumber) {
-//    switch (this->mode.mode) {
-//        case INDIVIDUAL:
-//            return playerNumber;
-//        case COLAVORATIVO:
-//            return 0;
-//        case GRUPAL:
-//            return (playerNumber%2);
-//    }
-//}
 
-int PlayerBuilder::setHealth() {
+int PlayerBuilder::getGroupId(int playerNumber) {
+    switch (this->mode.mode) {
+        case INDIVIDUAL:
+            return playerNumber;
+        case COLAVORATIVO:
+            return 0;
+        case GRUPAL:
+            return (playerNumber%2);
+    }
+}
+
+int PlayerBuilder::getHealth() {
 //TODO: ESTO TIENE QUE SETEARSE BIEN, ESTO ES MUY CHINO
     if (mode.testMode){
         return 99999;
