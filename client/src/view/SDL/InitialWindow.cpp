@@ -7,9 +7,7 @@ void InitialWindow::initializeSDL() {
         cout<<"There was error initializing SDL: "<< endl
             <<SDL_GetError() << endl;
     }
-    if(TTF_Init() < 0){
-        cout<<"There was error initializig TTF: "<< TTF_GetError()<<endl;
-    }
+    if (TTF_Init() < 0) cout<<"There was error initializig TTF: "<< TTF_GetError()<<endl;
 }
 
 SDL_Window* InitialWindow::createWindow(const char *windowName, unsigned int window_width, unsigned int window_height) {
@@ -27,17 +25,13 @@ SDL_Window* InitialWindow::createWindow(const char *windowName, unsigned int win
     }
 
     return window;
-
 }
 
 SDL_Renderer* InitialWindow::createRenderer(SDL_Window* window){
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    if(renderer == NULL){
-        cout<<"There was error creating renderer: "<<SDL_GetError()<<endl;
-    }
+    if(renderer == NULL) cout<<"There was error creating renderer: "<<SDL_GetError()<<endl;
     return renderer;
-
 }
 
 InitialWindow::InitialWindow(unsigned int window_width, unsigned int window_height) {
@@ -48,7 +42,7 @@ InitialWindow::InitialWindow(unsigned int window_width, unsigned int window_heig
 
 
 void InitialWindow::showStartScreen() {
-    BackgroundSprite* startBack = new BackgroundSprite(mainRender,800,600);
+    BackgroundSprite* startBack = new BackgroundSprite(mainRender, 800, 600, xmlBackground());
     startBack->setUpImage("sprites/backgrounds/startScreen.png");
     startBack->setSourceRectWidth(startBack->getSpriteImageWidth()/2);
     startBack->setSourceRectHeight(startBack->getSpriteImageHeight());
@@ -61,19 +55,16 @@ void InitialWindow::showStartScreen() {
         startBack->actualizarDibujo();
         SDL_RenderPresent(mainRender);
 
-
         usleep(100000);
 
         while(SDL_PollEvent(&evento)){
             if(evento.type == SDL_KEYDOWN and evento.key.keysym.sym == SDLK_RETURN){
-                cout<<"ENTRO AL PRESSED ENTER"<<endl;
                 enterPressed = true;
-
             }
         }
     }
 
-    BackgroundSprite* waitingPlayers = new BackgroundSprite(mainRender,800,600);
+    BackgroundSprite* waitingPlayers = new BackgroundSprite(mainRender, 800, 600, xmlBackground());
     waitingPlayers->setUpImage("sprites/backgrounds/waitingPlayers.png");
     waitingPlayers->setSourceRectWidth(startBack->getSpriteImageWidth());
     waitingPlayers->setSourceRectHeight(startBack->getSpriteImageHeight());

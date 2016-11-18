@@ -14,52 +14,53 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new NormalBulletMovementStrategy());
-            setupBullet(bullet, 20, 20, 100, 60, vector->getX(), vector->getY(), firedBy->getShootsTo());
+                                new NormalBulletMovementStrategy(),firedBy);
+            setupBullet(bullet, 20, 20, 20, 15, 60, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         case Entity::BT_MISSILE:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(),
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new NormalBulletMovementStrategy());
-            setupBullet(bullet, 20, 20, 100, 30, vector->getX(), vector->getY(), firedBy->getShootsTo());
+                                new NormalBulletMovementStrategy(),firedBy);
+            setupBullet(bullet, 20, 20, 80, 40, 30, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         case Entity::BT_TELE_MISSILE:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(),
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new TeledirBulletMovementStrategy());
-            setupBullet(bullet, 20, 20, 100, 10, vector->getX(), vector->getY(), firedBy->getShootsTo());
+                                new TeledirBulletMovementStrategy(),firedBy);
+            setupBullet(bullet, 20, 20, 150, 100, 10, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         case Entity::BT_SHOT:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(),
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new NotMoveBulletStrategy());
-            setupBullet(bullet, 20, 20, 200, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
+                                new NotMoveBulletStrategy(),firedBy);
+            setupBullet(bullet, 20, 20, 50, 35, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         default:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(),
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new NormalBulletMovementStrategy());
+                                new NormalBulletMovementStrategy(),firedBy);
 
-            setupBullet(bullet, 20, 20, 100, 50, vector->getX(), vector->getY(), firedBy->getShootsTo());
+            setupBullet(bullet, 20, 20, 10, 10, 50, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
     }
     return bullet;
 }
 
-void BulletBuilder::setupBullet(Bullet *bullet, int boxAlto, int boxAncho, int damage, int speed, int directionX,
+void BulletBuilder::setupBullet(Bullet *bullet, int boxAlto, int boxAncho, int damage, int speed, int bulletScore, int directionX,
                                 int directionY, vector<Entity> &collisionables) {
     bullet->setBoxAlto(boxAlto);
     bullet->setBoxAncho(boxAncho);
     bullet->setDamage(damage);
     bullet->setSpeed(speed);
+    bullet->setBulletScore(bulletScore);
     bullet->setDireccionX(directionX);
     bullet->setDireccionY(directionY);
     bullet->setColisionables(collisionables);

@@ -8,7 +8,7 @@ void EnemySprite::setNextSpriteFrame() {
         if (EnemySprite::wActualPosFrame == (EnemySprite::wFramesCant - 1)) {
             EnemySprite::wActualPosFrame = 0;
         }
-        EnemySprite::sourceRect.x = (EnemySprite::frameWidth * EnemySprite::wActualPosFrame);
+        EnemySprite::sourceRect.x = (sourceRect.w * EnemySprite::wActualPosFrame);
         EnemySprite::wActualPosFrame++;
 
         cambioFrame = 0;
@@ -49,17 +49,17 @@ void EnemySprite::caminandoDerecha() {
     this->setNextSpriteFrame();
 }
 void EnemySprite::caminandoIzquierda() {
-    this->sourceRect.y = (frameHeight * 1);
+    this->sourceRect.y = (sourceRect.h * 1);
     this->setNextSpriteFrame();
 }
 void EnemySprite::disparandoCaminandoDerecha() {
-    this->sourceRect.y = (frameHeight * 2);
+    this->sourceRect.y = (sourceRect.h * 2);
     this->setNextSpriteFrame();
 }
 void EnemySprite::disparandoCaminandoIzquierda() {
-    this->sourceRect.y = (frameHeight * 3);
+    this->sourceRect.y = (sourceRect.h * 3);
     this->setNextSpriteFrame();
 }
 void EnemySprite::muerto() {
-    this->sourceRect.y = (frameHeight * 4);
+    this->sourceRect.y = (sourceRect.h * 4);
 }

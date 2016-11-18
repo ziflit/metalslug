@@ -10,18 +10,18 @@
 class BulletHandler {
 private:
     SDL_Renderer *mainRenderer;
-    vector<bulletType> bulletsTypes;
+    vector<simpleSpriteType> bulletsTypes;
     vector<struct event> events;
 public:
     BulletHandler(SDL_Renderer *mainRenderer);
 
-    void newBulletType(int ancho, int alto, Entity id, char imagePath[40]);
+    void newBulletType(xmlBullet bulletConfig);
 
     void handle(event newEvent);
 
     void updateBulletsSprites();
 
-    bulletType getBulletType(Entity id);
+    simpleSpriteType getBulletType(Entity id);
 
     BulletSprite* createBulletType(Entity id);
 
@@ -29,6 +29,5 @@ public:
 
     SDL_Texture *createTexture(string imageTexturePath);
 };
-
 
 #endif //METALSLUG_BULLETHANDLER_H

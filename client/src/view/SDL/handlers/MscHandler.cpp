@@ -21,20 +21,20 @@ SDL_Texture* MscHandler::createTexture(string imageTexturePath){
 }
 
 
-void MscHandler::newMscType(int ancho, int alto, Entity id, char *imagePath) {
-    miscelaneaType newType;
+void MscHandler::newMscType(xmlMiscelanea miscConfig) {
+    simpleSpriteType newType;
 
-    SDL_Texture* layer = this->createTexture(imagePath);
+    SDL_Texture* layer = this->createTexture(miscConfig.path);
     SDL_QueryTexture(layer, NULL, NULL, &newType.frameWidth, &newType.frameHeigth);
 
-    newType.ancho = ancho;
-    newType.alto = alto;
-    newType.id = id;
+    newType.ancho = miscConfig.ancho;
+    newType.alto = miscConfig.alto;
+    newType.id = miscConfig.id;
     newType.layer = layer;
     this->miscelaneasTypes.push_back(newType);
 }
 
-miscelaneaType MscHandler::getMscType(Entity id) {
+simpleSpriteType MscHandler::getMscType(Entity id) {
     for (auto type : miscelaneasTypes) {
         if (id == type.id) {
             return type;

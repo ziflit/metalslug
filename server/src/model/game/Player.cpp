@@ -28,6 +28,7 @@ Player::Player(string user, Entity entitySelected, int windowWidth, int groupId)
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
+    puntaje = 0;
 
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_SHOT, BT_BOMB,
                            MSC_WEAPON_BOX_HEAVY, MSC_WEAPON_BOX_ROCKET, MSC_WEAPON_BOX_SHOT,
@@ -60,6 +61,7 @@ GameObject *Player::shoot() {
         ammo--;
     } else {
         bulletType = BT_BULLET;
+        // TODO: Habria que ver como cambiar el arma, a pistola comun si se acabaron las balas
     }
     return BulletBuilder::createBullet(bulletType, this);
 };

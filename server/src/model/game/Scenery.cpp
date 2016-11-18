@@ -213,6 +213,7 @@ void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
             if (bullet != nullptr) bullets.push_back(bullet);
         }
         player->updatePosition(all_objects_in_window);
+        cout << "--Player: " << player->getEntity() << "--Points: " << player->getPoints() << endl;
     }
 }
 
