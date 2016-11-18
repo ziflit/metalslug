@@ -13,6 +13,7 @@ using namespace std;
 
 class PlayerBuilder {
 private:
+    xmlGameMode mode;
     map<int, function<Player *(std::string, int, int)>> playerCreator = {
             {0, [](string user, int windowWidth, int groupId) -> Player * {
                 return new Player(user, MARCO, windowWidth, groupId);
@@ -27,8 +28,14 @@ private:
                 return new Player(user, ERI, windowWidth, groupId);
             }}};
 public:
-    Player *createPlayer(int playerNumber, string user, int windowWidth, int groupId);
 
+    Player *createPlayer(int playerNumber, string user, int windowWidth);
+
+    void setGameMode(xmlGameMode mode);
+
+    int getGroupId(int playerNumber);
+
+    int getHealth();
 };
 
 #endif //SERVER_PLAYERBUILDER_H

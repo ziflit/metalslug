@@ -88,6 +88,10 @@ public:
         this->gameMode = mode;
 
     }
+
+    xmlGameMode getGameMode() {
+        return gameMode;
+    }
 };
 
 #endif /* SRC_MODEL_CONFIGS_H_ */
