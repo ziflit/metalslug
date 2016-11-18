@@ -3,7 +3,7 @@
 #include "BulletBuilder.h"
 #include "BonusManager.h"
 
-Player::Player(string user, Entity entitySelected, int windowWidth, int groupId) {
+Player::Player(string user, Entity entitySelected, int windowWidth) {
     username = user;
     id = entitySelected;
     this->windowWidth = windowWidth;

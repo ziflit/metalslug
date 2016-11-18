@@ -14,28 +14,26 @@ using namespace std;
 class PlayerBuilder {
 private:
     xmlGameMode mode;
-    map<int, function<Player *(std::string, int, int)>> playerCreator = {
-            {0, [](string user, int windowWidth, int groupId) -> Player * {
-                return new Player(user, MARCO, windowWidth, groupId);
+    map<int, function<Player *(std::string, int)>> playerCreator = {
+            {0, [](string user, int windowWidth) -> Player * {
+                return new Player(user, MARCO, windowWidth);
             }},
-            {1, [](string user, int windowWidth, int groupId) -> Player * {
-                return new Player(user, FIO, windowWidth, groupId);
+            {1, [](string user, int windowWidth) -> Player * {
+                return new Player(user, FIO, windowWidth);
             }},
-            {2, [](string user, int windowWidth, int groupId) -> Player * {
-                return new Player(user, TARMA, windowWidth, groupId);
+            {2, [](string user, int windowWidth) -> Player * {
+                return new Player(user, TARMA, windowWidth);
             }},
-            {3, [](string user, int windowWidth, int groupId) -> Player * {
-                return new Player(user, ERI, windowWidth, groupId);
+            {3, [](string user, int windowWidth) -> Player * {
+                return new Player(user, ERI, windowWidth);
             }}};
 public:
 
     Player *createPlayer(int playerNumber, string user, int windowWidth);
 
+    int setHealth();
+
     void setGameMode(xmlGameMode mode);
-
-    int getGroupId(int playerNumber);
-
-    int getHealth();
 };
 
 #endif //SERVER_PLAYERBUILDER_H
