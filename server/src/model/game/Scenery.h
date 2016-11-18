@@ -48,8 +48,6 @@ private:
 
     void addElementToScenery(Bullet *bullet);
 
-    void addElementToScenery(Enemy *enemy);
-
     void addElementToScenery(Plataforma *platform);
 
     // El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
@@ -80,6 +78,8 @@ public:
     vector<Player *> getPosJugadorMasAdelantado();
 
     void updateBackgroudsState();
+
+    void addElementToScenery(Enemy *enemy);
 
     vector<struct event> obtenerEstadoEscenario();
 

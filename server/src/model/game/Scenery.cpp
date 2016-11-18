@@ -166,7 +166,7 @@ void Scenery::updateBackgroudsState() {
             Enemy* finalEnemy;
             switch (this->finalEnemyType) {
             case ENEMY_FINAL_1:
-                finalEnemy = new EnemyFinal1(999, 700, 0);
+                finalEnemy = new EnemyFinal1(this, 999, 700, 0);
                 break;
             case ENEMY_FINAL_2:
                 finalEnemy = new EnemyFinal2(999, 700, 0);

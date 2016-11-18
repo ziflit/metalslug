@@ -53,7 +53,7 @@ void Enemy::avanzar(vector<GameObject *> gameObjects) {
  *  MUERTO
  */
 
-void Enemy::updatePosition(vector<GameObject *> game_objects) {
+void Enemy::updatePosition(vector<GameObject *> &game_objects) {
 
     int newX = x;
     int newY = y;
