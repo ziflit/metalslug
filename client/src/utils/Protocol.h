@@ -190,6 +190,7 @@ struct xmlPlayer {
 	int cantWidthFrames;
 	int cantHeightFrames;
 	int speed;
+	int groupId;
 };
 
 struct xmlEnemy {

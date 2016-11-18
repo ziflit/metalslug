@@ -57,7 +57,11 @@ bool Client::connect_to_server(string ip, int port, string user) {
     struct xmlConfig globalConf;
     recv(socket_number, &globalConf, sizeof(struct xmlConfig), 0);
 
-    /* Recepción de configuraciones de sprites de jugadores */
+    struct xmlGameMode gameModeConf;
+    recv(socket_number, &gameModeConf, sizeof(struct xmlGameMode), 0);
+
+
+        /* Recepción de configuraciones de sprites de jugadores */
     vector<struct xmlPlayer> playersConfig;
     struct xmlPlayer playerSetup;
     do {
