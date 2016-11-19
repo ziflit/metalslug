@@ -43,7 +43,7 @@ void PlayerSprite::actualizarDibujo() {
         if (not ((postura==DESCONECTADO)) or (postura==MURIENDO) or (postura==MUERTO)) {
             SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
-            this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 30) ));
+            this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h *2) ));
            this->renderizeHealthText();
     }
 
@@ -388,7 +388,7 @@ void PlayerSprite::setGroupId(xmlGameMode mode) {
 
 void PlayerSprite::updateHealthText(int health) {
     if(health == 999999) {
-        this->healthText->changeText("ME LA BANCO WUACHO");
+        this->healthText->changeText("INFINITA");
         return;
     }
     if (not ((postura == MURIENDO) or (postura == MUERTO))) this->healthText->changeText(health);

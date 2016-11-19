@@ -5,7 +5,7 @@
 	</config>
     <gameMode>
         <mode>INDIVIDUAL</mode>
-        <testMode>1</testMode>
+        <testMode>0</testMode>
     </gameMode>
 	<players>
 		<player>

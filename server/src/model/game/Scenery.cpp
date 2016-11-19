@@ -386,14 +386,22 @@ void Scenery::removeDeadBullets() {
     }
 }
 
+
 void Scenery::removeDeadPlayers() {
     vector<Player *>::iterator it = players.begin();
     while (it != players.end()) {
         if ((*it)->getPostura() == MUERTO) {
             it = players.erase(it);
-        } else {
+        }//Es 400 por el damage de las balas.
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {
+            (*it)->setPostura(MUERTO);
             ++it;
         }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() > -400)) {
+            (*it)->setHealth((*it)->getHealth() - 20);
+            ++it;
+        }
+        else ++it;
     }
 }
 
@@ -402,8 +410,15 @@ void Scenery::removeDeadEnemies() {
     while (it != enemies.end()) {
         if ((*it)->getPostura() == MUERTO) {
             it = enemies.erase(it);
-        } else {
+        }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {
+            (*it)->setPostura(MUERTO);
             ++it;
         }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() > -400)){
+            (*it)->setHealth((*it)->getHealth() - 20);
+            ++it;
+        }
+        else ++it;
     }
 }
