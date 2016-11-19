@@ -84,7 +84,7 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
     }
 
     int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-    if (this->canIMove(game_objects, newX, newYconGravedad + this->box_alto) ) {
+    if (this->canIMove(game_objects, newX, newYconGravedad )) {
         this->setJumpingState(true);
     } else {
         this->setJumpingState(false);
@@ -97,7 +97,7 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
     if (fsalto == 0) {
         this->setDireccionY(0);
     }
-    if (this->canIMove(game_objects, newX, newY + this->box_alto)) {
+    if (this->canIMove(game_objects, newX, newY)) {
         this->set_position(newX, newY);
     }
 
