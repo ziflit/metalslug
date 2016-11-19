@@ -70,12 +70,10 @@ public:
     int receiveDamage(int damage) { //devuelve la vida que le queda 
         if (health > damage) {
             health -= damage;
-        } else {
+        } else if (health > 0) { //esto es asi por el efecto de muriendo
             health = 0;
-            postura = MUERTO;
+            postura = MURIENDO;
         }
-        string a = (postura == MUERTO) ? " muerto " : " vivo ";
-        cout << id << a << health << endl;
         return health;
     }
 

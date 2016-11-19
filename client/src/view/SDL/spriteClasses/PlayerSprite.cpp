@@ -40,7 +40,7 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
 void PlayerSprite::actualizarDibujo() {
     if (clientIsConnected()) {
         SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
-        if(not grisado){
+        if (not ((postura==DESCONECTADO)) or (postura==MURIENDO) or (postura==MUERTO)) {
             SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
         this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 30) ));
@@ -49,8 +49,7 @@ void PlayerSprite::actualizarDibujo() {
 }
 void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
 void PlayerSprite::grisar() {
-    if (!this->grisado){
-        this->grisado = true;
+    if (postura != DESCONECTADO){
         mirandoDerechaQuieto();
         Sprite::setUpImage(imageGrisadoPath);
     }
@@ -215,11 +214,6 @@ void PlayerSprite::muriendo() {
     this->setNextSpriteFrame();
     this->weaponsSourceRect.x = (sourceRect.w * 100);
 }
-void PlayerSprite::muerto() {
-    this->sourceRect.y = (sourceRect.h * 23);
-    this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 100);
-}
 void PlayerSprite::setUsername(struct event nuevoEvento) {
     this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {0,255,0,1});
 }
@@ -231,9 +225,8 @@ void PlayerSprite::handle(struct event nuevoEvento) {
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
 
-    if (grisado and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) {
+    if ((postura == DESCONECTADO) and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) {
         this->colorear();
-        grisado = false;
     }
     if (this->arma != nuevoEvento.data.arma){
         setWeapon(nuevoEvento.data.arma);
@@ -242,7 +235,6 @@ void PlayerSprite::handle(struct event nuevoEvento) {
 }
 
 void PlayerSprite::setPostura(Postura postura) {
-
     switch (postura){
         case Postura::CAMINANDO_IZQUIERDA:
             caminandoIzquierda();
@@ -313,15 +305,13 @@ void PlayerSprite::setPostura(Postura postura) {
         case Postura::MURIENDO:
             muriendo();
             break;
-        case Postura::MUERTO:
-            muerto();
-            break;
         case Postura::DESCONECTADO:
             grisar();
             break;
         default:
             break;
     }
+    this->postura = postura;
 }
 
 void PlayerSprite::setWeapon(Arma weapon) {

@@ -15,12 +15,12 @@ private:
     Arma arma;
     int groupId;
     int wFramesCant,wActualPosFrame,cambioFrame;
-    bool grisado;
+    Postura postura;
     string imgaceColorPath,imageGrisadoPath;
 public:
 
     PlayerSprite(SDL_Renderer *renderer, xmlPlayer playerConfig) : Sprite(renderer) {
-        grisado = false;
+        postura = CAMINANDO_DERECHA;
         cambioFrame = 0;
         this->setWidth(playerConfig.ancho);
         this->setHeight(playerConfig.alto);
@@ -84,7 +84,6 @@ public:
     void disparandoAvanzandoMirandoArribaDerecha();
     void disparandoAvanzandoMirandoArribaIzquierda();
     void muriendo();
-    void muerto();
 
     virtual ~PlayerSprite();
 

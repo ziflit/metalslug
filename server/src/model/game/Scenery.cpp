@@ -218,7 +218,6 @@ void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
             if (bullet != nullptr) bullets.push_back(bullet);
         }
         player->updatePosition(all_objects_in_window);
-        cout << "--Player: " << player->getEntity() << "--Points: " << player->getPoints() << endl;
     }
 }
 
@@ -328,9 +327,16 @@ void Scenery::removeDeadPlayers() {
     while (it != players.end()) {
         if ((*it)->getPostura() == MUERTO) {
             it = players.erase(it);
-        } else {
+        }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() == -100)) {
+            (*it)->setPostura(MUERTO);
             ++it;
         }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() != -100)) {
+            (*it)->setHealth((*it)->getHealth() - 10);
+            ++it;
+        }
+        else ++it;
     }
 }
 
@@ -339,8 +345,15 @@ void Scenery::removeDeadEnemies() {
     while (it != enemies.end()) {
         if ((*it)->getPostura() == MUERTO) {
             it = enemies.erase(it);
-        } else {
+        }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() == -100)) {
+            (*it)->setPostura(MUERTO);
             ++it;
         }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() != -100)){
+            (*it)->setHealth((*it)->getHealth() - 10);
+            ++it;
+        }
+        else ++it;
     }
 }
