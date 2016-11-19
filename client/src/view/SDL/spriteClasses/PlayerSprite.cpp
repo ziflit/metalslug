@@ -387,11 +387,14 @@ void PlayerSprite::setGroupId(xmlGameMode mode) {
 }
 
 void PlayerSprite::updateHealthText(int health) {
-    if ((postura == MURIENDO) or (postura == MUERTO)) this->healthText->changeText(health);
+    if(health == 999999) {
+        this->healthText->changeText("ME LA BANCO WUACHO");
+        return;
+    }
+    if (not ((postura == MURIENDO) or (postura == MUERTO))) this->healthText->changeText(health);
     else this->healthText->changeText(0);
 }
 
 void PlayerSprite::renderizeHealthText() {
-
     this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
 }
