@@ -20,7 +20,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
     for (auto playerConfig : configs.getPlayersConfig()) {
         PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer, playerConfig);
         newPlayer->setGroupId(configs.getGameMode());
-        this->playersSprites.push_back(newPlayer);
+        this->playerHandler->addNewPlayer(newPlayer);
     }
 
     for (auto enemyConfig : configs.getEnemiesConfig()) {
@@ -77,11 +77,8 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
         return;
     }
 
-    for (auto player : playersSprites) {
-        if ( player->getId() == id ){
-            player->handle(nuevoEvento);
-            return;
-        }
+    if (playerHandler->isPlayerId(id)){
+        playerHandler->handle(nuevoEvento);
     }
 
     if (enemyHandler->isEnemyType(id)) {
@@ -115,11 +112,7 @@ void SDLRunningGame::updateWindowSprites () {
     SDL_RenderClear(this->mainRenderer);
 
     this->backgroundHandler->updateBottomBackgroundSprites();
-
-    for (int i = 0 ; i< playersSprites.size() ; i++) {
-            playersSprites[i]->actualizarDibujo();
-    }
-
+    this->playerHandler->updatePlayersSprites();
     this->enemyHandler->updateEnemiesSprites();
     this->bulletHandler->updateBulletsSprites();
     this->miscelaneasHandler->updateMiscelaneaSprites();
@@ -234,9 +227,7 @@ struct event SDLRunningGame::handleKeyUp(SDL_Event *sdlEvent){
 
 SDLRunningGame::~SDLRunningGame () {
 
-    for (auto playerSprite : playersSprites){
-        delete playerSprite;
-    }
+    delete playerHandler;
     delete enemyHandler;
     delete bulletHandler;
     delete backgroundHandler;
