@@ -68,7 +68,7 @@ public:
     }
 
     int receiveDamage(int damage) { //devuelve la vida que le queda 
-        if (health >= damage) {
+        if (health > damage) {
             health -= damage;
         } else {
             health = 0;

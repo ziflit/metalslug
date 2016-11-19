@@ -152,7 +152,6 @@ GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
 }
 
 GameObject *Enemy::shoot() {
-    Bullet *bullet = BulletBuilder::createBullet(bulletType, this);
+    Bullet *bullet = BulletBuilder::createBullet(bulletType, this);  //todo: setear posturas: DISPARANDO_CAMINANDO_DERECHA DISPARANDO_CAMINANDO_IZQUIERDA
     return bullet;
 };
-
