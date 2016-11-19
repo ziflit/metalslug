@@ -77,22 +77,27 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
     }
     // Minima logica para seguir a los jugadores, mejorarla por favor
     // Logica insolita para saltar cuando pasa por esas posiciones
-    if (x == 50 || x == 350 || x == 600) {
-        this->setDireccionY(1);
-    }
-    int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-    if (this->canIMove(game_objects, newX, newYconGravedad + this->box_alto)) {
-        fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
+    if (x == 100 || x == 200 || x == 300 || x == 500 || x == 700) {
+        if (not this->getJumpingState()){
+            this->setDireccionY(1);
+        }
     }
 
-    newY -= ((this->direccionY * fsalto) + (gravity * -1));
+    int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
+    if (this->canIMove(game_objects, newX, newYconGravedad )) {
+        this->setJumpingState(true);
+    } else {
+        this->setJumpingState(false);
+    }
+
+    newY -= ((fsalto * this->direccionY) + (gravity * -1));
     if (fsalto > 0) {
         fsalto -= gravity;
     }
     if (fsalto == 0) {
         this->setDireccionY(0);
     }
-    if (this->canIMove(game_objects, newX, newY + this->box_alto)) {
+    if (this->canIMove(game_objects, newX, newY)) {
         this->set_position(newX, newY);
     }
 
