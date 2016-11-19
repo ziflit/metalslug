@@ -77,8 +77,9 @@ public:
         } else if (health > 0) { //esto es asi por el efecto de muriendo
             health = 0;
             postura = MURIENDO;
+            return health;
         }
-        return health;
+        return 0;
     }
 
     virtual ~AnimatedObject() {

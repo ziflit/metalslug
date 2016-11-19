@@ -82,6 +82,7 @@ void EnemyHandler::deleteEnemy(char *username) {
     auto it = enemies.begin();
     while(it != enemies.end()) {
         if ((*it)->getNumber() == atoi(username)) {
+            delete *it;
             enemies.erase(it);
             it = enemies.end();
         }

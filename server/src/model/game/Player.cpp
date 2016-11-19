@@ -125,7 +125,7 @@ struct event Player::getState() {
     eventExt.y = y;
     eventExt.postura = this->postura;
     eventExt.puntaje = this->puntaje;
-    eventExt.health = this->health;
+    eventExt.health = this->getHealth();
 
     estado.completion = EventCompletion::PARTIAL_MSG;
     estado.data = eventExt;

@@ -22,6 +22,8 @@ public:
     void updatePlayersSprites();
 
     virtual ~PlayerHandler();
+
+    void deletePlayer(vector<PlayerSprite *>::iterator it);
 };
 
 

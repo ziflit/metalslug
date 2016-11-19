@@ -9,15 +9,27 @@ void PlayerHandler::addNewPlayer(PlayerSprite *newPlayer) {
 }
 
 bool PlayerHandler::isPlayerId(Entity id) {
-    return ((id == MARCO) || (id == TARMA) || (id == FIO) || (id == ERI));
+    for (int i = 0 ; i< playersSprites.size() ; i++) {
+        if (playersSprites[i]->getId() == id) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void PlayerHandler::handle(event newEvent) {
-    for (auto player : playersSprites) {
-        if ( player->getId() == newEvent.data.id ){
-            player->handle(newEvent);
-            return;
+    auto it = playersSprites.begin();
+    while(it != playersSprites.end()) {
+        if ( (*it)->getId() == newEvent.data.id){
+            if (newEvent.data.postura == MUERTO) {
+                deletePlayer(it);
+                return;
+            } else {
+                (*it)->handle(newEvent);
+                return;
+            }
         }
+        it++;
     }
 }
 
@@ -31,4 +43,9 @@ PlayerHandler::~PlayerHandler() {
     for (int i = 0 ; i< playersSprites.size() ; i++) {
         delete playersSprites[i];
     }
+}
+
+void PlayerHandler::deletePlayer(vector<PlayerSprite *>::iterator it) {
+            delete *it;
+            playersSprites.erase(it);
 }
