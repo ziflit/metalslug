@@ -16,6 +16,7 @@ private:
     int valorEnPuntos;
     vector <Entity> fightAgainst = {MARCO, TARMA, FIO, ERI}; // Si, es horrible tener esto aca.. pero es lo mas rapido de codear :P
     GameObject *findCloserPlayerToFollow(vector<GameObject *> gameObjects);
+    bool dropsEnemies = false;
 
 public:
     Enemy(int number, Entity enemySelected, int spawnX, int spawnY);
@@ -32,9 +33,15 @@ public:
 
     void set_position(int posx, int posy);
 
-    bool canIMove(vector<GameObject *> game_objects, int newX, int newY);
+    bool canMove(vector<GameObject *> game_objects, int newX, int newY);
 
     GameObject *shoot() override ;
+
+    Enemy* dropEnemy();
+
+    bool isDropsEnemies() const;
+
+    void setDropsEnemies(bool dropsEnemies);
 
 };
 

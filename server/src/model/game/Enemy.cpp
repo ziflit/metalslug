@@ -24,6 +24,7 @@ Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
     this->shootsTo = {MARCO, TARMA, FIO, ERI, MSC_PLATFORM};
+
 }
 
 Enemy::~Enemy() {
@@ -71,7 +72,7 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
             newX = x - speed;
         }
         /* Se mueve en X */
-        if (this->canIMove(game_objects, newX, newY)) {
+        if (this->canMove(game_objects, newX, newY)) {
             this->set_position(newX, newY);
         }
     }
@@ -81,7 +82,7 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
         this->setDireccionY(1);
     }
     int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-    if (this->canIMove(game_objects, newX, newYconGravedad + this->box_alto)) {
+    if (this->canMove(game_objects, newX, newYconGravedad + this->box_alto)) {
         fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
     }
 
@@ -92,7 +93,7 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
     if (fsalto == 0) {
         this->setDireccionY(0);
     }
-    if (this->canIMove(game_objects, newX, newY + this->box_alto)) {
+    if (this->canMove(game_objects, newX, newY + this->box_alto)) {
         this->set_position(newX, newY);
     }
 
@@ -116,7 +117,7 @@ struct event Enemy::getState() {
     return estado;
 }
 
-bool Enemy::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
+bool Enemy::canMove(vector<GameObject *> game_objects, int newX, int newY) {
     bool isColisionanding;
     for (auto &game_object : game_objects) {
         // Checkeo de colisiones
@@ -153,5 +154,26 @@ GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
 GameObject *Enemy::shoot() {
     Bullet *bullet = BulletBuilder::createBullet(bulletType, this);
     return bullet;
+}
+
+Enemy *Enemy::dropEnemy() {
+    Enemy *enemy = nullptr;
+    if (dropsEnemies) {
+        int randomEnemySpawn = rand() % 300;
+        //int spawnEnemyX = (rand() % 100) + 400;
+        if (randomEnemySpawn == 1) {
+            enemy = new Enemy(900, ENEMY_NORMAL_2, x, y + 10);
+            //Es un avion asi que va estar en un Y distinto al piso
+        }
+    }
+    return enemy;
+}
+
+bool Enemy::isDropsEnemies() const {
+    return dropsEnemies;
+}
+
+void Enemy::setDropsEnemies(bool dropsEnemies) {
+    Enemy::dropsEnemies = dropsEnemies;
 };
 
