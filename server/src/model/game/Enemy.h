@@ -17,6 +17,11 @@ private:
     vector <Entity> fightAgainst = {MARCO, TARMA, FIO, ERI}; // Si, es horrible tener esto aca.. pero es lo mas rapido de codear :P
     GameObject *findCloserPlayerToFollow(vector<GameObject *> gameObjects);
     bool dropsEnemies = false;
+    int countEnemyDrop = 100;
+public:
+    int getMaxEnemyDrop() const;
+
+    void setMaxEnemyDrop(int maxEnemyDrop);
 
 public:
     Enemy(int number, Entity enemySelected, int spawnX, int spawnY);
@@ -42,6 +47,10 @@ public:
     bool isDropsEnemies() const;
 
     void setDropsEnemies(bool dropsEnemies);
+
+    int getGravity() const;
+
+    void setGravity(int gravity);
 
 };
 

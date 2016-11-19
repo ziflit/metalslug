@@ -66,7 +66,6 @@ GameObject *Player::shoot() {
         ammo--;
     } else {
         bulletType = BT_BULLET;
-        // TODO: Habria que ver como cambiar el arma, a pistola comun si se acabaron las balas
     }
     return BulletBuilder::createBullet(bulletType, this);
 };

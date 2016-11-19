@@ -176,7 +176,10 @@ void Scenery::updateBackgroudsState() {
         if (not yaSpawneoElFinalEnemy) {
             cout << "<<<<<<<<<<<<aparece el enemigo final>>>>>>>>>>>>>>>>>>" << endl;
             Enemy *finalEnemy = new Enemy(900, this->finalEnemyType, 700, 0);
-            finalEnemy->setDropsEnemies(finalEnemy->getEntity() == ENEMY_FINAL_1);
+            if(finalEnemy->getEntity() == ENEMY_FINAL_1) {
+                finalEnemy->setDropsEnemies(true);
+                finalEnemy->setGravity(0);
+            }
             enemies.push_back(finalEnemy);
             yaSpawneoElFinalEnemy = true;
             this->moverPantalla = false;

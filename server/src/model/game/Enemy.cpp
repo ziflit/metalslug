@@ -87,11 +87,8 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
     }
 
     int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-    if (this->canMove(game_objects, newX, newYconGravedad)) {
-        this->setJumpingState(true);
-    } else {
-        this->setJumpingState(false);
-    }
+
+    this->setJumpingState(this->canMove(game_objects, newX, newYconGravedad));
 
     newY -= ((fsalto * this->direccionY) + (gravity * -1));
     if (fsalto > 0) {
@@ -166,11 +163,12 @@ GameObject *Enemy::shoot() {
 
 Enemy *Enemy::dropEnemy() {
     Enemy *enemy = nullptr;
-    if (dropsEnemies) {
-        int randomEnemySpawn = rand() % 51;
+    if (dropsEnemies && countEnemyDrop > 0) {
+        int randomEnemySpawn = rand() % 300;
         //int spawnEnemyX = (rand() % 100) + 400;
-        if (randomEnemySpawn > 35) {
-            enemy = new Enemy(900, ENEMY_NORMAL_2, x, y + 10);
+        if (randomEnemySpawn == 1) {
+            enemy = new Enemy(id + countEnemyDrop, ENEMY_NORMAL_2, x, y + 10);
+            countEnemyDrop--;
             //Es un avion asi que va estar en un Y distinto al piso
         }
     }
@@ -183,5 +181,21 @@ bool Enemy::isDropsEnemies() const {
 
 void Enemy::setDropsEnemies(bool dropsEnemies) {
     Enemy::dropsEnemies = dropsEnemies;
+}
+
+int Enemy::getMaxEnemyDrop() const {
+    return countEnemyDrop;
+}
+
+void Enemy::setMaxEnemyDrop(int maxEnemyDrop) {
+    Enemy::countEnemyDrop = maxEnemyDrop;
+}
+
+int Enemy::getGravity() const {
+    return gravity;
+}
+
+void Enemy::setGravity(int gravity) {
+    Enemy::gravity = gravity;
 };
 
