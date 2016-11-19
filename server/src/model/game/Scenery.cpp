@@ -191,6 +191,8 @@ Enemy *Scenery::createFinalEnemy() {
         case ENEMY_FINAL_1:
             finalEnemy->setDropsEnemies(true);
             finalEnemy->setX(250);
+            finalEnemy->setBoxAlto(300);
+            finalEnemy->setBoxAncho(300);
             finalEnemy->setGravity(0);
             break;
         case ENEMY_FINAL_2:
@@ -252,7 +254,7 @@ void Scenery::makeEnemyDropEnemies(Enemy *enemy) {
 }
 
 void Scenery::makeEnemyShoot(Enemy *enemy) {
-    if (rand() % 10 < 3 && enemy->getEntity() != ENEMY_FINAL_1) {
+    if (rand() % 300 < 3 && enemy->getEntity() != ENEMY_FINAL_1) {
         Bullet *bullet = (Bullet *) enemy->shoot();
         if (bullet != nullptr) bullets.push_back(bullet);
     }

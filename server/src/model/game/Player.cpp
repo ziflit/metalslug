@@ -67,6 +67,7 @@ GameObject *Player::shoot() {
     } else {
         bulletType = BT_BULLET;
     }
+    this->setShootingState(false);
     return BulletBuilder::createBullet(bulletType, this);
 };
 
