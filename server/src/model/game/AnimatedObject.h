@@ -68,6 +68,9 @@ public:
     }
 
     int receiveDamage(int damage) { //devuelve la vida que le queda 
+        if (health == 99999){
+            return health; // Si la vida es 99999 es super usuario, asique no recibe damage.
+        }
         if (health >= damage) {
             health -= damage;
         } else {
