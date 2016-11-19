@@ -109,6 +109,7 @@ struct event Enemy::getState() {
     eventExt.x = x;  //Actualizo la posicion del enemy
     eventExt.y = y;
     eventExt.postura = this->postura;
+    eventExt.health = this->health;
 
     estado.completion = EventCompletion::PARTIAL_MSG;
     estado.data = eventExt;

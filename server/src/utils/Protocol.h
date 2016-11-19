@@ -141,6 +141,7 @@ struct event_ext {
     int x;
     int y;
     int puntaje;
+	int health;
     Postura postura;
     Arma arma;
 };
