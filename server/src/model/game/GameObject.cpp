@@ -58,10 +58,10 @@ void GameObject::setBoxAncho(int boxAncho) {
 }
 
 bool GameObject::checkCollition(int newX, int newY, GameObject *other_object) {
-    if (newX + (box_ancho/2) < other_object->getX()) 
+    if (newX + (box_ancho/2) < other_object->getX() 
         or (newY + box_alto < other_object->getY())
         or (newX > other_object->getX() + other_object->getBoxAncho()/2 ) 
-        or (newY > other_object->getY() + other_object->getBoxAlto() ) {
+        or (newY > other_object->getY() + other_object->getBoxAlto() ) ){
         return false;
     }
     return true;
