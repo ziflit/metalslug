@@ -96,6 +96,8 @@ public:
     void makeEnemyShoot(Enemy *enemy);
 
     void makeEnemyDropEnemies(Enemy *enemy);
+
+    Enemy *createFinalEnemy();
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */

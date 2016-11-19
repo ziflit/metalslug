@@ -175,11 +175,7 @@ void Scenery::updateBackgroudsState() {
     } else {
         if (not yaSpawneoElFinalEnemy) {
             cout << "<<<<<<<<<<<<aparece el enemigo final>>>>>>>>>>>>>>>>>>" << endl;
-            Enemy *finalEnemy = new Enemy(900, this->finalEnemyType, 700, 0);
-            if(finalEnemy->getEntity() == ENEMY_FINAL_1) {
-                finalEnemy->setDropsEnemies(true);
-                finalEnemy->setGravity(0);
-            }
+            Enemy *finalEnemy = createFinalEnemy();
             enemies.push_back(finalEnemy);
             yaSpawneoElFinalEnemy = true;
             this->moverPantalla = false;
@@ -187,6 +183,27 @@ void Scenery::updateBackgroudsState() {
             this->fightWithFinalEnemy();
         }
     }
+}
+
+Enemy *Scenery::createFinalEnemy() {
+    Enemy *finalEnemy = new Enemy(900, finalEnemyType, 700, 0);
+    switch (finalEnemyType) {
+        case ENEMY_FINAL_1:
+            finalEnemy->setDropsEnemies(true);
+            finalEnemy->setX(250);
+            finalEnemy->setGravity(0);
+            break;
+        case ENEMY_FINAL_2:
+            finalEnemy->setX(250);
+            finalEnemy->setBulletType(BT_MISSILE);
+            break;
+        case ENEMY_FINAL_3:
+            finalEnemy->setX(250);
+            finalEnemy->setBulletType(BT_BOMB);
+            finalEnemy->setGravity(0);
+            break;
+    }
+    return finalEnemy;
 }
 
 vector<struct event> Scenery::obtenerEstadoEscenario() {
@@ -230,13 +247,12 @@ void Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
 void Scenery::makeEnemyDropEnemies(Enemy *enemy) {
     Enemy *droppedEnemy = enemy->dropEnemy();
     if (droppedEnemy != nullptr) {
-        cout << "solto un enemigo" << endl;
         enemies.push_back(droppedEnemy);
     }
 }
 
 void Scenery::makeEnemyShoot(Enemy *enemy) {
-    if (rand() % 10 < 3) {
+    if (rand() % 10 < 3 && enemy->getEntity() != ENEMY_FINAL_1) {
         Bullet *bullet = (Bullet *) enemy->shoot();
         if (bullet != nullptr) bullets.push_back(bullet);
     }

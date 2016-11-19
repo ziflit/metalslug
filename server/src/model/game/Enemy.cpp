@@ -65,7 +65,6 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
         if (not(distance > 700 || distance < 300)) {
             float playerPosX = playerToFollow->getX();
             if (x < playerPosX - 100) {
-                cout << "camino derecha" << endl;
                 postura = CAMINANDO_DERECHA;
                 newX = x + speed;
             } else if (x > playerPosX + 100) {
@@ -167,7 +166,7 @@ Enemy *Enemy::dropEnemy() {
         int randomEnemySpawn = rand() % 300;
         //int spawnEnemyX = (rand() % 100) + 400;
         if (randomEnemySpawn == 1) {
-            enemy = new Enemy(id + countEnemyDrop, ENEMY_NORMAL_2, x, y + 10);
+            enemy = new Enemy(number + countEnemyDrop, ENEMY_NORMAL_2, x, y + 10);
             countEnemyDrop--;
             //Es un avion asi que va estar en un Y distinto al piso
         }
