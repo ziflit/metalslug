@@ -91,7 +91,11 @@ public:
 
     void fightWithFinalEnemy();
 
-    int setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Entity* ef, int selectedLevel);
+    int setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel);
+
+    void makeEnemyShoot(Enemy *enemy);
+
+    void makeEnemyDropEnemies(Enemy *enemy);
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */

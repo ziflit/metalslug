@@ -192,7 +192,6 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
     vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
 
-
     updatePlayersState(all_objects_in_window);
     updateEnemiesState(all_objects_in_window);
     updateBulletsState(all_objects_in_window);
@@ -217,15 +216,26 @@ void Scenery::updateBulletsState(vector<GameObject *> &all_objects_in_window) {
     }
 }
 
-void
-Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
+void Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
     for (auto enemy : enemies) {
         enemy->updatePosition(all_objects_in_window);
-        Enemy *droppedEnemy = enemy->dropEnemy();
-        if (droppedEnemy != nullptr) {
-            cout << "solto un enemigo" << endl;
-            this->enemies.push_back(droppedEnemy);
-        }
+        makeEnemyShoot(enemy);
+        makeEnemyDropEnemies(enemy);
+    }
+}
+
+void Scenery::makeEnemyDropEnemies(Enemy *enemy) {
+    Enemy *droppedEnemy = enemy->dropEnemy();
+    if (droppedEnemy != nullptr) {
+        cout << "solto un enemigo" << endl;
+        enemies.push_back(droppedEnemy);
+    }
+}
+
+void Scenery::makeEnemyShoot(Enemy *enemy) {
+    if (rand() % 10 < 3) {
+        Bullet *bullet = (Bullet *) enemy->shoot();
+        if (bullet != nullptr) bullets.push_back(bullet);
     }
 }
 

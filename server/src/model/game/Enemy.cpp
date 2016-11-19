@@ -60,20 +60,22 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
     int newY = y;
 
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
-    float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
-    if (not(distance > 700 || distance < 300)) {
-        float playerPosX = playerToFollow->getX();
-        if (x < playerPosX - 100) {
-            cout << "camino derecha" << endl;
-            postura = CAMINANDO_DERECHA;
-            newX = x + speed;
-        } else if (x > playerPosX + 100) {
-            postura = CAMINANDO_IZQUIERDA;
-            newX = x - speed;
-        }
-        /* Se mueve en X */
-        if (this->canMove(game_objects, newX, newY)) {
-            this->set_position(newX, newY);
+    if (playerToFollow != nullptr) {
+        float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
+        if (not(distance > 700 || distance < 300)) {
+            float playerPosX = playerToFollow->getX();
+            if (x < playerPosX - 100) {
+                cout << "camino derecha" << endl;
+                postura = CAMINANDO_DERECHA;
+                newX = x + speed;
+            } else if (x > playerPosX + 100) {
+                postura = CAMINANDO_IZQUIERDA;
+                newX = x - speed;
+            }
+            /* Se mueve en X */
+            if (this->canMove(game_objects, newX, newY)) {
+                this->set_position(newX, newY);
+            }
         }
     }
     // Minima logica para seguir a los jugadores, mejorarla por favor
@@ -159,9 +161,9 @@ GameObject *Enemy::shoot() {
 Enemy *Enemy::dropEnemy() {
     Enemy *enemy = nullptr;
     if (dropsEnemies) {
-        int randomEnemySpawn = rand() % 300;
+        int randomEnemySpawn = rand() % 51;
         //int spawnEnemyX = (rand() % 100) + 400;
-        if (randomEnemySpawn == 1) {
+        if (randomEnemySpawn > 35) {
             enemy = new Enemy(900, ENEMY_NORMAL_2, x, y + 10);
             //Es un avion asi que va estar en un Y distinto al piso
         }
