@@ -13,7 +13,7 @@
 class MscHandler {
 private:
     SDL_Renderer* mainRenderer;
-    vector<miscelaneaType> miscelaneasTypes;
+    vector<simpleSpriteType> miscelaneasTypes;
     vector<event> events;
 
 public:
@@ -21,13 +21,13 @@ public:
 
     SDL_Texture *createTexture(string imageTexturePath);
 
-    void newMscType(int ancho, int alto, Entity id, char *imagePath);
+    void newMscType(xmlMiscelanea ancho);
 
     void handle(event newEvent);
 
     void updateMiscelaneaSprites();
 
-    miscelaneaType getMscType(Entity id);
+    simpleSpriteType getMscType(Entity id);
 
     bool isMscType(Entity id);
 

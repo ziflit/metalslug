@@ -1,12 +1,14 @@
 TALLER DE PROGRAMACIÓN I - Curso Ing. Diego Azcurra - 2do cuatrimestre 2016
 
-Trabajo práctico Nº1: Comunicaciones - Entrega Nº1
+Trabajo práctico Nº3: Juego Terminado 
 
-Integrantes del grupo:	-Santiago Acuña 	    95313
-                      	-Santiago Montiel     95947
-	                      -Francisco I. Pirra 	95178
-	                      -M. Florencia Prado 	96626
-	                      -Leandro F. Rinaldi 	89140
+Integrantes del grupo:	
+* 95313 - Santiago Acuña
+* 95947 - Santiago Montiel
+* 95178 - Francisco I. Pirra
+* 96626 - M. Florencia Prado
+* 89140 - Leandro F. Rinaldi
+
 
 Sistema Operativo en el cual fue probado el proyecto: Linux
 

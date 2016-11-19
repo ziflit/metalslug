@@ -1,7 +1,8 @@
 #include "Bullet.h"
 
 Bullet::Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int direccionX,
-               vector<Entity> collitionables, BulletMovementStrategy *bulletMovementStrategy) {
+               vector<Entity> collitionables, BulletMovementStrategy *bulletMovementStrategy, 
+               AnimatedObject* bulletOwner) {
     id = bulletType;
     x = spawnX;
     y = spawnY;
@@ -9,6 +10,7 @@ Bullet::Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int di
     this->direccionX = direccionX;
     this->colisionables = collitionables;
     this->movementStrategy = bulletMovementStrategy;
+    this->bulletOwner = bulletOwner;
 }
 
 Bullet::~Bullet() {

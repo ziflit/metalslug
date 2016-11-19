@@ -12,9 +12,14 @@ private:
     string username;
     int gravity;
     int windowWidth;
-
+    int groupId;
+    
 public:
-    Player(string user, Entity entitySelected, int windowWidth);
+    int getGroupId() const;
+
+    void setGroupId(int groupId);
+
+    Player(string user, Entity entitySelected, int windowWidth, int groupId);
 
     virtual ~Player();
 

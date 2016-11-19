@@ -12,47 +12,26 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
     for (auto backgroundConfig : configs.getBackgroundsConfig()) {
         BackgroundSprite* newBackground = new BackgroundSprite(this->mainRenderer,
                                                                window_width,
-                                                               window_height);
-        newBackground->setUpImage(backgroundConfig.path);
-        newBackground->setId(backgroundConfig.id);
+                                                               window_height,
+                                                               backgroundConfig);
         this->backgroundHandler->addBackgroundToHandle(newBackground);
     }
 
     for (auto playerConfig : configs.getPlayersConfig()) {
-        PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer);
-        newPlayer->setWidth(playerConfig.ancho);
-        newPlayer->setHeight(playerConfig.alto);
-        newPlayer->setId(playerConfig.id);
-        newPlayer->setUpImage(playerConfig.pathColor,
-                              playerConfig.pathGrey,
-                              playerConfig.cantWidthFrames,
-                              playerConfig.cantHeightFrames);
-
-        newPlayer->setUpWeaponsImage(playerConfig.pathWeapons);
+        PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer, playerConfig);
         this->playersSprites.push_back(newPlayer);
     }
 
     for (auto enemyConfig : configs.getEnemiesConfig()) {
-        enemyHandler->newEnemyType(enemyConfig.ancho,
-                               enemyConfig.alto,
-                               enemyConfig.id,
-                               enemyConfig.path,
-                               enemyConfig.cantWidthFrames,
-                               enemyConfig.cantHeightFrames);
+        enemyHandler->newEnemyType(enemyConfig);
     }
-    //TODO: TODA ESTA MIEDA VOY A SIMPLIFICAR Y MANDO EL CONFIG DIRECTAMENTE.
+
     for (auto bulletConfig : configs.getBulletsConfig()) {
-        bulletHandler->newBulletType(bulletConfig.ancho,
-                                     bulletConfig.alto,
-                                     bulletConfig.id,
-                                     bulletConfig.path);
+        bulletHandler->newBulletType(bulletConfig);
     }
 
     for (auto miscConfig : configs.getMiscelaneasConfig()) {
-        miscelaneasHandler->newMscType(miscConfig.ancho,
-                                       miscConfig.alto,
-                                       miscConfig.id,
-                                       miscConfig.path);
+        miscelaneasHandler->newMscType(miscConfig);
     }
 }
 
@@ -88,7 +67,7 @@ struct event SDLRunningGame::eventsHandler(SDL_Event* sdlEvent) {
 }
 
 void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
-//todo: mejorar esta funcion.
+
     Entity id = nuevoEvento.data.id;
 
     if (backgroundHandler->isBackgroundType(id)) {
@@ -122,12 +101,9 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
 
 void SDLRunningGame::handleModelState(vector <event> model_state) {
 
-//        cout<<"TAMANIO: "<<model_state.size()<<endl;
-
         for (auto nuevoEvento : model_state){
 
             this->getSpriteAndHandleNewEvent(nuevoEvento);
-
         }
         this->updateWindowSprites();
 }
@@ -259,7 +235,11 @@ SDLRunningGame::~SDLRunningGame () {
     for (auto playerSprite : playersSprites){
         delete playerSprite;
     }
-
+    delete enemyHandler;
+    delete bulletHandler;
+    delete backgroundHandler;
+    delete miscelaneasHandler;
+    delete music;
     SDL_DestroyRenderer(mainRenderer);
     SDL_DestroyWindow(mainWindow);
     SDL_Quit();
