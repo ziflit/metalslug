@@ -87,8 +87,10 @@ void Player::updatePosition(vector<GameObject *> game_objects) {
         /* Checkeo de gravedad */
 
         int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-        if (this->canIMove(game_objects, newX, newYconGravedad + this->box_alto)) {
-            isJumping = false;
+        if (this->canIMove(game_objects, newX, newYconGravedad + this->box_alto) ) {
+            this->setJumpingState(true);
+        } else {
+            this->setJumpingState(false);
         }
 
         newY -= ((fsalto * this->direccionY) + (gravity * -1));

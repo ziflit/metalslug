@@ -163,7 +163,9 @@ void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *a
         case EventCode::SDL_KEY_A_PRESSED:
             if (!((postura == AGACHADO_MIRANDO_DERECHA_QUIETO) or (postura == AGACHADO_AVANZANDO_DERECHA) or
                   (postura == AGACHADO_MIRANDO_IZQUIERDA_QUIETO) or (postura == AGACHADO_AVANZANDO_IZQUIERDA))) {
-                animatedObject->setDireccionY(1);
+                if (not animatedObject->getJumpingState()){
+                    animatedObject->setDireccionY(1);
+                }
             }
             break;
 
