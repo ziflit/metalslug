@@ -163,19 +163,19 @@ void Scenery::updateBackgroudsState() {
         }
     } else {
         if (not yaSpawneoElFinalEnemy) {
-            Enemy* finalEnemy;
+            /*Enemy* finalEnemy;
             switch (this->finalEnemyType) {
             case ENEMY_FINAL_1:
-                finalEnemy = new EnemyFinal1(this, 999, 700, 0);
+                //finalEnemy = new EnemyFinal1(this, 999, 700, 0);
                 break;
             case ENEMY_FINAL_2:
-                finalEnemy = new EnemyFinal2(999, 700, 0);
+                //finalEnemy = new Enemy(999, 700, 0);
                 break;
             case ENEMY_FINAL_3:
-                finalEnemy = new EnemyFinal3(999, 700, 0);
+                //finalEnemy = new EnemyFinal3(999, 700, 0);
                 break;
             }
-            enemies.push_back(finalEnemy);
+            enemies.push_back(finalEnemy);*/
             yaSpawneoElFinalEnemy = true;
             this->moverPantalla = false;
         } else {

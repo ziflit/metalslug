@@ -1,9 +1,3 @@
-/*
- * Scenery.h
- *
- *  Created on: 02/10/2016
- *      Author: fpirra
- */
 
 #ifndef SRC_MODEL_GAME_SCENERY_H_
 #define SRC_MODEL_GAME_SCENERY_H_
@@ -15,9 +9,6 @@
 #include "Background.h"
 #include "Bullet.h"
 #include "Enemy.h"
-#include "EnemyFinal1.h"
-#include "EnemyFinal2.h"
-#include "EnemyFinal3.h"
 #include "Plataforma.h"
 #include "../Event.h"
 #include "../ConfigsXML.h"
