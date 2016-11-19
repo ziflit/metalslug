@@ -1,9 +1,3 @@
-/*
- * Scenery.h
- *
- *  Created on: 02/10/2016
- *      Author: fpirra
- */
 
 #ifndef SRC_MODEL_GAME_SCENERY_H_
 #define SRC_MODEL_GAME_SCENERY_H_
@@ -27,7 +21,9 @@ class Scenery {
 private:
     ConfigsXML *configs;
     vector<struct xmlLvl> lvlsConfig;
-    bool nivelEnded;
+    bool finDelNivel, yaSpawneoElFinalEnemy, moverPantalla;
+    Entity finalEnemyType;
+    int actualLevel;
     vector<Player *> players;
     vector<Enemy *> enemies;
     vector<GameObject *> backgrounds;
@@ -43,8 +39,6 @@ private:
     void addElementToScenery(Player *player);
 
     void addElementToScenery(Bullet *bullet);
-
-    void addElementToScenery(Enemy *enemy);
 
     void addElementToScenery(Plataforma *platform);
 
@@ -77,6 +71,8 @@ public:
 
     void updateBackgroudsState();
 
+    void addElementToScenery(Enemy *enemy);
+
     vector<struct event> obtenerEstadoEscenario();
 
     int findPlayerByUsername(string user);
@@ -93,7 +89,15 @@ public:
 
     void removeDeadObjects();
 
-    int setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Entity* ef, int selectedLevel);
+    void fightWithFinalEnemy();
+
+    int setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel);
+
+    void makeEnemyShoot(Enemy *enemy);
+
+    void makeEnemyDropEnemies(Enemy *enemy);
+
+    Enemy *createFinalEnemy();
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */

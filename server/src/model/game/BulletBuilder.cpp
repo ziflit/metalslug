@@ -14,7 +14,7 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new NormalBulletMovementStrategy(),firedBy);
+                                new NormalBulletMovementStrategy(), firedBy);
             setupBullet(bullet, 20, 20, 20, 15, 60, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         case Entity::BT_MISSILE:
@@ -22,7 +22,7 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new NormalBulletMovementStrategy(),firedBy);
+                                new NormalBulletMovementStrategy(), firedBy);
             setupBullet(bullet, 20, 20, 80, 40, 30, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         case Entity::BT_TELE_MISSILE:
@@ -30,7 +30,7 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new TeledirBulletMovementStrategy(),firedBy);
+                                new TeledirBulletMovementStrategy(), firedBy);
             setupBullet(bullet, 20, 20, 150, 100, 10, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         case Entity::BT_SHOT:
@@ -38,7 +38,21 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new NotMoveBulletStrategy(),firedBy);
+                                new NotMoveBulletStrategy(), firedBy);
+            setupBullet(bullet, 20, 20, 50, 35, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
+            break;
+        case Entity::BT_BOMB:
+            bullet = new Bullet(bulletType, firedBy->getX(), firedBy->getY(),
+                                firedBy->getDireccionX() + firedBy->getBoxAncho() / 2,
+                                firedBy->getDireccionY() + firedBy->getBoxAlto(),
+                                firedBy->getShootsTo(), new NormalBulletMovementStrategy(), firedBy);
+            setupBullet(bullet, 20, 20, 50, 35, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
+            break;
+        case Entity::BT_LASER:
+            bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(),
+                                firedBy->getY() + firedBy->getBoxAlto() / 2,
+                                firedBy->getDireccionX(), firedBy->getDireccionY(), firedBy->getShootsTo(),
+                                new NotMoveBulletStrategy(), firedBy);
             setupBullet(bullet, 20, 20, 50, 35, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         default:
@@ -46,7 +60,7 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
-                                new NormalBulletMovementStrategy(),firedBy);
+                                new NormalBulletMovementStrategy(), firedBy);
 
             setupBullet(bullet, 20, 20, 10, 10, 50, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
@@ -54,7 +68,8 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
     return bullet;
 }
 
-void BulletBuilder::setupBullet(Bullet *bullet, int boxAlto, int boxAncho, int damage, int speed, int bulletScore, int directionX,
+void BulletBuilder::setupBullet(Bullet *bullet, int boxAlto, int boxAncho, int damage, int speed, int bulletScore,
+                                int directionX,
                                 int directionY, vector<Entity> &collisionables) {
     bullet->setBoxAlto(boxAlto);
     bullet->setBoxAncho(boxAncho);

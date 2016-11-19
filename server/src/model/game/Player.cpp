@@ -66,8 +66,8 @@ GameObject *Player::shoot() {
         ammo--;
     } else {
         bulletType = BT_BULLET;
-        // TODO: Habria que ver como cambiar el arma, a pistola comun si se acabaron las balas
     }
+    this->setShootingState(false);
     return BulletBuilder::createBullet(bulletType, this);
 };
 
@@ -80,14 +80,15 @@ void Player::updatePosition(vector<GameObject *> game_objects) {
             if (((direccionX == 1) and (x < (windowWidth - 100))) or ((direccionX == -1) and (x > 0))) {
                 newX = x + direccionX * speed;
             }
-            if (this->canIMove(game_objects, newX, newY)) {
+            if (this->canMove(game_objects, newX, newY)) {
                 this->set_position(newX, newY);
             }
         }
         /* Checkeo de gravedad */
 
         int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-        if (this->canIMove(game_objects, newX, newYconGravedad) ) {
+
+        if (this->canMove(game_objects, newX, newYconGravedad)) {
             this->setJumpingState(true);
         } else {
             this->setJumpingState(false);
@@ -100,7 +101,8 @@ void Player::updatePosition(vector<GameObject *> game_objects) {
         if (fsalto == 0) {
             this->setDireccionY(0);
         }
-        if (this->canIMove(game_objects, newX, newY)) {
+
+        if (this->canMove(game_objects, newX, newY)) {
             this->set_position(newX, newY);
         }
     } else {
@@ -133,7 +135,7 @@ struct event Player::getState() {
     return estado;
 }
 
-bool Player::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
+bool Player::canMove(vector<GameObject *> game_objects, int newX, int newY) {
     /* Auto??? que pasa con las cosas abstractas? */
     bool isColisionanding;
     for (auto &game_object : game_objects) {

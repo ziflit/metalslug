@@ -82,6 +82,33 @@
 			<cantHeightFrames>6</cantHeightFrames>
 			<speed>10</speed>
 		</enemy>
+        <enemy>
+            <id>ENEMY_FINAL_1</id>
+            <path>sprites/enemies/enemy_final_1.png</path>
+            <ancho>300</ancho>
+            <alto>300</alto>
+            <cantWidthFrames>15</cantWidthFrames>
+            <cantHeightFrames>12</cantHeightFrames>
+            <speed>0</speed>
+        </enemy>
+        <enemy>
+            <id>ENEMY_FINAL_2</id>
+            <path>sprites/enemies/enemy_final_2.png</path>
+            <ancho>300</ancho>
+            <alto>300</alto>
+            <cantWidthFrames>15</cantWidthFrames>
+            <cantHeightFrames>12</cantHeightFrames>
+            <speed>0</speed>
+        </enemy>
+        <enemy>
+            <id>ENEMY_FINAL_3</id>
+            <path>sprites/enemies/enemy_final_3.png</path>
+            <ancho>300</ancho>
+            <alto>300</alto>
+            <cantWidthFrames>15</cantWidthFrames>
+            <cantHeightFrames>12</cantHeightFrames>
+            <speed>0</speed>
+        </enemy>
 	</enemies>
 
 	<backgrounds>
@@ -145,8 +172,8 @@
 	    <bullet>
             <id>BT_BULLET</id>
             <path>sprites/bullets/BT_BULLET.png</path>
-            <ancho>2</ancho>
-            <alto>2</alto>
+            <ancho>5</ancho>
+            <alto>5</alto>
         </bullet>
         <bullet>
             <id>BT_HEAVY_BULLET</id>

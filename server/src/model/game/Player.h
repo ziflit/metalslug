@@ -39,7 +39,7 @@ public:
 
     void set_position(int posx, int posy);
 
-    bool canIMove(vector<GameObject *> game_objects, int newX, int newY);
+    bool canMove(vector<GameObject *> game_objects, int newX, int newY);
 
     string getUsername() const {
         return username;
