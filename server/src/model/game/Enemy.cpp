@@ -24,6 +24,7 @@ Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
     this->shootsTo = {MARCO, TARMA, FIO, ERI, MSC_PLATFORM};
+
 }
 
 Enemy::~Enemy() {
@@ -53,42 +54,40 @@ void Enemy::avanzar(vector<GameObject *> gameObjects) {
  *  MUERTO
  */
 
-void Enemy::updatePosition(vector<GameObject *> game_objects) {
+void Enemy::updatePosition(vector<GameObject *> &game_objects) {
 
     int newX = x;
     int newY = y;
 
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
-    float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
-    if (not(distance > 700 || distance < 300)) {
-        float playerPosX = playerToFollow->getX();
-        if (x < playerPosX - 100) {
-            cout << "camino derecha" << endl;
-            postura = CAMINANDO_DERECHA;
-            newX = x + speed;
-        } else if (x > playerPosX + 100) {
-            postura = CAMINANDO_IZQUIERDA;
-            newX = x - speed;
-        }
-        /* Se mueve en X */
-        if (this->canIMove(game_objects, newX, newY)) {
-            this->set_position(newX, newY);
+    if (playerToFollow != nullptr) {
+        float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
+        if (not(distance > 700 || distance < 300)) {
+            float playerPosX = playerToFollow->getX();
+            if (x < playerPosX - 100) {
+                postura = CAMINANDO_DERECHA;
+                newX = x + speed;
+            } else if (x > playerPosX + 100) {
+                postura = CAMINANDO_IZQUIERDA;
+                newX = x - speed;
+            }
+            /* Se mueve en X */
+            if (this->canMove(game_objects, newX, newY)) {
+                this->set_position(newX, newY);
+            }
         }
     }
     // Minima logica para seguir a los jugadores, mejorarla por favor
     // Logica insolita para saltar cuando pasa por esas posiciones
     if (x == 100 || x == 200 || x == 300 || x == 500 || x == 700) {
-        if (not this->getJumpingState()){
+        if (not this->getJumpingState()) {
             this->setDireccionY(1);
         }
     }
 
     int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-    if (this->canIMove(game_objects, newX, newYconGravedad )) {
-        this->setJumpingState(true);
-    } else {
-        this->setJumpingState(false);
-    }
+
+    this->setJumpingState(this->canMove(game_objects, newX, newYconGravedad));
 
     newY -= ((fsalto * this->direccionY) + (gravity * -1));
     if (fsalto > 0) {
@@ -97,7 +96,8 @@ void Enemy::updatePosition(vector<GameObject *> game_objects) {
     if (fsalto == 0) {
         this->setDireccionY(0);
     }
-    if (this->canIMove(game_objects, newX, newY)) {
+
+    if (this->canMove(game_objects, newX, newY)) {
         this->set_position(newX, newY);
     }
 
@@ -121,7 +121,7 @@ struct event Enemy::getState() {
     return estado;
 }
 
-bool Enemy::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
+bool Enemy::canMove(vector<GameObject *> game_objects, int newX, int newY) {
     bool isColisionanding;
     for (auto &game_object : game_objects) {
         // Checkeo de colisiones
@@ -158,5 +158,43 @@ GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
 GameObject *Enemy::shoot() {
     Bullet *bullet = BulletBuilder::createBullet(bulletType, this);
     return bullet;
+}
+
+Enemy *Enemy::dropEnemy() {
+    Enemy *enemy = nullptr;
+    if (dropsEnemies && countEnemyDrop > 0) {
+        int randomEnemySpawn = rand() % 300;
+        //int spawnEnemyX = (rand() % 100) + 400;
+        if (randomEnemySpawn == 1) {
+            enemy = new Enemy(number + countEnemyDrop, ENEMY_NORMAL_2, x, y + 10);
+            countEnemyDrop--;
+            //Es un avion asi que va estar en un Y distinto al piso
+        }
+    }
+    return enemy;
+}
+
+bool Enemy::isDropsEnemies() const {
+    return dropsEnemies;
+}
+
+void Enemy::setDropsEnemies(bool dropsEnemies) {
+    Enemy::dropsEnemies = dropsEnemies;
+}
+
+int Enemy::getMaxEnemyDrop() const {
+    return countEnemyDrop;
+}
+
+void Enemy::setMaxEnemyDrop(int maxEnemyDrop) {
+    Enemy::countEnemyDrop = maxEnemyDrop;
+}
+
+int Enemy::getGravity() const {
+    return gravity;
+}
+
+void Enemy::setGravity(int gravity) {
+    Enemy::gravity = gravity;
 };
 
