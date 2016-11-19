@@ -1,6 +1,9 @@
 #include "EnemySprite.h"
 
-
+void EnemySprite::actualizarDibujo() {
+    Sprite::actualizarDibujo();
+    this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
+}
 
 void EnemySprite::setNextSpriteFrame() {
     if(cambioFrame == 2){
@@ -21,6 +24,7 @@ void EnemySprite::setNextSpriteFrame() {
 void EnemySprite::handle(struct event nuevoEvento) {
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
+    this->healthText->changeText(nuevoEvento.data.health);
 
     switch (nuevoEvento.data.postura){
 

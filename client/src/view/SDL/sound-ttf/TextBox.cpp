@@ -15,7 +15,13 @@ void TextBox::changeText(char* text){
     this->text = SDL_CreateTextureFromSurface(this->mainRenderer,textSurface);
     SDL_QueryTexture(this->text, NULL, NULL, &textRect.w, &textRect.h);
     SDL_FreeSurface(textSurface);
-    textSurface = nullptr;
+}
+
+void TextBox::changeText(int number) {
+    string s = to_string(number);
+    char pchar[5];
+    sprintf(pchar, "%.5s", s.c_str());
+    changeText(pchar);
 }
 
 void TextBox::renderize(int x, int y) {
