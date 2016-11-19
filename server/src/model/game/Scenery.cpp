@@ -333,7 +333,7 @@ void Scenery::removeDeadPlayers() {
             ++it;
         }
         else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() > -100)) {
-            (*it)->setHealth((*it)->getHealth() - 10);
+            (*it)->setHealth((*it)->getHealth() - 5);
             ++it;
         }
         else ++it;
