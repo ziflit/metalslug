@@ -38,13 +38,13 @@
 			<platform>
 				<x>0</x>
 				<y>500</y>
-				<ancho>600</ancho>
+				<ancho>16000</ancho>
 				<alto>1</alto>
 			</platform>
 			<platform>
 				<x>700</x>
 				<y>500</y>
-				<ancho>600</ancho>
+				<ancho>16000</ancho>
 				<alto>1</alto>
 			</platform>
 		</platforms>

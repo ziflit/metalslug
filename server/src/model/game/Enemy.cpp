@@ -156,7 +156,27 @@ GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
 }
 
 GameObject *Enemy::shoot() {
-    Bullet *bullet = BulletBuilder::createBullet(bulletType, this);
+    Bullet *bullet;
+    Entity type = bulletType;
+    if (id == ENEMY_FINAL_2) {
+        type = (rand() % 10 < 3) ? BT_LASER : BT_BULLET;
+    } else if (id == ENEMY_FINAL_3) {
+        type = (rand() % 10 < 0) ? BT_MISSILE : BT_BOMB;
+    }
+    bullet = BulletBuilder::createBullet(type, this);
+    if (type == BT_MISSILE) {
+        //torreta 1
+        bullet->setDireccionX(1);
+        bullet->setX(x);
+        bullet->setY(y + box_alto);
+        if (rand() % 2 == 1) {
+            //torreta 2
+            bullet->setDireccionX(-1);
+            bullet->setX(x + box_ancho);
+        }
+
+        bullet->setDireccionY(-1);
+    }
     return bullet;
 }
 

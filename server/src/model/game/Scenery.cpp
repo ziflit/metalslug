@@ -174,7 +174,6 @@ void Scenery::updateBackgroudsState() {
         }
     } else {
         if (not yaSpawneoElFinalEnemy) {
-            cout << "<<<<<<<<<<<<aparece el enemigo final>>>>>>>>>>>>>>>>>>" << endl;
             Enemy *finalEnemy = createFinalEnemy();
             enemies.push_back(finalEnemy);
             yaSpawneoElFinalEnemy = true;
@@ -340,7 +339,7 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
             *z1 = BACKGROUND_LVL1_Z1;
             *z2 = BACKGROUND_LVL1_Z2;
             *en = ENEMY_NORMAL_1;
-            *ef = ENEMY_FINAL_1;
+            *ef = ENEMY_FINAL_3;
             return 0;
         case 2:
             *z0 = BACKGROUND_LVL2_Z0;
