@@ -328,11 +328,11 @@ void Scenery::removeDeadPlayers() {
         if ((*it)->getPostura() == MUERTO) {
             it = players.erase(it);
         }
-        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() == -100)) {
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -100)) {
             (*it)->setPostura(MUERTO);
             ++it;
         }
-        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() != -100)) {
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() > -100)) {
             (*it)->setHealth((*it)->getHealth() - 10);
             ++it;
         }
@@ -346,11 +346,11 @@ void Scenery::removeDeadEnemies() {
         if ((*it)->getPostura() == MUERTO) {
             it = enemies.erase(it);
         }
-        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() == -100)) {
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -100)) {
             (*it)->setPostura(MUERTO);
             ++it;
         }
-        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() != -100)){
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() > -100)){
             (*it)->setHealth((*it)->getHealth() - 10);
             ++it;
         }

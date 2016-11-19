@@ -215,22 +215,15 @@ void PlayerSprite::muriendo() {
     this->weaponsSourceRect.x = (sourceRect.w * 100);
 }
 void PlayerSprite::setUsername(struct event nuevoEvento) {
-    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {0,255,0,1});
+    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {3,255,0,1});
 }
 
 void PlayerSprite::handle(struct event nuevoEvento) {
-    if (firstEvent()) {
-        this->setUsername(nuevoEvento);
-    }
-
+    if (firstEvent()) this->setUsername(nuevoEvento);
+    if ((postura == DESCONECTADO) and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) this->colorear();
+    if (this->arma != nuevoEvento.data.arma) setWeapon(nuevoEvento.data.arma);
+    this->puntaje = nuevoEvento.data.puntaje;
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
-
-    if ((postura == DESCONECTADO) and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) {
-        this->colorear();
-    }
-    if (this->arma != nuevoEvento.data.arma){
-        setWeapon(nuevoEvento.data.arma);
-    }
     this->setPostura(nuevoEvento.data.postura);
 }
 

@@ -2,9 +2,9 @@
 
 void EnemySprite::actualizarDibujo() {
     Sprite::actualizarDibujo();
-//    if(postura !=MURIENDO) {
+    if(postura !=MURIENDO) {
         this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
-//    }
+    }
 }
 void EnemySprite::setNextSpriteFrame() {
     if(cambioFrame == 2){

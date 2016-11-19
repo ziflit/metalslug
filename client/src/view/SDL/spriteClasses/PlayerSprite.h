@@ -13,7 +13,7 @@ private:
     SDL_Texture* weaponsLayer;
     TextBox* usernameText;
     Arma arma;
-    int groupId;
+    int groupId, puntaje;
     int wFramesCant,wActualPosFrame,cambioFrame;
     Postura postura;
     string imgaceColorPath,imageGrisadoPath;
