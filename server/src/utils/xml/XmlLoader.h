@@ -50,7 +50,7 @@ private:
 
     map<string, GameMode> modes = {
             {"INDIVIDUAL",            INDIVIDUAL},
-            {"COLAVORATIVO",          COLAVORATIVO},
+            {"COLABORATIVO",          COLABORATIVO},
             {"GRUPAL",                GRUPAL}
     };
 

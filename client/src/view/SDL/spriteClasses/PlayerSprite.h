@@ -11,7 +11,7 @@ class PlayerSprite : public Sprite{
 private:
     SDL_Rect weaponsSourceRect, weaponsDestRect;
     SDL_Texture* weaponsLayer;
-    TextBox* usernameText;
+    TextBox *usernameText, *healthText;
     Arma arma;
     int groupId, puntaje;
     int wFramesCant,wActualPosFrame,cambioFrame;
@@ -22,6 +22,7 @@ public:
     PlayerSprite(SDL_Renderer *renderer, xmlPlayer playerConfig) : Sprite(renderer) {
         postura = CAMINANDO_DERECHA;
         cambioFrame = 0;
+        healthText = new TextBox("100", this->renderer, {255,0,0,1});
         this->setWidth(playerConfig.ancho);
         this->setHeight(playerConfig.alto);
         this->setId(playerConfig.id);
@@ -90,6 +91,10 @@ public:
     void playHeavyMachineGunSound();
 
     void setGroupId(xmlGameMode mode);
+
+    void updateHealthText(int health);
+
+    void renderizeHealthText();
 };
 
 #endif //METALSLUG_PLAYERSPRITE_H

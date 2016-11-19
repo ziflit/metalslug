@@ -39,6 +39,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
 SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
     this->mainWindow = mainWindow;
     this->mainRenderer = mainRenderer;
+    this->playerHandler = new PlayerHandler(mainRenderer);
     this->enemyHandler = new EnemyHandler(mainRenderer);
     this->bulletHandler =new BulletHandler(mainRenderer);
     this->backgroundHandler = new BackgroundHandler();

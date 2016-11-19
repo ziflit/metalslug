@@ -130,7 +130,7 @@ enum Arma {
 
 enum GameMode {
     INDIVIDUAL,
-    COLAVORATIVO,
+    COLABORATIVO,
     GRUPAL
 };
 

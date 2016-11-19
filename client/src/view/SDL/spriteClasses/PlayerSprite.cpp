@@ -43,7 +43,8 @@ void PlayerSprite::actualizarDibujo() {
         if (not ((postura==DESCONECTADO)) or (postura==MURIENDO) or (postura==MUERTO)) {
             SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
-        this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 30) ));
+            this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 30) ));
+           this->renderizeHealthText();
     }
 
 }
@@ -225,6 +226,7 @@ void PlayerSprite::handle(struct event nuevoEvento) {
     this->puntaje = nuevoEvento.data.puntaje;
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
     this->setPostura(nuevoEvento.data.postura);
+    this->updateHealthText(nuevoEvento.data.health);
 }
 
 void PlayerSprite::setPostura(Postura postura) {
@@ -367,7 +369,7 @@ void PlayerSprite::setGroupId(xmlGameMode mode) {
                 groupId = 3;
             }
             break;
-        case COLAVORATIVO:
+        case COLABORATIVO:
             this->groupId = 0;
             break;
         case GRUPAL:
@@ -382,4 +384,14 @@ void PlayerSprite::setGroupId(xmlGameMode mode) {
             }
             break;
     }
+}
+
+void PlayerSprite::updateHealthText(int health) {
+    if ((postura == MURIENDO) or (postura == MUERTO)) this->healthText->changeText(health);
+    else this->healthText->changeText(0);
+}
+
+void PlayerSprite::renderizeHealthText() {
+
+    this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
 }

@@ -13,6 +13,7 @@
 #include "handlers/BulletHandler.h"
 #include "handlers/BackgroundHandler.h"
 #include "handlers/MscHandler.h"
+#include "handlers/PlayerHandler.h"
 
 class SDLRunningGame {
 private:
@@ -21,7 +22,7 @@ private:
     SDL_Renderer* mainRenderer;
     Music* music;
     int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
-    vector<PlayerSprite*> playersSprites;
+    PlayerHandler* playerHandler;
     EnemyHandler* enemyHandler;
     BulletHandler *bulletHandler;
     BackgroundHandler *backgroundHandler;
