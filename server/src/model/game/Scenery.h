@@ -61,7 +61,7 @@ public:
 
     vector<struct event> process_keys_queue(queue<struct event> *keys);
 
-    Entity buildPlayer(string user);
+    Entity buildPlayer(string user, bool noPuedenIngresarMasPlayers);
 
     bool jugadorPasoMitadPantallaYEstaAvanzando();
 

@@ -48,7 +48,7 @@ bool Client::connect_to_server(string ip, int port, string user) {
 	if (((event *) response)->data.code == EventCode::LOGIN_FAIL) {
 		LOGGER_WRITE(Logger::ERROR, "Error de autenticacion de usuario.",
 				CLASSNAME)
-		cout << "No se pudo loguear, por favor revise Usuario y contrasenia "
+		cout << "No se pudo loguear, intente nuevamente"
 				<< endl;
 		return false;
 	} else {
