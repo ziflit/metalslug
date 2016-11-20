@@ -174,7 +174,6 @@ void Scenery::updateBackgroudsState() {
         }
     } else {
         if (not yaSpawneoElFinalEnemy) {
-            cout << "<<<<<<<<<<<<aparece el enemigo final>>>>>>>>>>>>>>>>>>" << endl;
             Enemy *finalEnemy = createFinalEnemy();
             enemies.push_back(finalEnemy);
             yaSpawneoElFinalEnemy = true;

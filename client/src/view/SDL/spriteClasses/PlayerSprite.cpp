@@ -107,7 +107,7 @@ void PlayerSprite::caminandoIzquierda() {
 void PlayerSprite::mirandoArribaCaminandoIzquierda(){
     this->sourceRect.y = (sourceRect.h * 1);
     this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 3);
+    this->weaponsSourceRect.x = (sourceRect.w * 2);
 }
 void PlayerSprite::agachadoMirandoAIzquierdaQuieto(){
     this->sourceRect.y = (sourceRect.h * 2);
@@ -117,7 +117,7 @@ void PlayerSprite::agachadoMirandoAIzquierdaQuieto(){
 void PlayerSprite::mirandoArribaIzquierdaQuieto(){
     this->sourceRect.y = (sourceRect.h * 3);
     this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 3);
+    this->weaponsSourceRect.x = (sourceRect.w * 2);
 }
 void PlayerSprite::caminandoDerecha(){
     this->sourceRect.y = (sourceRect.h * 4);
@@ -127,7 +127,7 @@ void PlayerSprite::caminandoDerecha(){
 void PlayerSprite::mirandoArribaCaminandoDerecha(){
     this->sourceRect.y = (sourceRect.h * 5);
     this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 2);
+    this->weaponsSourceRect.x = (sourceRect.w * 3);
 }
 void PlayerSprite::agachadoMirandoDerechaQuieto(){
     this->sourceRect.y = (sourceRect.h * 6);
@@ -137,7 +137,7 @@ void PlayerSprite::agachadoMirandoDerechaQuieto(){
 void PlayerSprite::mirandoArribaDerechaQuieto(){
     this->sourceRect.y = (sourceRect.h * 7);
     this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 2);
+    this->weaponsSourceRect.x = (sourceRect.w * 3);
 }
 void PlayerSprite::agachadoAvanzandoAIzquierda(){
     this->sourceRect.y = (sourceRect.h * 8);

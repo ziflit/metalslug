@@ -25,9 +25,6 @@ Player::Player(string user, Entity entitySelected, int windowWidth, int groupId)
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
     health = PLAYER_HEALTH;
-    //todo: hay que ver cuanta vida le vamos a meter,
-    //todo: tambien tener en cuenta el modo de juego con vida infinita. (Leer enunciado de TP)
-    //todo: terminar de configurar esto en PlayerBuilder, ya esta encaminado.
     this->groupId = groupId;
 
     isShooting = false;
