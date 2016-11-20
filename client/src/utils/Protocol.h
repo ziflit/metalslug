@@ -6,7 +6,7 @@
 #include <vector>
 
 #define MSGSIZE sizeof(struct event)
-
+#define PLAYER_HEALTH 1000
 using namespace std;
 
 
@@ -64,17 +64,17 @@ enum Entity {
 	ENEMY_FINAL_1,
 	ENEMY_FINAL_2,
 	ENEMY_FINAL_3,
-	BACKGROUND_LVL1_Z0,   
+	BACKGROUND_LVL1_Z0,
 	BACKGROUND_LVL1_Z1,
-    BACKGROUND_LVL1_Z2,
-    BACKGROUND_LVL2_Z0,   
+	BACKGROUND_LVL1_Z2,
+	BACKGROUND_LVL2_Z0,
 	BACKGROUND_LVL2_Z1,
-    BACKGROUND_LVL2_Z2,
-	BACKGROUND_LVL3_Z0,   
+	BACKGROUND_LVL2_Z2,
+	BACKGROUND_LVL3_Z0,
 	BACKGROUND_LVL3_Z1,
-    BACKGROUND_LVL3_Z2,
+	BACKGROUND_LVL3_Z2,
 	NOPLAYER,
-	BT_BULLET,			// BT = Bullet Type
+	BT_BULLET,            // BT = Bullet Type
 	BT_HEAVY_BULLET,
 	BT_MISSILE,
 	BT_TELE_MISSILE,
@@ -87,7 +87,8 @@ enum Entity {
 	MSC_WEAPON_BOX_CHASER,
 	MSC_POWER_BONUS,
 	MSC_BONUS_KILLALL,
-	MSC_PLATFORM
+	MSC_PLATFORM,
+	DEAD
 };
 
 enum Postura{
@@ -102,8 +103,8 @@ enum Postura{
 	AGACHADO_AVANZANDO_IZQUIERDA,
 	AGACHADO_AVANZANDO_DERECHA,
 	MIRANDO_DERECHA_QUIETO,
-    MIRANDO_IZQUIERDA_QUIETO,
-    DESCONECTADO,
+	MIRANDO_IZQUIERDA_QUIETO,
+	DESCONECTADO,
 	DISPARANDO_DERECHA_QUIETO,
 	DISPARANDO_IZQUIERDA_QUIETO,
 	DISPARANDO_CAMINANDO_DERECHA,
@@ -119,13 +120,19 @@ enum Postura{
 
 };
 
-enum Arma{
+enum Arma {
 	PISTOLA,
 	HEAVY_MACHINEGUN,
 	ROCKET_LAUNCHER,
 	ENEMY_CHASER,
 	SHOTGUN,
 	BOMB
+};
+
+enum GameMode {
+	INDIVIDUAL,
+	COLABORATIVO,
+	GRUPAL
 };
 
 struct event_ext {
@@ -135,8 +142,9 @@ struct event_ext {
 	int x;
 	int y;
 	int puntaje;
+	int health;
 	Postura postura;
-    Arma arma;
+	Arma arma;
 };
 
 struct event {
@@ -152,7 +160,12 @@ struct xmlConfig {
 	int cant_players;
 };
 
-struct xmlPlatform { 
+struct xmlGameMode {
+	GameMode mode;
+	bool testMode;
+};
+
+struct xmlPlatform {
 	int x;
 	int y;
 	int ancho;
@@ -160,8 +173,8 @@ struct xmlPlatform {
 };
 
 struct xmlLvl {
-    EventCompletion completion;
-	int id; 
+	EventCompletion completion;
+	int id;
 	int cant_enemies;
 	int cant_boxes;
 	int posXtoFinish;
@@ -169,7 +182,7 @@ struct xmlLvl {
 };
 
 struct xmlPlayer {
-    EventCompletion completion;
+	EventCompletion completion;
 	Entity id;
 	char pathColor[40];
 	char pathGrey[40];
@@ -179,6 +192,7 @@ struct xmlPlayer {
 	int cantWidthFrames;
 	int cantHeightFrames;
 	int speed;
+	int groupId;
 };
 
 struct xmlEnemy {
@@ -187,13 +201,14 @@ struct xmlEnemy {
 	char path[40];
 	int ancho;
 	int alto;
-    int cantWidthFrames;
-    int cantHeightFrames;
+	int cantWidthFrames;
+	int cantHeightFrames;
 	int speed;
 };
 
+
 struct xmlBackground {
-    EventCompletion completion;
+	EventCompletion completion;
 	Entity id;
 	char path[40];
 	int ancho;
@@ -201,19 +216,19 @@ struct xmlBackground {
 };
 
 struct xmlBullet {
-    EventCompletion completion;
-    Entity id;
-    char path[40];
-    int ancho;
-    int alto;
+	EventCompletion completion;
+	Entity id;
+	char path[40];
+	int ancho;
+	int alto;
 };
 
 struct xmlMiscelanea {
-    EventCompletion completion;
-    Entity id;
-    char path[40];
-    int ancho;
-    int alto;
+	EventCompletion completion;
+	Entity id;
+	char path[40];
+	int ancho;
+	int alto;
 };
 //---------------------------------------------------
 

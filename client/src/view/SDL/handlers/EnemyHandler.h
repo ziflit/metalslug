@@ -39,6 +39,8 @@ public:
     EnemySprite* getEnemyToHandle(event newEvent);
 
     void newLevel();
+
+    void deleteEnemy(char *newEvent);
 };
 
 

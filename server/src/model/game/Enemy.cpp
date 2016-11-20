@@ -24,7 +24,6 @@ Enemy::Enemy(int number, Entity enemySelected, int spawnX, int spawnY) {
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
     this->shootsTo = {MARCO, TARMA, FIO, ERI, MSC_PLATFORM};
-
 }
 
 Enemy::~Enemy() {
@@ -114,6 +113,7 @@ struct event Enemy::getState() {
     eventExt.x = x;  //Actualizo la posicion del enemy
     eventExt.y = y;
     eventExt.postura = this->postura;
+    eventExt.health =  this->getHealth();
 
     estado.completion = EventCompletion::PARTIAL_MSG;
     estado.data = eventExt;

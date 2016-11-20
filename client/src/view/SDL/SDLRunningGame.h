@@ -4,14 +4,12 @@
 #define gameMusicPath "audios/musicGame.mp3"
 #include "sound-ttf/Music.h"
 #include <vector>
-#include "spriteClasses/BackgroundSprite.h"
-#include "spriteClasses/PlayerSprite.h"
-#include "spriteClasses/EnemySprite.h"
-#include "handlers/EnemyHandler.h"
 #include <SDL2/SDL_events.h>
 #include "../../model/ConfigsXML.h"
+#include "handlers/PlayerHandler.h"
 #include "handlers/BulletHandler.h"
 #include "handlers/BackgroundHandler.h"
+#include "handlers/EnemyHandler.h"
 #include "handlers/MscHandler.h"
 
 class SDLRunningGame {
@@ -21,7 +19,7 @@ private:
     SDL_Renderer* mainRenderer;
     Music* music;
     int holdLeftKey, holdRightKey,holdUpKey, holdDownKey, holdAKey,holdSKey;
-    vector<PlayerSprite*> playersSprites;
+    PlayerHandler* playerHandler;
     EnemyHandler* enemyHandler;
     BulletHandler *bulletHandler;
     BackgroundHandler *backgroundHandler;

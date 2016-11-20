@@ -96,7 +96,6 @@ if (cliente->is_connected()){
         last = now;
 
         modelStateToRender = (cliente->getHandler())->getModelState();
-//        cout<<"ESTOY RECIBIENDO EL ESTADO DE: "<<modelStateToRender.size()<< "ELEMENTOS" << endl;
         if (not modelStateToRender.empty()){
             count++;
             if (time_counter > (double)CLOCKS_PER_SEC) {

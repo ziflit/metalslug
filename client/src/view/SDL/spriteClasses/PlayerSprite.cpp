@@ -40,17 +40,17 @@ void PlayerSprite::setUpWeaponsImage(string weaponsPath){
 void PlayerSprite::actualizarDibujo() {
     if (clientIsConnected()) {
         SDL_RenderCopy(this->renderer,layer,&(this->sourceRect),&(this->destRect));
-        if(not grisado){
+        if (not ((postura==DESCONECTADO)) or (postura==MURIENDO) or (postura==MUERTO)) {
             SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
-        this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 30) ));
+            this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h *2) ));
+           this->renderizeHealthText();
     }
 
 }
 void PlayerSprite::colorear() {Sprite::setUpImage(imgaceColorPath);}
 void PlayerSprite::grisar() {
-    if (!this->grisado){
-        this->grisado = true;
+    if (postura != DESCONECTADO){
         mirandoDerechaQuieto();
         Sprite::setUpImage(imageGrisadoPath);
     }
@@ -107,7 +107,7 @@ void PlayerSprite::caminandoIzquierda() {
 void PlayerSprite::mirandoArribaCaminandoIzquierda(){
     this->sourceRect.y = (sourceRect.h * 1);
     this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 3);
+    this->weaponsSourceRect.x = (sourceRect.w * 2);
 }
 void PlayerSprite::agachadoMirandoAIzquierdaQuieto(){
     this->sourceRect.y = (sourceRect.h * 2);
@@ -117,7 +117,7 @@ void PlayerSprite::agachadoMirandoAIzquierdaQuieto(){
 void PlayerSprite::mirandoArribaIzquierdaQuieto(){
     this->sourceRect.y = (sourceRect.h * 3);
     this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 3);
+    this->weaponsSourceRect.x = (sourceRect.w * 2);
 }
 void PlayerSprite::caminandoDerecha(){
     this->sourceRect.y = (sourceRect.h * 4);
@@ -127,7 +127,7 @@ void PlayerSprite::caminandoDerecha(){
 void PlayerSprite::mirandoArribaCaminandoDerecha(){
     this->sourceRect.y = (sourceRect.h * 5);
     this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 2);
+    this->weaponsSourceRect.x = (sourceRect.w * 3);
 }
 void PlayerSprite::agachadoMirandoDerechaQuieto(){
     this->sourceRect.y = (sourceRect.h * 6);
@@ -137,7 +137,7 @@ void PlayerSprite::agachadoMirandoDerechaQuieto(){
 void PlayerSprite::mirandoArribaDerechaQuieto(){
     this->sourceRect.y = (sourceRect.h * 7);
     this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 2);
+    this->weaponsSourceRect.x = (sourceRect.w * 3);
 }
 void PlayerSprite::agachadoAvanzandoAIzquierda(){
     this->sourceRect.y = (sourceRect.h * 8);
@@ -211,38 +211,25 @@ void PlayerSprite::disparandoAvanzandoMirandoArribaIzquierda() {
     this->weaponsSourceRect.x = (sourceRect.w * 2);
 }
 void PlayerSprite::muriendo() {
-    this->sourceRect.y = (sourceRect.h * 22);
-    this->setNextSpriteFrame();
-    this->weaponsSourceRect.x = (sourceRect.w * 100);
-}
-void PlayerSprite::muerto() {
     this->sourceRect.y = (sourceRect.h * 23);
     this->setNextSpriteFrame();
     this->weaponsSourceRect.x = (sourceRect.w * 100);
 }
 void PlayerSprite::setUsername(struct event nuevoEvento) {
-    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {10, 0, 0, 255});
+    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {3,255,0,1});
 }
 
 void PlayerSprite::handle(struct event nuevoEvento) {
-    if (firstEvent()) {
-        this->setUsername(nuevoEvento);
-    }
-
+    if (firstEvent()) this->setUsername(nuevoEvento);
+    if ((postura == DESCONECTADO) and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) this->colorear();
+    if (this->arma != nuevoEvento.data.arma) setWeapon(nuevoEvento.data.arma);
+    this->puntaje = nuevoEvento.data.puntaje;
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
-
-    if (grisado and  (nuevoEvento.data.postura != Postura::DESCONECTADO)) {
-        this->colorear();
-        grisado = false;
-    }
-    if (this->arma != nuevoEvento.data.arma){
-        setWeapon(nuevoEvento.data.arma);
-    }
     this->setPostura(nuevoEvento.data.postura);
+    this->updateHealthText(nuevoEvento.data.health);
 }
 
 void PlayerSprite::setPostura(Postura postura) {
-
     switch (postura){
         case Postura::CAMINANDO_IZQUIERDA:
             caminandoIzquierda();
@@ -313,15 +300,13 @@ void PlayerSprite::setPostura(Postura postura) {
         case Postura::MURIENDO:
             muriendo();
             break;
-        case Postura::MUERTO:
-            muerto();
-            break;
         case Postura::DESCONECTADO:
             grisar();
             break;
         default:
             break;
     }
+    this->postura = postura;
 }
 
 void PlayerSprite::setWeapon(Arma weapon) {
@@ -369,4 +354,47 @@ bool PlayerSprite::firstEvent() {
 
 bool PlayerSprite::clientIsConnected() {
     return (this->usernameText != nullptr);
+}
+
+void PlayerSprite::setGroupId(xmlGameMode mode) {
+    switch (mode.mode) {
+        case INDIVIDUAL:
+            if (id == MARCO) {
+                groupId = 0;
+            } else if (id == FIO) {
+                groupId = 1;
+            } else if (id == TARMA) {
+                groupId = 2;
+            } else if (id == ERI) {
+                groupId = 3;
+            }
+            break;
+        case COLABORATIVO:
+            this->groupId = 0;
+            break;
+        case GRUPAL:
+            if (id == MARCO) {
+                groupId = 0;
+            } else if (id == FIO) {
+                groupId = 1;
+            } else if (id == TARMA) {
+                groupId = 0;
+            } else if (id == ERI) {
+                groupId = 1;
+            }
+            break;
+    }
+}
+
+void PlayerSprite::updateHealthText(int health) {
+    if(health == 999999) {
+        this->healthText->changeText("INFINITA");
+        return;
+    }
+    if (not ((postura == MURIENDO) or (postura == MUERTO))) this->healthText->changeText(health);
+    else this->healthText->changeText(0);
+}
+
+void PlayerSprite::renderizeHealthText() {
+    this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
 }

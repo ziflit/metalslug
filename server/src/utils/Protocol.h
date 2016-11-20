@@ -131,7 +131,7 @@ enum Arma {
 
 enum GameMode {
     INDIVIDUAL,
-    COLAVORATIVO,
+    COLABORATIVO,
     GRUPAL
 };
 
@@ -142,6 +142,7 @@ struct event_ext {
     int x;
     int y;
     int puntaje;
+	int health;
     Postura postura;
     Arma arma;
 };
@@ -191,6 +192,7 @@ struct xmlPlayer {
     int cantWidthFrames;
     int cantHeightFrames;
     int speed;
+	int groupId;
 };
 
 struct xmlEnemy {

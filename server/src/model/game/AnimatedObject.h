@@ -71,15 +71,15 @@ public:
         if (health == 99999){
             return health; // Si la vida es 99999 es super usuario, asique no recibe damage.
         }
-        if (health >= damage) {
+        if (health > damage) {
             health -= damage;
-        } else {
+            return health;
+        } else if (health > 0) { //esto es asi por el efecto de muriendo
             health = 0;
-            postura = MUERTO;
+            postura = MURIENDO;
+            return health;
         }
-        string a = (postura == MUERTO) ? " muerto " : " vivo ";
-        cout << id << a << health << endl;
-        return health;
+        return 0;
     }
 
     virtual ~AnimatedObject() {

@@ -174,7 +174,6 @@ void Scenery::updateBackgroudsState() {
         }
     } else {
         if (not yaSpawneoElFinalEnemy) {
-            cout << "<<<<<<<<<<<<aparece el enemigo final>>>>>>>>>>>>>>>>>>" << endl;
             Enemy *finalEnemy = createFinalEnemy();
             enemies.push_back(finalEnemy);
             yaSpawneoElFinalEnemy = true;
@@ -213,6 +212,7 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
 
     vector<struct event> eventsToReturn;
     vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
+
 
     updatePlayersState(all_objects_in_window);
     updateEnemiesState(all_objects_in_window);
@@ -267,7 +267,6 @@ void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
             if (bullet != nullptr) bullets.push_back(bullet);
         }
         player->updatePosition(all_objects_in_window);
-        //cout << "--Player: " << player->getEntity() << "--Points: " << player->getPoints() << endl;
     }
 }
 
@@ -386,14 +385,22 @@ void Scenery::removeDeadBullets() {
     }
 }
 
+
 void Scenery::removeDeadPlayers() {
     vector<Player *>::iterator it = players.begin();
     while (it != players.end()) {
         if ((*it)->getPostura() == MUERTO) {
             it = players.erase(it);
-        } else {
+        }//Es 400 por el damage de las balas.
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {
+            (*it)->setPostura(MUERTO);
             ++it;
         }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() > -400)) {
+            (*it)->setHealth((*it)->getHealth() - 20);
+            ++it;
+        }
+        else ++it;
     }
 }
 
@@ -402,8 +409,15 @@ void Scenery::removeDeadEnemies() {
     while (it != enemies.end()) {
         if ((*it)->getPostura() == MUERTO) {
             it = enemies.erase(it);
-        } else {
+        }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {
+            (*it)->setPostura(MUERTO);
             ++it;
         }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() > -400)){
+            (*it)->setHealth((*it)->getHealth() - 20);
+            ++it;
+        }
+        else ++it;
     }
 }

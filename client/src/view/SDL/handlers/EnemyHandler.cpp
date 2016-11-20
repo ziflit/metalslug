@@ -1,7 +1,5 @@
 #include <iostream>
 #include "EnemyHandler.h"
-
-
 EnemyHandler::EnemyHandler(SDL_Renderer *mainRenderer) {
     this->mainRenderer = mainRenderer;
 }
@@ -46,7 +44,11 @@ bool EnemyHandler::isEnemyType(Entity id) {
 }
 
 void EnemyHandler::handle(event newEvent) {
-    this->getEnemyToHandle(newEvent)->handle(newEvent);
+    if(newEvent.data.postura == MUERTO){
+        deleteEnemy(newEvent.data.username);
+    } else {
+        this->getEnemyToHandle(newEvent)->handle(newEvent);
+    }
 }
 
 void EnemyHandler::updateEnemiesSprites() {
@@ -74,9 +76,16 @@ EnemySprite* EnemyHandler::getEnemyToHandle(event newEvent) {
 }
 
 void EnemyHandler::newLevel() {
-
+    enemies.clear();
 }
-
-
-
-
+void EnemyHandler::deleteEnemy(char *username) {
+    auto it = enemies.begin();
+    while(it != enemies.end()) {
+        if ((*it)->getNumber() == atoi(username)) {
+            delete *it;
+            enemies.erase(it);
+            it = enemies.end();
+        }
+        else it++;
+    }
+}

@@ -1,7 +1,11 @@
 #include "EnemySprite.h"
 
-
-
+void EnemySprite::actualizarDibujo() {
+    Sprite::actualizarDibujo();
+    if(postura !=MURIENDO and postura!=MUERTO) {
+        this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
+    }
+}
 void EnemySprite::setNextSpriteFrame() {
     if(cambioFrame == 2){
 
@@ -15,14 +19,13 @@ void EnemySprite::setNextSpriteFrame() {
     } else {
         cambioFrame++;
     }
-
 }
-
 void EnemySprite::handle(struct event nuevoEvento) {
 
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
-
-    switch (nuevoEvento.data.postura){
+    this->healthText->changeText(nuevoEvento.data.health);
+    this->postura = nuevoEvento.data.postura;
+    switch (postura){
 
         case Postura::CAMINANDO_DERECHA:
             caminandoDerecha();
@@ -36,8 +39,8 @@ void EnemySprite::handle(struct event nuevoEvento) {
         case Postura::DISPARANDO_CAMINANDO_IZQUIERDA:
             disparandoCaminandoIzquierda();
             break;
-        case Postura::MUERTO:
-            muerto();
+        case Postura::MURIENDO:
+            mueriendo();
             break;
         default:
             break;
@@ -60,6 +63,6 @@ void EnemySprite::disparandoCaminandoIzquierda() {
     this->sourceRect.y = (sourceRect.h * 3);
     this->setNextSpriteFrame();
 }
-void EnemySprite::muerto() {
+void EnemySprite::mueriendo() {
     this->sourceRect.y = (sourceRect.h * 4);
 }
