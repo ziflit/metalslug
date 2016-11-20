@@ -12,9 +12,14 @@ private:
     string username;
     int gravity;
     int windowWidth;
-
+    int groupId;
+    
 public:
-    Player(string user, Entity entitySelected, int windowWidth);
+    int getGroupId() const;
+
+    void setGroupId(int groupId);
+
+    Player(string user, Entity entitySelected, int windowWidth, int groupId);
 
     virtual ~Player();
 
@@ -34,7 +39,7 @@ public:
 
     void set_position(int posx, int posy);
 
-    bool canIMove(vector<GameObject *> game_objects, int newX, int newY);
+    bool canMove(vector<GameObject *> game_objects, int newX, int newY);
 
     string getUsername() const {
         return username;

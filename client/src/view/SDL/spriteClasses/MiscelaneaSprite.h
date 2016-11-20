@@ -7,9 +7,7 @@
 
 class MiscelaneaSprite : public Sprite {
 public:
-    MiscelaneaSprite(SDL_Renderer *renderer, miscelaneaType type) : Sprite(renderer,
-                                                                      0,
-                                                                      0) {
+    MiscelaneaSprite(SDL_Renderer *renderer, simpleSpriteType type) : Sprite(renderer) {
         this->id = type.id;
         this->layer = type.layer;
         this->sourceRect.w = type.frameWidth;

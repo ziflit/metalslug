@@ -3,11 +3,14 @@
 
 #include <SDL2/SDL_system.h>
 #include <SDL2/SDL_ttf.h>
+#include "string"
 
+using namespace std;
 class TextBox {
 public:
     TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color);
     void changeText(char *text);
+    void changeText(int number);
     void renderize(int x, int y);
     void renderize();
 

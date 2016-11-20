@@ -1,39 +1,35 @@
 #include <iostream>
 #include "EnemyHandler.h"
-
-
 EnemyHandler::EnemyHandler(SDL_Renderer *mainRenderer) {
     this->mainRenderer = mainRenderer;
 }
 
-SDL_Texture* EnemyHandler::createTexture(string imageTexturePath){
+SDL_Texture* EnemyHandler::createTexture(string imageTexturePath) {
     SDL_Texture* backgroundTexture = NULL;
     SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
-    if(loadingSurface == NULL){
+    if (loadingSurface == NULL) {
         cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
         loadingSurface = IMG_Load("sprites/defaultImage.png");
     }
     backgroundTexture = SDL_CreateTextureFromSurface(mainRenderer, loadingSurface);
-    if(backgroundTexture == NULL){
-        cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
-    }
+    if (backgroundTexture == NULL) cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
     SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
     return backgroundTexture;
 }
 
-void EnemyHandler::newEnemyType(int ancho, int alto, Entity id, char *imagePath, int cantWidthFrames, int cantHeightFrames) {
+void EnemyHandler::newEnemyType(xmlEnemy enemyConfig) {
 
     struct enemyType newType;
 
-    SDL_Texture* layer = this->createTexture(imagePath);
+    SDL_Texture* layer = this->createTexture(enemyConfig.path);
     SDL_QueryTexture(layer, NULL, NULL, &newType.spriteImageWidth, &newType.spriteImageHeight);
 
-    newType.ancho = ancho;
-    newType.alto = alto;
-    newType.id = id;
+    newType.ancho =enemyConfig.ancho;
+    newType.alto = enemyConfig.alto;
+    newType.id = enemyConfig.id;
     newType.layer = layer;
-    newType.cantWidthFrames = cantWidthFrames;
-    newType.cantHeigthFrames = cantHeightFrames;
+    newType.cantWidthFrames = enemyConfig.cantWidthFrames;
+    newType.cantHeigthFrames = enemyConfig.cantHeightFrames;
 
     this->enemiesTypes.push_back(newType);
 }
@@ -48,7 +44,11 @@ bool EnemyHandler::isEnemyType(Entity id) {
 }
 
 void EnemyHandler::handle(event newEvent) {
-    this->getEnemyToHandle(newEvent)->handle(newEvent);
+    if(newEvent.data.postura == MUERTO){
+        deleteEnemy(newEvent.data.username);
+    } else {
+        this->getEnemyToHandle(newEvent)->handle(newEvent);
+    }
 }
 
 void EnemyHandler::updateEnemiesSprites() {
@@ -76,9 +76,16 @@ EnemySprite* EnemyHandler::getEnemyToHandle(event newEvent) {
 }
 
 void EnemyHandler::newLevel() {
-
+    enemies.clear();
 }
-
-
-
-
+void EnemyHandler::deleteEnemy(char *username) {
+    auto it = enemies.begin();
+    while(it != enemies.end()) {
+        if ((*it)->getNumber() == atoi(username)) {
+            delete *it;
+            enemies.erase(it);
+            it = enemies.end();
+        }
+        else it++;
+    }
+}

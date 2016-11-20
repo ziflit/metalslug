@@ -11,19 +11,29 @@ class PlayerSprite : public Sprite{
 private:
     SDL_Rect weaponsSourceRect, weaponsDestRect;
     SDL_Texture* weaponsLayer;
-    TextBox* usernameText;
+    TextBox *usernameText, *healthText;
     Arma arma;
+    int groupId, puntaje;
     int wFramesCant,wActualPosFrame,cambioFrame;
-    bool grisado;
+    Postura postura;
     string imgaceColorPath,imageGrisadoPath;
 public:
 
-    PlayerSprite(SDL_Renderer *renderer) : Sprite(renderer,0,0) {
-        grisado = false;
+    PlayerSprite(SDL_Renderer *renderer, xmlPlayer playerConfig) : Sprite(renderer) {
+        postura = CAMINANDO_DERECHA;
         cambioFrame = 0;
-        this->weaponsSourceRect.x = this->weaponsSourceRect.y = 0; //FRAME INICIAL
-        this->weaponsDestRect.x = this->weaponsDestRect.y = 0; //POSICION INICIAL
-        usernameText = nullptr;
+        healthText = new TextBox("100", this->renderer, {255,0,0,1});
+        this->setWidth(playerConfig.ancho);
+        this->setHeight(playerConfig.alto);
+        this->setId(playerConfig.id);
+        wFramesCant = playerConfig.cantWidthFrames;
+        setUpImage(playerConfig.pathColor, playerConfig.pathGrey);
+
+        sourceRect.w = spriteImageWidth / playerConfig.cantWidthFrames;
+        sourceRect.h = spriteImageHeight / playerConfig.cantHeightFrames;
+
+        this->setUpWeaponsImage(playerConfig.pathWeapons);
+        this->usernameText = nullptr;
     }
 
     void actualizarDibujo();
@@ -34,8 +44,7 @@ public:
 
     void setHeight(int h);
 
-    void setUpImage(string imageSpritePath,string imageGrisadoPath,
-                    int wFramesCant, int hFramesCant);
+    void setUpImage(string imageSpritePath,string imageGrisadoPath);
     void setWeapon(Arma weapon);
 
     void setUpWeaponsImage(string weaponsPath);
@@ -71,17 +80,21 @@ public:
     void disparandoCaminandoIzquierda();
     void disparandoAgachadoQuietoDerecha();
     void disparandoAgachadoQuietoIzquierda();
-    void disparandoAgachadoAvanzandoDerecha();
-    void disparandoAgachadoAvanzandoIzquierda();
     void disparandoMirandoArribaDerechaQuieto();
     void disparandoMirandoArribaIzquierdaQuieto();
     void disparandoAvanzandoMirandoArribaDerecha();
     void disparandoAvanzandoMirandoArribaIzquierda();
     void muriendo();
-    void muerto();
 
     virtual ~PlayerSprite();
 
+    void playHeavyMachineGunSound();
+
+    void setGroupId(xmlGameMode mode);
+
+    void updateHealthText(int health);
+
+    void renderizeHealthText();
 };
 
 #endif //METALSLUG_PLAYERSPRITE_H

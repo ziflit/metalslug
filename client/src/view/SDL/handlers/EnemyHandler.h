@@ -24,7 +24,7 @@ public:
 
     EnemyHandler(SDL_Renderer* mainRenderer);
 
-    void newEnemyType(int ancho, int alto, Entity id, char imagePath[40], int cantWidthFrames, int cantHeightFrames);
+    void newEnemyType(xmlEnemy enemyConfig);
 
     SDL_Texture* createTexture(string imageTexturePath);
 
@@ -39,6 +39,8 @@ public:
     EnemySprite* getEnemyToHandle(event newEvent);
 
     void newLevel();
+
+    void deleteEnemy(char *newEvent);
 };
 
 

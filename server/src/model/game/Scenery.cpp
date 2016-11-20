@@ -32,7 +32,8 @@ void Scenery::setUpLevel(int selectedLevel) {
 
     //Seteo los backgrounds correspondientes para el nivel
     Entity back_z0, back_z1, back_z2, enemy_normal_type;
-    selectedLevel = setLevelConfigs(&back_z0, &back_z1, &back_z2, &enemy_normal_type, &(this->finalEnemyType), selectedLevel);
+    selectedLevel = setLevelConfigs(&back_z0, &back_z1, &back_z2, &enemy_normal_type, &(this->finalEnemyType),
+                                    selectedLevel);
 
     //Borro las balas que hayan quedado
     bullets.clear();
@@ -77,6 +78,12 @@ Entity Scenery::buildPlayer(string user) {
     }
 
     PlayerBuilder playerBuilder;
+    /**
+    TODO: en el constructor de player se esta harcodeando la vida, la posicion incial entre otras cosas.
+    Creo que se podria pasar al PlayerBuilder el config de los players con toda esa info
+    para que lo setee limpio y sacar el hardcode.
+     */
+    playerBuilder.setGameMode(configs->getGameMode());
     Player *newPlayer = playerBuilder.createPlayer(players.size(), user, windowWidth);
     if (newPlayer != nullptr) {
         newPlayer->setSpeed(this->playersSpeed);
@@ -141,8 +148,8 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
 }
 
 void Scenery::updateBackgroudsState() {
-    if (not this->finDelNivel){
-        if ( this->moverPantalla and (not hayJugadorEnBordeIzq() ) and ( jugadorPasoMitadPantallaYEstaAvanzando() ) ) {
+    if (not this->finDelNivel) {
+        if (this->moverPantalla and (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
             for (auto background : backgrounds) {
                 this->finDelNivel = ((Background *) background)->avanzarFrame();
                 /**como cada background tiene asignada su propia velocidad no todos avanzan de igual manera.
@@ -167,14 +174,37 @@ void Scenery::updateBackgroudsState() {
         }
     } else {
         if (not yaSpawneoElFinalEnemy) {
-            Enemy *finalEnemy = new Enemy(999, ENEMY_FINAL_1, 700 , 0);
+            Enemy *finalEnemy = createFinalEnemy();
             enemies.push_back(finalEnemy);
             yaSpawneoElFinalEnemy = true;
             this->moverPantalla = false;
         } else {
-            this->fightWithFinalEnemy(); 
+            this->fightWithFinalEnemy();
         }
     }
+}
+
+Enemy *Scenery::createFinalEnemy() {
+    Enemy *finalEnemy = new Enemy(900, finalEnemyType, 700, 0);
+    switch (finalEnemyType) {
+        case ENEMY_FINAL_1:
+            finalEnemy->setDropsEnemies(true);
+            finalEnemy->setX(250);
+            finalEnemy->setBoxAlto(300);
+            finalEnemy->setBoxAncho(300);
+            finalEnemy->setGravity(0);
+            break;
+        case ENEMY_FINAL_2:
+            finalEnemy->setX(250);
+            finalEnemy->setBulletType(BT_MISSILE);
+            break;
+        case ENEMY_FINAL_3:
+            finalEnemy->setX(250);
+            finalEnemy->setBulletType(BT_BOMB);
+            finalEnemy->setGravity(0);
+            break;
+    }
+    return finalEnemy;
 }
 
 vector<struct event> Scenery::obtenerEstadoEscenario() {
@@ -208,17 +238,33 @@ void Scenery::updateBulletsState(vector<GameObject *> &all_objects_in_window) {
     }
 }
 
-void
-Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
+void Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
     for (auto enemy : enemies) {
-        enemy->updatePosition(all_objects_in_window); //Van a seguir siempre al player 1 por ahora
+        enemy->updatePosition(all_objects_in_window);
+        makeEnemyShoot(enemy);
+        makeEnemyDropEnemies(enemy);
+    }
+}
+
+void Scenery::makeEnemyDropEnemies(Enemy *enemy) {
+    Enemy *droppedEnemy = enemy->dropEnemy();
+    if (droppedEnemy != nullptr) {
+        enemies.push_back(droppedEnemy);
+    }
+}
+
+void Scenery::makeEnemyShoot(Enemy *enemy) {
+    if (rand() % 300 < 3 && enemy->getEntity() != ENEMY_FINAL_1) {
+        Bullet *bullet = (Bullet *) enemy->shoot();
+        if (bullet != nullptr) bullets.push_back(bullet);
     }
 }
 
 void Scenery::updatePlayersState(vector<GameObject *> &all_objects_in_window) {
     for (auto player : players) {
         if (player->getShootingState()) {
-            bullets.push_back((Bullet *) player->shoot());
+            Bullet *bullet = (Bullet *) player->shoot();
+            if (bullet != nullptr) bullets.push_back(bullet);
         }
         player->updatePosition(all_objects_in_window);
     }
@@ -300,7 +346,7 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
             *z1 = BACKGROUND_LVL2_Z1;
             *z2 = BACKGROUND_LVL2_Z2;
             *en = ENEMY_NORMAL_2;
-            *ef = ENEMY_FINAL_2;            
+            *ef = ENEMY_FINAL_2;
             return 1;
         case 3:
             *z0 = BACKGROUND_LVL3_Z0;
@@ -312,12 +358,12 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
     }
 }
 
-void Scenery::fightWithFinalEnemy(){
+void Scenery::fightWithFinalEnemy() {
     for (auto enemy : enemies) {
-        if (enemy->getEntity() == this->finalEnemyType){
-           if (enemy->getPostura() == MUERTO ){
-                if (actualLevel < 3){
-                    this->setUpLevel(this->actualLevel + 1);    
+        if (enemy->getEntity() == this->finalEnemyType) {
+            if (enemy->getPostura() == MUERTO) {
+                if (actualLevel < 3) {
+                    this->setUpLevel(this->actualLevel + 1);
                 } else {
                     this->setUpLevel(1); // En vez del 1, tendria que terminar el juego.
                 }
@@ -339,14 +385,22 @@ void Scenery::removeDeadBullets() {
     }
 }
 
+
 void Scenery::removeDeadPlayers() {
     vector<Player *>::iterator it = players.begin();
     while (it != players.end()) {
         if ((*it)->getPostura() == MUERTO) {
             it = players.erase(it);
-        } else {
+        }//Es 400 por el damage de las balas.
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {
+            (*it)->setPostura(MUERTO);
             ++it;
         }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() > -400)) {
+            (*it)->setHealth((*it)->getHealth() - 20);
+            ++it;
+        }
+        else ++it;
     }
 }
 
@@ -355,8 +409,15 @@ void Scenery::removeDeadEnemies() {
     while (it != enemies.end()) {
         if ((*it)->getPostura() == MUERTO) {
             it = enemies.erase(it);
-        } else {
+        }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {
+            (*it)->setPostura(MUERTO);
             ++it;
         }
+        else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() > -400)){
+            (*it)->setHealth((*it)->getHealth() - 20);
+            ++it;
+        }
+        else ++it;
     }
 }

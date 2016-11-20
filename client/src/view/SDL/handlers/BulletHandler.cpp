@@ -1,7 +1,3 @@
-//
-// Created by mfp on 10/11/16.
-//
-
 #include "BulletHandler.h"
 
 BulletHandler::BulletHandler(SDL_Renderer *mainRenderer) {
@@ -11,39 +7,30 @@ BulletHandler::BulletHandler(SDL_Renderer *mainRenderer) {
 SDL_Texture* BulletHandler::createTexture(string imageTexturePath){
     SDL_Texture* backgroundTexture = NULL;
     SDL_Surface* loadingSurface = IMG_Load(imageTexturePath.c_str());
-
-    if(loadingSurface == NULL){
+    if (loadingSurface == NULL) {
         cout<<"Error loading surface image for background layer: "<<SDL_GetError()<<endl;
         loadingSurface = IMG_Load("sprites/defaultImage.png");
     }
-
     backgroundTexture = SDL_CreateTextureFromSurface(this->mainRenderer, loadingSurface);
-
-    if(backgroundTexture == NULL){
-        cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
-
-    }
-
+    if (backgroundTexture == NULL) cout<<"Error creating background layer: "<<SDL_GetError()<<endl;
     SDL_FreeSurface(loadingSurface);    //get rid of old loaded surface
     return backgroundTexture;
 }
 
+void BulletHandler::newBulletType(xmlBullet bulletConfig) {
+    simpleSpriteType newType;
 
-
-void BulletHandler::newBulletType(int ancho, int alto, Entity id, char *imagePath) {
-    bulletType newType;
-
-    SDL_Texture* layer = this->createTexture(imagePath);
+    SDL_Texture* layer = this->createTexture(bulletConfig.path);
     SDL_QueryTexture(layer, NULL, NULL, &newType.frameWidth, &newType.frameHeigth);
 
-    newType.ancho = ancho;
-    newType.alto = alto;
-    newType.id = id;
-    newType.layer = this->createTexture(imagePath);
+    newType.ancho = bulletConfig.ancho;
+    newType.alto = bulletConfig.alto;
+    newType.id = bulletConfig.id;
+    newType.layer = layer;
     this->bulletsTypes.push_back(newType);
 }
 
-bulletType BulletHandler::getBulletType(Entity id) {
+simpleSpriteType BulletHandler::getBulletType(Entity id) {
     for (auto type : bulletsTypes) {
         if (id == type.id) {
             return type;

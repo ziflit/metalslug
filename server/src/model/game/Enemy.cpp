@@ -53,46 +53,60 @@ void Enemy::avanzar(vector<GameObject *> gameObjects) {
  *  MUERTO
  */
 
-void Enemy::updatePosition(vector<GameObject *> game_objects) {
+void Enemy::updatePosition(vector<GameObject *> &game_objects) {
 
     int newX = x;
     int newY = y;
 
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
-    float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
-    if (not(distance > 700 || distance < 300)) {
+    if (playerToFollow != nullptr) {
+        float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
         float playerPosX = playerToFollow->getX();
-        if (x < playerPosX - 100) {
-            cout << "camino derecha" << endl;
-            postura = CAMINANDO_DERECHA;
-            newX = x + speed;
-        } else if (x > playerPosX + 100) {
-            postura = CAMINANDO_IZQUIERDA;
-            newX = x - speed;
-        }
-        /* Se mueve en X */
-        if (this->canIMove(game_objects, newX, newY)) {
-            this->set_position(newX, newY);
+        if (not(distance > 450 || distance < 250)) {
+            if (x < playerPosX - box_ancho) {
+                postura = CAMINANDO_DERECHA;
+                updateBulletdirection(1, 0);
+                newX = x + speed;
+            } else if (x > playerPosX + box_ancho) {
+                postura = CAMINANDO_IZQUIERDA;
+                updateBulletdirection(-1, 0);
+                newX = x - speed;
+            }
+            /* Se mueve en X */
+            if (this->canMove(game_objects, newX, newY)) {
+                this->set_position(newX, newY);
+            }
+        } else {
+            if (x < playerPosX - box_ancho) {
+                postura = MIRANDO_DERECHA_QUIETO;
+                updateBulletdirection(1, 0);
+            } else {
+                postura = MIRANDO_IZQUIERDA_QUIETO;
+                updateBulletdirection(-1, 0);
+            }
         }
     }
     // Minima logica para seguir a los jugadores, mejorarla por favor
     // Logica insolita para saltar cuando pasa por esas posiciones
-    if (x == 50 || x == 350 || x == 600) {
-        this->setDireccionY(1);
-    }
-    int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-    if (this->canIMove(game_objects, newX, newYconGravedad + this->box_alto)) {
-        fsalto = 0;    //Se tiene que optimizar esto moviendolo al chequeo de can i jump, cuando aprieta la A
+    if (x == 100 || x == 200 || x == 300 || x == 500 || x == 700) {
+        if (not this->getJumpingState()) {
+            this->setDireccionY(1);
+        }
     }
 
-    newY -= ((this->direccionY * fsalto) + (gravity * -1));
+    int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
+
+    this->setJumpingState(this->canMove(game_objects, newX, newYconGravedad));
+
+    newY -= ((fsalto * this->direccionY) + (gravity * -1));
     if (fsalto > 0) {
         fsalto -= gravity;
     }
     if (fsalto == 0) {
         this->setDireccionY(0);
     }
-    if (this->canIMove(game_objects, newX, newY + this->box_alto)) {
+
+    if (this->canMove(game_objects, newX, newY)) {
         this->set_position(newX, newY);
     }
 
@@ -109,6 +123,7 @@ struct event Enemy::getState() {
     eventExt.x = x;  //Actualizo la posicion del enemy
     eventExt.y = y;
     eventExt.postura = this->postura;
+    eventExt.health =  this->getHealth();
 
     estado.completion = EventCompletion::PARTIAL_MSG;
     estado.data = eventExt;
@@ -116,7 +131,7 @@ struct event Enemy::getState() {
     return estado;
 }
 
-bool Enemy::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
+bool Enemy::canMove(vector<GameObject *> game_objects, int newX, int newY) {
     bool isColisionanding;
     for (auto &game_object : game_objects) {
         // Checkeo de colisiones
@@ -151,7 +166,65 @@ GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
 }
 
 GameObject *Enemy::shoot() {
-    Bullet *bullet = BulletBuilder::createBullet(bulletType, this);
+    Bullet *bullet;
+    Entity type = bulletType;
+    if (id == ENEMY_FINAL_2) {
+        type = (rand() % 10 < 3) ? BT_LASER : BT_BULLET;
+    } else if (id == ENEMY_FINAL_3) {
+        type = (rand() % 10 < 3) ? BT_MISSILE : BT_BOMB;
+    }
+    bullet = BulletBuilder::createBullet(type, this);
+    if (type == BT_MISSILE) {
+        //torreta 1
+        bullet->setDireccionX(1);
+        bullet->setX(x);
+        bullet->setY(y + box_alto);
+        if (rand() % 2 == 1) {
+            //torreta 2
+            bullet->setDireccionX(-1);
+            bullet->setX(x + box_ancho);
+        }
+
+        bullet->setDireccionY(-1);
+    }
     return bullet;
+}
+
+Enemy *Enemy::dropEnemy() {
+    Enemy *enemy = nullptr;
+    if (dropsEnemies && countEnemyDrop > 0) {
+        int randomEnemySpawn = rand() % 300;
+        //int spawnEnemyX = (rand() % 100) + 400;
+        if (randomEnemySpawn == 1) {
+            enemy = new Enemy(number + countEnemyDrop, ENEMY_NORMAL_2, x, y + 10);
+            countEnemyDrop--;
+            //Es un avion asi que va estar en un Y distinto al piso
+        }
+    }
+    return enemy;
+}
+
+bool Enemy::isDropsEnemies() const {
+    return dropsEnemies;
+}
+
+void Enemy::setDropsEnemies(bool dropsEnemies) {
+    Enemy::dropsEnemies = dropsEnemies;
+}
+
+int Enemy::getMaxEnemyDrop() const {
+    return countEnemyDrop;
+}
+
+void Enemy::setMaxEnemyDrop(int maxEnemyDrop) {
+    Enemy::countEnemyDrop = maxEnemyDrop;
+}
+
+int Enemy::getGravity() const {
+    return gravity;
+}
+
+void Enemy::setGravity(int gravity) {
+    Enemy::gravity = gravity;
 };
 

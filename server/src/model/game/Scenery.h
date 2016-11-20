@@ -1,9 +1,3 @@
-/*
- * Scenery.h
- *
- *  Created on: 02/10/2016
- *      Author: fpirra
- */
 
 #ifndef SRC_MODEL_GAME_SCENERY_H_
 #define SRC_MODEL_GAME_SCENERY_H_
@@ -46,8 +40,6 @@ private:
 
     void addElementToScenery(Bullet *bullet);
 
-    void addElementToScenery(Enemy *enemy);
-
     void addElementToScenery(Plataforma *platform);
 
     // El background que se agrega ya debe tener su Z-index definido, asi solamente se agrega al vector
@@ -79,6 +71,8 @@ public:
 
     void updateBackgroudsState();
 
+    void addElementToScenery(Enemy *enemy);
+
     vector<struct event> obtenerEstadoEscenario();
 
     int findPlayerByUsername(string user);
@@ -97,7 +91,13 @@ public:
 
     void fightWithFinalEnemy();
 
-    int setLevelConfigs(Entity* z0, Entity* z1, Entity* z2, Entity* en, Entity* ef, int selectedLevel);
+    int setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel);
+
+    void makeEnemyShoot(Enemy *enemy);
+
+    void makeEnemyDropEnemies(Enemy *enemy);
+
+    Enemy *createFinalEnemy();
 };
 
 #endif /* SRC_MODEL_GAME_SCENERY_H_ */

@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Player.h"
 #include "BulletBuilder.h"
+#include "BonusManager.h"
 
-Player::Player(string user, Entity entitySelected, int windowWidth) {
+Player::Player(string user, Entity entitySelected, int windowWidth, int groupId) {
     username = user;
     id = entitySelected;
     this->windowWidth = windowWidth;
@@ -23,14 +24,17 @@ Player::Player(string user, Entity entitySelected, int windowWidth) {
     gravity = 10;
     speed = 10;
     postura = MIRANDO_DERECHA_QUIETO;
-    health = 100;
+    health = PLAYER_HEALTH;
+    this->groupId = groupId;
+
     isShooting = false;
     isJumping = false;
     bulletType = Entity::BT_BULLET;  //Comienza con la pistola normal
+    puntaje = 0;
 
     this->colisionables = {BT_BULLET, BT_HEAVY_BULLET, BT_MISSILE, BT_SHOT, BT_BOMB,
-                           MSC_WEAPON_BOX, MSC_POWER_BONUS, MSC_BONUS_KILLALL,
-                           MSC_PLATFORM};
+                           MSC_WEAPON_BOX_HEAVY, MSC_WEAPON_BOX_ROCKET, MSC_WEAPON_BOX_SHOT,
+                           MSC_WEAPON_BOX_CHASER, MSC_POWER_BONUS, MSC_BONUS_KILLALL, MSC_PLATFORM};
     this->shootsTo = {ENEMY_NORMAL_1, ENEMY_NORMAL_2, ENEMY_NORMAL_3, ENEMY_FINAL_1,
                       ENEMY_FINAL_2, ENEMY_FINAL_3, MSC_PLATFORM};
 
@@ -60,6 +64,7 @@ GameObject *Player::shoot() {
     } else {
         bulletType = BT_BULLET;
     }
+    this->setShootingState(false);
     return BulletBuilder::createBullet(bulletType, this);
 };
 
@@ -72,15 +77,18 @@ void Player::updatePosition(vector<GameObject *> game_objects) {
             if (((direccionX == 1) and (x < (windowWidth - 100))) or ((direccionX == -1) and (x > 0))) {
                 newX = x + direccionX * speed;
             }
-            if (this->canIMove(game_objects, newX, newY)) {
+            if (this->canMove(game_objects, newX, newY)) {
                 this->set_position(newX, newY);
             }
         }
         /* Checkeo de gravedad */
 
         int newYconGravedad = y + gravity; //HACK HORRIBLE para ver si puedo saltar, y no saltar en el aire
-        if (this->canIMove(game_objects, newX, newYconGravedad + this->box_alto)) {
-            isJumping = false;
+
+        if (this->canMove(game_objects, newX, newYconGravedad)) {
+            this->setJumpingState(true);
+        } else {
+            this->setJumpingState(false);
         }
 
         newY -= ((fsalto * this->direccionY) + (gravity * -1));
@@ -90,7 +98,8 @@ void Player::updatePosition(vector<GameObject *> game_objects) {
         if (fsalto == 0) {
             this->setDireccionY(0);
         }
-        if (this->canIMove(game_objects, newX, newY + this->box_alto)) {
+
+        if (this->canMove(game_objects, newX, newY)) {
             this->set_position(newX, newY);
         }
     } else {
@@ -114,6 +123,8 @@ struct event Player::getState() {
     eventExt.x = x;  //Actualizo la posicion del player
     eventExt.y = y;
     eventExt.postura = this->postura;
+    eventExt.puntaje = this->puntaje;
+    eventExt.health =  this->getHealth();
 
     estado.completion = EventCompletion::PARTIAL_MSG;
     estado.data = eventExt;
@@ -121,7 +132,7 @@ struct event Player::getState() {
     return estado;
 }
 
-bool Player::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
+bool Player::canMove(vector<GameObject *> game_objects, int newX, int newY) {
     /* Auto??? que pasa con las cosas abstractas? */
     bool isColisionanding;
     for (auto &game_object : game_objects) {
@@ -130,9 +141,17 @@ bool Player::canIMove(vector<GameObject *> game_objects, int newX, int newY) {
             isColisionanding = this->checkCollition(newX, newY, game_object);
             if (isColisionanding) {
                 // resolucion de colisiones con el game_object:
-                return false;
+                return BonusManager::execute(game_object, game_objects, this);
             }
         }
     }
     return true;
+}
+
+int Player::getGroupId() const {
+    return groupId;
+}
+
+void Player::setGroupId(int groupId) {
+    Player::groupId = groupId;
 }
