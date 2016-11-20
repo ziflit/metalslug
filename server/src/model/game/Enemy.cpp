@@ -62,12 +62,12 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
     if (playerToFollow != nullptr) {
         float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
         float playerPosX = playerToFollow->getX();
-        if (not(distance > 550 || distance < 300)) {
-            if (x < playerPosX - 100) {
+        if (not(distance > 450 || distance < 250)) {
+            if (x < playerPosX - box_ancho) {
                 postura = CAMINANDO_DERECHA;
                 updateBulletdirection(1, 0);
                 newX = x + speed;
-            } else if (x > playerPosX + 100) {
+            } else if (x > playerPosX + box_ancho) {
                 postura = CAMINANDO_IZQUIERDA;
                 updateBulletdirection(-1, 0);
                 newX = x - speed;
