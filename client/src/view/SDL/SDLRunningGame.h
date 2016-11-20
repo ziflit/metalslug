@@ -11,6 +11,7 @@
 #include "handlers/BackgroundHandler.h"
 #include "handlers/EnemyHandler.h"
 #include "handlers/MscHandler.h"
+#include "ScoreBoard.h"
 
 class SDLRunningGame {
 private:
@@ -24,6 +25,8 @@ private:
     BulletHandler *bulletHandler;
     BackgroundHandler *backgroundHandler;
     MscHandler *miscelaneasHandler;
+
+    ScoreBoard *scoreBoard;
 
     event handleKeyDown(SDL_Event *sdlEvent);
 

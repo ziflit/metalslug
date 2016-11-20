@@ -34,6 +34,8 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
     for (auto miscConfig : configs.getMiscelaneasConfig()) {
         miscelaneasHandler->newMscType(miscConfig);
     }
+
+    this->scoreBoard = new ScoreBoard(configs.getGameMode());
 }
 
 SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
@@ -101,8 +103,11 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
 void SDLRunningGame::handleModelState(vector <event> model_state) {
 
         for (auto nuevoEvento : model_state){
-
-            this->getSpriteAndHandleNewEvent(nuevoEvento);
+            if (nuevoEvento.data.code == SHOW_SCOREBOARD) {
+                cout<<"mostrar scoreboard"<<endl;
+            } else {
+                this->getSpriteAndHandleNewEvent(nuevoEvento);
+            }
         }
         this->updateWindowSprites();
 }
