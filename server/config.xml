@@ -178,32 +178,32 @@
         <bullet>
             <id>BT_HEAVY_BULLET</id>
             <path>sprites/bullets/BT_HEAVY_BULLET.png</path>
-            <ancho>2</ancho>
-            <alto>2</alto>
+            <ancho>5</ancho>
+            <alto>5</alto>
         </bullet>
         <bullet>
             <id>BT_MISSILE</id>
             <path>sprites/bullets/BT_MISSILE.png</path>
-            <ancho>2</ancho>
-            <alto>2</alto>
+            <ancho>5</ancho>
+            <alto>5</alto>
         </bullet>
         <bullet>
             <id>BT_TELE_MISSILE</id>
             <path>sprites/bullets/BT_TELE_MISSILE.png</path>
-            <ancho>2</ancho>
-            <alto>2</alto>
+            <ancho>5</ancho>
+            <alto>5</alto>
         </bullet>
         <bullet>
             <id>BT_SHOT</id>
             <path>sprites/bullets/BT_SHOT.png</path>
-            <ancho>2</ancho>
-            <alto>2</alto>
+            <ancho>5</ancho>
+            <alto>5</alto>
         </bullet>
         <bullet>
             <id>BT_BOMB</id>
             <path>sprites/bullets/BT_BOMB.png</path>
-            <ancho>2</ancho>
-            <alto>2</alto>
+            <ancho>5</ancho>
+            <alto>5</alto>
         </bullet>
     </bullets>
 

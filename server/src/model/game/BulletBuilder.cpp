@@ -42,11 +42,12 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
             setupBullet(bullet, 20, 20, 50, 35, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         case Entity::BT_BOMB:
-            bullet = new Bullet(bulletType, firedBy->getX(), firedBy->getY(),
-                                firedBy->getDireccionX() + firedBy->getBoxAncho() / 2,
-                                firedBy->getDireccionY() + firedBy->getBoxAlto(),
+            bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho() / 2,
+                                firedBy->getY() + firedBy->getBoxAlto(),
+                                firedBy->getDireccionX(),
+                                firedBy->getDireccionY(),
                                 firedBy->getShootsTo(), new NormalBulletMovementStrategy(), firedBy);
-            setupBullet(bullet, 20, 20, 50, 35, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
+            setupBullet(bullet, 20, 20, 50, 35, 20, 0, -1, firedBy->getShootsTo());
             break;
         case Entity::BT_LASER:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(),
