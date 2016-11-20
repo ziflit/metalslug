@@ -62,18 +62,28 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
     if (playerToFollow != nullptr) {
         float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
-        if (not(distance > 700 || distance < 300)) {
-            float playerPosX = playerToFollow->getX();
+        float playerPosX = playerToFollow->getX();
+        if (not(distance > 550 || distance < 300)) {
             if (x < playerPosX - 100) {
                 postura = CAMINANDO_DERECHA;
+                updateBulletdirection(1, 0);
                 newX = x + speed;
             } else if (x > playerPosX + 100) {
                 postura = CAMINANDO_IZQUIERDA;
+                updateBulletdirection(-1, 0);
                 newX = x - speed;
             }
             /* Se mueve en X */
             if (this->canMove(game_objects, newX, newY)) {
                 this->set_position(newX, newY);
+            }
+        } else {
+            if (x < playerPosX - box_ancho) {
+                postura = MIRANDO_DERECHA_QUIETO;
+                updateBulletdirection(1, 0);
+            } else {
+                postura = MIRANDO_IZQUIERDA_QUIETO;
+                updateBulletdirection(-1, 0);
             }
         }
     }
