@@ -211,7 +211,7 @@ void PlayerSprite::disparandoAvanzandoMirandoArribaIzquierda() {
     this->weaponsSourceRect.x = (sourceRect.w * 2);
 }
 void PlayerSprite::muriendo() {
-    this->sourceRect.y = (sourceRect.h * 22);
+    this->sourceRect.y = (sourceRect.h * 23);
     this->setNextSpriteFrame();
     this->weaponsSourceRect.x = (sourceRect.w * 100);
 }

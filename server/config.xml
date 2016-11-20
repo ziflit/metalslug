@@ -16,7 +16,7 @@
 		<ancho>100</ancho>
 		<alto>100</alto>
 		<cantWidthFrames>15</cantWidthFrames>
-		<cantHeightFrames>22</cantHeightFrames>
+		<cantHeightFrames>24</cantHeightFrames>
 		<speed>10</speed>
 	</player>
 	<player>
@@ -82,6 +82,33 @@
 		<cantHeightFrames>6</cantHeightFrames>
 		<speed>10</speed>
 	</enemy>
+    <enemy>
+        <id>ENEMY_FINAL_1</id>
+        <path>sprites/enemies/enemy_final_1.png</path>
+        <ancho>300</ancho>
+        <alto>300</alto>
+        <cantWidthFrames>15</cantWidthFrames>
+        <cantHeightFrames>12</cantHeightFrames>
+        <speed>0</speed>
+    </enemy>
+    <enemy>
+        <id>ENEMY_FINAL_2</id>
+        <path>sprites/enemies/enemy_final_2.png</path>
+        <ancho>300</ancho>
+        <alto>300</alto>
+        <cantWidthFrames>15</cantWidthFrames>
+        <cantHeightFrames>12</cantHeightFrames>
+        <speed>0</speed>
+    </enemy>
+    <enemy>
+        <id>ENEMY_FINAL_3</id>
+        <path>sprites/enemies/enemy_final_3.png</path>
+        <ancho>300</ancho>
+        <alto>300</alto>
+        <cantWidthFrames>15</cantWidthFrames>
+        <cantHeightFrames>12</cantHeightFrames>
+        <speed>0</speed>
+    </enemy>
 </enemies>
 
 <backgrounds>
@@ -141,44 +168,44 @@
 	</background>
 </backgrounds>
 
-<bullets>
-	<bullet>
-		<id>BT_BULLET</id>
-		<path>sprites/bullets/BT_BULLET.png</path>
-		<ancho>2</ancho>
-		<alto>2</alto>
-	</bullet>
-	<bullet>
-		<id>BT_HEAVY_BULLET</id>
-		<path>sprites/bullets/BT_HEAVY_BULLET.png</path>
-		<ancho>2</ancho>
-		<alto>2</alto>
-	</bullet>
-	<bullet>
-		<id>BT_MISSILE</id>
-		<path>sprites/bullets/BT_MISSILE.png</path>
-		<ancho>2</ancho>
-		<alto>2</alto>
-	</bullet>
-	<bullet>
-		<id>BT_TELE_MISSILE</id>
-		<path>sprites/bullets/BT_TELE_MISSILE.png</path>
-		<ancho>2</ancho>
-		<alto>2</alto>
-	</bullet>
-	<bullet>
-		<id>BT_SHOT</id>
-		<path>sprites/bullets/BT_SHOT.png</path>
-		<ancho>2</ancho>
-		<alto>2</alto>
-	</bullet>
-	<bullet>
-		<id>BT_BOMB</id>
-		<path>sprites/bullets/BT_BOMB.png</path>
-		<ancho>2</ancho>
-		<alto>2</alto>
-	</bullet>
-</bullets>
+	<bullets>
+	    <bullet>
+            <id>BT_BULLET</id>
+            <path>sprites/bullets/BT_BULLET.png</path>
+            <ancho>5</ancho>
+            <alto>5</alto>
+        </bullet>
+        <bullet>
+            <id>BT_HEAVY_BULLET</id>
+            <path>sprites/bullets/BT_HEAVY_BULLET.png</path>
+            <ancho>2</ancho>
+            <alto>2</alto>
+        </bullet>
+        <bullet>
+            <id>BT_MISSILE</id>
+            <path>sprites/bullets/BT_MISSILE.png</path>
+            <ancho>2</ancho>
+            <alto>2</alto>
+        </bullet>
+        <bullet>
+            <id>BT_TELE_MISSILE</id>
+            <path>sprites/bullets/BT_TELE_MISSILE.png</path>
+            <ancho>2</ancho>
+            <alto>2</alto>
+        </bullet>
+        <bullet>
+            <id>BT_SHOT</id>
+            <path>sprites/bullets/BT_SHOT.png</path>
+            <ancho>2</ancho>
+            <alto>2</alto>
+        </bullet>
+        <bullet>
+            <id>BT_BOMB</id>
+            <path>sprites/bullets/BT_BOMB.png</path>
+            <ancho>2</ancho>
+            <alto>2</alto>
+        </bullet>
+    </bullets>
 
 	<miscelaneas>
 	<miscelanea>
