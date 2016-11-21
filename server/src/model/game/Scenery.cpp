@@ -245,6 +245,7 @@ void Scenery::updateBulletsState(vector<GameObject *> &all_objects_in_window) {
 
 void Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
     for (auto enemy : enemies) {
+        if (enemy->getPostura() == MURIENDO || enemy->getPostura() == MUERTO) continue;
         enemy->updatePosition(all_objects_in_window);
         makeEnemyShoot(enemy);
         makeEnemyDropEnemies(enemy);
