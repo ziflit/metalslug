@@ -105,6 +105,8 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
         for (auto nuevoEvento : model_state){
             if (nuevoEvento.data.code == SHOW_SCOREBOARD) {
                 cout<<"mostrar scoreboard"<<endl;
+            } else if (nuevoEvento.data.code == GAME_OVER) {
+                cout << "GAME OVER GUACHIN" << endl;
             } else {
                 this->getSpriteAndHandleNewEvent(nuevoEvento);
             }

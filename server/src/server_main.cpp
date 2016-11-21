@@ -64,6 +64,9 @@ void correr_modelo(Server* server) {
         if (model_state.back().data.code == SHOW_SCOREBOARD) {
             sleep(5);
         }
+        if (model_state.back().data.code == GAME_OVER){
+            onlinethread = false;
+        }
         model_state.clear();
     }
 
