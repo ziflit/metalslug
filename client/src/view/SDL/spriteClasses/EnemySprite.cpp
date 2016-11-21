@@ -27,19 +27,25 @@ void EnemySprite::handle(struct event nuevoEvento) {
     this->postura = nuevoEvento.data.postura;
     switch (postura){
 
-        case Postura::CAMINANDO_DERECHA:
+        case CAMINANDO_DERECHA:
             caminandoDerecha();
             break;
-        case Postura::CAMINANDO_IZQUIERDA :
+        case CAMINANDO_IZQUIERDA :
             caminandoIzquierda();
             break;
-        case Postura::DISPARANDO_CAMINANDO_DERECHA:
+        case DISPARANDO_CAMINANDO_DERECHA:
             disparandoCaminandoDerecha();
             break;
-        case Postura::DISPARANDO_CAMINANDO_IZQUIERDA:
+        case DISPARANDO_CAMINANDO_IZQUIERDA:
             disparandoCaminandoIzquierda();
             break;
-        case Postura::MURIENDO:
+        case MIRANDO_DERECHA_QUIETO:
+            mirandoDerechaQuieto();
+            break;
+        case MIRANDO_IZQUIERDA_QUIETO:
+            mirandoIzquierdaQuieto();
+            break;
+        case MURIENDO:
             mueriendo();
             break;
         default:
@@ -63,6 +69,16 @@ void EnemySprite::disparandoCaminandoIzquierda() {
     this->sourceRect.y = (sourceRect.h * 3);
     this->setNextSpriteFrame();
 }
-void EnemySprite::mueriendo() {
+void EnemySprite::mirandoDerechaQuieto() {
     this->sourceRect.y = (sourceRect.h * 4);
+    this->setNextSpriteFrame();
+}
+
+void EnemySprite::mirandoIzquierdaQuieto() {
+    this->sourceRect.y = (sourceRect.h * 5);
+    this->setNextSpriteFrame();
+}
+
+void EnemySprite::mueriendo() {
+    this->sourceRect.y = (sourceRect.h * 6);
 }

@@ -33,5 +33,9 @@ public:
     void disparandoCaminandoDerecha();
     void disparandoCaminandoIzquierda();
     void mueriendo();
+
+    void mirandoDerechaQuieto();
+
+    void mirandoIzquierdaQuieto();
 };
 #endif //METALSLUG_ENEMYSPRITE_H
