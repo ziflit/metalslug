@@ -200,7 +200,12 @@ Enemy *Scenery::createFinalEnemy() {
             finalEnemy->setGravity(0);
             break;
         case ENEMY_FINAL_2:
-            finalEnemy->setX(250);
+            finalEnemy->setX(550);
+            finalEnemy->setY(300);
+            finalEnemy->setBoxAlto(200);
+            finalEnemy->setBoxAncho(250);
+            finalEnemy->setGravity(0);
+            finalEnemy->setSpeed(0);
             finalEnemy->setBulletType(BT_MISSILE);
             break;
         case ENEMY_FINAL_3:

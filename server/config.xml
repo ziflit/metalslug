@@ -94,8 +94,8 @@
     <enemy>
         <id>ENEMY_FINAL_2</id>
         <path>sprites/enemies/enemy_final_2.png</path>
-        <ancho>300</ancho>
-        <alto>300</alto>
+        <ancho>250</ancho>
+        <alto>200</alto>
         <cantWidthFrames>15</cantWidthFrames>
         <cantHeightFrames>12</cantHeightFrames>
         <speed>0</speed>
