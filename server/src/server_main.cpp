@@ -61,6 +61,9 @@ void correr_modelo(Server* server) {
         if ((tiempo_a_dormir) > 0) {
             usleep (tiempo_a_dormir);
         }
+        if (model_state.back().data.code == SHOW_SCOREBOARD) {
+            sleep(5);
+        }
         model_state.clear();
     }
 
