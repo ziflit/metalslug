@@ -25,8 +25,8 @@ private:
     map<int, int> y = {
             {0, 105},
             {1, 105},
-            {2, 475},
-            {3, 475}
+            {2, 300},
+            {3, 300}
     };
 
     void setPlayerBoard(int boardNumber);

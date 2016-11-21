@@ -28,15 +28,15 @@ private:
     };
     map<int, int> puntajeX = {
             {0, 220},
-            {1, 600},
+            {1, 550},
             {2, 220},
-            {3, 600}
+            {3, 550}
     };
     map<int, int> puntajeY = {
             {0, 220},
             {1, 220},
-            {2, 435},
-            {3, 435}
+            {2, 380},
+            {3, 380}
     };
 public:
     ScoreBoardOrganizer(GameMode mode, int cantPlayers, SDL_Renderer *mainRenderer);
