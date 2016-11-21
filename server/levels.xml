@@ -8,57 +8,57 @@
 			<!-- Piso -->
 			<platform>
 				<x>0</x>
-				<y>600</y>
+				<y>515</y>
 				<ancho>16400</ancho>
 				<alto>1</alto>
 			</platform>
 			<!-- Carretilla -->
 			<platform>
-				<x>1240</x>
-				<y>420</y>
-				<ancho>132</ancho>
+				<x>1200</x>
+				<y>440</y>
+				<ancho>160</ancho>
 				<alto>74</alto>
 			</platform>
 			<!-- Galeria de madera -->
 			<platform>
-				<x>1355</x>
-				<y>310</y>
-				<ancho>192</ancho>
+				<x>1280</x>
+				<y>355</y>
+				<ancho>280</ancho>
 				<alto>1</alto>
 			</platform>
 			<!-- Techo de las cupulas -->
 			<platform>
-				<x>2900</x>
-				<y>280</y>
-				<ancho>377</ancho>
+				<x>2754</x>
+				<y>330</y>
+				<ancho>700</ancho>
 				<alto>1</alto>
 			</platform>
 			<!-- Techo de las cupulas -->
 			<platform>
-				<x>3520</x>
-				<y>280</y>
-				<ancho>377</ancho>
+				<x>3350</x>
+				<y>330</y>
+				<ancho>700</ancho>
 				<alto>1</alto>
 			</platform>
 			<!-- Vias del tren -->
 			<platform>
-				<x>6400</x>
-				<y>250</y>
-				<ancho>788</ancho>
+				<x>6045</x>
+				<y>291</y>
+				<ancho>1450</ancho>
 				<alto>1</alto>
 			</platform>
 			<!-- Piedra -->
 			<platform>
-				<x>3220</x>
-				<y>450</y>
-				<ancho>80</ancho>
+				<x>3180</x>
+				<y>443</y>
+				<ancho>200</ancho>
 				<alto>100</alto>
 			</platform>
 			<!-- Cajas -->
 			<platform>
-				<x>5940</x>
-				<y>425</y>
-				<ancho>110</ancho>
+				<x>5875</x>
+				<y>421</y>
+				<ancho>255</ancho>
 				<alto>100</alto>
 			</platform>	
 		</platforms>
