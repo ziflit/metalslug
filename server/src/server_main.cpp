@@ -62,7 +62,7 @@ void correr_modelo(Server* server) {
             usleep (tiempo_a_dormir);
         }
         if (model_state.back().data.code == SHOW_SCOREBOARD) {
-            sleep(5);
+            sleep(25);
         }
         if (model_state.back().data.code == GAME_OVER){
             onlinethread = false;

@@ -16,17 +16,17 @@ private:
     };
 
     map<int, int> x = {
-            {0, 10},
-            {1, 350},
-            {2, 10},
-            {3, 350}
+            {0, 50},
+            {1, 450},
+            {2, 50},
+            {3, 450}
     };
 
     map<int, int> y = {
-            {0, 40},
-            {1, 300},
-            {2, 40},
-            {3, 300}
+            {0, 275},
+            {1, 275},
+            {2, 475},
+            {3, 475}
     };
 
     void setPlayerBoard(int boardNumber);
@@ -34,10 +34,10 @@ public:
 
     ScoreBoardSprite(int boardNumber, SDL_Renderer *mainRenderer) : Sprite(mainRenderer) {
         this->setPlayerBoard(boardNumber);
-        this->sourceRect.w = 250;
-        this->sourceRect.h = 200;
-        this->setWidth(250);
-        this->setHeight(200);
+        this->sourceRect.w = 300;
+        this->sourceRect.h = 150;
+        this->setWidth(300);
+        this->setHeight(150);
     }
 
     virtual void setUpImage(string imageSpritePath) override;
