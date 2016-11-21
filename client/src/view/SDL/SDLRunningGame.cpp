@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "SDLRunningGame.h"
 
 void SDLRunningGame::audioInitialization () {
@@ -105,7 +106,14 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
             if (nuevoEvento.data.code == SHOW_SCOREBOARD) {
                 this->scoreBoard->setData(playerHandler->getPlayers());
             } else if (nuevoEvento.data.code == GAME_OVER) {
-                cout << "GAME OVER GUACHIN" << endl;
+                BackgroundSprite* gameOver = new BackgroundSprite(mainRenderer, 800, 600, xmlBackground());
+                gameOver->setUpImage("sprites/backgrounds/gameOver.png");
+                gameOver->setSourceRectWidth(gameOver->getSpriteImageWidth());
+                gameOver->setSourceRectHeight(gameOver->getSpriteImageHeight());
+                gameOver->actualizarDibujo();
+                SDL_RenderPresent(this->mainRenderer);
+                sleep(7);
+                exit(1); //VIOLENCIA
             } else {
                 this->getSpriteAndHandleNewEvent(nuevoEvento);
             }

@@ -358,7 +358,9 @@ bool PlayerSprite::clientIsConnected() {
 
 void PlayerSprite::updateHealthText(int health) {
     if(health == 999999) {
-        this->bar->updateHealth("---");
+        if(firstEvent()){
+            this->bar->updateHealth("---");
+        }
         return;
     }
     if (not ((postura == MURIENDO) or (postura == MUERTO))) this->bar->updateHealth(health);
