@@ -122,15 +122,6 @@ enum Postura{
 
 };
 
-enum Arma {
-	PISTOLA,
-	HEAVY_MACHINEGUN,
-	ROCKET_LAUNCHER,
-	ENEMY_CHASER,
-	SHOTGUN,
-	BOMB
-};
-
 enum GameMode {
 	INDIVIDUAL,
 	COLABORATIVO,

@@ -122,15 +122,6 @@ enum Postura{
 
 };
 
-enum Arma {
-    PISTOLA,
-    HEAVY_MACHINEGUN,
-    ROCKET_LAUNCHER,
-    ENEMY_CHASER,
-    SHOTGUN,
-    BOMB
-};
-
 enum GameMode {
     INDIVIDUAL,
     COLABORATIVO,
@@ -146,7 +137,7 @@ struct event_ext {
     int puntaje;
 	int health;
     Postura postura;
-    Arma arma;
+    Entity arma;
 };
 
 struct event {

@@ -12,7 +12,7 @@ private:
     SDL_Rect weaponsSourceRect, weaponsDestRect;
     SDL_Texture* weaponsLayer;
     TextBox *usernameText, *healthText;
-    Arma arma;
+    Entity arma;
     int puntaje;
     int wFramesCant,wActualPosFrame,cambioFrame;
     Postura postura;
@@ -45,7 +45,7 @@ public:
     void setHeight(int h);
 
     void setUpImage(string imageSpritePath,string imageGrisadoPath);
-    void setWeapon(Arma weapon);
+    void setWeapon(Entity weapon);
 
     void setUpWeaponsImage(string weaponsPath);
 
@@ -98,7 +98,7 @@ public:
 
     SDL_Renderer *getRenderer();
 
-    char *getPuntaje();
+    int getPuntaje();
 };
 
 #endif //METALSLUG_PLAYERSPRITE_H

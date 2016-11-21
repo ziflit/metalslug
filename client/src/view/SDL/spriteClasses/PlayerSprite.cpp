@@ -309,27 +309,27 @@ void PlayerSprite::setPostura(Postura postura) {
     this->postura = postura;
 }
 
-void PlayerSprite::setWeapon(Arma weapon) {
+void PlayerSprite::setWeapon(Entity weapon) {
     this->arma = weapon;
 
     switch (arma) {
-        case PISTOLA:
+        case BT_BULLET:
             this->weaponsSourceRect.y = 0;
             break;
-        case HEAVY_MACHINEGUN:
+        case BT_HEAVY_BULLET:
             this->weaponsSourceRect.y = (this->sourceRect.h * 1 );
             this->playHeavyMachineGunSound();
             break;
-        case ROCKET_LAUNCHER:
+        case BT_MISSILE:
             this->weaponsSourceRect.y = (this->sourceRect.h * 2 );
             break;
-        case ENEMY_CHASER:
+        case BT_TELE_MISSILE:
             this->weaponsSourceRect.y = (this->sourceRect.h * 3 );
             break;
-        case SHOTGUN:
+        case BT_SHOT:
             this->weaponsSourceRect.y = (this->sourceRect.h * 4 );
             break;
-        case BOMB:
+        case BT_BOMB:
             this->weaponsSourceRect.y = (this->sourceRect.h * 5 );
             break;
         default:
@@ -377,6 +377,6 @@ SDL_Renderer *PlayerSprite::getRenderer() {
     return this->renderer;
 }
 
-char *PlayerSprite::getPuntaje() {
+int PlayerSprite::getPuntaje() {
     return puntaje;
 }

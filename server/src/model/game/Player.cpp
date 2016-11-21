@@ -123,6 +123,7 @@ struct event Player::getState() {
     eventExt.x = x;  //Actualizo la posicion del player
     eventExt.y = y;
     eventExt.postura = this->postura;
+    eventExt.arma = this->bulletType;
     eventExt.puntaje = this->puntaje;
     eventExt.health =  this->getHealth();
 
