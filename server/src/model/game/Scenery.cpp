@@ -71,10 +71,15 @@ void Scenery::setUpLevel(int selectedLevel) {
     ((Background *) backgrounds[0])->calculateSpeed(this->configs->getBackgroundsConfig()[1].ancho, playersSpeed);
 }
 
-Entity Scenery::buildPlayer(string user) {
+Entity Scenery::buildPlayer(string user, bool noPuedenIngresarMasPlayers) {
     int position = this->findPlayerByUsername(user);
     if (position != -1) {
         return players[position]->getEntity();
+    }
+
+    // Si el user no esta en la lista, osea no es reconexion, y ya esta el limite de usuarios alcanzados, no conecta
+    if (noPuedenIngresarMasPlayers){
+        return NOPLAYER;
     }
 
     PlayerBuilder playerBuilder;
