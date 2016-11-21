@@ -1,8 +1,8 @@
 #include "TextBox.h"
 
-TextBox::TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color) {
+TextBox::TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color, int size) {
 
-    this->font = loadfont("ttf/MetalSlug.TTF", 12);
+    this->font = loadfont("ttf/MetalSlug.TTF", size);
     this->color = color;
     this->mainRenderer =  mainRenderer;
     this->textRect.x = this->textRect.y = 0;
@@ -10,13 +10,12 @@ TextBox::TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color) {
 
 }
 
-TextBox::TextBox(int number, SDL_Renderer* mainRenderer, SDL_Color color) {
-    this->font = loadfont("ttf/MetalSlug.TTF", 12);
+TextBox::TextBox(int number, SDL_Renderer* mainRenderer, SDL_Color color, int size) {
+    this->font = loadfont("ttf/MetalSlug.TTF", size);
     this->color = color;
     this->mainRenderer =  mainRenderer;
     this->textRect.x = this->textRect.y = 0;
     changeText(number);
-
 }
 
 void TextBox::changeText(char* text){
@@ -59,4 +58,10 @@ TTF_Font* TextBox::loadfont(char* file, int ptsize) {
         // Handle the error here.
     }
     return tmpfont;
+}
+
+
+TextBox::~TextBox() {
+    SDL_DestroyTexture(text);
+    text = NULL;
 }

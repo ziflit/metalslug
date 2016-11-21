@@ -216,7 +216,8 @@ void PlayerSprite::muriendo() {
     this->weaponsSourceRect.x = (sourceRect.w * 100);
 }
 void PlayerSprite::setUsername(struct event nuevoEvento) {
-    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {3,255,0,1});
+    strncpy(username, nuevoEvento.data.username, 20);
+    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {3,255,0,1},12);
 }
 
 void PlayerSprite::handle(struct event nuevoEvento) {
@@ -369,9 +370,6 @@ void PlayerSprite::renderizeHealthText() {
     this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
 }
 
-TextBox *const &PlayerSprite::getUsernameTextbox() const {
-    return usernameText;
-}
 
 SDL_Renderer *PlayerSprite::getRenderer() {
     return this->renderer;
@@ -379,4 +377,7 @@ SDL_Renderer *PlayerSprite::getRenderer() {
 
 int PlayerSprite::getPuntaje() {
     return puntaje;
+}
+char *PlayerSprite::getUsername()  {
+    return username;
 }

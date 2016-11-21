@@ -10,6 +10,7 @@
 class ScoreBoardOrganizer {
 private:
     GameMode mode;
+    bool renderize;
     vector<ScoreBoardSprite*> scoreBoardSprites;
     vector<TextBox*> usernameTexts;
     vector<TextBox*> puntajeTexts;
@@ -41,8 +42,6 @@ public:
     ScoreBoardOrganizer(GameMode mode, int cantPlayers, SDL_Renderer *mainRenderer);
 
     void realize();
-
-    void setData(vector<PlayerSprite *> *playersSprites);
 
     void setData(vector<PlayerSprite *> playersSprites);
 

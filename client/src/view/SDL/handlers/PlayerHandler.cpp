@@ -50,6 +50,6 @@ void PlayerHandler::deletePlayer(vector<PlayerSprite *>::iterator it) {
             playersSprites.erase(it);
 }
 
-vector<PlayerSprite *> *PlayerHandler::getPlayers() {
-    return &playersSprites;
+vector<PlayerSprite *> PlayerHandler::getPlayers() {
+    return playersSprites;
 }

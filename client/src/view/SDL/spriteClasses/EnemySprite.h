@@ -16,7 +16,7 @@ public:
         this->number = number;
         this->cambioFrame = 0;
         EnemySprite::wActualPosFrame = 0;
-        healthText = new TextBox("100", this->renderer, {255,0,0,1});
+        healthText = new TextBox(100, this->renderer, {255,0,0,1},12);
         this->layer = type.layer;
         EnemySprite::wFramesCant = type.cantWidthFrames;
         EnemySprite::sourceRect.w = type.spriteImageWidth / wFramesCant;

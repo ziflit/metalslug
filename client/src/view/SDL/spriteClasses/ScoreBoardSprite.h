@@ -6,7 +6,7 @@
 #include <map>
 #include "Sprite.h"
 
-class ScoreBoardSprite : Sprite{
+class ScoreBoardSprite : public Sprite{
 private:
     map<int, string> path = {
             {0, "sprites/scoreBoards/marcoScoreBoard.png"},
@@ -29,16 +29,19 @@ private:
             {3, 300}
     };
 
-public:
-
     void setPlayerBoard(int boardNumber);
+public:
 
     ScoreBoardSprite(int boardNumber, SDL_Renderer *mainRenderer) : Sprite(mainRenderer) {
         this->setPlayerBoard(boardNumber);
+        this->sourceRect.w = 250;
+        this->sourceRect.h = 200;
         this->setWidth(250);
         this->setHeight(200);
     }
+
+    virtual void setUpImage(string imageSpritePath) override;
+
+    virtual void handle(struct event nuevoEvento) override;
 };
-
-
 #endif //METALSLUG_SCORETABLE_H

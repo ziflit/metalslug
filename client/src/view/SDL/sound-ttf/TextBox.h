@@ -8,13 +8,15 @@
 using namespace std;
 class TextBox {
 public:
-    TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color);
-    TextBox(int number, SDL_Renderer *mainRenderer, SDL_Color color);
+    TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color, int size);
+    TextBox(int number, SDL_Renderer *mainRenderer, SDL_Color color, int size);
     void changeText(char *text);
     void changeText(int number);
     void renderize(int x, int y);
     void renderize();
     void setPosition(int x, int y);
+    virtual ~TextBox();
+
 private:
     TTF_Font *font;
     SDL_Color color;
