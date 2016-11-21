@@ -18,14 +18,43 @@ private:
             {TARMA, "sprites/scoreBoards/tarmaBar.png"},
             {ERI, "sprites/scoreBoards/eriBar.png"}
     };
+    map<Entity, int> healthX = {
+            {MARCO, 120},
+            {FIO, 520},
+            {TARMA, 120},
+            {ERI, 520}
+    };
+    map<Entity, int> healthY = {
+            {MARCO, 20},
+            {FIO, 20},
+            {TARMA, 80},
+            {ERI, 80}
+    };
+    map<Entity , int> scoreX = {
+            {MARCO, 300},
+            {FIO, 680},
+            {TARMA, 300},
+            {ERI, 680}
+    };
+    map<Entity , int> scoreY = {
+            {MARCO, 18},
+            {FIO, 18},
+            {TARMA, 80},
+            {ERI, 80}
+    };
     TextBox *healthText, *scoreText;
 public:
     DataBarSprite(SDL_Renderer *renderer, Entity id);
 
     virtual void handle(struct event nuevoEvento) override;
 
+    void updateScore(int score);
 
-    void handle(int health, int score);
+    void updateHealth(int health);
+
+    void updateHealth(string health);
+
+    void actualizarDibujo();
 };
 
 

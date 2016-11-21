@@ -32,6 +32,11 @@ void TextBox::changeText(int number) {
     changeText(pchar);
 }
 
+void TextBox::changeText(string text) {
+    char pchar[20];
+    sprintf(pchar, "%.20s", text.c_str());
+    changeText(pchar);
+}
 void TextBox::renderize(int x, int y) {
     this->setPosition(x,y);
     SDL_RenderCopy(mainRenderer, text, NULL, &textRect);

@@ -29,9 +29,5 @@ private:
     SDL_Rect textRect;
 
     TTF_Font *loadfont(char *file, int ptsize);
-
-    char *convertToChar(string s);
-
-    char *convertToChar(int number);
 };
 #endif //METALSLUG_TEXTBOX_H

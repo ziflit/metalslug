@@ -44,7 +44,6 @@ void PlayerSprite::actualizarDibujo() {
             SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
         this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h *2) ));
-        this->renderizeHealthText();
         this->bar->actualizarDibujo();
     }
 
@@ -104,7 +103,6 @@ void PlayerSprite::caminandoIzquierda() {
     this->sourceRect.y = 0;
     this->weaponsSourceRect.x = (this->sourceRect.w * 1);
 }
-
 void PlayerSprite::mirandoArribaCaminandoIzquierda(){
     this->sourceRect.y = (sourceRect.h * 1);
     this->setNextSpriteFrame();
@@ -190,7 +188,6 @@ void PlayerSprite::disparandoAgachadoQuietoIzquierda() {
     this->setNextSpriteFrame();
     this->weaponsSourceRect.x = (sourceRect.w * 6);
 }
-
 void PlayerSprite::disparandoMirandoArribaDerechaQuieto() {
     this->sourceRect.y = (sourceRect.h * 18);
     this->setNextSpriteFrame();
@@ -229,7 +226,7 @@ void PlayerSprite::handle(struct event nuevoEvento) {
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
     this->setPostura(nuevoEvento.data.postura);
     this->updateHealthText(nuevoEvento.data.health);
-    this->bar->handle(nuevoEvento.data.health,nuevoEvento.data.puntaje);
+    this->bar->updateScore(nuevoEvento.data.puntaje);
 }
 
 void PlayerSprite::setPostura(Postura postura) {
@@ -361,17 +358,12 @@ bool PlayerSprite::clientIsConnected() {
 
 void PlayerSprite::updateHealthText(int health) {
     if(health == 999999) {
-        this->healthText->changeText("INFINITA");
+        this->bar->updateHealth("INFINITA");
         return;
     }
-    if (not ((postura == MURIENDO) or (postura == MUERTO))) this->healthText->changeText(health);
-    else this->healthText->changeText(0);
+    if (not ((postura == MURIENDO) or (postura == MUERTO))) this->bar->updateHealth(health);
+    else this->bar->updateHealth(0);
 }
-
-void PlayerSprite::renderizeHealthText() {
-    this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
-}
-
 
 SDL_Renderer *PlayerSprite::getRenderer() {
     return this->renderer;

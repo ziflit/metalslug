@@ -92,7 +92,6 @@ public:
     virtual ~PlayerSprite();
     void playHeavyMachineGunSound();
     void updateHealthText(int health);
-    void renderizeHealthText();
     SDL_Renderer *getRenderer();
     int getPuntaje();
 
