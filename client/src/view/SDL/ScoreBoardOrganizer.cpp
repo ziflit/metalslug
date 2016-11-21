@@ -15,7 +15,6 @@ void ScoreBoardOrganizer::realize() {
             usernameTexts[i]->renderize();
             puntajeTexts[i]->renderize();
         }
-        usernameTexts[scoreBoardSprites.size()]->renderize();
         this->renderize = false;
     }
 }
@@ -25,13 +24,9 @@ void ScoreBoardOrganizer::setData(vector<PlayerSprite *> playersSprites) {
     for (int i = 0 ; i < scoreBoardSprites.size() ; i++ ) {
         PlayerSprite* player = playersSprites[i];
 
-        usernameTexts.push_back(new TextBox(player->getUsername(), player->getRenderer(), {0,0,255,0},40));
-        puntajeTexts.push_back(new TextBox(player->getPuntaje(),player->getRenderer(),{0,0,255,0},40));
+        usernameTexts.push_back(new TextBox(player->getUsername(), player->getRenderer(), {0,0,255,0},25));
+        puntajeTexts.push_back(new TextBox(player->getPuntaje(),player->getRenderer(),{0,0,255,0},25));
     }
-    TextBox* scores = new TextBox(21, playersSprites[0]->getRenderer(), {40,0,240,0},80);
-    scores->changeText("SCORES:");
-    scores->setPosition(150,10);
-    usernameTexts.push_back((scores));
     this->setTextPositions();
 }
 

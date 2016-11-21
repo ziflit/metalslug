@@ -15,26 +15,26 @@ private:
     vector<TextBox*> usernameTexts;
     vector<TextBox*> puntajeTexts;
     map<int, int> usernameX = {
-            {0, 200},
-            {1, 600},
-            {2, 200},
-            {3, 600}
+            {0, 170},
+            {1, 500},
+            {2, 170},
+            {3, 500}
     };
     map<int, int> usernameY = {
-            {0, 163},
-            {1, 163},
+            {0, 140},
+            {1, 140},
             {2, 363},
             {3, 363}
     };
     map<int, int> puntajeX = {
-            {0, 250},
+            {0, 220},
             {1, 700},
-            {2, 250},
+            {2, 220},
             {3, 700}
     };
     map<int, int> puntajeY = {
-            {0, 238},
-            {1, 238},
+            {0, 220},
+            {1, 220},
             {2, 435},
             {3, 435}
     };

@@ -10,9 +10,9 @@ class ScoreBoardSprite : public Sprite{
 private:
     map<int, string> path = {
             {0, "sprites/scoreBoards/marcoScoreBoard.png"},
-            {1, "sprites/scoreBoards/marcoScoreBoard.png"},
-            {2, "sprites/scoreBoards/marcoScoreBoard.png"},
-            {3, "sprites/scoreBoards/marcoScoreBoard.png"}
+            {1, "sprites/scoreBoards/fioScoreBoard.png"},
+            {2, "sprites/scoreBoards/tarmaScoreBoard.png"},
+            {3, "sprites/scoreBoards/eriScoreBoard.png"}
     };
 
     map<int, int> x = {
@@ -23,8 +23,8 @@ private:
     };
 
     map<int, int> y = {
-            {0, 275},
-            {1, 275},
+            {0, 105},
+            {1, 105},
             {2, 475},
             {3, 475}
     };
