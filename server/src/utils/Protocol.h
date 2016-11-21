@@ -45,7 +45,9 @@ enum EventCode {
     BACKGROUND_STATUS,
     ENEMY_STATUS,
     BULLET_STATUS,
-    TODO_SIGUE_IGUAL
+    TODO_SIGUE_IGUAL,
+    SHOW_SCOREBOARD,
+    GAME_OVER
 };
 
 enum EventCompletion {
