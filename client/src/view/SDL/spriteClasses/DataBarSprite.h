@@ -27,8 +27,8 @@ private:
     map<Entity, int> healthY = {
             {MARCO, 20},
             {FIO, 20},
-            {TARMA, 80},
-            {ERI, 80}
+            {TARMA, 70},
+            {ERI, 70}
     };
     map<Entity , int> scoreX = {
             {MARCO, 300},
@@ -39,8 +39,8 @@ private:
     map<Entity , int> scoreY = {
             {MARCO, 18},
             {FIO, 18},
-            {TARMA, 80},
-            {ERI, 80}
+            {TARMA, 70},
+            {ERI, 70}
     };
     TextBox *healthText, *scoreText;
 public:
