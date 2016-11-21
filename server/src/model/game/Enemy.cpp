@@ -61,18 +61,28 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
     GameObject *playerToFollow = findCloserPlayerToFollow(game_objects);
     if (playerToFollow != nullptr) {
         float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
-        if (not(distance > 700 || distance < 300)) {
-            float playerPosX = playerToFollow->getX();
-            if (x < playerPosX - 100) {
+        float playerPosX = playerToFollow->getX();
+        if (not(distance > 450 || distance < 250)) {
+            if (x < playerPosX - box_ancho) {
                 postura = CAMINANDO_DERECHA;
+                updateBulletdirection(1, 0);
                 newX = x + speed;
-            } else if (x > playerPosX + 100) {
+            } else if (x > playerPosX + box_ancho) {
                 postura = CAMINANDO_IZQUIERDA;
+                updateBulletdirection(-1, 0);
                 newX = x - speed;
             }
             /* Se mueve en X */
             if (this->canMove(game_objects, newX, newY)) {
                 this->set_position(newX, newY);
+            }
+        } else {
+            if (x < playerPosX - box_ancho) {
+                postura = MIRANDO_DERECHA_QUIETO;
+                updateBulletdirection(1, 0);
+            } else {
+                postura = MIRANDO_IZQUIERDA_QUIETO;
+                updateBulletdirection(-1, 0);
             }
         }
     }
@@ -156,7 +166,27 @@ GameObject *Enemy::findCloserPlayerToFollow(vector<GameObject *> gameObjects) {
 }
 
 GameObject *Enemy::shoot() {
-    Bullet *bullet = BulletBuilder::createBullet(bulletType, this);
+    Bullet *bullet;
+    Entity type = bulletType;
+    if (id == ENEMY_FINAL_2) {
+        type = (rand() % 10 < 3) ? BT_LASER : BT_BULLET;
+    } else if (id == ENEMY_FINAL_3) {
+        type = (rand() % 10 < 3) ? BT_MISSILE : BT_BOMB;
+    }
+    bullet = BulletBuilder::createBullet(type, this);
+    if (type == BT_MISSILE) {
+        //torreta 1
+        bullet->setDireccionX(1);
+        bullet->setX(x);
+        bullet->setY(y + box_alto);
+        if (rand() % 2 == 1) {
+            //torreta 2
+            bullet->setDireccionX(-1);
+            bullet->setX(x + box_ancho);
+        }
+
+        bullet->setDireccionY(-1);
+    }
     return bullet;
 }
 

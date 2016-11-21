@@ -14,6 +14,7 @@ using namespace std;
 Server::Server(string xmlConfigPath, string xmlLvlsConfigPath) {
     this->xmlConfigPath = xmlConfigPath;
     this->xmlLvlsConfigPath = xmlLvlsConfigPath;
+    setGameState(false);
     loadConfigs();
     this->scenery = new Scenery(&configs, 1); //El 1 es para que inicie en level 1
 }
@@ -299,7 +300,7 @@ void Server::broadcast_event(struct event event) {
 Entity Server::connect_user(char* user) {
     string nombre_elegido;
     nombre_elegido.assign(user);
-    return this->scenery->buildPlayer(nombre_elegido);
+    return this->scenery->buildPlayer(nombre_elegido, this->getGameState());
 }
 
 void Server::send_model_snapshot(ClientConnection* handler) {

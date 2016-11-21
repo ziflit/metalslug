@@ -124,6 +124,7 @@ int main(int argc, char* argv[]) {
         if (server->get_connections().size() == 2 ) { cout << "Hay 2 clientes conectados" << endl;}
         if (server->enough_players_to_start()) {
             cout << "Hay suficiente cantidad de jugadores para empezar" << endl;
+            server->setGameState(true);
             thread corredor_de_modelo = std::thread(correr_modelo, server);
             corredor_de_modelo.detach();
             server_running = true;
