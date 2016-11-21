@@ -127,7 +127,6 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys) {
     return obtenerEstadoEscenario();
 }
 
-
 bool Scenery::hayJugadorEnBordeIzq() {
     for (auto player: players) {
         if ((player->getPostura() != Postura::DESCONECTADO) and (player->getX() <= 0)) {
@@ -147,7 +146,7 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
     return false;
 }
 
-void Scenery::updateBackgroudsState() {
+int Scenery::updateBackgroudsState() {
     if (not this->finDelNivel) {
         if (this->moverPantalla and (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
             for (auto background : backgrounds) {
@@ -179,9 +178,15 @@ void Scenery::updateBackgroudsState() {
             yaSpawneoElFinalEnemy = true;
             this->moverPantalla = false;
         } else {
-            this->fightWithFinalEnemy();
+            /* Primero seteo el siguiente nivel, luego hago que
+               se muestre el scoreboard...
+               1 == Mostrar el scoreboard, 2 == GAME OVER... perdon
+            */
+
+            return this->fightWithFinalEnemy();
         }
     }
+    return 0; // Corrida normal devuelve 0.
 }
 
 Enemy *Scenery::createFinalEnemy() {
@@ -217,7 +222,15 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     updatePlayersState(all_objects_in_window);
     updateEnemiesState(all_objects_in_window);
     updateBulletsState(all_objects_in_window);
-    updateBackgroudsState();
+    if (updateBackgroudsState() == 1) {
+        /* updateBackgroudsState() devuelve 1 en caso de tener que mostrar
+           el scoreboard */
+        event showScoreboardMessage;
+        showScoreboardMessage.data.code = SHOW_SCOREBOARD;
+        showScoreboardMessage.completion = FINAL_MSG;
+        eventsToReturn.push_back(showScoreboardMessage);
+        return eventsToReturn;
+    }
 
     for (auto &background : backgrounds) {
         eventsToReturn.push_back(background->getState());
@@ -324,13 +337,11 @@ vector<GameObject *> Scenery::getVisibleObjects() {
     return todos;
 }
 
-
 void Scenery::removeDeadObjects() {
     removeDeadBullets();
     removeDeadPlayers();
     removeDeadEnemies();
 }
-
 
 int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel) {
     switch (selectedLevel) {
@@ -358,7 +369,7 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
     }
 }
 
-void Scenery::fightWithFinalEnemy() {
+int Scenery::fightWithFinalEnemy() {
     for (auto enemy : enemies) {
         if (enemy->getEntity() == this->finalEnemyType) {
             if (enemy->getPostura() == MUERTO) {
@@ -367,9 +378,11 @@ void Scenery::fightWithFinalEnemy() {
                 } else {
                     this->setUpLevel(1); // En vez del 1, tendria que terminar el juego.
                 }
+                return 1;
             }
         }
     }
+    return 0;
 }
 
 void Scenery::removeDeadBullets() {
@@ -384,7 +397,6 @@ void Scenery::removeDeadBullets() {
         }
     }
 }
-
 
 void Scenery::removeDeadPlayers() {
     vector<Player *>::iterator it = players.begin();

@@ -69,7 +69,7 @@ public:
 
     vector<Player *> getPosJugadorMasAdelantado();
 
-    void updateBackgroudsState();
+    int updateBackgroudsState();
 
     void addElementToScenery(Enemy *enemy);
 
@@ -89,7 +89,7 @@ public:
 
     void removeDeadObjects();
 
-    void fightWithFinalEnemy();
+    int fightWithFinalEnemy();
 
     int setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel);
 
