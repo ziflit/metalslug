@@ -24,6 +24,8 @@ public:
     virtual ~PlayerHandler();
 
     void deletePlayer(vector<PlayerSprite *>::iterator it);
+
+    vector<PlayerSprite *> *getPlayers();
 };
 
 

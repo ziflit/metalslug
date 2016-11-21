@@ -19,7 +19,6 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
 
     for (auto playerConfig : configs.getPlayersConfig()) {
         PlayerSprite* newPlayer = new PlayerSprite(this->mainRenderer, playerConfig);
-        newPlayer->setGroupId(configs.getGameMode());
         this->playerHandler->addNewPlayer(newPlayer);
     }
 
@@ -35,7 +34,7 @@ void SDLRunningGame::initializeFromXML(ConfigsXML configs) {
         miscelaneasHandler->newMscType(miscConfig);
     }
 
-    this->scoreBoard = new ScoreBoard(configs.getGameMode());
+    this->scoreBoard = new ScoreBoardOrganizer(configs.getGameMode().mode, configs.getGlobalConf().cant_players, mainRenderer);
 }
 
 SDLRunningGame::SDLRunningGame(SDL_Window *mainWindow, SDL_Renderer *mainRenderer, ConfigsXML configs)  {
@@ -104,7 +103,7 @@ void SDLRunningGame::handleModelState(vector <event> model_state) {
 
         for (auto nuevoEvento : model_state){
             if (nuevoEvento.data.code == SHOW_SCOREBOARD) {
-                cout<<"mostrar scoreboard"<<endl;
+                this->scoreBoard->setData(playerHandler->getPlayers());
             } else {
                 this->getSpriteAndHandleNewEvent(nuevoEvento);
             }
@@ -122,6 +121,7 @@ void SDLRunningGame::updateWindowSprites () {
     this->bulletHandler->updateBulletsSprites();
     this->miscelaneasHandler->updateMiscelaneaSprites();
     this->backgroundHandler->updateFrontBackgroundSprite();
+    this->scoreBoard->realize();
 
     SDL_RenderPresent(this->mainRenderer);
 }

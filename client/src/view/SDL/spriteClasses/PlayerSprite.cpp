@@ -356,36 +356,6 @@ bool PlayerSprite::clientIsConnected() {
     return (this->usernameText != nullptr);
 }
 
-void PlayerSprite::setGroupId(xmlGameMode mode) {
-    switch (mode.mode) {
-        case INDIVIDUAL:
-            if (id == MARCO) {
-                groupId = 0;
-            } else if (id == FIO) {
-                groupId = 1;
-            } else if (id == TARMA) {
-                groupId = 2;
-            } else if (id == ERI) {
-                groupId = 3;
-            }
-            break;
-        case COLABORATIVO:
-            this->groupId = 0;
-            break;
-        case GRUPAL:
-            if (id == MARCO) {
-                groupId = 0;
-            } else if (id == FIO) {
-                groupId = 1;
-            } else if (id == TARMA) {
-                groupId = 0;
-            } else if (id == ERI) {
-                groupId = 1;
-            }
-            break;
-    }
-}
-
 void PlayerSprite::updateHealthText(int health) {
     if(health == 999999) {
         this->healthText->changeText("INFINITA");
@@ -397,4 +367,16 @@ void PlayerSprite::updateHealthText(int health) {
 
 void PlayerSprite::renderizeHealthText() {
     this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
+}
+
+TextBox *const &PlayerSprite::getUsernameTextbox() const {
+    return usernameText;
+}
+
+SDL_Renderer *PlayerSprite::getRenderer() {
+    return this->renderer;
+}
+
+char *PlayerSprite::getPuntaje() {
+    return puntaje;
 }
