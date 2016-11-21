@@ -182,7 +182,6 @@ int Scenery::updateBackgroudsState() {
                se muestre el scoreboard...
                1 == Mostrar el scoreboard, 2 == GAME OVER... perdon
             */
-
             return this->fightWithFinalEnemy();
         }
     }
@@ -218,17 +217,34 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
     vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
 
+    if (players.size() == 0) {
+        event gameOverMessage;
+        gameOverMessage.data.code = GAME_OVER;
+        gameOverMessage.completion = FINAL_MSG;
+        eventsToReturn.push_back(gameOverMessage);
+        return eventsToReturn;
+    }
 
     updatePlayersState(all_objects_in_window);
     updateEnemiesState(all_objects_in_window);
     updateBulletsState(all_objects_in_window);
-    if (updateBackgroudsState() == 1) {
+
+    int afterUpdate = updateBackgroudsState();
+
+    if (afterUpdate == 1) {
         /* updateBackgroudsState() devuelve 1 en caso de tener que mostrar
            el scoreboard */
         event showScoreboardMessage;
         showScoreboardMessage.data.code = SHOW_SCOREBOARD;
         showScoreboardMessage.completion = FINAL_MSG;
         eventsToReturn.push_back(showScoreboardMessage);
+        return eventsToReturn;
+    } else if (afterUpdate == 2) {
+        /* updateBackgroudsState() devuelve 2 si game over */
+        event gameOverMessage;
+        gameOverMessage.data.code = GAME_OVER;
+        gameOverMessage.completion = FINAL_MSG;
+        eventsToReturn.push_back(gameOverMessage);
         return eventsToReturn;
     }
 
@@ -376,7 +392,7 @@ int Scenery::fightWithFinalEnemy() {
                 if (actualLevel < 3) {
                     this->setUpLevel(this->actualLevel + 1);
                 } else {
-                    this->setUpLevel(1); // En vez del 1, tendria que terminar el juego.
+                    return 2;
                 }
                 return 1;
             }
