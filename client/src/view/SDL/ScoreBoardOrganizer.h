@@ -14,6 +14,7 @@ private:
     vector<ScoreBoardSprite*> scoreBoardSprites;
     vector<TextBox*> usernameTexts;
     vector<TextBox*> puntajeTexts;
+    vector<TextBox*> extraTexts;
     map<int, int> usernameX = {
             {0, 170},
             {1, 600},
@@ -39,6 +40,7 @@ private:
             {3, 380}
     };
 public:
+
     ScoreBoardOrganizer(GameMode mode, int cantPlayers, SDL_Renderer *mainRenderer);
 
     void realize();
@@ -46,6 +48,14 @@ public:
     void setData(vector<PlayerSprite *> playersSprites);
 
     void setTextPositions();
+
+    int sumColavorative(std::vector<PlayerSprite *> vector);
+
+    int sumGrupal0(std::vector<PlayerSprite *> vector);
+
+    int sumGrupal1(std::vector<PlayerSprite *> vector);
+
+    void updateTotals(std::vector<PlayerSprite *> vector);
 };
 
 
