@@ -43,8 +43,9 @@ void PlayerSprite::actualizarDibujo() {
         if (not ((postura==DESCONECTADO)) or (postura==MURIENDO) or (postura==MUERTO)) {
             SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
-            this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h *2) ));
-           this->renderizeHealthText();
+        this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h *2) ));
+        this->renderizeHealthText();
+        this->bar->actualizarDibujo();
     }
 
 }
@@ -228,6 +229,7 @@ void PlayerSprite::handle(struct event nuevoEvento) {
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
     this->setPostura(nuevoEvento.data.postura);
     this->updateHealthText(nuevoEvento.data.health);
+    this->bar->handle(nuevoEvento.data.health,nuevoEvento.data.puntaje);
 }
 
 void PlayerSprite::setPostura(Postura postura) {
