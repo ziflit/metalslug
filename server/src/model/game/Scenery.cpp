@@ -26,7 +26,9 @@ void Scenery::setUpLevel(int selectedLevel) {
     // Esto es para resetear la posicion de los players
     if (selectedLevel > 1) {
         for (auto player: players) {
-            player->set_position(0, 0);
+            if (player->getPostura() != DESCONECTADO){
+                player->set_position(0, 0);
+            }
         }
     }
 
