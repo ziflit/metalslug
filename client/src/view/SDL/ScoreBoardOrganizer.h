@@ -16,9 +16,9 @@ private:
     vector<TextBox*> puntajeTexts;
     map<int, int> usernameX = {
             {0, 170},
-            {1, 500},
+            {1, 600},
             {2, 170},
-            {3, 500}
+            {3, 600}
     };
     map<int, int> usernameY = {
             {0, 140},
@@ -28,9 +28,9 @@ private:
     };
     map<int, int> puntajeX = {
             {0, 220},
-            {1, 700},
+            {1, 600},
             {2, 220},
-            {3, 700}
+            {3, 600}
     };
     map<int, int> puntajeY = {
             {0, 220},
