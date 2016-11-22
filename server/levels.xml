@@ -210,10 +210,67 @@
 		<cant_boxes>10</cant_boxes>
 		<posXtoFinish>8192</posXtoFinish>
 		<platforms>
+			<!-- Piso -->
 			<platform>
 				<x>0</x>
-				<y>500</y>
+				<y>550</y>
 				<ancho>16400</ancho>
+				<alto>1</alto>
+			</platform>
+			<!-- Caminioneta -->
+			<platform>
+				<x>2140</x>
+				<y>470</y>
+				<ancho>200</ancho>
+				<alto>100</alto>
+			</platform>
+			<!-- Camioneta capo -->
+			<platform>
+				<x>2200</x>
+				<y>520</y>
+				<ancho>300</ancho>
+				<alto>100</alto>
+			</platform>
+			<!-- Camion -->
+			<platform>
+				<x>2310</x>
+				<y>440</y>
+				<ancho>400</ancho>
+				<alto>120</alto>
+			</platform>
+			<!-- Bigas -->
+			<platform>
+				<x>2430</x>
+				<y>421</y>
+				<ancho>2570</ancho>
+				<alto>200</alto>
+			</platform>
+			<!-- Camion capo -->
+			<platform>
+				<x>3700</x>
+				<y>500</y>
+				<ancho>100</ancho>
+				<alto>100</alto>
+			</platform>
+			<!-- Tanquecito -->
+			<platform>
+				<x>5730</x>
+				<y>490</y>
+				<ancho>300</ancho>
+				<alto>200</alto>
+			</platform>
+			<!-- Tanque -->
+			<platform>
+				<x>5850</x>
+				<y>415</y>
+				<ancho>500</ancho>
+				<alto>200</alto>
+			</platform>
+			<!-- Biga -->
+			<platform>
+				<x>6000</x>
+				<y>415</y>
+				<ancho>660</ancho>
 				<alto>1</alto>
 			</platform>
 		</platforms>
