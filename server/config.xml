@@ -1,7 +1,7 @@
 <config>
 	<ancho>800</ancho>
 	<alto>600</alto>
-	<cant_players>4</cant_players>
+	<cant_players>2</cant_players>
 </config>
 <gameMode>
 	<mode>GRUPAL</mode>
@@ -24,8 +24,8 @@
 		<pathColor>sprites/player/fio.png</pathColor>
 		<pathGrey>sprites/player/fioGrisado.png</pathGrey>
 		<pathWeapons>sprites/player/fioWeapons.png</pathWeapons>
-		<ancho>100</ancho>
-		<alto>100</alto>
+		<ancho>90</ancho>
+		<alto>90</alto>
 		<cantWidthFrames>15</cantWidthFrames>
 		<cantHeightFrames>24</cantHeightFrames>
 		<speed>10</speed>
