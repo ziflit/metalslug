@@ -48,17 +48,17 @@ void ScoreBoardOrganizer::setData(vector<PlayerSprite *> playersSprites) {
         text->setPosition(150, 500);
         extraTexts.push_back(text);
     } else if ((mode == GRUPAL) and (playersSprites.size() > 2) ){
-        TextBox* text0 = new TextBox(this->sumGrupal(playersSprites,0), playersSprites[0]->getRenderer(),{255,0,0,0},50);
+        TextBox* text0 = new TextBox(this->sumGrupal(playersSprites,0), playersSprites[0]->getRenderer(),{255,0,0,0},30);
         text0->setPosition(220, 500);
         extraTexts.push_back(text0);
-        TextBox* text1 = new TextBox(this->sumGrupal(playersSprites,1), playersSprites[0]->getRenderer(),{255,0,0,0},50);
-        text1->setPosition(400, 500);
+        TextBox* text1 = new TextBox(this->sumGrupal(playersSprites,1), playersSprites[0]->getRenderer(),{255,0,0,0},30);
+        text1->setPosition(650, 500);
         extraTexts.push_back(text1);
-        TextBox* text2 = new TextBox("TOTAL:", playersSprites[0]->getRenderer(),{255,0,0,0},50);
-        text2->setPosition(25, 500);
+        TextBox* text2 = new TextBox("TOTAL:", playersSprites[0]->getRenderer(),{255,0,0,0},30);
+        text2->setPosition(50, 500);
         extraTexts.push_back(text2);
-        TextBox* text3 = new TextBox("TOTAL:", playersSprites[0]->getRenderer(),{255,0,0,0},50);
-        text3->setPosition(300, 500);
+        TextBox* text3 = new TextBox("TOTAL:", playersSprites[0]->getRenderer(),{255,0,0,0},30);
+        text3->setPosition(480, 500);
         extraTexts.push_back(text3);
 
     }
