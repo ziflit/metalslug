@@ -1,10 +1,10 @@
 <config>
 	<ancho>800</ancho>
 	<alto>600</alto>
-	<cant_players>1</cant_players>
+	<cant_players>2</cant_players>
 </config>
 <gameMode>
-	<mode>INDIVIDUAL</mode>
+	<mode>GRUPAL</mode>
 	<testMode>0</testMode>
 </gameMode>
 <players>
@@ -20,6 +20,17 @@
 		<speed>10</speed>
 	</player>
 	<player>
+		<id>FIO</id>
+		<pathColor>sprites/player/fio.png</pathColor>
+		<pathGrey>sprites/player/fioGrisado.png</pathGrey>
+		<pathWeapons>sprites/player/fioWeapons.png</pathWeapons>
+		<ancho>90</ancho>
+		<alto>90</alto>
+		<cantWidthFrames>15</cantWidthFrames>
+		<cantHeightFrames>24</cantHeightFrames>
+		<speed>10</speed>
+	</player>
+	<player>
 		<id>TARMA</id>
 		<pathColor>sprites/player/tarma.png</pathColor>
 		<pathGrey>sprites/player/tarmaGrisado.png</pathGrey>
@@ -27,18 +38,7 @@
 		<ancho>100</ancho>
 		<alto>100</alto>
 		<cantWidthFrames>15</cantWidthFrames>
-		<cantHeightFrames>12</cantHeightFrames>
-		<speed>10</speed>
-	</player>
-	<player>
-		<id>FIO</id>
-		<pathColor>sprites/player/fio.png</pathColor>
-		<pathGrey>sprites/player/fioGrisado.png</pathGrey>
-		<pathWeapons>sprites/player/fioWeapons.png</pathWeapons>
-		<ancho>100</ancho>
-		<alto>100</alto>
-		<cantWidthFrames>15</cantWidthFrames>
-		<cantHeightFrames>12</cantHeightFrames>
+		<cantHeightFrames>24</cantHeightFrames>
 		<speed>10</speed>
 	</player>
 	<player>
@@ -61,7 +61,7 @@
 		<ancho>100</ancho>
 		<alto>100</alto>
 		<cantWidthFrames>16</cantWidthFrames>
-		<cantHeightFrames>6</cantHeightFrames>
+		<cantHeightFrames>7</cantHeightFrames>
 		<speed>10</speed>
 	</enemy>
 	<enemy>
@@ -70,7 +70,7 @@
 		<ancho>100</ancho>
 		<alto>100</alto>
 		<cantWidthFrames>16</cantWidthFrames>
-		<cantHeightFrames>6</cantHeightFrames>
+		<cantHeightFrames>7</cantHeightFrames>
 		<speed>10</speed>
 	</enemy>
 	<enemy>
@@ -79,7 +79,7 @@
 		<ancho>100</ancho>
 		<alto>100</alto>
 		<cantWidthFrames>16</cantWidthFrames>
-		<cantHeightFrames>6</cantHeightFrames>
+		<cantHeightFrames>7</cantHeightFrames>
 		<speed>10</speed>
 	</enemy>
     <enemy>
@@ -172,38 +172,38 @@
 	    <bullet>
             <id>BT_BULLET</id>
             <path>sprites/bullets/BT_BULLET.png</path>
-            <ancho>5</ancho>
-            <alto>5</alto>
+            <ancho>8</ancho>
+            <alto>8</alto>
         </bullet>
         <bullet>
             <id>BT_HEAVY_BULLET</id>
             <path>sprites/bullets/BT_HEAVY_BULLET.png</path>
-            <ancho>5</ancho>
-            <alto>5</alto>
+            <ancho>10</ancho>
+            <alto>10</alto>
         </bullet>
         <bullet>
             <id>BT_MISSILE</id>
             <path>sprites/bullets/BT_MISSILE.png</path>
-            <ancho>5</ancho>
-            <alto>5</alto>
+            <ancho>15</ancho>
+            <alto>15</alto>
         </bullet>
         <bullet>
             <id>BT_TELE_MISSILE</id>
             <path>sprites/bullets/BT_TELE_MISSILE.png</path>
-            <ancho>5</ancho>
-            <alto>5</alto>
+            <ancho>15</ancho>
+            <alto>15</alto>
         </bullet>
         <bullet>
             <id>BT_SHOT</id>
             <path>sprites/bullets/BT_SHOT.png</path>
-            <ancho>5</ancho>
-            <alto>5</alto>
+            <ancho>10</ancho>
+            <alto>10</alto>
         </bullet>
         <bullet>
             <id>BT_BOMB</id>
             <path>sprites/bullets/BT_BOMB.png</path>
-            <ancho>5</ancho>
-            <alto>5</alto>
+            <ancho>10</ancho>
+            <alto>10</alto>
         </bullet>
     </bullets>
 

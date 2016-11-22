@@ -48,7 +48,7 @@ bool Client::connect_to_server(string ip, int port, string user) {
 	if (((event *) response)->data.code == EventCode::LOGIN_FAIL) {
 		LOGGER_WRITE(Logger::ERROR, "Error de autenticacion de usuario.",
 				CLASSNAME)
-		cout << "No se pudo loguear, por favor revise Usuario y contrasenia "
+		cout << "No se pudo loguear, intente nuevamente"
 				<< endl;
 		return false;
 	} else {
@@ -102,7 +102,7 @@ bool Client::connect_to_server(string ip, int port, string user) {
     } while (miscSetup.completion != EventCompletion::FINAL_MSG);
 
     /* Una vez recibidas las configuraciones las aplico en el cliente */
-    loadConfigsFromServer(globalConf, playersConfig, enemiesConfig, backgroundsConfig,
+    loadConfigsFromServer(globalConf, gameModeConf,playersConfig, enemiesConfig, backgroundsConfig,
                          bulletsConfig, miscelaneasConfig);
 
     this->my_character = ((struct event*) response)->data.id;
@@ -166,11 +166,14 @@ int Client::get_socket() {
 	return socket_number;
 }
 
-void Client::loadConfigsFromServer(struct xmlConfig globalConf, vector<struct xmlPlayer> playersConfig,
+void Client::loadConfigsFromServer(struct xmlConfig globalConf,
+                                   struct xmlGameMode gameModeConfig,
+								   vector<struct xmlPlayer> playersConfig,
                                    vector<struct xmlEnemy> enemiesConfig,
                                    vector<struct xmlBackground> backgroundsConfig,
                                    vector<struct xmlBullet> bulletsConfig,
                                    vector<struct xmlMiscelanea> miscelaneasConfig) {
+    configs.setGameModeConfig(gameModeConfig);
     configs.setGlobalConf(globalConf);
 	configs.setPlayersConfig(playersConfig);
 	configs.setEnemiesConfig(enemiesConfig);

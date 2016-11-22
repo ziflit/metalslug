@@ -18,12 +18,7 @@ Entity XmlLoader::convertToEntity(string id) {
 }
 
 GameMode XmlLoader::convertToGameMode(string mode) {
-    auto search = modes.find(mode);
-    if (search != modes.end()) {
-        return search->second;
-    } else {
-        return INDIVIDUAL;
-    }
+    return modes[mode];
 }
 
 vector<struct xmlBackground> XmlLoader::obtainBackgroundsConfig() {

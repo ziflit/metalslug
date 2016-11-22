@@ -1,13 +1,21 @@
 #include "TextBox.h"
 
-TextBox::TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color) {
+TextBox::TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color, int size) {
 
-    this->font = loadfont("ttf/MetalSlug.TTF", 12);
+    this->font = loadfont("ttf/MetalSlug.TTF", size);
     this->color = color;
     this->mainRenderer =  mainRenderer;
     this->textRect.x = this->textRect.y = 0;
     changeText(text);
 
+}
+
+TextBox::TextBox(int number, SDL_Renderer* mainRenderer, SDL_Color color, int size) {
+    this->font = loadfont("ttf/MetalSlug.TTF", size);
+    this->color = color;
+    this->mainRenderer =  mainRenderer;
+    this->textRect.x = this->textRect.y = 0;
+    changeText(number);
 }
 
 void TextBox::changeText(char* text){
@@ -24,21 +32,24 @@ void TextBox::changeText(int number) {
     changeText(pchar);
 }
 
+void TextBox::changeText(string text) {
+    char pchar[20];
+    sprintf(pchar, "%.20s", text.c_str());
+    changeText(pchar);
+}
 void TextBox::renderize(int x, int y) {
+    this->setPosition(x,y);
+    SDL_RenderCopy(mainRenderer, text, NULL, &textRect);
+}
+
+void TextBox::setPosition(int x, int y){
     this->textRect.x = x;
     this->textRect.y = y;
-    SDL_RenderCopy(mainRenderer, text, NULL, &textRect);
-
 }
 
 void TextBox::renderize() {
     SDL_RenderCopy(mainRenderer, text, NULL, &textRect);
 }
-
-/** Loads a font, nothing fancy.
-* Put sensible error handling code in. If you pass the NULL in later on,
-* SDL_ttf dies pretty horribly.
-*/
 TTF_Font* TextBox::loadfont(char* file, int ptsize) {
     TTF_Font* tmpfont;
     tmpfont = TTF_OpenFont(file, ptsize);
@@ -47,4 +58,8 @@ TTF_Font* TextBox::loadfont(char* file, int ptsize) {
         // Handle the error here.
     }
     return tmpfont;
+}
+TextBox::~TextBox() {
+    SDL_DestroyTexture(text);
+    text = NULL;
 }

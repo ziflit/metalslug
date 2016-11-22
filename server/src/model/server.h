@@ -35,6 +35,7 @@ private:
     bool shouldClose;
     string xmlConfigPath;
     string xmlLvlsConfigPath;
+    bool juegoIniciado;
 
 public:
     Server(string xmlConfigPath, string xmlLvlsConfigPath);
@@ -106,6 +107,14 @@ public:
     void send_model_snapshot(ClientConnection* handler);
 
     void set_model_snapshot(vector<struct event> model_state);
+
+    bool getGameState(){
+        return this->juegoIniciado;
+    }
+
+    void setGameState(bool estado){
+        this->juegoIniciado = estado;
+    }
 
     ConfigsXML& getConfigs();
 
