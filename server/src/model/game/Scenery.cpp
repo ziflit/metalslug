@@ -26,6 +26,8 @@ void Scenery::setUpLevel(int selectedLevel) {
     // Esto es para resetear la posicion de los players
     if (selectedLevel > 1) {
         for (auto player: players) {
+            player->setHealth(100); //Habria que ver si a los desconectados, les recargamos la vida
+            // player->setScore(0); //Al cambiar de nivel, se renueva el score
             if (player->getPostura() != DESCONECTADO){
                 player->set_position(0, 0);
             }
@@ -175,7 +177,11 @@ int Scenery::updateBackgroudsState() {
             }
 
             for (auto &enemy : enemies) {
-                enemy->retroceder();
+                if (enemy->getX() > 10){ 
+                    enemy->retroceder();
+                } else {
+                    enemy->setPostura(CAMINANDO_DERECHA);
+                }
             }
         }
     } else {
@@ -280,6 +286,7 @@ void Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
         enemy->updatePosition(all_objects_in_window);
         makeEnemyShoot(enemy);
         makeEnemyDropEnemies(enemy);
+        cout << "ACA VIENE LA POS: "<< enemy->getX() << endl;
     }
 }
 

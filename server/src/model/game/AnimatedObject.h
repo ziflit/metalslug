@@ -142,6 +142,10 @@ public:
     void updateScore(int points){
         this->puntaje += points;
     }
+
+    void setScore(int points){
+        this->puntaje = points;
+    }
 };
 
 #endif //SERVER_ANIMATEDOBJECT_H
