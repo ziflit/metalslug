@@ -38,7 +38,7 @@
 		<ancho>100</ancho>
 		<alto>100</alto>
 		<cantWidthFrames>15</cantWidthFrames>
-		<cantHeightFrames>12</cantHeightFrames>
+		<cantHeightFrames>24</cantHeightFrames>
 		<speed>10</speed>
 	</player>
 	<player>
