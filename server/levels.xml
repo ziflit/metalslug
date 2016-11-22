@@ -1,8 +1,8 @@
 <levels>
 	<lvl>
 		<id>1</id>
-		<cant_enemies>0</cant_enemies>
-		<cant_boxes>0</cant_boxes>
+		<cant_enemies>10</cant_enemies>
+		<cant_boxes>5</cant_boxes>
 		<posXtoFinish>7000</posXtoFinish>
 		<platforms>	
 			<!-- Piso -->
@@ -66,8 +66,8 @@
 
 	<lvl>
 		<id>2</id>
-		<cant_enemies>0</cant_enemies>
-		<cant_boxes>0</cant_boxes>
+		<cant_enemies>20</cant_enemies>
+		<cant_boxes>3</cant_boxes>
 		<posXtoFinish>8192</posXtoFinish>
 		<platforms>
 			<!-- Piso -->
@@ -206,8 +206,8 @@
 	
 	<lvl>
 		<id>3</id>
-		<cant_enemies>23</cant_enemies>
-		<cant_boxes>10</cant_boxes>
+		<cant_enemies>50</cant_enemies>
+		<cant_boxes>2</cant_boxes>
 		<posXtoFinish>8192</posXtoFinish>
 		<platforms>
 			<!-- Piso -->

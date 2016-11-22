@@ -34,7 +34,8 @@ void Scenery::setUpLevel(int selectedLevel) {
 
     //Seteo los backgrounds correspondientes para el nivel
     Entity back_z0, back_z1, back_z2, enemy_normal_type;
-    selectedLevel = setLevelConfigs(&back_z0, &back_z1, &back_z2, &enemy_normal_type, &(this->finalEnemyType),
+    int pisoDelNivel;
+    selectedLevel = setLevelConfigs(&pisoDelNivel, &back_z0, &back_z1, &back_z2, &enemy_normal_type, &(this->finalEnemyType),
                                     selectedLevel);
 
     //Borro las balas que hayan quedado
@@ -57,7 +58,7 @@ void Scenery::setUpLevel(int selectedLevel) {
     }
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_boxes; i++) {
         int randomSpawnInX = rand() % 2000 + 400;
-        BoxBonus *boxBonus = new BoxBonus(randomSpawnInX, 500); //No tienen gravedad, por eso y = 500
+        BoxBonus *boxBonus = new BoxBonus(randomSpawnInX, pisoDelNivel); //No tienen gravedad, por eso y = 520
         miscs.push_back(boxBonus);
     }
 
@@ -367,7 +368,7 @@ void Scenery::removeDeadObjects() {
     removeDeadEnemies();
 }
 
-int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel) {
+int Scenery::setLevelConfigs(int *pisoDelNivel, Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel) {
     switch (selectedLevel) {
         case 1:
             *z0 = BACKGROUND_LVL1_Z0;
@@ -375,6 +376,7 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
             *z2 = BACKGROUND_LVL1_Z2;
             *en = ENEMY_NORMAL_1;
             *ef = ENEMY_FINAL_1;
+            *pisoDelNivel = 475; //Esto se usa para setear la posicion de las cajas... por no tener gravedad.
             return 0;
         case 2:
             *z0 = BACKGROUND_LVL2_Z0;
@@ -382,6 +384,7 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
             *z2 = BACKGROUND_LVL2_Z2;
             *en = ENEMY_NORMAL_2;
             *ef = ENEMY_FINAL_2;
+            *pisoDelNivel = 497;
             return 1;
         case 3:
             *z0 = BACKGROUND_LVL3_Z0;
@@ -389,6 +392,7 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
             *z2 = BACKGROUND_LVL3_Z2;
             *en = ENEMY_NORMAL_3;
             *ef = ENEMY_FINAL_3;
+            *pisoDelNivel = 510;
             return 2;
     }
 }
