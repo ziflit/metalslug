@@ -24,7 +24,7 @@ public:
     virtual ~PlayerHandler();
 
     void deletePlayer(vector<PlayerSprite *>::iterator it);
+
+    vector<PlayerSprite *> getPlayers();
 };
-
-
 #endif //METALSLUG_PLAYERHANDLER_H

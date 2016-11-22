@@ -43,8 +43,8 @@ void PlayerSprite::actualizarDibujo() {
         if (not ((postura==DESCONECTADO)) or (postura==MURIENDO) or (postura==MUERTO)) {
             SDL_RenderCopy(renderer,weaponsLayer,&(this->weaponsSourceRect),&(this->weaponsDestRect));
         }
-            this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h *2) ));
-           this->renderizeHealthText();
+        this->usernameText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h *2) ));
+        this->bar->actualizarDibujo();
     }
 
 }
@@ -103,7 +103,6 @@ void PlayerSprite::caminandoIzquierda() {
     this->sourceRect.y = 0;
     this->weaponsSourceRect.x = (this->sourceRect.w * 1);
 }
-
 void PlayerSprite::mirandoArribaCaminandoIzquierda(){
     this->sourceRect.y = (sourceRect.h * 1);
     this->setNextSpriteFrame();
@@ -189,7 +188,6 @@ void PlayerSprite::disparandoAgachadoQuietoIzquierda() {
     this->setNextSpriteFrame();
     this->weaponsSourceRect.x = (sourceRect.w * 6);
 }
-
 void PlayerSprite::disparandoMirandoArribaDerechaQuieto() {
     this->sourceRect.y = (sourceRect.h * 18);
     this->setNextSpriteFrame();
@@ -216,7 +214,8 @@ void PlayerSprite::muriendo() {
     this->weaponsSourceRect.x = (sourceRect.w * 100);
 }
 void PlayerSprite::setUsername(struct event nuevoEvento) {
-    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {3,255,0,1});
+    strncpy(username, nuevoEvento.data.username, 20);
+    this->usernameText = new TextBox(nuevoEvento.data.username, this->renderer, {3,255,0,1},12);
 }
 
 void PlayerSprite::handle(struct event nuevoEvento) {
@@ -227,6 +226,7 @@ void PlayerSprite::handle(struct event nuevoEvento) {
     this->set_position(nuevoEvento.data.x,nuevoEvento.data.y);
     this->setPostura(nuevoEvento.data.postura);
     this->updateHealthText(nuevoEvento.data.health);
+    this->bar->updateScore(nuevoEvento.data.puntaje);
 }
 
 void PlayerSprite::setPostura(Postura postura) {
@@ -309,27 +309,27 @@ void PlayerSprite::setPostura(Postura postura) {
     this->postura = postura;
 }
 
-void PlayerSprite::setWeapon(Arma weapon) {
+void PlayerSprite::setWeapon(Entity weapon) {
     this->arma = weapon;
 
     switch (arma) {
-        case PISTOLA:
+        case BT_BULLET:
             this->weaponsSourceRect.y = 0;
             break;
-        case HEAVY_MACHINEGUN:
+        case BT_HEAVY_BULLET:
             this->weaponsSourceRect.y = (this->sourceRect.h * 1 );
             this->playHeavyMachineGunSound();
             break;
-        case ROCKET_LAUNCHER:
+        case BT_MISSILE:
             this->weaponsSourceRect.y = (this->sourceRect.h * 2 );
             break;
-        case ENEMY_CHASER:
+        case BT_TELE_MISSILE:
             this->weaponsSourceRect.y = (this->sourceRect.h * 3 );
             break;
-        case SHOTGUN:
+        case BT_SHOT:
             this->weaponsSourceRect.y = (this->sourceRect.h * 4 );
             break;
-        case BOMB:
+        case BT_BOMB:
             this->weaponsSourceRect.y = (this->sourceRect.h * 5 );
             break;
         default:
@@ -356,45 +356,24 @@ bool PlayerSprite::clientIsConnected() {
     return (this->usernameText != nullptr);
 }
 
-void PlayerSprite::setGroupId(xmlGameMode mode) {
-    switch (mode.mode) {
-        case INDIVIDUAL:
-            if (id == MARCO) {
-                groupId = 0;
-            } else if (id == FIO) {
-                groupId = 1;
-            } else if (id == TARMA) {
-                groupId = 2;
-            } else if (id == ERI) {
-                groupId = 3;
-            }
-            break;
-        case COLABORATIVO:
-            this->groupId = 0;
-            break;
-        case GRUPAL:
-            if (id == MARCO) {
-                groupId = 0;
-            } else if (id == FIO) {
-                groupId = 1;
-            } else if (id == TARMA) {
-                groupId = 0;
-            } else if (id == ERI) {
-                groupId = 1;
-            }
-            break;
-    }
-}
-
 void PlayerSprite::updateHealthText(int health) {
     if(health == 999999) {
-        this->healthText->changeText("INFINITA");
+        if(firstEvent()){
+            this->bar->updateHealth("---");
+        }
         return;
     }
-    if (not ((postura == MURIENDO) or (postura == MUERTO))) this->healthText->changeText(health);
-    else this->healthText->changeText(0);
+    if (not ((postura == MURIENDO) or (postura == MUERTO))) this->bar->updateHealth(health);
+    else this->bar->updateHealth(0);
 }
 
-void PlayerSprite::renderizeHealthText() {
-    this->healthText->renderize((this->destRect.x + (sourceRect.w/2)), (this->destRect.y + (sourceRect.h + 50) ));
+SDL_Renderer *PlayerSprite::getRenderer() {
+    return this->renderer;
+}
+
+int PlayerSprite::getPuntaje() {
+    return puntaje;
+}
+char *PlayerSprite::getUsername()  {
+    return username;
 }
