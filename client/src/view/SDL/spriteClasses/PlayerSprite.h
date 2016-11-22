@@ -25,7 +25,7 @@ public:
 
     PlayerSprite(SDL_Renderer *renderer, xmlPlayer playerConfig) : Sprite(renderer) {
         postura = CAMINANDO_DERECHA;
-        cambioFrame = 0;
+        cambioFrame = puntaje = 0;
         this->setWidth(playerConfig.ancho);
         this->setHeight(playerConfig.alto);
         this->setId(playerConfig.id);

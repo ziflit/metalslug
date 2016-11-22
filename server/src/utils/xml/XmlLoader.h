@@ -19,8 +19,8 @@ private:
 
     map<string, Entity> entities = {
             {"MARCO",                 MARCO},
-            {"TARMA",                 TARMA},
             {"FIO",                   FIO},
+            {"TARMA",                 TARMA},
             {"ERI",                   ERI},
             {"BACKGROUND_LVL1_Z0",    BACKGROUND_LVL1_Z0},
             {"BACKGROUND_LVL1_Z1",    BACKGROUND_LVL1_Z1},

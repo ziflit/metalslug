@@ -20,10 +20,10 @@
 		<speed>10</speed>
 	</player>
 	<player>
-		<id>TARMA</id>
-		<pathColor>sprites/player/tarma.png</pathColor>
-		<pathGrey>sprites/player/tarmaGrisado.png</pathGrey>
-		<pathWeapons>sprites/player/tarmaWeapons.png</pathWeapons>
+		<id>FIO</id>
+		<pathColor>sprites/player/fio.png</pathColor>
+		<pathGrey>sprites/player/fioGrisado.png</pathGrey>
+		<pathWeapons>sprites/player/fioWeapons.png</pathWeapons>
 		<ancho>100</ancho>
 		<alto>100</alto>
 		<cantWidthFrames>15</cantWidthFrames>
@@ -31,10 +31,10 @@
 		<speed>10</speed>
 	</player>
 	<player>
-		<id>FIO</id>
-		<pathColor>sprites/player/fio.png</pathColor>
-		<pathGrey>sprites/player/fioGrisado.png</pathGrey>
-		<pathWeapons>sprites/player/fioWeapons.png</pathWeapons>
+		<id>TARMA</id>
+		<pathColor>sprites/player/tarma.png</pathColor>
+		<pathGrey>sprites/player/tarmaGrisado.png</pathGrey>
+		<pathWeapons>sprites/player/tarmaWeapons.png</pathWeapons>
 		<ancho>100</ancho>
 		<alto>100</alto>
 		<cantWidthFrames>15</cantWidthFrames>
