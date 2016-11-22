@@ -17,9 +17,9 @@ private:
     vector<TextBox*> extraTexts;
     map<int, int> usernameX = {
             {0, 180},
-            {1, 530},
+            {1, 560},
             {2, 180},
-            {3, 530}
+            {3, 560}
     };
     map<int, int> usernameY = {
             {0, 140},
@@ -29,9 +29,9 @@ private:
     };
     map<int, int> puntajeX = {
             {0, 200},
-            {1, 650},
+            {1, 610},
             {2, 200},
-            {3, 650}
+            {3, 610}
     };
     map<int, int> puntajeY = {
             {0, 210},

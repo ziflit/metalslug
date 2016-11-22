@@ -32,15 +32,15 @@ private:
     };
     map<Entity , int> scoreX = {
             {MARCO, 300},
-            {FIO, 685},
+            {FIO, 690},
             {TARMA, 300},
-            {ERI, 685}
+            {ERI, 690}
     };
     map<Entity , int> scoreY = {
             {MARCO, 18},
             {FIO, 18},
-            {TARMA, 65},
-            {ERI, 65}
+            {TARMA, 67},
+            {ERI, 67}
     };
     TextBox *healthText, *scoreText;
 public:
