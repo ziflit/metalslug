@@ -9,6 +9,7 @@ void PowerBonusStrategy::execute(GameObject *bonus, vector<GameObject *> &gameOb
             Player *playerObj = (Player *) object;
             playerObj->setHealth(PLAYER_HEALTH);
         }
+        player->setHealth(PLAYER_HEALTH); 
     }
 }
 

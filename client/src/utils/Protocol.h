@@ -6,7 +6,7 @@
 #include <vector>
 
 #define MSGSIZE sizeof(struct event)
-#define PLAYER_HEALTH 1000
+#define PLAYER_HEALTH 100
 using namespace std;
 
 
