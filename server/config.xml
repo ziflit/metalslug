@@ -1,10 +1,10 @@
 <config>
 	<ancho>800</ancho>
 	<alto>600</alto>
-	<cant_players>1</cant_players>
+	<cant_players>2</cant_players>
 </config>
 <gameMode>
-	<mode>INDIVIDUAL</mode>
+	<mode>COLABORATIVO</mode>
 	<testMode>0</testMode>
 </gameMode>
 <players>

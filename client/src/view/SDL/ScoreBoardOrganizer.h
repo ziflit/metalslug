@@ -51,9 +51,7 @@ public:
 
     int sumColavorative(std::vector<PlayerSprite *> vector);
 
-    int sumGrupal0(std::vector<PlayerSprite *> vector);
-
-    int sumGrupal1(std::vector<PlayerSprite *> vector);
+    int sumGrupal(std::vector<PlayerSprite *> vector,int grupo);
 
     void updateTotals(std::vector<PlayerSprite *> vector);
 };
