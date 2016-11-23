@@ -1,28 +1,32 @@
 #ifndef METALSLUG_PLAYERSPRITE_H
 #define METALSLUG_PLAYERSPRITE_H
+#define heavySound "audios/heavyMachineGun.wav"
 
 #include "Sprite.h"
 #include "../sound-ttf/Sound.h"
 #include "../sound-ttf/TextBox.h"
+#include "DataBarSprite.h"
 #include <SDL2/SDL_ttf.h>
 
 class PlayerSprite : public Sprite{
 
 private:
+    char username[20];
     SDL_Rect weaponsSourceRect, weaponsDestRect;
     SDL_Texture* weaponsLayer;
-    TextBox *usernameText, *healthText;
-    Arma arma;
-    int groupId, puntaje;
+    TextBox *usernameText;
+    Entity arma;
+    int puntaje;
     int wFramesCant,wActualPosFrame,cambioFrame;
     Postura postura;
     string imgaceColorPath,imageGrisadoPath;
+    DataBarSprite* bar;
+
 public:
 
     PlayerSprite(SDL_Renderer *renderer, xmlPlayer playerConfig) : Sprite(renderer) {
         postura = CAMINANDO_DERECHA;
-        cambioFrame = 0;
-        healthText = new TextBox("100", this->renderer, {255,0,0,1});
+        cambioFrame = puntaje = 0;
         this->setWidth(playerConfig.ancho);
         this->setHeight(playerConfig.alto);
         this->setId(playerConfig.id);
@@ -34,6 +38,7 @@ public:
 
         this->setUpWeaponsImage(playerConfig.pathWeapons);
         this->usernameText = nullptr;
+        bar = new DataBarSprite(renderer,id);
     }
 
     void actualizarDibujo();
@@ -43,9 +48,9 @@ public:
     void setWidth(int w);
 
     void setHeight(int h);
-
     void setUpImage(string imageSpritePath,string imageGrisadoPath);
-    void setWeapon(Arma weapon);
+
+    void setWeapon(Entity weapon);
 
     void setUpWeaponsImage(string weaponsPath);
 
@@ -58,7 +63,6 @@ public:
     bool firstEvent();
 
     bool clientIsConnected();
-
     void grisar();
     void colorear();
     void setNextSpriteFrame();
@@ -84,17 +88,16 @@ public:
     void disparandoMirandoArribaIzquierdaQuieto();
     void disparandoAvanzandoMirandoArribaDerecha();
     void disparandoAvanzandoMirandoArribaIzquierda();
+
     void muriendo();
-
     virtual ~PlayerSprite();
-
     void playHeavyMachineGunSound();
-
-    void setGroupId(xmlGameMode mode);
-
     void updateHealthText(int health);
+    SDL_Renderer *getRenderer();
+    int getPuntaje();
 
-    void renderizeHealthText();
+    char *getUsername();
+
 };
 
 #endif //METALSLUG_PLAYERSPRITE_H

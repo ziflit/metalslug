@@ -49,3 +49,7 @@ void PlayerHandler::deletePlayer(vector<PlayerSprite *>::iterator it) {
             delete *it;
             playersSprites.erase(it);
 }
+
+vector<PlayerSprite *> PlayerHandler::getPlayers() {
+    return playersSprites;
+}

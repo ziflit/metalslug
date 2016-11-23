@@ -19,8 +19,8 @@ private:
 
     map<string, Entity> entities = {
             {"MARCO",                 MARCO},
-            {"TARMA",                 TARMA},
             {"FIO",                   FIO},
+            {"TARMA",                 TARMA},
             {"ERI",                   ERI},
             {"BACKGROUND_LVL1_Z0",    BACKGROUND_LVL1_Z0},
             {"BACKGROUND_LVL1_Z1",    BACKGROUND_LVL1_Z1},
@@ -42,6 +42,7 @@ private:
             {"BT_MISSILE",            BT_MISSILE},
             {"BT_TELE_MISSILE",       BT_TELE_MISSILE},
             {"BT_SHOT",               BT_SHOT},
+            {"BT_LASER",              BT_LASER},
             {"BT_BOMB",               BT_BOMB},
             {"MSC_WEAPON_BOX_CHASER", MSC_WEAPON_BOX_CHASER},
             {"MSC_WEAPON_BOX_HEAVY",  MSC_WEAPON_BOX_HEAVY},

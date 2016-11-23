@@ -23,6 +23,7 @@ void WeaponBonusStrategy::applyBonus(Player *player, Entity bulletType) {
 void WeaponBonusStrategy::addAmmo(Player *player, Entity &bulletType, map<Entity, int> &dictionary) {
     auto search = dictionary.find(bulletType);
     if (search != dictionary.end()) {
+        player->setBulletType(bulletType);
         player->setAmmo(search->second);
     }
 }
