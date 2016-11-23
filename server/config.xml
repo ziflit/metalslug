@@ -97,7 +97,7 @@
         <ancho>250</ancho>
         <alto>200</alto>
         <cantWidthFrames>16</cantWidthFrames>
-        <cantHeightFrames>17</cantHeightFrames>
+        <cantHeightFrames>7</cantHeightFrames>
         <speed>0</speed>
     </enemy>
     <enemy>
