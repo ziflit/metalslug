@@ -103,7 +103,7 @@ void SDLRunningGame::getSpriteAndHandleNewEvent(event nuevoEvento) {
 void SDLRunningGame::handleModelState(vector <event> model_state) {
 
         for (auto nuevoEvento : model_state){
-            if (nuevoEvento.data.code == SHOW_SCOREBOARD) {
+            if (nuevoEvento.data.code == SHOW_SCOREBOARD || nuevoEvento.data.code == SHOW_SCOREBOARD_FINAL) {
                 this->scoreBoard->setData(playerHandler->getPlayers());
             } else if (nuevoEvento.data.code == GAME_OVER) {
                 BackgroundSprite* gameOver = new BackgroundSprite(mainRenderer, 800, 600, xmlBackground());

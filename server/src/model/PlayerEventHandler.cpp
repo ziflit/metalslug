@@ -4,6 +4,10 @@
 void PlayerEventHandler::handleRealeasedKey(EventCode eventCode, AnimatedObject *animatedObject) {
     Postura postura = animatedObject->getPostura();
     float direccionX = animatedObject->getDireccionX();
+    if (animatedObject->getPostura() == MURIENDO || animatedObject->getPostura() == MUERTO ){
+        return;
+    }
+
     switch (eventCode) {
 
         case EventCode::SDL_KEYLEFT_RELEASED:
@@ -159,6 +163,10 @@ void PlayerEventHandler::handleRealeasedKey(EventCode eventCode, AnimatedObject 
 void PlayerEventHandler::handlePressedKey(EventCode eventCode, AnimatedObject *animatedObject) {
     Postura postura = animatedObject->getPostura();
     float direccionX = animatedObject->getDireccionX();
+    if (animatedObject->getPostura() == MURIENDO || animatedObject->getPostura() == MUERTO ){
+        return;
+    }
+    
     switch (eventCode) {
         case EventCode::SDL_KEY_A_PRESSED:
             if (!((postura == AGACHADO_MIRANDO_DERECHA_QUIETO) or (postura == AGACHADO_AVANZANDO_DERECHA) or

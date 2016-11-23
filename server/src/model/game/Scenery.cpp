@@ -26,6 +26,8 @@ void Scenery::setUpLevel(int selectedLevel) {
     // Esto es para resetear la posicion de los players
     if (selectedLevel > 1) {
         for (auto player: players) {
+            player->setHealth(100); //Habria que ver si a los desconectados, les recargamos la vida
+            // player->setScore(0); //Al cambiar de nivel, se renueva el score
             if (player->getPostura() != DESCONECTADO){
                 player->set_position(0, 0);
             }
@@ -176,7 +178,11 @@ int Scenery::updateBackgroudsState() {
             }
 
             for (auto &enemy : enemies) {
-                enemy->retroceder();
+                if (enemy->getX() > 10){ 
+                    enemy->retroceder();
+                } else if (enemy->getPostura() != MURIENDO && enemy->getPostura() != MUERTO){
+                    enemy->setPostura(CAMINANDO_DERECHA);
+                }
             }
         }
     } else {
@@ -225,7 +231,11 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
     vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
 
-    if (players.size() == 0) {
+    int players_conectados = 0;
+    for (auto player : players) {
+        if (player->getPostura() != DESCONECTADO) ++players_conectados;
+    }
+    if (players_conectados == 0) {
         event gameOverMessage;
         gameOverMessage.data.code = GAME_OVER;
         gameOverMessage.completion = FINAL_MSG;
@@ -250,7 +260,7 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     } else if (afterUpdate == 2) {
         /* updateBackgroudsState() devuelve 2 si game over */
         event gameOverMessage;
-        gameOverMessage.data.code = GAME_OVER;
+        gameOverMessage.data.code = SHOW_SCOREBOARD_FINAL;
         gameOverMessage.completion = FINAL_MSG;
         eventsToReturn.push_back(gameOverMessage);
         return eventsToReturn;
@@ -419,6 +429,7 @@ void Scenery::removeDeadBullets() {
         if ((*it)->getEntity() == DEAD ||
             !((*it)->getX() <= windowWidth && (*it)->getX() >= 0 && (*it)->getY() <= windowHeight &&
               (*it)->getY() >= 0)) {
+            delete (*it);
             it = bullets.erase(it);
         } else {
             ++it;
@@ -448,6 +459,7 @@ void Scenery::removeDeadEnemies() {
     vector<Enemy *>::iterator it = enemies.begin();
     while (it != enemies.end()) {
         if ((*it)->getPostura() == MUERTO) {
+            delete (*it);
             it = enemies.erase(it);
         }
         else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {
