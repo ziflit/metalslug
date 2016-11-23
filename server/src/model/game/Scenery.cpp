@@ -26,6 +26,8 @@ void Scenery::setUpLevel(int selectedLevel) {
     // Esto es para resetear la posicion de los players
     if (selectedLevel > 1) {
         for (auto player: players) {
+            player->setHealth(100); //Habria que ver si a los desconectados, les recargamos la vida
+            // player->setScore(0); //Al cambiar de nivel, se renueva el score
             if (player->getPostura() != DESCONECTADO){
                 player->set_position(0, 0);
             }
@@ -176,7 +178,11 @@ int Scenery::updateBackgroudsState() {
             }
 
             for (auto &enemy : enemies) {
-                enemy->retroceder();
+                if (enemy->getX() > 10){ 
+                    enemy->retroceder();
+                } else if (enemy->getPostura() != MURIENDO && enemy->getPostura() != MUERTO){
+                    enemy->setPostura(CAMINANDO_DERECHA);
+                }
             }
         }
     } else {
@@ -419,6 +425,7 @@ void Scenery::removeDeadBullets() {
         if ((*it)->getEntity() == DEAD ||
             !((*it)->getX() <= windowWidth && (*it)->getX() >= 0 && (*it)->getY() <= windowHeight &&
               (*it)->getY() >= 0)) {
+            delete (*it);
             it = bullets.erase(it);
         } else {
             ++it;
@@ -448,6 +455,7 @@ void Scenery::removeDeadEnemies() {
     vector<Enemy *>::iterator it = enemies.begin();
     while (it != enemies.end()) {
         if ((*it)->getPostura() == MUERTO) {
+            delete (*it);
             it = enemies.erase(it);
         }
         else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {
