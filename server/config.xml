@@ -4,7 +4,7 @@
 	<cant_players>1</cant_players>
 </config>
 <gameMode>
-	<mode>GRUPAL</mode>
+	<mode>INDIVIDUAL</mode>
 	<testMode>1</testMode> !1-> PRUEBA 0->VIDA FINITA
 </gameMode>
 <players>
@@ -87,8 +87,8 @@
         <path>sprites/enemies/enemy_final_1.png</path>
         <ancho>300</ancho>
         <alto>300</alto>
-        <cantWidthFrames>15</cantWidthFrames>
-        <cantHeightFrames>12</cantHeightFrames>
+        <cantWidthFrames>16</cantWidthFrames>
+        <cantHeightFrames>7</cantHeightFrames>
         <speed>0</speed>
     </enemy>
     <enemy>
@@ -96,8 +96,8 @@
         <path>sprites/enemies/enemy_final_2.png</path>
         <ancho>300</ancho>
         <alto>300</alto>
-        <cantWidthFrames>15</cantWidthFrames>
-        <cantHeightFrames>12</cantHeightFrames>
+        <cantWidthFrames>16</cantWidthFrames>
+        <cantHeightFrames>7</cantHeightFrames>
         <speed>0</speed>
     </enemy>
     <enemy>
@@ -105,8 +105,8 @@
         <path>sprites/enemies/enemy_final_3.png</path>
         <ancho>300</ancho>
         <alto>300</alto>
-        <cantWidthFrames>15</cantWidthFrames>
-        <cantHeightFrames>12</cantHeightFrames>
+        <cantWidthFrames>16</cantWidthFrames>
+        <cantHeightFrames>7</cantHeightFrames>
         <speed>0</speed>
     </enemy>
 </enemies>
@@ -172,38 +172,38 @@
 	    <bullet>
             <id>BT_BULLET</id>
             <path>sprites/bullets/BT_BULLET.png</path>
-            <ancho>8</ancho>
-            <alto>8</alto>
+            <ancho>9</ancho>
+            <alto>9</alto>
         </bullet>
         <bullet>
             <id>BT_HEAVY_BULLET</id>
             <path>sprites/bullets/BT_HEAVY_BULLET.png</path>
-            <ancho>10</ancho>
-            <alto>10</alto>
+            <ancho>15</ancho>
+            <alto>15</alto>
         </bullet>
         <bullet>
             <id>BT_MISSILE</id>
             <path>sprites/bullets/BT_MISSILE.png</path>
-            <ancho>15</ancho>
-            <alto>15</alto>
+            <ancho>20</ancho>
+            <alto>20</alto>
         </bullet>
         <bullet>
             <id>BT_TELE_MISSILE</id>
             <path>sprites/bullets/BT_TELE_MISSILE.png</path>
-            <ancho>15</ancho>
-            <alto>15</alto>
+            <ancho>27</ancho>
+            <alto>27</alto>
         </bullet>
         <bullet>
             <id>BT_SHOT</id>
             <path>sprites/bullets/BT_SHOT.png</path>
-            <ancho>10</ancho>
-            <alto>10</alto>
+            <ancho>17</ancho>
+            <alto>17</alto>
         </bullet>
         <bullet>
             <id>BT_BOMB</id>
             <path>sprites/bullets/BT_BOMB.png</path>
-            <ancho>10</ancho>
-            <alto>10</alto>
+            <ancho>30</ancho>
+            <alto>30</alto>
         </bullet>
     </bullets>
 
