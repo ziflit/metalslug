@@ -1,5 +1,6 @@
 #ifndef METALSLUG_PLAYERSPRITE_H
 #define METALSLUG_PLAYERSPRITE_H
+#define heavySound "audios/heavyMachineGun.wav"
 
 #include "Sprite.h"
 #include "../sound-ttf/Sound.h"
