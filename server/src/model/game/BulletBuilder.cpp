@@ -39,7 +39,7 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(), firedBy->getShootsTo(),
                                 new NotMoveBulletStrategy(), firedBy);
-            setupBullet(bullet, 20, 20, 50, 35, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
+            setupBullet(bullet, 20, 20, 50, 30, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         case Entity::BT_BOMB:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho() / 2,
@@ -47,14 +47,14 @@ Bullet *BulletBuilder::createBullet(Entity bulletType, AnimatedObject *firedBy) 
                                 firedBy->getDireccionX(),
                                 firedBy->getDireccionY(),
                                 firedBy->getShootsTo(), new NormalBulletMovementStrategy(), firedBy);
-            setupBullet(bullet, 20, 20, 50, 35, 20, 0, -1, firedBy->getShootsTo());
+            setupBullet(bullet, 20, 20, 50, 30, 20, 0, -1, firedBy->getShootsTo());
             break;
         case Entity::BT_LASER:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(),
                                 firedBy->getY() + firedBy->getBoxAlto() / 2,
                                 firedBy->getDireccionX(), firedBy->getDireccionY(), firedBy->getShootsTo(),
                                 new NotMoveBulletStrategy(), firedBy);
-            setupBullet(bullet, 20, 20, 50, 35, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
+            setupBullet(bullet, 20, 20, 50, 15, 20, vector->getX(), vector->getY(), firedBy->getShootsTo());
             break;
         default:
             bullet = new Bullet(bulletType, firedBy->getX() + firedBy->getBoxAncho(),
