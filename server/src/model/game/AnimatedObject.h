@@ -41,7 +41,8 @@ public:
     }
 
     void setHealth(int health) {
-        AnimatedObject::health = health;
+        if (health == 99999)
+            AnimatedObject::health = health;
     }
 
     int getDireccionX() {
@@ -68,7 +69,7 @@ public:
     }
 
     int receiveDamage(int damage) { //devuelve la vida que le queda 
-        if (health == 99999){
+        if (health == 99999) {
             return health; // Si la vida es 99999 es super usuario, asique no recibe damage.
         }
         if (health > damage) {
@@ -135,15 +136,15 @@ public:
         AnimatedObject::bulletType = bulletType;
     }
 
-    int getPoints(){
+    int getPoints() {
         return this->puntaje;
     }
 
-    void updateScore(int points){
+    void updateScore(int points) {
         this->puntaje += points;
     }
 
-    void setScore(int points){
+    void setScore(int points) {
         this->puntaje = points;
     }
 };

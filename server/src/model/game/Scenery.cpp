@@ -286,7 +286,6 @@ void Scenery::updateEnemiesState(vector<GameObject *> &all_objects_in_window) {
         enemy->updatePosition(all_objects_in_window);
         makeEnemyShoot(enemy);
         makeEnemyDropEnemies(enemy);
-        cout << "ACA VIENE LA POS: "<< enemy->getX() << endl;
     }
 }
 
@@ -422,6 +421,7 @@ void Scenery::removeDeadBullets() {
         if ((*it)->getEntity() == DEAD ||
             !((*it)->getX() <= windowWidth && (*it)->getX() >= 0 && (*it)->getY() <= windowHeight &&
               (*it)->getY() >= 0)) {
+            delete (*it);
             it = bullets.erase(it);
         } else {
             ++it;
@@ -451,6 +451,7 @@ void Scenery::removeDeadEnemies() {
     vector<Enemy *>::iterator it = enemies.begin();
     while (it != enemies.end()) {
         if ((*it)->getPostura() == MUERTO) {
+            delete (*it);
             it = enemies.erase(it);
         }
         else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {
