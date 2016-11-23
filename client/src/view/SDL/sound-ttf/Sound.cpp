@@ -3,7 +3,6 @@
 Sound::Sound(std::string soundPath) {
     sound = createSound((char*)"audios/heavyMachineGun.wav" );
 //    Sound::sound = createSound((soundPath);}
-
 }
 void Sound::playOnce() {
     //After this always call freeMemorySoundUsed()
@@ -25,4 +24,3 @@ Mix_Chunk* Sound::createSound(char* soundPath){
     if( !sound ){printf( "Mix_LoadWAV: %s\n", Mix_GetError() );}
     return sound;
 }
-

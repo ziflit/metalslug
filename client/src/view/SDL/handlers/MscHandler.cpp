@@ -64,6 +64,7 @@ void MscHandler::updateMiscelaneaSprites() {
         MiscelaneaSprite* misc = createMiscelaneaType(event.data.id);
         misc->handle(event);
         misc->actualizarDibujo();
+        delete misc;
     }
     events.clear();
 }

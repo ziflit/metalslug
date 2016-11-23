@@ -318,7 +318,7 @@ void PlayerSprite::setWeapon(Entity weapon) {
             break;
         case BT_HEAVY_BULLET:
             this->weaponsSourceRect.y = (this->sourceRect.h * 1 );
-            this->playHeavyMachineGunSound();
+//            this->playHeavyMachineGunSound();
             break;
         case BT_MISSILE:
             this->weaponsSourceRect.y = (this->sourceRect.h * 2 );

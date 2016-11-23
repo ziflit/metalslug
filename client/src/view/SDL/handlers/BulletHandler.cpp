@@ -60,6 +60,7 @@ void BulletHandler::updateBulletsSprites() {
         BulletSprite* bullet = createBulletType(event.data.id);
         bullet->handle(event);
         bullet->actualizarDibujo();
+        delete bullet;
     }
     events.clear();
 }
