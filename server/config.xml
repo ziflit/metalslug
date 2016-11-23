@@ -205,6 +205,12 @@
             <ancho>10</ancho>
             <alto>10</alto>
         </bullet>
+        <bullet>
+            <id>BT_LASER</id>
+            <path>sprites/bullets/BT_LASER.png</path>
+            <ancho>250</ancho>
+            <alto>5</alto>
+        </bullet>
     </bullets>
 
 	<miscelaneas>
