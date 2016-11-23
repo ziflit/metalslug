@@ -12,6 +12,7 @@
 
 class DataBarSprite : public Sprite {
 private:
+    bool testMode;
     map<Entity , string> path = {
             {MARCO, "sprites/scoreBoards/marcoBar.png"},
             {FIO, "sprites/scoreBoards/fioBar.png"},
@@ -55,6 +56,8 @@ public:
     void updateHealth(string health);
 
     void actualizarDibujo();
+
+    void setTestMode();
 };
 
 

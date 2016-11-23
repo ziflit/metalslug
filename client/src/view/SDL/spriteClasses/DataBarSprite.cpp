@@ -11,10 +11,15 @@ DataBarSprite::DataBarSprite(SDL_Renderer *renderer, Entity id) : Sprite(rendere
     scoreText = new TextBox(100, this->renderer, {255,255,0,1},12);
     healthText->setPosition(healthX[id],healthY[id]);
     scoreText->setPosition(scoreX[id],scoreY[id]);
+    testMode = false;
+    this->updateHealth("---");
 }
 
 void DataBarSprite::updateHealth(int health) {
-    this->healthText->changeText(health);
+    if(health>8000) {testMode = true;}
+    if(!testMode) {
+        this->healthText->changeText(health);
+    }
 }
 
 void DataBarSprite::updateHealth(string health) {
@@ -31,4 +36,8 @@ void DataBarSprite::actualizarDibujo() {
     Sprite::actualizarDibujo();
     healthText->renderize();
     scoreText->renderize();
+}
+
+void DataBarSprite::setTestMode(){
+    testMode = true;
 }
