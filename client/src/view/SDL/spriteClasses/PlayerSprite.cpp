@@ -338,7 +338,8 @@ void PlayerSprite::setWeapon(Entity weapon) {
 }
 
 void PlayerSprite::playHeavyMachineGunSound() {
-    Sound *heavyMachineSound = new Sound("audios/heavyMachineGun.wav");
+
+    Sound *heavyMachineSound = new Sound(heavySound);
     heavyMachineSound->playOnce();
     delete heavyMachineSound;
 }

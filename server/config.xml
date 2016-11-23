@@ -1,11 +1,11 @@
 <config>
 	<ancho>800</ancho>
 	<alto>600</alto>
-	<cant_players>2</cant_players>
+	<cant_players>1</cant_players>
 </config>
 <gameMode>
 	<mode>GRUPAL</mode>
-	<testMode>0</testMode>
+	<testMode>1</testMode> !1-> PRUEBA 0->VIDA FINITA
 </gameMode>
 <players>
 	<player>

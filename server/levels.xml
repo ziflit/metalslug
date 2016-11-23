@@ -2,7 +2,7 @@
 	<lvl>
 		<id>1</id>
 		<cant_enemies>10</cant_enemies>
-		<cant_boxes>5</cant_boxes>
+		<cant_boxes>20</cant_boxes>
 		<posXtoFinish>7000</posXtoFinish>
 		<platforms>	
 			<!-- Piso -->
