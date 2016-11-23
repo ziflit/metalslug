@@ -3,7 +3,7 @@
 #define FOREVER -1
 
 void Music::initializeMixer() {
-    if ((Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096)) == -1) {
+    if ((Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 640)) == -1) {
         //2-> set for stereo or 1 for mono, 4096->magia negra
         printf("Mix_OpenAudio: %s\n", Mix_GetError());
     }
