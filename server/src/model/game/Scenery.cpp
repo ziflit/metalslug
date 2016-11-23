@@ -179,7 +179,7 @@ int Scenery::updateBackgroudsState() {
             for (auto &enemy : enemies) {
                 if (enemy->getX() > 10){ 
                     enemy->retroceder();
-                } else {
+                } else if (enemy->getPostura() != MURIENDO && enemy->getPostura() != MUERTO){
                     enemy->setPostura(CAMINANDO_DERECHA);
                 }
             }
