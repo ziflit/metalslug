@@ -25,14 +25,21 @@ void Scenery::setUpLevel(int selectedLevel) {
 
     // Esto es para resetear la posicion de los players
     if (selectedLevel > 1) {
+        PlayerBuilder pb;
+        pb.setGameMode(configs->getGameMode());
         for (auto player: players) {
-            player->set_position(0, 0);
+            player->setHealth(pb.getHealth()); //Habria que ver si a los desconectados, les recargamos la vida
+            // player->setScore(0); //Al cambiar de nivel, se renueva el score
+            if (player->getPostura() != DESCONECTADO){
+                player->set_position(0, 0);
+            }
         }
     }
 
     //Seteo los backgrounds correspondientes para el nivel
     Entity back_z0, back_z1, back_z2, enemy_normal_type;
-    selectedLevel = setLevelConfigs(&back_z0, &back_z1, &back_z2, &enemy_normal_type, &(this->finalEnemyType),
+    int pisoDelNivel;
+    selectedLevel = setLevelConfigs(&pisoDelNivel, &back_z0, &back_z1, &back_z2, &enemy_normal_type, &(this->finalEnemyType),
                                     selectedLevel);
 
     //Borro las balas que hayan quedado
@@ -55,7 +62,7 @@ void Scenery::setUpLevel(int selectedLevel) {
     }
     for (int i = 0; i < lvlsConfig[selectedLevel].cant_boxes; i++) {
         int randomSpawnInX = rand() % 2000 + 400;
-        BoxBonus *boxBonus = new BoxBonus(randomSpawnInX, 500); //No tienen gravedad, por eso y = 500
+        BoxBonus *boxBonus = new BoxBonus(randomSpawnInX, pisoDelNivel); //No tienen gravedad, por eso y = 520
         miscs.push_back(boxBonus);
     }
 
@@ -132,7 +139,6 @@ vector<struct event> Scenery::process_keys_queue(queue<struct event> *keys) {
     return obtenerEstadoEscenario();
 }
 
-
 bool Scenery::hayJugadorEnBordeIzq() {
     for (auto player: players) {
         if ((player->getPostura() != Postura::DESCONECTADO) and (player->getX() <= 0)) {
@@ -152,7 +158,7 @@ bool Scenery::jugadorPasoMitadPantallaYEstaAvanzando() {
     return false;
 }
 
-void Scenery::updateBackgroudsState() {
+int Scenery::updateBackgroudsState() {
     if (not this->finDelNivel) {
         if (this->moverPantalla and (not hayJugadorEnBordeIzq()) and (jugadorPasoMitadPantallaYEstaAvanzando())) {
             for (auto background : backgrounds) {
@@ -174,7 +180,11 @@ void Scenery::updateBackgroudsState() {
             }
 
             for (auto &enemy : enemies) {
-                enemy->retroceder();
+                if (enemy->getX() > 10){ 
+                    enemy->retroceder();
+                } else if (enemy->getPostura() != MURIENDO && enemy->getPostura() != MUERTO){
+                    enemy->setPostura(CAMINANDO_DERECHA);
+                }
             }
         }
     } else {
@@ -184,9 +194,14 @@ void Scenery::updateBackgroudsState() {
             yaSpawneoElFinalEnemy = true;
             this->moverPantalla = false;
         } else {
-            this->fightWithFinalEnemy();
+            /* Primero seteo el siguiente nivel, luego hago que
+               se muestre el scoreboard...
+               1 == Mostrar el scoreboard, 2 == GAME OVER... perdon
+            */
+            return this->fightWithFinalEnemy();
         }
     }
+    return 0; // Corrida normal devuelve 0.
 }
 
 Enemy *Scenery::createFinalEnemy() {
@@ -223,11 +238,40 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
     vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
 
+    int players_conectados = 0;
+    for (auto player : players) {
+        if (player->getPostura() != DESCONECTADO) ++players_conectados;
+    }
+    if (players_conectados == 0) {
+        event gameOverMessage;
+        gameOverMessage.data.code = GAME_OVER;
+        gameOverMessage.completion = FINAL_MSG;
+        eventsToReturn.push_back(gameOverMessage);
+        return eventsToReturn;
+    }
 
     updatePlayersState(all_objects_in_window);
     updateEnemiesState(all_objects_in_window);
     updateBulletsState(all_objects_in_window);
-    updateBackgroudsState();
+
+    int afterUpdate = updateBackgroudsState();
+
+    if (afterUpdate == 1) {
+        /* updateBackgroudsState() devuelve 1 en caso de tener que mostrar
+           el scoreboard */
+        event showScoreboardMessage;
+        showScoreboardMessage.data.code = SHOW_SCOREBOARD;
+        showScoreboardMessage.completion = FINAL_MSG;
+        eventsToReturn.push_back(showScoreboardMessage);
+        return eventsToReturn;
+    } else if (afterUpdate == 2) {
+        /* updateBackgroudsState() devuelve 2 si game over */
+        event gameOverMessage;
+        gameOverMessage.data.code = SHOW_SCOREBOARD_FINAL;
+        gameOverMessage.completion = FINAL_MSG;
+        eventsToReturn.push_back(gameOverMessage);
+        return eventsToReturn;
+    }
 
     for (auto &background : backgrounds) {
         eventsToReturn.push_back(background->getState());
@@ -335,15 +379,13 @@ vector<GameObject *> Scenery::getVisibleObjects() {
     return todos;
 }
 
-
 void Scenery::removeDeadObjects() {
     removeDeadBullets();
     removeDeadPlayers();
     removeDeadEnemies();
 }
 
-
-int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel) {
+int Scenery::setLevelConfigs(int *pisoDelNivel, Entity *z0, Entity *z1, Entity *z2, Entity *en, Entity *ef, int selectedLevel) {
     switch (selectedLevel) {
         case 1:
             *z0 = BACKGROUND_LVL1_Z0;
@@ -351,6 +393,7 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
             *z2 = BACKGROUND_LVL1_Z2;
             *en = ENEMY_NORMAL_1;
             *ef = ENEMY_FINAL_1;
+            *pisoDelNivel = 475; //Esto se usa para setear la posicion de las cajas... por no tener gravedad.
             return 0;
         case 2:
             *z0 = BACKGROUND_LVL2_Z0;
@@ -358,6 +401,7 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
             *z2 = BACKGROUND_LVL2_Z2;
             *en = ENEMY_NORMAL_2;
             *ef = ENEMY_FINAL_2;
+            *pisoDelNivel = 497;
             return 1;
         case 3:
             *z0 = BACKGROUND_LVL3_Z0;
@@ -365,22 +409,25 @@ int Scenery::setLevelConfigs(Entity *z0, Entity *z1, Entity *z2, Entity *en, Ent
             *z2 = BACKGROUND_LVL3_Z2;
             *en = ENEMY_NORMAL_3;
             *ef = ENEMY_FINAL_3;
+            *pisoDelNivel = 510;
             return 2;
     }
 }
 
-void Scenery::fightWithFinalEnemy() {
+int Scenery::fightWithFinalEnemy() {
     for (auto enemy : enemies) {
         if (enemy->getEntity() == this->finalEnemyType) {
             if (enemy->getPostura() == MUERTO) {
                 if (actualLevel < 3) {
                     this->setUpLevel(this->actualLevel + 1);
                 } else {
-                    this->setUpLevel(1); // En vez del 1, tendria que terminar el juego.
+                    return 2;
                 }
+                return 1;
             }
         }
     }
+    return 0;
 }
 
 void Scenery::removeDeadBullets() {
@@ -389,13 +436,13 @@ void Scenery::removeDeadBullets() {
         if ((*it)->getEntity() == DEAD ||
             !((*it)->getX() <= windowWidth && (*it)->getX() >= 0 && (*it)->getY() <= windowHeight &&
               (*it)->getY() >= 0)) {
+            delete (*it);
             it = bullets.erase(it);
         } else {
             ++it;
         }
     }
 }
-
 
 void Scenery::removeDeadPlayers() {
     vector<Player *>::iterator it = players.begin();
@@ -419,6 +466,7 @@ void Scenery::removeDeadEnemies() {
     vector<Enemy *>::iterator it = enemies.begin();
     while (it != enemies.end()) {
         if ((*it)->getPostura() == MUERTO) {
+            delete (*it);
             it = enemies.erase(it);
         }
         else if (((*it)->getPostura() == MURIENDO) and ((*it)->getHealth() <= -400)) {

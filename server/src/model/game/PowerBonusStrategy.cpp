@@ -7,7 +7,12 @@ void PowerBonusStrategy::execute(GameObject *bonus, vector<GameObject *> &gameOb
     for (auto object : gameObjects) {
         if (isAlly(object, player->getGroupId())) {
             Player *playerObj = (Player *) object;
-            playerObj->setHealth(PLAYER_HEALTH);
+            if (playerObj->getHealth() < 100) {
+                playerObj->setHealth(PLAYER_HEALTH);
+            }
+        }
+        if (player->getHealth() < 100) {
+            player->setHealth(PLAYER_HEALTH);
         }
     }
 }

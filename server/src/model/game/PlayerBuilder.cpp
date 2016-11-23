@@ -32,6 +32,6 @@ int PlayerBuilder::getHealth() {
     if (mode.testMode){
         return 999999;
     }
-    return 1000;
+    return 100;
 }
 

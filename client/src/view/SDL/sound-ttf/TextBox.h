@@ -8,12 +8,19 @@
 using namespace std;
 class TextBox {
 public:
-    TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color);
+    TextBox(char *text, SDL_Renderer* mainRenderer, SDL_Color color, int size);
+    TextBox(int number, SDL_Renderer *mainRenderer, SDL_Color color, int size);
+
+    TextBox(string text, SDL_Renderer *mainRenderer, SDL_Color color, int size);
+
     void changeText(char *text);
     void changeText(int number);
+    void changeText(string text);
     void renderize(int x, int y);
     void renderize();
+    void setPosition(int x, int y);
 
+    virtual ~TextBox();
 private:
     TTF_Font *font;
     SDL_Color color;
@@ -23,6 +30,4 @@ private:
 
     TTF_Font *loadfont(char *file, int ptsize);
 };
-
-
 #endif //METALSLUG_TEXTBOX_H

@@ -12,6 +12,7 @@
 class Bullet : public GameObject {
 private:
     int damage;
+    int cantPasos; // Para contar los pasos que hace la shotGun (puede servir para el laser)
     int bulletScore;
     AnimatedObject* bulletOwner;
     BulletMovementStrategy *movementStrategy = nullptr;
@@ -39,6 +40,14 @@ public:
 
     int getBulletScore(){
         return bulletScore;
+    }
+
+    int getCantPasos(){
+        return cantPasos;
+    }
+
+    void updateCantPasos(int paso){
+        cantPasos += 1;
     }
 };
 

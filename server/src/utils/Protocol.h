@@ -6,7 +6,7 @@
 #include <vector>
 
 #define MSGSIZE sizeof(struct event)
-#define PLAYER_HEALTH 1000
+#define PLAYER_HEALTH 100
 using namespace std;
 
 
@@ -45,7 +45,10 @@ enum EventCode {
     BACKGROUND_STATUS,
     ENEMY_STATUS,
     BULLET_STATUS,
-    TODO_SIGUE_IGUAL
+    TODO_SIGUE_IGUAL,
+    SHOW_SCOREBOARD,
+    SHOW_SCOREBOARD_FINAL,
+    GAME_OVER
 };
 
 enum EventCompletion {
@@ -120,15 +123,6 @@ enum Postura{
 
 };
 
-enum Arma {
-    PISTOLA,
-    HEAVY_MACHINEGUN,
-    ROCKET_LAUNCHER,
-    ENEMY_CHASER,
-    SHOTGUN,
-    BOMB
-};
-
 enum GameMode {
     INDIVIDUAL,
     COLABORATIVO,
@@ -144,7 +138,7 @@ struct event_ext {
     int puntaje;
 	int health;
     Postura postura;
-    Arma arma;
+    Entity arma;
 };
 
 struct event {
