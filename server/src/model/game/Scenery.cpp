@@ -25,8 +25,10 @@ void Scenery::setUpLevel(int selectedLevel) {
 
     // Esto es para resetear la posicion de los players
     if (selectedLevel > 1) {
+        PlayerBuilder pb;
+        pb.setGameMode(configs->getGameMode());
         for (auto player: players) {
-            player->setHealth(100); //Habria que ver si a los desconectados, les recargamos la vida
+            player->setHealth(pb.getHealth()); //Habria que ver si a los desconectados, les recargamos la vida
             // player->setScore(0); //Al cambiar de nivel, se renueva el score
             if (player->getPostura() != DESCONECTADO){
                 player->set_position(0, 0);
