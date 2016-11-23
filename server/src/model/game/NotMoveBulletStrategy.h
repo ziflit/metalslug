@@ -4,6 +4,7 @@
 
 
 #include "BulletMovementStrategy.h"
+#include "Bullet.h"
 
 class NotMoveBulletStrategy : public BulletMovementStrategy {
 public:

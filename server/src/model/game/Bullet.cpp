@@ -11,6 +11,7 @@ Bullet::Bullet(Entity bulletType, int spawnX, int spawnY, int direccionY, int di
     this->colisionables = collitionables;
     this->movementStrategy = bulletMovementStrategy;
     this->bulletOwner = bulletOwner;
+    cantPasos = 0; 
 }
 
 Bullet::~Bullet() {
