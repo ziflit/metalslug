@@ -250,7 +250,7 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     } else if (afterUpdate == 2) {
         /* updateBackgroudsState() devuelve 2 si game over */
         event gameOverMessage;
-        gameOverMessage.data.code = GAME_OVER;
+        gameOverMessage.data.code = SHOW_SCOREBOARD_FINAL;
         gameOverMessage.completion = FINAL_MSG;
         eventsToReturn.push_back(gameOverMessage);
         return eventsToReturn;
