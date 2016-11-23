@@ -231,7 +231,11 @@ vector<struct event> Scenery::obtenerEstadoEscenario() {
     vector<struct event> eventsToReturn;
     vector<GameObject *> all_objects_in_window = this->getVisibleObjects();
 
-    if (players.size() == 0) {
+    int players_conectados = 0;
+    for (auto player : players) {
+        if (player->getPostura() != DESCONECTADO) ++players_conectados;
+    }
+    if (players_conectados == 0) {
         event gameOverMessage;
         gameOverMessage.data.code = GAME_OVER;
         gameOverMessage.completion = FINAL_MSG;
