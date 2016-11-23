@@ -41,7 +41,7 @@ public:
     }
 
     void setHealth(int health) {
-        if (health == 99999)
+        if (health != 99999)
             AnimatedObject::health = health;
     }
 
