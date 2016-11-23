@@ -40,6 +40,9 @@ int Enemy::retroceder() {
 }
 
 void Enemy::avanzar(vector<GameObject *> gameObjects) {
+    if (this->getPostura() == MURIENDO || this->getPostura() == MUERTO ){
+            return;
+        }
     postura = CAMINANDO_DERECHA;
     x += speed;
 }
@@ -62,6 +65,9 @@ void Enemy::updatePosition(vector<GameObject *> &game_objects) {
     if (playerToFollow != nullptr) {
         float distance = MathUtil::FindDifference(playerToFollow->getX(), x);
         float playerPosX = playerToFollow->getX();
+        if (this->getPostura() == MURIENDO || this->getPostura() == MUERTO ){
+                return;
+            }
         if (not(distance > 450 || distance < 250)) {
             if (x < playerPosX - box_ancho) {
                 postura = CAMINANDO_DERECHA;
