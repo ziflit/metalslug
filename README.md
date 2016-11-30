@@ -28,4 +28,4 @@ metalslug/client $ make
 metalslug/client/src/view $ ../../client <puerto> <ip servidor>  # workaround por paths relativos
 ```
 Video Final:
-* https://www.youtube.com/watch?v=ohOiN14HUCw&feature=youtu.be
+* https://youtu.be/ohOiN14HUCw
