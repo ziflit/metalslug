@@ -18,7 +18,8 @@ Bibliotecas utilizadas para desarrollar el proyecto:
 * SDL2 (SDL2, SDL2_image, SDL2_mixer)
 
 
-Instrucciones adicionales: (que sean necesarias para compilar el proyecto)
+Instrucciones adicionales: 
+(necesarias para compilar el proyecto)
 ``` bash
 metalslug/server $ make
 metlalusg/server $ ./server <puerto> <archivo de usuarios> <archivo xml>
@@ -26,5 +27,5 @@ metlalusg/server $ ./server <puerto> <archivo de usuarios> <archivo xml>
 metalslug/client $ make
 metalslug/client/src/view $ ../../client <puerto> <ip servidor>  # workaround por paths relativos
 ```
-Video Final
+Video Final:
 * https://www.youtube.com/watch?v=ohOiN14HUCw&feature=youtu.be
