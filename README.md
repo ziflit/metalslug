@@ -15,7 +15,7 @@ Sistema Operativo en el cual fue probado el proyecto: Linux
 
 Bibliotecas utilizadas para desarrollar el proyecto:
 * RapidXML
-* SDL2 (SDL2, SDL2_image, SDL2_mixer)
+* SDL2 (SDL2, SDL2_image, SDL2_mixer, SDL2_ttf)
 
 
 Instrucciones adicionales: 
